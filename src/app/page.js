@@ -1,6 +1,9 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/HeroSection";
-import Carousel from "@/components/Carousel";
+import Skills from "@/components/Skills";
+import SelectedWork from "@/components/SelectedWork";
+import BlogSection from "@/components/BlogSection";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const myImages = [
@@ -19,6 +22,10 @@ export default function Home() {
     <>
       <Navbar />
       <Hero />
+      <Skills />
+      <SelectedWork />
+      <BlogSection />
+      <Footer />
     </>
   );
 }
