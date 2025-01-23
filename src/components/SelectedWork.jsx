@@ -44,10 +44,10 @@ export default function SelectedWork() {
             Selected Work
           </span>
 
-          <h2 className="mt-5 text-2xl md:text-4xl font-semibold text-gray-800">
+          <h2 className="mt-8 text-2xl md:text-4xl font-semibold text-gray-800">
             Some Stuff I’ve Built
           </h2>
-          <p className="mt-4 text-slate-700 max-w-2xl mx-auto !leading-relaxed">
+          <p className="mt-4 text-base md:text-lg text-slate-700 max-w-2xl mx-auto !leading-[1.7]">
             Here’s a peek at the projects where I turned ideas into something
             cool. From apps to designs, it’s all about making things that work
             and look awesome.

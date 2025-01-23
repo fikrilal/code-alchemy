@@ -1,31 +1,31 @@
 export default function BlogSection() {
   const blogs = [
     {
-      title: "Work in Dev Environments Globally with Fly.io",
+      title: "Understanding the Basics of Clean Architecture in Flutter",
       description:
-        "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
+        "Learn how to implement clean architecture principles in your Flutter projects and why it matters for scalable applications.",
+      date: "Jan 15 2025",
+      link: "#",
+    },
+    {
+      title: "Deploying Full-Stack Applications Using Fly.io",
+      description:
+        "Step-by-step guide to deploying your full-stack applications globally with Fly.io for better performance and scalability.",
       date: "Dec 25 2024",
       link: "#",
     },
     {
-      title: "Work in Dev Environments Globally with Fly.io",
+      title: "A Beginner's Guide to State Management in Flutter",
       description:
-        "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
-      date: "Dec 25 2024",
-      link: "#",
-    },
-    {
-      title: "Work in Dev Environments Globally with Fly.io",
-      description:
-        "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
-      date: "Dec 25 2024",
+        "State management can be tricky. Here's a beginner-friendly guide to using GetX, Riverpod, and BLoC in Flutter projects.",
+      date: "Dec 20 2024",
       link: "#",
     },
   ];
 
   return (
     <section className="bg-gray-50 py-32">
-      <div className="container mx-auto text-center ">
+      <div className="container mx-auto text-center max-w-7xl">
         {/* Section Title */}
         <div className="mb-20">
           <span className="inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-300 rounded-full">
@@ -36,10 +36,10 @@ export default function BlogSection() {
             />
             Writing & Thoughts
           </span>
-          <h2 className="mt-5 text-2xl md:text-4xl font-semibold text-gray-800">
+          <h2 className="mt-8 text-2xl md:text-4xl font-semibold text-gray-800">
             Stories, Code, and Everything In Between
           </h2>
-          <p className="mt-4 text-slate-700 max-w-2xl mx-auto leading-[1.6]">
+          <p className="mt-4 text-base md:text-lg text-slate-700 max-w-2xl mx-auto !leading-[1.7]">
             A space where I share my journey, insights, and lessons learned.
             From coding tips to design musings, it’s all about growth,
             creativity, and a little bit of fun along the way.
@@ -55,7 +55,7 @@ export default function BlogSection() {
             >
               {/* Image with 16:9 Aspect Ratio */}
               <div
-                className="relative h-72 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 mr-6"
+                className="relative h-72 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 mr-12"
                 style={{ aspectRatio: "16 / 9" }}
               ></div>
 
@@ -66,13 +66,13 @@ export default function BlogSection() {
                   <h3 className="text-3xl font-medium text-slate-900">
                     {blog.title}
                   </h3>
-                  <p className="mt-2 text-slate-700 text-md">
+                  <p className="mt-4 text-slate-700 text-base leading-[1.6]">
                     {blog.description}
                   </p>
                 </div>
 
                 {/* Date at the bottom */}
-                <p className="text-gray-500 text-xs mt-auto text-left">
+                <p className="text-gray-500 text-sm mt-auto text-left">
                   {blog.date}
                 </p>
               </div>

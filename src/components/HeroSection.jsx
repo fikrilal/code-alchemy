@@ -26,7 +26,7 @@ export default function Hero() {
       </h1>
 
       {/* Subtitle */}
-      <p className="mt-5 text-lg md:text-xl text-slate-700 max-w-4xl !leading-relaxed">
+      <p className="mt-5 text-lg md:text-xl text-slate-700 max-w-4xl !leading-[1.8]">
         I love building apps and crafting designs that people actually enjoy
         using. Whether it’s coding something cool or tweaking pixels to
         perfection, I’m all about turning ideas into reality.
