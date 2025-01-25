@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function BlogSection() {
   const blogs = [
     {
@@ -23,11 +27,44 @@ export default function BlogSection() {
     },
   ];
 
+  // Variants for the section heading (or any container you want to animate as a single block)
+  const headingContainerVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  // Variants for each blog card
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 1.0,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
     <section className="bg-gray-50 py-16 sm:py-16 lg:py-32">
-      <div className="container mx-auto text-center max-w-7xl px-4 sm:px-6 lg:px-8">
+      <motion.div
+        className="container mx-auto text-center max-w-7xl px-4 sm:px-6 lg:px-8"
+        // Animate the heading block only once when it comes into view
+        variants={headingContainerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         {/* Section Title */}
-        <div className="mb-2 sm: mb-16 lg:mb-20">
+        <div className="mb-2 sm:mb-16 lg:mb-20">
           <span className="inline-flex items-center px-8 py-2 text-sm font-medium border border-gray-300 rounded-full">
             <img
               src="/icons/writing-thoughts.svg"
@@ -45,40 +82,42 @@ export default function BlogSection() {
             creativity, and a little bit of fun along the way.
           </p>
         </div>
+      </motion.div>
 
-        {/* Blog List */}
-        <div className="space-y-8 sm:space-y-10 lg:space-y-16">
-          {blogs.map((blog, index) => (
-            <div
-              key={index}
-              className="flex flex-col md:flex-row items-stretch border-b border-gray-200 pb-8 sm:pb-10 lg:pb-16"
-            >
-              {/* Image with 16:9 Aspect Ratio */}
-              <div
-                className="relative h-48 sm:h-60 md:h-72 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 mb-6 md:mb-0 md:mr-12"
-                style={{ aspectRatio: "16 / 9" }}
-              ></div>
+      {/* Blog List (no container-level whileInView here) */}
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 lg:space-y-16">
+        {blogs.map((blog, index) => (
+          <motion.div
+            key={index}
+            className="flex flex-col md:flex-row items-stretch border-b border-gray-200 pb-8 sm:pb-10 lg:pb-16"
+            // Each card handles its own `whileInView`
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }} // triggers at 10% visible
+          >
+            {/* Image with 16:9 Aspect Ratio */}
+            <motion.div
+              className="relative h-48 sm:h-60 md:h-72 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 mb-6 md:mb-0 md:mr-12"
+              style={{ aspectRatio: "16 / 9" }}
+              // Optional separate animation if needed
+              // Or you can just let the parent handle it
+            />
 
-              {/* Blog Content */}
-              <div className="flex flex-col justify-between flex-1 text-left">
-                {/* Title and Description */}
-                <div>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-slate-900">
-                    {blog.title}
-                  </h3>
-                  <p className="mt-2 sm: mt-2 lg:mt-4 text-slate-700 text-sm sm:text-base leading-[1.6]">
-                    {blog.description}
-                  </p>
-                </div>
-
-                {/* Date at the bottom */}
-                <p className="text-gray-500 text-sm mt-6 md:mt-auto text-left">
-                  {blog.date}
-                </p>
-              </div>
+            {/* Blog Content */}
+            <div className="flex flex-col justify-between flex-1 text-left">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-slate-900">
+                {blog.title}
+              </h3>
+              <p className="mt-2 sm:mt-2 lg:mt-4 text-slate-700 text-sm sm:text-base leading-[1.6]">
+                {blog.description}
+              </p>
+              <p className="text-gray-500 text-sm mt-6 md:mt-auto text-left">
+                {blog.date}
+              </p>
             </div>
-          ))}
-        </div>
+          </motion.div>
+        ))}
 
         {/* View All Button */}
         <div className="mt-10 text-center text-right">

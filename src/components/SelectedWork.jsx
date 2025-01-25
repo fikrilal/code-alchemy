@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function SelectedWork() {
   const projects = [
     {
@@ -5,41 +9,69 @@ export default function SelectedWork() {
       description:
         "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
       link: "#",
-      borderStyles: "border-b lg:border-b border-gray-200", // Bottom border
+      borderStyles: "border-b lg:border-b border-gray-200",
     },
     {
       title: "ePKK",
       description:
         "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
       link: "#",
-      borderStyles: "border-b lg:border-b lg:border-l border-gray-200", // Left and bottom border
+      borderStyles: "border-b lg:border-b lg:border-l border-gray-200",
     },
     {
       title: "Ngawi Smart City",
       description:
         "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
       link: "#",
-      borderStyles: "border-b lg:border-none border-gray-200", // Bottom border on mobile
+      borderStyles: "border-b lg:border-none border-gray-200",
     },
     {
       title: "Lofo - leftover food",
       description:
         "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
       link: "#",
-      borderStyles: "lg:border-l border-gray-200", // Left border only on larger screens
+      borderStyles: "lg:border-l border-gray-200",
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+      },
+    },
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 1.0,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section className="bg-gray-50 pt-24 p-4">
+    <motion.section
+      className="bg-gray-50 pt-24 p-4"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+    >
       <div className="container mx-auto text-center">
         {/* Section Title */}
-        <div className="mb-2 sm:mb-6 lg:mb-10">
+        <motion.div className="mb-2 sm:mb-6 lg:mb-10" variants={childVariants}>
           <span className="inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-300 rounded-full">
             <img
               src="/icons/selected-work.svg"
               alt="Selected Work Icon"
-              className="w-5 h-5 mr-2" // Adjust size and spacing
+              className="w-5 h-5 mr-2"
             />
             Selected Work
           </span>
@@ -52,16 +84,21 @@ export default function SelectedWork() {
             cool. From apps to designs, it’s all about making things that work
             and look awesome.
           </p>
-        </div>
+        </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2"
+          // If you'd like to stagger children inside this grid,
+          // you can reuse containerVariants or just rely on the parent above.
+          variants={containerVariants}
+        >
           {projects.map((project, index) => (
-            <div
+            <motion.div
               key={index}
-              className={`py-8 sm:py-8 lg:py-8 lg:px-8 bg-white transition text-left ${project.borderStyles}`} // Add custom borders
+              className={`py-8 sm:py-8 lg:py-8 lg:px-8 bg-white transition text-left ${project.borderStyles}`}
+              variants={childVariants}
             >
-              {/* Placeholder for image */}
               <div className="bg-gray-100 h-80 rounded-md mb-4 sm:mb-4 lg:mb-6"></div>
               <div className="flex items-center justify-between group">
                 <h3 className="text-2xl md:text-3xl font-medium text-gray-800">
@@ -94,10 +131,10 @@ export default function SelectedWork() {
               <p className="mt-3 text-slate-700 text-md">
                 {project.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

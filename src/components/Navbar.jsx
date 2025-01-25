@@ -1,6 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
   return (
     <nav className="fixed w-full bg-white-100 z-50">
       <div className="container mx-auto px-6 py-6 flex justify-between items-center">
@@ -9,7 +18,7 @@ export default function Navbar() {
           fikrilal.
         </Link>
 
-        {/* Navigation Links */}
+        {/* Navigation Links (Desktop) */}
         <div className="space-x-8 hidden md:flex">
           <Link
             href="#case-studies"
@@ -37,15 +46,11 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Available Badge */}
+        {/* Available Badge (Desktop) */}
         <div className="hidden md:block">
           <div className="relative flex items-center px-2 py-1 bg-brand-900 text-slate-100 text-sm font-medium rounded-full border border-brand-900 overflow-hidden">
-            {/* Inner Shadow */}
             <div className="absolute inset-0 bg-gradient-to-t from-gray-100/15 to-transparent rounded-full"></div>
-
-            {/* Content */}
             <div className="relative flex items-center">
-              {/* Green Circle as an SVG */}
               <div className="mr-2">
                 <svg
                   width="16"
@@ -63,8 +68,62 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu (optional) */}
-        <button className="md:hidden text-gray-700">☰</button>
+        {/* Hamburger Menu (Mobile) */}
+        <button
+          className={`tham tham-e-spin tham-w-6 md:hidden ${
+            isMenuOpen ? "tham-active" : ""
+          }`}
+          onClick={toggleMenu}
+        >
+          <div className="tham-box">
+            <div className="tham-inner bg-slate-900"></div>
+          </div>
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`
+          md:hidden
+          bg-white
+          shadow-md
+          px-6
+          overflow-hidden
+          transition-all
+          duration-300
+          ease-in-out
+          transform
+          ${isMenuOpen ? "max-h-96 opacity-100 py-4" : "max-h-0 opacity-0 py-0"}
+        `}
+      >
+        <Link
+          href="#case-studies"
+          className="block py-2 text-slate-900 hover:text-brand-primary"
+          onClick={toggleMenu}
+        >
+          Case Studies
+        </Link>
+        <Link
+          href="#work"
+          className="block py-2 text-slate-900 hover:text-brand-primary"
+          onClick={toggleMenu}
+        >
+          Work
+        </Link>
+        <Link
+          href="#blog"
+          className="block py-2 text-slate-900 hover:text-brand-primary"
+          onClick={toggleMenu}
+        >
+          Blog
+        </Link>
+        <Link
+          href="#about"
+          className="block py-2 text-slate-900 hover:text-brand-primary"
+          onClick={toggleMenu}
+        >
+          About
+        </Link>
       </div>
     </nav>
   );

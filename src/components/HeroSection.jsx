@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Carousel from "@/components/Carousel";
 
 export default function Hero() {
@@ -15,27 +16,63 @@ export default function Hero() {
     "/images/image2.png",
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
+
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen text-center bg-white bg-[url('/bg-shape.svg')] bg-cover bg-center pt-12 sm:pt-24 lg:pt-20">
+    <motion.section
+      className="flex flex-col items-center justify-center min-h-screen text-center bg-white bg-[url('/bg-shape.svg')] bg-cover bg-center pt-12 sm:pt-24 lg:pt-20"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {/* Role */}
-      <p className="text-sm font-mono text-slate-700 tracking-wide uppercase mb-4 mt-16">
+      <motion.p
+        className="text-sm font-mono text-slate-700 tracking-wide uppercase mb-4 mt-16"
+        variants={childVariants}
+      >
         MOBILE ENGINEER • UX DESIGNER
-      </p>
+      </motion.p>
 
       {/* Title */}
-      <h1 className="text-4xl md:text-6xl font-semibold text-slate-900 leading-[1.2] sm:!leading-tight max-w-4xl px-4 sm:px-6 lg:px-0">
+      <motion.h1
+        className="text-4xl md:text-6xl font-semibold text-slate-900 leading-[1.2] sm:!leading-tight max-w-4xl px-4 sm:px-6 lg:px-0"
+        variants={childVariants}
+      >
         Hi, I’m Fikril—a Mobile Engineer based in Jakarta, Indonesia
-      </h1>
+      </motion.h1>
 
       {/* Subtitle */}
-      <p className="mt-3 sm:mt-4 lg:mt-5 text-base sm:text-base md:text-xl text-slate-700 max-w-4xl leading-[1.6] sm:!leading-[1.8] px-4 sm:px-6 lg:px-8">
+      <motion.p
+        className="mt-3 sm:mt-4 lg:mt-5 text-base sm:text-base md:text-xl text-slate-700 max-w-4xl leading-[1.6] sm:!leading-[1.8] px-4 sm:px-6 lg:px-8"
+        variants={childVariants}
+      >
         I love building apps and crafting designs that people actually enjoy
         using. Whether it’s coding something cool or tweaking pixels to
         perfection, I’m all about turning ideas into reality.
-      </p>
+      </motion.p>
 
       {/* Call-to-Actions */}
-      <div className="mt-4 sm:mt-8 lg:mt-10 flex flex-col md:flex-row gap-4 pb-4 w-full justify-center px-4 sm:px-6 lg:px-8">
+      <motion.div
+        className="mt-4 sm:mt-8 lg:mt-10 flex flex-col md:flex-row gap-4 pb-4 w-full justify-center px-4 sm:px-6 lg:px-8"
+        variants={childVariants}
+      >
         <button
           className="px-6 py-3 sm:px-8 sm:py-4 w-full sm:w-auto flex items-center justify-center group text-slate-100 border-2 border-gray-300 text-md font-medium rounded-xl bg-gradient-to-b from-gray-600 to-gray-900 transition hover:from-gray-800 hover:to-gray-900"
           onClick={() => (window.location.href = "mailto:fikrildev@gmail.com")}
@@ -59,8 +96,9 @@ export default function Hero() {
             </svg>
           </span>
         </button>
-      </div>
+      </motion.div>
+
       <Carousel images={myImages} />
-    </section>
+    </motion.section>
   );
 }
