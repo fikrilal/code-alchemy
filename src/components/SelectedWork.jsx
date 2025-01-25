@@ -5,36 +5,36 @@ export default function SelectedWork() {
       description:
         "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
       link: "#",
-      borderStyles: "border-b border-gray-200", // Bottom border
+      borderStyles: "border-b lg:border-b border-gray-200", // Bottom border
     },
     {
       title: "ePKK",
       description:
         "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
       link: "#",
-      borderStyles: "border-b border-l border-gray-200", // Left and bottom border
+      borderStyles: "border-b lg:border-b lg:border-l border-gray-200", // Left and bottom border
     },
     {
       title: "Ngawi Smart City",
       description:
         "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
       link: "#",
-      borderStyles: "", // No border
+      borderStyles: "border-b lg:border-none border-gray-200", // Bottom border on mobile
     },
     {
       title: "Lofo - leftover food",
       description:
         "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
       link: "#",
-      borderStyles: "border-l border-gray-200", // Left border only
+      borderStyles: "lg:border-l border-gray-200", // Left border only on larger screens
     },
   ];
 
   return (
-    <section className="bg-gray-50 py-12">
+    <section className="bg-gray-50 py-24 p-4">
       <div className="container mx-auto text-center">
         {/* Section Title */}
-        <div className="mb-8">
+        <div className="mb-2 sm:mb-6 lg:mb-10">
           <span className="inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-300 rounded-full">
             <img
               src="/icons/selected-work.svg"
@@ -44,10 +44,10 @@ export default function SelectedWork() {
             Selected Work
           </span>
 
-          <h2 className="mt-8 text-2xl md:text-4xl font-semibold text-gray-800">
+          <h2 className="mt-4 sm:mt-6 lg:mt-8 text-2xl md:text-4xl font-semibold text-gray-800">
             Some Stuff I’ve Built
           </h2>
-          <p className="mt-4 text-base md:text-lg text-slate-700 max-w-2xl mx-auto !leading-[1.7]">
+          <p className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-700 max-w-2xl mx-auto leading-[1.6] sm:!leading-[1.8] px-4">
             Here’s a peek at the projects where I turned ideas into something
             cool. From apps to designs, it’s all about making things that work
             and look awesome.
@@ -59,10 +59,10 @@ export default function SelectedWork() {
           {projects.map((project, index) => (
             <div
               key={index}
-              className={`p-8 bg-white transition text-left ${project.borderStyles}`} // Add custom borders
+              className={`py-8 sm:py-8 lg:py-8 lg:px-8 bg-white transition text-left ${project.borderStyles}`} // Add custom borders
             >
               {/* Placeholder for image */}
-              <div className="bg-gray-100 h-80 rounded-md mb-6"></div>
+              <div className="bg-gray-100 h-80 rounded-md mb-4 sm:mb-4 lg:mb-6"></div>
               <div className="flex items-center justify-between group">
                 <h3 className="text-2xl md:text-3xl font-medium text-gray-800">
                   {project.title}

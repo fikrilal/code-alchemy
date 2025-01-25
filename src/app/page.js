@@ -22,7 +22,7 @@ export default function Home() {
     <>
       <Navbar />
       <Hero />
-      <Skills />
+      {/* <Skills /> */}
       <SelectedWork />
       <BlogSection />
       <Footer />
