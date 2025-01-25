@@ -1,14 +1,14 @@
 export default function Footer() {
   return (
-    <footer className="text-gray-400 bg-gray-50 py-8 px-8">
-      <div className="bg-gray-1000 mx-auto px-6 md:px-24 py-24 text-center rounded-xl w-full">
+    <footer className="text-gray-400 bg-gray-50 py-2 sm:lg-4 lg:py-4 px-2 sm:px-4 lg:px-4">
+      <div className="bg-gray-1000 mx-auto px-6 md:px-24 py-12 sm:py-16 lg:py-24 text-center rounded-xl w-full">
         {/* Name */}
         <h2 className="text-2xl md:text-4xl font-semibold text-slate-100">
           Ahmad Fikril Al Muzakki
         </h2>
 
         {/* Message */}
-        <p className="mt-4 text-sm md:text-base max-w-2xl text-slate-300 mx-auto !leading-relaxed">
+        <p className="mt-2 sm:mt-2 lg:mt-4 text-sm md:text-base max-w-2xl text-slate-300 mx-auto !leading-relaxed">
           Thanks for stopping by! Let’s connect and create something amazing
           together! Feel free to reach out about coding, design, or just say hi.
         </p>

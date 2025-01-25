@@ -24,11 +24,11 @@ export default function BlogSection() {
   ];
 
   return (
-    <section className="bg-gray-50 py-32">
+    <section className="bg-gray-50 py-16 sm:py-16 lg:py-32">
       <div className="container mx-auto text-center max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
-        <div className="mb-20">
-          <span className="inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-300 rounded-full">
+        <div className="mb-2 sm: mb-16 lg:mb-20">
+          <span className="inline-flex items-center px-8 py-2 text-sm font-medium border border-gray-300 rounded-full">
             <img
               src="/icons/writing-thoughts.svg"
               alt="Writing & Thoughts Icon"
@@ -36,10 +36,10 @@ export default function BlogSection() {
             />
             Writing & Thoughts
           </span>
-          <h2 className="mt-8 text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-800">
+          <h2 className="mt-4 sm:mt-6 lg:mt-8 text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-800 px-8">
             Stories, Code, and Everything In Between
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-700 max-w-2xl mx-auto !leading-[1.7]">
+          <p className="mt-4 text-base sm:text-lg text-slate-700 max-w-2xl mx-auto leading-[1.6] sm:!leading-[1.8]">
             A space where I share my journey, insights, and lessons learned.
             From coding tips to design musings, it’s all about growth,
             creativity, and a little bit of fun along the way.
@@ -47,11 +47,11 @@ export default function BlogSection() {
         </div>
 
         {/* Blog List */}
-        <div className="space-y-16">
+        <div className="space-y-8 sm:space-y-10 lg:space-y-16">
           {blogs.map((blog, index) => (
             <div
               key={index}
-              className="flex flex-col md:flex-row items-stretch border-b border-gray-200 pb-16"
+              className="flex flex-col md:flex-row items-stretch border-b border-gray-200 pb-8 sm:pb-10 lg:pb-16"
             >
               {/* Image with 16:9 Aspect Ratio */}
               <div
@@ -66,7 +66,7 @@ export default function BlogSection() {
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-slate-900">
                     {blog.title}
                   </h3>
-                  <p className="mt-4 text-slate-700 text-sm sm:text-base leading-[1.6]">
+                  <p className="mt-2 sm: mt-2 lg:mt-4 text-slate-700 text-sm sm:text-base leading-[1.6]">
                     {blog.description}
                   </p>
                 </div>
@@ -81,7 +81,7 @@ export default function BlogSection() {
         </div>
 
         {/* View All Button */}
-        <div className="mt-10 text-center md:text-right">
+        <div className="mt-10 text-center text-right">
           <a
             href="#"
             className="inline-flex items-center text-sm font-medium text-gray-800 hover:text-brand-primary transition"

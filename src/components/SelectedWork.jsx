@@ -31,7 +31,7 @@ export default function SelectedWork() {
   ];
 
   return (
-    <section className="bg-gray-50 py-24 p-4">
+    <section className="bg-gray-50 pt-24 p-4">
       <div className="container mx-auto text-center">
         {/* Section Title */}
         <div className="mb-2 sm:mb-6 lg:mb-10">
