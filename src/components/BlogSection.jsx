@@ -25,7 +25,7 @@ export default function BlogSection() {
 
   return (
     <section className="bg-gray-50 py-32">
-      <div className="container mx-auto text-center max-w-7xl">
+      <div className="container mx-auto text-center max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <div className="mb-20">
           <span className="inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-300 rounded-full">
@@ -36,10 +36,10 @@ export default function BlogSection() {
             />
             Writing & Thoughts
           </span>
-          <h2 className="mt-8 text-2xl md:text-4xl font-semibold text-gray-800">
+          <h2 className="mt-8 text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-800">
             Stories, Code, and Everything In Between
           </h2>
-          <p className="mt-4 text-base md:text-lg text-slate-700 max-w-2xl mx-auto !leading-[1.7]">
+          <p className="mt-4 text-base sm:text-lg text-slate-700 max-w-2xl mx-auto !leading-[1.7]">
             A space where I share my journey, insights, and lessons learned.
             From coding tips to design musings, it’s all about growth,
             creativity, and a little bit of fun along the way.
@@ -51,11 +51,11 @@ export default function BlogSection() {
           {blogs.map((blog, index) => (
             <div
               key={index}
-              className="flex items-stretch border-b border-gray-200 pb-16"
+              className="flex flex-col md:flex-row items-stretch border-b border-gray-200 pb-16"
             >
               {/* Image with 16:9 Aspect Ratio */}
               <div
-                className="relative h-72 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 mr-12"
+                className="relative h-48 sm:h-60 md:h-72 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 mb-6 md:mb-0 md:mr-12"
                 style={{ aspectRatio: "16 / 9" }}
               ></div>
 
@@ -63,16 +63,16 @@ export default function BlogSection() {
               <div className="flex flex-col justify-between flex-1 text-left">
                 {/* Title and Description */}
                 <div>
-                  <h3 className="text-3xl font-medium text-slate-900">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-slate-900">
                     {blog.title}
                   </h3>
-                  <p className="mt-4 text-slate-700 text-base leading-[1.6]">
+                  <p className="mt-4 text-slate-700 text-sm sm:text-base leading-[1.6]">
                     {blog.description}
                   </p>
                 </div>
 
                 {/* Date at the bottom */}
-                <p className="text-gray-500 text-sm mt-auto text-left">
+                <p className="text-gray-500 text-sm mt-6 md:mt-auto text-left">
                   {blog.date}
                 </p>
               </div>
@@ -81,7 +81,7 @@ export default function BlogSection() {
         </div>
 
         {/* View All Button */}
-        <div className="mt-10 text-right">
+        <div className="mt-10 text-center md:text-right">
           <a
             href="#"
             className="inline-flex items-center text-sm font-medium text-gray-800 hover:text-brand-primary transition"
