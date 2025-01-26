@@ -1,33 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import blogPosts from "@/data/blogPost";
 
 export default function BlogSection() {
-  const blogs = [
-    {
-      title: "Understanding the Basics of Clean Architecture in Flutter",
-      description:
-        "Learn how to implement clean architecture principles in your Flutter projects and why it matters for scalable applications.",
-      date: "Jan 15 2025",
-      link: "#",
-    },
-    {
-      title: "Deploying Full-Stack Applications Using Fly.io",
-      description:
-        "Step-by-step guide to deploying your full-stack applications globally with Fly.io for better performance and scalability.",
-      date: "Dec 25 2024",
-      link: "#",
-    },
-    {
-      title: "A Beginner's Guide to State Management in Flutter",
-      description:
-        "State management can be tricky. Here's a beginner-friendly guide to using GetX, Riverpod, and BLoC in Flutter projects.",
-      date: "Dec 20 2024",
-      link: "#",
-    },
-  ];
-
-  // Variants for the section heading (or any container you want to animate as a single block)
   const headingContainerVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: {
@@ -57,7 +33,6 @@ export default function BlogSection() {
     <section className="bg-gray-50 py-16 sm:py-16 lg:py-32">
       <motion.div
         className="container mx-auto text-center max-w-7xl px-4 sm:px-6 lg:px-8"
-        // Animate the heading block only once when it comes into view
         variants={headingContainerVariants}
         initial="hidden"
         whileInView="visible"
@@ -86,11 +61,10 @@ export default function BlogSection() {
 
       {/* Blog List (no container-level whileInView here) */}
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 lg:space-y-16">
-        {blogs.map((blog, index) => (
+        {blogPosts.map((blog, index) => (
           <motion.div
             key={index}
             className="flex flex-col md:flex-row items-stretch border-b border-gray-200 pb-8 sm:pb-10 lg:pb-16"
-            // Each card handles its own `whileInView`
             variants={cardVariants}
             initial="hidden"
             whileInView="visible"
@@ -100,15 +74,15 @@ export default function BlogSection() {
             <motion.div
               className="relative h-48 sm:h-60 md:h-72 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 mb-6 md:mb-0 md:mr-12"
               style={{ aspectRatio: "16 / 9" }}
-              // Optional separate animation if needed
-              // Or you can just let the parent handle it
             />
 
             {/* Blog Content */}
             <div className="flex flex-col justify-between flex-1 text-left">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-slate-900">
-                {blog.title}
-              </h3>
+              <a href={blog.link} className="hover:underline">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-slate-900">
+                  {blog.title}
+                </h3>
+              </a>
               <p className="mt-2 sm:mt-2 lg:mt-4 text-slate-700 text-sm sm:text-base leading-[1.6]">
                 {blog.description}
               </p>

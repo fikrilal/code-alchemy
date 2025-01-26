@@ -1,39 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import projects from "@/data/projects";
 
 export default function SelectedWork() {
-  const projects = [
-    {
-      title: "eDamkar",
-      description:
-        "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
-      link: "#",
-      borderStyles: "border-b lg:border-b border-gray-200",
-    },
-    {
-      title: "ePKK",
-      description:
-        "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
-      link: "#",
-      borderStyles: "border-b lg:border-b lg:border-l border-gray-200",
-    },
-    {
-      title: "Ngawi Smart City",
-      description:
-        "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
-      link: "#",
-      borderStyles: "border-b lg:border-none border-gray-200",
-    },
-    {
-      title: "Lofo - leftover food",
-      description:
-        "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
-      link: "#",
-      borderStyles: "lg:border-l border-gray-200",
-    },
-  ];
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -89,8 +59,6 @@ export default function SelectedWork() {
         {/* Projects Grid */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2"
-          // If you'd like to stagger children inside this grid,
-          // you can reuse containerVariants or just rely on the parent above.
           variants={containerVariants}
         >
           {projects.map((project, index) => (

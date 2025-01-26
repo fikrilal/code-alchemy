@@ -39,7 +39,7 @@ export default function Navbar() {
             Blog
           </Link>
           <Link
-            href="#about"
+            href="/about"
             className="text-slate-900 hover:text-brand-primary"
           >
             About
@@ -118,7 +118,7 @@ export default function Navbar() {
           Blog
         </Link>
         <Link
-          href="#about"
+          href="/about"
           className="block py-2 text-slate-900 hover:text-brand-primary"
           onClick={toggleMenu}
         >
