@@ -1,24 +1,51 @@
 const blogPosts = [
   {
-    title: "Understanding the Basics of Clean Architecture in Flutter",
-    description:
-      "Learn how to implement clean architecture principles in your Flutter projects and why it matters for scalable applications.",
-    date: "Jan 15 2025",
-    link: "/blog/clean-architecture-flutter",
+    id: 1,
+    category: "Collaboration",
+    title: "How to Set Up a Collaborative Workspace in 5 Minutes",
+    imageUrl: "/images/dummy-image.jpg",
+    authorName: "Benjamin",
+    authorAvatar: "/images/avatar.jpg",
   },
   {
-    title: "Deploying Full-Stack Applications Using Fly.io",
-    description:
-      "Step-by-step guide to deploying your full-stack applications globally with Fly.io for better performance and scalability.",
-    date: "Dec 25 2024",
-    link: "/blog/deploy-with-flyio",
+    id: 2,
+    category: "Productivity",
+    title: "Breaking Down Big Projects: A Guide to Managing Workload",
+    imageUrl: "/images/dummy-image.jpg",
+    authorName: "Chris",
+    authorAvatar: "/images/avatar.jpg",
   },
   {
-    title: "A Beginner's Guide to State Management in Flutter",
-    description:
-      "State management can be tricky. Here's a beginner-friendly guide to using GetX, Riverpod, and BLoC in Flutter projects.",
-    date: "Dec 20 2024",
-    link: "/blog/state-management-flutter",
+    id: 3,
+    category: "Industry",
+    title: "The Evolution of Machine Learning in Business",
+    imageUrl: "/images/dummy-image.jpg",
+    authorName: "Jessica",
+    authorAvatar: "/images/avatar.jpg",
+  },
+  {
+    id: 4,
+    category: "Productivity",
+    title: "10 Quick Hacks to Boost Your Productivity Today",
+    imageUrl: "/images/dummy-image.jpg",
+    authorName: "Benjamin",
+    authorAvatar: "/images/avatar.jpg",
+  },
+  {
+    id: 5,
+    category: "Collaboration",
+    title: "5 Essential Tools for Effective Remote Collaboration",
+    imageUrl: "/images/dummy-image.jpg",
+    authorName: "Chris",
+    authorAvatar: "/images/avatar.jpg",
+  },
+  {
+    id: 6,
+    category: "Automation",
+    title: "Top 5 Benefits of Automation for Small Businesses",
+    imageUrl: "/images/dummy-image.jpg",
+    authorName: "Jessica",
+    authorAvatar: "/images/avatar.jpg",
   },
 ];
 

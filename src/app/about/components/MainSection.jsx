@@ -1,34 +1,87 @@
+"use client";
+
+import { motion } from "framer-motion";
 import skills from "@/data/skill";
 import achievements from "@/data/achievements";
 import experiences from "@/data/experience";
 
 export default function MainSection() {
+  // Container variants: controls stagger and a parent fade-in if desired
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        // Stagger each child (p, heading, etc.) by 0.15s
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  // Child variants: each element fades in from below
+  const childVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
     <>
       {/* Top Section */}
-      <section className="text-left mb-8 container mx-auto px-6 lg:px-12 pt-28 sm:pt-28 lg:pt-40">
-        <p className="flex items-center text-sm text-green-500 mb-2">
+      <motion.section
+        className="text-left mb-8 container mx-auto px-6 lg:px-12 pt-28 sm:pt-28 lg:pt-40"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.p
+          className="flex items-center text-sm text-green-500 mb-2"
+          variants={childVariants}
+        >
           <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
           Available for freelance work
-        </p>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-900">
+        </motion.p>
+        <motion.h1
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-900"
+          variants={childVariants}
+        >
           About Me
-        </h1>
-      </section>
+        </motion.h1>
+      </motion.section>
 
-      {/* Main Section */}
-      <section className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between container mx-auto py-8 lg:py-20 px-6 lg:px-12">
+      {/* Main Section (About) */}
+      <motion.section
+        className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between container mx-auto py-8 lg:py-20 px-6 lg:px-12"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         {/* Left Section */}
-        <div className="w-full lg:w-1/2 mb-8 lg:mb-0 flex flex-col lg:flex-row items-center lg:items-start text-center lg:text-left">
+        <motion.div
+          className="w-full lg:w-1/2 mb-8 lg:mb-0 flex flex-col lg:flex-row items-center lg:items-start text-center lg:text-left"
+          variants={childVariants}
+        >
           {/* Avatar */}
-          <img
+          <motion.img
             src="/images/avatar.jpg"
             alt="Your Avatar"
             className="w-32 h-32 rounded-full mb-4 lg:mb-0 lg:mr-6"
+            variants={childVariants}
           />
 
           {/* Info Section */}
-          <div className="flex flex-col items-center lg:items-start">
+          <motion.div
+            className="flex flex-col items-center lg:items-start"
+            variants={childVariants}
+          >
             {/* Social Icons */}
             <div className="flex space-x-4 mb-2 sm:mb-4 md:mb-6 lg:mb-4">
               {skills.map((skill, index) => (
@@ -51,11 +104,14 @@ export default function MainSection() {
             <p className="px-8 lg:px-0 mt-2 sm:mt-4 lg:mt-4 text-base md:text-lg text-slate-700 max-w-sm leading-[1.6] sm:!leading-[1.6]">
               Mobile Engineer by day, Warhammer 40K enthusiast by night.
             </p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Right Section */}
-        <div className="w-full lg:w-1/2 text-left lg:text-left">
+        <motion.div
+          className="w-full lg:w-1/2 text-left lg:text-left"
+          variants={childVariants}
+        >
           <p className="text-base md:text-lg text-slate-800 font-medium mb-4 leading-[1.6] sm:!leading-[1.8]">
             Hi, I’m Fikril—a mobile engineer and UX enthusiast based in Jakarta,
             Indonesia. My journey in tech started with a curiosity for how
@@ -79,21 +135,31 @@ export default function MainSection() {
             Let’s build something amazing together—because to me, every project
             is a story worth telling!
           </p>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* Experience Section */}
-      <section className="container mx-auto px-6 lg:px-12 py-12 lg:py-20">
-        <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-900 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12">
+      <motion.section
+        className="container mx-auto px-6 lg:px-12 py-12 lg:py-20"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.h2
+          className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-900 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
+          variants={childVariants}
+        >
           Experience
-        </h2>
+        </motion.h2>
         <div className="space-y-8">
           {experiences.map((experience, index) => (
-            <div
+            <motion.div
               key={index}
               className={`pt-8 border-t border-slate-200 ${
                 index === 0 ? "border-t-0 pt-0" : ""
               }`}
+              variants={childVariants}
             >
               <div className="flex justify-between items-start">
                 <div>
@@ -106,23 +172,33 @@ export default function MainSection() {
                 </div>
                 <p className="text-sm text-slate-500">{experience.date}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       {/* Achievements Section */}
-      <section className="container mx-auto px-6 lg:px-12 py-12 lg:py-20">
-        <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-900 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12">
+      <motion.section
+        className="container mx-auto px-6 lg:px-12 py-12 lg:py-20"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.h2
+          className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-900 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
+          variants={childVariants}
+        >
           Achievements
-        </h2>
+        </motion.h2>
         <div className="space-y-8">
           {achievements.map((achievement, index) => (
-            <div
+            <motion.div
               key={index}
               className={`pt-8 border-t border-slate-200 ${
                 index === 0 ? "border-t-0 pt-0" : ""
               }`}
+              variants={childVariants}
             >
               <div className="mb-2">
                 {/* Title */}
@@ -130,7 +206,7 @@ export default function MainSection() {
                   {achievement.title}
                 </h3>
 
-                {/* Organization and Date (Row on Mobile) */}
+                {/* Organization and Date */}
                 <div className="flex flex-row justify-between items-center text-sm">
                   <p className="text-base text-slate-600">
                     {achievement.organization}
@@ -165,14 +241,23 @@ export default function MainSection() {
                   </svg>
                 </span>
               </a>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       {/* Quote Section */}
-      <section className="container mx-auto px-6 lg:px-12 py-12 lg:py-20">
-        <div className="relative max-w-3xl mx-auto group">
+      <motion.section
+        className="container mx-auto px-6 lg:px-12 py-12 lg:py-20"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.div
+          className="relative max-w-3xl mx-auto group"
+          variants={childVariants}
+        >
           <div className="absolute -left-6 top-0 h-full w-1 bg-green-500 rounded-full opacity-20 transition-opacity group-hover:opacity-40"></div>
 
           <div className="pl-8">
@@ -191,8 +276,8 @@ export default function MainSection() {
           </div>
 
           <div className="mt-6 h-px bg-gradient-to-r from-green-500/20 via-green-500/40 to-green-500/20 transition-all group-hover:via-green-500/60"></div>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
     </>
   );
 }

@@ -1,50 +1,88 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function BlogMainSection({ posts }) {
+  // Container variants (controls the stagger of child elements)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  // Child variants (each child fades in from below)
+  const childVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
   const featuredPost = posts.find((post) => post.highlight);
 
   return (
-    <section className="max-w-auto mx-auto sm:px-6 lg:px-8 pb-8 lg:pb-8">
+    <motion.section
+      className="max-w-auto mx-auto sm:px-6 lg:px-8 pb-8 lg:pb-8"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+    >
       {/* Header Section */}
-      <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
+      <motion.div
+        className="max-w-3xl mx-auto text-center mb-16 lg:mb-20"
+        variants={childVariants}
+      >
         <span className="inline-block px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-6">
-          Insights & Updates
+          Insights &amp; Updates
         </span>
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-1000 mb-6">
-          Insights & Updates
+          Insights &amp; Updates
         </h1>
         <p className="text-base sm:text-lg lg:text-lg text-slate-700 max-w-2xl mx-auto leading-[1.6] sm:!leading-[1.8]">
           A space where I share my journey, insights, and lessons learned. From
           coding tips to design musings, it’s all about growth, creativity, and
           a little bit of fun along the way.
         </p>
-      </div>
+      </motion.div>
 
       {/* Featured Post */}
       {featuredPost && (
-        <article className="group relative">
+        <motion.article className="group relative" variants={childVariants}>
           <Link href={`/blog/${featuredPost.slug}`} className="block">
             <div className="grid lg:grid-cols-2 gap-6 lg:gap-10">
               {/* Image Container with Fixed Aspect Ratio */}
-              <div className="relative overflow-hidden rounded-2xl">
-                {/* Use padding-bottom trick for 16:9 */}
+              <motion.div
+                className="relative overflow-hidden rounded-2xl"
+                variants={childVariants}
+              >
                 <div
                   className="relative w-full"
-                  style={{ paddingBottom: "56.25%" }}
+                  style={{ paddingBottom: "56.25%" }} // 16:9 ratio
                 >
                   <Image
                     src={featuredPost.image}
                     alt={featuredPost.title}
-                    layout="fill"
+                    fill
                     className="absolute inset-0 object-cover object-center"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                 </div>
-              </div>
+              </motion.div>
 
               {/* Content Container */}
-              <div className="flex flex-col">
+              <motion.div className="flex flex-col" variants={childVariants}>
                 <div className="space-y-2">
                   <span className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs sm:text-sm font-medium">
                     Case Study
@@ -72,11 +110,11 @@ export default function BlogMainSection({ posts }) {
                     </svg>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </Link>
-        </article>
+        </motion.article>
       )}
-    </section>
+    </motion.section>
   );
 }
