@@ -33,7 +33,7 @@ export default function Navbar() {
             Work
           </Link>
           <Link
-            href="#blog"
+            href="/blog"
             className="text-slate-900 hover:text-brand-primary"
           >
             Blog
@@ -111,7 +111,7 @@ export default function Navbar() {
           Work
         </Link>
         <Link
-          href="#blog"
+          href="/blog"
           className="block py-2 text-slate-900 hover:text-brand-primary"
           onClick={toggleMenu}
         >
