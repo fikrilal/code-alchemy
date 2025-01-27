@@ -1,62 +1,12 @@
+import skills from "@/data/skill";
+import achievements from "@/data/achievements";
+import experiences from "@/data/experience";
+
 export default function MainSection() {
-  const skills = [
-    {
-      name: "LinkedIn",
-      link: "https://linkedin.com",
-      icon: "/icons/linkedin.svg",
-    },
-    {
-      name: "Instagram",
-      link: "https://instagram.com",
-      icon: "/icons/instagram.svg",
-    },
-    {
-      name: "Email",
-      link: "mailto:fikrildev@gmail.com",
-      icon: "/icons/email.svg",
-    },
-  ];
-
-  const achievements = [
-    {
-      title:
-        "Awarded Kemendikbudristek Funding for the Karsa Cipta (PKM-KC) Student Creativity Program in 2023",
-      organization: "Kemendikbud",
-      date: "September 2023",
-      credentialLink: "#",
-    },
-    {
-      title: "3rd Runner Up Musabaqah Design Aplikasi Al-Qur'an (MDAQ) 2023",
-      organization: "Universitas Negeri Yogyakarta",
-      date: "April 2023",
-      credentialLink: "#",
-    },
-    {
-      title: "2nd Place in UI/UX Design at UI/UX Design Competition 2022",
-      organization: "HMPS-TI UNISBANK",
-      date: "September 2022",
-      credentialLink: "#",
-    },
-    {
-      title:
-        "1st Place in UI/UX Design at Informatic's Conference & Competition (INFECT) 2022",
-      organization: "HMTI Universitas Muhammadiyah Purwokerto",
-      date: "July 2022",
-      credentialLink: "#",
-    },
-    {
-      title:
-        "1st Place in UI/UX Design at Information Technology Competition (ITC) 2022",
-      organization: "HMJTI Politeknik Negeri Jember",
-      date: "June 2022",
-      credentialLink: "#",
-    },
-  ];
-
   return (
     <>
       {/* Top Section */}
-      <section className="text-left mb-8 container mx-auto px-6 lg:px-12 pt-12 sm:pt-24 lg:pt-40">
+      <section className="text-left mb-8 container mx-auto px-6 lg:px-12 pt-28 sm:pt-28 lg:pt-40">
         <p className="flex items-center text-sm text-green-500 mb-2">
           <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
           Available for freelance work
@@ -67,7 +17,7 @@ export default function MainSection() {
       </section>
 
       {/* Main Section */}
-      <section className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between container mx-auto py-12 lg:py-20 px-6 lg:px-12">
+      <section className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between container mx-auto py-8 lg:py-20 px-6 lg:px-12">
         {/* Left Section */}
         <div className="w-full lg:w-1/2 mb-8 lg:mb-0 flex flex-col lg:flex-row items-center lg:items-start text-center lg:text-left">
           {/* Avatar */}
@@ -80,27 +30,26 @@ export default function MainSection() {
           {/* Info Section */}
           <div className="flex flex-col items-center lg:items-start">
             {/* Social Icons */}
-            <div className="flex space-x-4 mb-4">
+            <div className="flex space-x-4 mb-2 sm:mb-4 md:mb-6 lg:mb-4">
               {skills.map((skill, index) => (
                 <a
                   key={index}
                   href={skill.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:opacity-80 transition"
+                  className="hover:opacity-80 transition-transform transform hover:scale-110"
                 >
-                  <img src={skill.icon} alt={skill.name} className="w-5 h-5" />
+                  <img src={skill.icon} alt={skill.name} className="w-6 h-6" />
                 </a>
               ))}
             </div>
 
             {/* Email and Bio */}
-            <p className="mt-2 text-4xl font-medium text-slate-900">
+            <p className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-slate-900">
               fikrildev@gmail.com
             </p>
-            <p className="mt-3 sm:mt-4 lg:mt-4 text-base md:text-lg text-slate-700 max-w-sm leading-[1.6] sm:!leading-[1.6]">
-              I’m Fikril, a passionate Mobile Engineer with a love for creating
-              visually stunning and user-friendly digital experiences.
+            <p className="px-8 lg:px-0 mt-2 sm:mt-4 lg:mt-4 text-base md:text-lg text-slate-700 max-w-sm leading-[1.6] sm:!leading-[1.6]">
+              Mobile Engineer by day, Warhammer 40K enthusiast by night.
             </p>
           </div>
         </div>
@@ -135,9 +84,11 @@ export default function MainSection() {
 
       {/* Experience Section */}
       <section className="container mx-auto px-6 lg:px-12 py-12 lg:py-20">
-        <h2 className="text-7xl font-medium text-slate-900 mb-8">Experience</h2>
+        <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-900 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12">
+          Experience
+        </h2>
         <div className="space-y-8">
-          {[1, 2, 3, 4].map((_, index) => (
+          {experiences.map((experience, index) => (
             <div
               key={index}
               className={`pt-8 border-t border-slate-200 ${
@@ -147,11 +98,13 @@ export default function MainSection() {
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-xl font-medium text-slate-900">
-                    Mobile Developer
+                    {experience.title}
                   </h3>
-                  <p className="text-slate-600">Nodewave</p>
+                  <p className="pt-2 text-slate-600">
+                    {experience.organization}
+                  </p>
                 </div>
-                <p className="text-sm text-slate-500">Aug - Dec 2024</p>
+                <p className="text-sm text-slate-500">{experience.date}</p>
               </div>
             </div>
           ))}
@@ -160,7 +113,7 @@ export default function MainSection() {
 
       {/* Achievements Section */}
       <section className="container mx-auto px-6 lg:px-12 py-12 lg:py-20">
-        <h2 className="text-7xl font-medium text-slate-900 mb-8">
+        <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-900 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12">
           Achievements
         </h2>
         <div className="space-y-8">
@@ -171,36 +124,46 @@ export default function MainSection() {
                 index === 0 ? "border-t-0 pt-0" : ""
               }`}
             >
-              <div className="flex justify-between items-start mb-2">
-                <div className="pr-4">
-                  <h3 className="text-xl font-medium text-slate-900">
-                    {achievement.title}
-                  </h3>
-                  <p className="text-slate-600">{achievement.organization}</p>
+              <div className="mb-2">
+                {/* Title */}
+                <h3 className="text-xl font-medium text-slate-900 mb-2 leading-[1.5]">
+                  {achievement.title}
+                </h3>
+
+                {/* Organization and Date (Row on Mobile) */}
+                <div className="flex flex-row justify-between items-center text-sm">
+                  <p className="text-base text-slate-600">
+                    {achievement.organization}
+                  </p>
+                  <p className="text-slate-500 whitespace-nowrap">
+                    {achievement.date}
+                  </p>
                 </div>
-                <p className="text-sm text-slate-500 whitespace-nowrap">
-                  {achievement.date}
-                </p>
               </div>
+
+              {/* Credential Link */}
               <a
                 href={achievement.credentialLink}
-                className="inline-flex items-center text-green-500 hover:text-green-600 transition-colors text-sm"
+                className="font-medium inline-flex items-center text-brand-primary hover:text-slate-900 transition-colors text-sm group"
               >
                 Credential
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-4 h-4 ml-1"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                  />
-                </svg>
+                <span className="ml-1 transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:rotate-45">
+                  <svg
+                    width="12"
+                    height="13"
+                    viewBox="0 0 12 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2.64121 9.85889L9.35872 3.14138M9.35872 3.14138L9.35872 8.09113M9.35872 3.14138L4.40898 3.14138"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
               </a>
             </div>
           ))}
