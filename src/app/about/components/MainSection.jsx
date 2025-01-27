@@ -61,7 +61,9 @@ export default function MainSection() {
           <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
           Available for freelance work
         </p>
-        <h1 className="text-7xl font-medium text-slate-900">About Me</h1>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-900">
+          About Me
+        </h1>
       </section>
 
       {/* Main Section */}

@@ -16,7 +16,7 @@ export default function BlogHomePage() {
       date: "2024-12-31",
       excerpt:
         "Daytona lights up Times Square after becoming #1 open-source CDE in record time. See how this dev environment manager is transforming coding.",
-      image: "/images/image1.png",
+      image: "/images/dummy-image.jpg",
       popular: true,
       highlight: true,
     },
@@ -74,7 +74,7 @@ export default function BlogHomePage() {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto px-4 pt-40">
+      <div className="container mx-auto pt-28 lg:pt-32 px-4">
         <BlogMainSection posts={posts} />
         <BlogListSection posts={posts} />
       </div>
