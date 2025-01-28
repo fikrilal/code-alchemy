@@ -101,7 +101,7 @@ export default function MainSection() {
             <p className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-slate-900">
               fikrildev@gmail.com
             </p>
-            <p className="px-8 lg:px-0 mt-2 sm:mt-4 lg:mt-4 text-base md:text-lg text-slate-700 max-w-sm leading-[1.6] sm:!leading-[1.6]">
+            <p className="px-8 lg:px-0 mt-2 sm:mt-2 lg:mt-3 text-base md:text-lg text-slate-700 max-w-sm leading-[1.6] sm:!leading-[1.6]">
               Mobile Engineer by day, Warhammer 40K enthusiast by night.
             </p>
           </motion.div>
