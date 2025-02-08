@@ -5,12 +5,14 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       borderWidth: {
         0.5: "0.5px",
       },
       colors: {
+        darkbg: "#07090C",
         background: {
           default: "var(--background)",
           foreground: "var(--foreground)",
