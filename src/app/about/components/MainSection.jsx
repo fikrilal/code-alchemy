@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion";
 import skills from "@/data/skill";
-import achievements from "@/data/achievements";
-import experiences from "@/data/experience";
+import ExperienceSection from "./ExperienceSection";
+import AchievementsSection from "./AchievementsSection";
+import QuoteSection from "./QuoteSection";
 
 export default function MainSection() {
   // Container variants: controls stagger and a parent fade-in if desired
@@ -101,7 +102,7 @@ export default function MainSection() {
             <p className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-slate-900">
               fikrildev@gmail.com
             </p>
-            <p className="px-8 lg:px-0 mt-2 sm:mt-4 lg:mt-4 text-base md:text-lg text-slate-700 max-w-sm leading-[1.6] sm:!leading-[1.6]">
+            <p className="px-8 lg:px-0 mt-2 sm:mt-2 lg:mt-3 text-base md:text-lg text-slate-700 max-w-sm leading-[1.6] sm:!leading-[1.6]">
               Mobile Engineer by day, Warhammer 40K enthusiast by night.
             </p>
           </motion.div>
@@ -139,145 +140,22 @@ export default function MainSection() {
       </motion.section>
 
       {/* Experience Section */}
-      <motion.section
-        className="container mx-auto px-6 lg:px-12 py-12 lg:py-20"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <motion.h2
-          className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-900 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
-          variants={childVariants}
-        >
-          Experience
-        </motion.h2>
-        <div className="space-y-8">
-          {experiences.map((experience, index) => (
-            <motion.div
-              key={index}
-              className={`pt-8 border-t border-slate-200 ${
-                index === 0 ? "border-t-0 pt-0" : ""
-              }`}
-              variants={childVariants}
-            >
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-xl font-medium text-slate-900">
-                    {experience.title}
-                  </h3>
-                  <p className="pt-2 text-slate-600">
-                    {experience.organization}
-                  </p>
-                </div>
-                <p className="text-sm text-slate-500">{experience.date}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
+      <ExperienceSection
+        containerVariants={containerVariants}
+        childVariants={childVariants}
+      />
 
       {/* Achievements Section */}
-      <motion.section
-        className="container mx-auto px-6 lg:px-12 py-12 lg:py-20"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <motion.h2
-          className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-900 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
-          variants={childVariants}
-        >
-          Achievements
-        </motion.h2>
-        <div className="space-y-8">
-          {achievements.map((achievement, index) => (
-            <motion.div
-              key={index}
-              className={`pt-8 border-t border-slate-200 ${
-                index === 0 ? "border-t-0 pt-0" : ""
-              }`}
-              variants={childVariants}
-            >
-              <div className="mb-2">
-                {/* Title */}
-                <h3 className="text-xl font-medium text-slate-900 mb-2 leading-[1.5]">
-                  {achievement.title}
-                </h3>
-
-                {/* Organization and Date */}
-                <div className="flex flex-row justify-between items-center text-sm">
-                  <p className="text-base text-slate-600">
-                    {achievement.organization}
-                  </p>
-                  <p className="text-slate-500 whitespace-nowrap">
-                    {achievement.date}
-                  </p>
-                </div>
-              </div>
-
-              {/* Credential Link */}
-              <a
-                href={achievement.credentialLink}
-                className="font-medium inline-flex items-center text-brand-primary hover:text-slate-900 transition-colors text-sm group"
-              >
-                Credential
-                <span className="ml-1 transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:rotate-45">
-                  <svg
-                    width="12"
-                    height="13"
-                    viewBox="0 0 12 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M2.64121 9.85889L9.35872 3.14138M9.35872 3.14138L9.35872 8.09113M9.35872 3.14138L4.40898 3.14138"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </a>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
+      <AchievementsSection
+        containerVariants={containerVariants}
+        childVariants={childVariants}
+      />
 
       {/* Quote Section */}
-      <motion.section
-        className="container mx-auto px-6 lg:px-12 py-12 lg:py-20"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <motion.div
-          className="relative max-w-3xl mx-auto group"
-          variants={childVariants}
-        >
-          <div className="absolute -left-6 top-0 h-full w-1 bg-green-500 rounded-full opacity-20 transition-opacity group-hover:opacity-40"></div>
-
-          <div className="pl-8">
-            <blockquote className="text-2xl md:text-3xl leading-[1.6] md:leading-[1.5] font-medium text-slate-800 italic relative">
-              <span className="absolute -left-8 -top-4 text-7xl text-green-500 opacity-25 select-none">
-                “
-              </span>
-              <p className="relative z-10">
-                In code as in life—build with purpose, design with care, and
-                always leave room for creativity.
-              </p>
-              <span className="absolute -right-4 -bottom-8 text-7xl text-green-500 opacity-25 select-none transform rotate-180">
-                “
-              </span>
-            </blockquote>
-          </div>
-
-          <div className="mt-6 h-px bg-gradient-to-r from-green-500/20 via-green-500/40 to-green-500/20 transition-all group-hover:via-green-500/60"></div>
-        </motion.div>
-      </motion.section>
+      <QuoteSection
+        containerVariants={containerVariants}
+        childVariants={childVariants}
+      />
     </>
   );
 }

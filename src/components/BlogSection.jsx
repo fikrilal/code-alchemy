@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import blogPosts from "@/data/blogPost";
+import Image from "next/image";
 
 export default function BlogSection() {
   const headingContainerVariants = {
@@ -61,7 +62,7 @@ export default function BlogSection() {
 
       {/* Blog List (no container-level whileInView here) */}
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 lg:space-y-16">
-        {blogPosts.map((blog, index) => (
+        {blogPosts.slice(0, 3).map((blog, index) => (
           <motion.div
             key={index}
             className="flex flex-col md:flex-row items-stretch border-b border-gray-200 pb-8 sm:pb-10 lg:pb-16"
@@ -70,11 +71,21 @@ export default function BlogSection() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }} // triggers at 10% visible
           >
-            {/* Image with 16:9 Aspect Ratio */}
-            <motion.div
-              className="relative h-48 sm:h-60 md:h-72 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 mb-6 md:mb-0 md:mr-12"
-              style={{ aspectRatio: "16 / 9" }}
-            />
+            {/* Image Container with 16:9 Aspect Ratio */}
+            <motion.div className="relative w-full md:w-[600px] flex-shrink-0 overflow-hidden rounded-lg mb-6 md:mb-0 md:mr-12">
+              <div
+                className="relative w-full"
+                style={{ paddingBottom: "56.25%" }}
+              >
+                <Image
+                  src={blog.imageUrl}
+                  alt={blog.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
+            </motion.div>
 
             {/* Blog Content */}
             <div className="flex flex-col justify-between flex-1 text-left">
