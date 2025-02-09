@@ -46,7 +46,7 @@ export default function PortfolioSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Recent Project */}
           <motion.div
-            className="bg-zinc-900 p-6 rounded-lg"
+            className="bg-slate-1100 p-6 rounded-2xl border border-slate-900"
             variants={childVariants}
           >
             <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
@@ -59,7 +59,7 @@ export default function PortfolioSection() {
             </p>
 
             {/* 16:9 Image */}
-            <div className="mt-4 w-full aspect-video overflow-hidden rounded">
+            <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl">
               <img
                 src="/images/dummy-image.jpg"
                 alt="Recent Project screenshot"
@@ -70,7 +70,7 @@ export default function PortfolioSection() {
 
           {/* Side Hustle */}
           <motion.div
-            className="bg-zinc-900 p-6 rounded-lg"
+            className="bg-slate-1100 p-6 rounded-2xl border border-slate-900"
             variants={childVariants}
           >
             <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
@@ -83,7 +83,7 @@ export default function PortfolioSection() {
             </p>
 
             {/* 16:9 Image */}
-            <div className="mt-4 w-full aspect-video overflow-hidden rounded">
+            <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl">
               <img
                 src="/images/dummy-image.jpg"
                 alt="Side Hustle screenshot"
@@ -109,7 +109,7 @@ export default function PortfolioSection() {
         </div>
 
         {/* 2) SECOND ROW: Tech Stack (left) + GitHub (right) */}
-        <div className="relative w-full overflow-hidden rounded-lg lg:aspect-[16/5]">
+        <div className="relative w-full overflow-hidden rounded-lg lg:aspect-[15/5]">
           <div className="grid grid-cols-1 lg:absolute lg:inset-0 lg:grid-cols-2 gap-6">
             {/* Tech Stack */}
             <TechStack />

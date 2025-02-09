@@ -23,7 +23,7 @@ const childVariants = {
 export default function TechStack() {
   return (
     <motion.div
-      className="bg-zinc-900 p-6 rounded-lg flex flex-col h-full"
+      className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 flex flex-col h-full"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -49,41 +49,41 @@ export default function TechStack() {
         <div className="grid grid-cols-3 gap-4 h-full">
           {/* Flutter */}
           <motion.div
-            className="bg-zinc-800 rounded flex flex-col items-center justify-center p-4"
+            className="bg-zinc-900 rounded-lg flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
             <img
-              src="/icons/flutter-logo.svg"
+              src="/icons/ic_flutter.svg"
               alt="Flutter"
               className="h-8 w-auto"
             />
-            <p className="mt-2 text-sm text-slate-100">Flutter</p>
+            <p className="mt-6 text-sm text-slate-100">Flutter</p>
           </motion.div>
 
           {/* Kotlin */}
           <motion.div
-            className="bg-zinc-800 rounded flex flex-col items-center justify-center p-4"
+            className="bg-zinc-900 rounded-lg rounded flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
             <img
-              src="/icons/kotlin-logo.svg"
+              src="/icons/ic_kotlin.svg"
               alt="Kotlin"
               className="h-8 w-auto"
             />
-            <p className="mt-2 text-sm text-slate-100">Kotlin</p>
+            <p className="mt-6 text-sm text-slate-100">Kotlin</p>
           </motion.div>
 
           {/* Compose */}
           <motion.div
-            className="bg-zinc-800 rounded flex flex-col items-center justify-center p-4"
+            className="bg-zinc-900 rounded-lg rounded flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
             <img
-              src="/icons/compose-logo.svg"
+              src="/icons/ic_compose.svg"
               alt="Compose"
               className="h-8 w-auto"
             />
-            <p className="mt-2 text-sm text-slate-100">Compose</p>
+            <p className="mt-6 text-sm text-slate-100">Compose</p>
           </motion.div>
         </div>
       </div>
@@ -96,31 +96,27 @@ export default function TechStack() {
       <div className="grid grid-cols-3 gap-4 mt-4">
         {/* Next.js */}
         <motion.div
-          className="bg-zinc-800 rounded flex items-center justify-center p-4"
+          className="bg-zinc-900 rounded-lg rounded flex items-center justify-center p-4"
           variants={childVariants}
         >
-          <img src="/icons/next.svg" alt="Next.js" className="h-8 w-auto" />
+          <img src="/icons/ic_getx.svg" alt="Next.js" className="h-8 w-auto" />
         </motion.div>
 
         {/* Node.js */}
         <motion.div
-          className="bg-zinc-800 rounded flex items-center justify-center p-4"
+          className="bg-zinc-900 rounded-lg rounded flex items-center justify-center p-2"
           variants={childVariants}
         >
-          <img
-            src="/icons/javascript-logo.svg"
-            alt="Node.js"
-            className="h-8 w-auto"
-          />
+          <img src="/icons/ic_bloc.svg" alt="Node.js" className="h-10 w-auto" />
         </motion.div>
 
         {/* React */}
         <motion.div
-          className="bg-zinc-800 rounded flex items-center justify-center p-4"
+          className="bg-zinc-900 rounded-lg rounded flex items-center justify-center p-4"
           variants={childVariants}
         >
           <img
-            src="/icons/javascript-logo.svg"
+            src="/icons/ic_riverpod.svg"
             alt="React"
             className="h-8 w-auto"
           />

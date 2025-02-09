@@ -11,7 +11,7 @@ const IconCards = ({ childVariants }) => {
         target="_blank"
         rel="noreferrer"
         aria-label="X"
-        className="bg-zinc-900 rounded-lg flex items-center justify-center aspect-square"
+        className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 flex items-center justify-center aspect-square"
         variants={childVariants}
         whileHover={{ scale: 1.1 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -29,7 +29,7 @@ const IconCards = ({ childVariants }) => {
         target="_blank"
         rel="noreferrer"
         aria-label="GitHub"
-        className="bg-zinc-900 rounded-lg flex items-center justify-center aspect-square"
+        className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 flex items-center justify-center aspect-square"
         variants={childVariants}
         whileHover={{ scale: 1.1 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -47,7 +47,7 @@ const IconCards = ({ childVariants }) => {
         target="_blank"
         rel="noreferrer"
         aria-label="LinkedIn"
-        className="bg-zinc-900 rounded-lg flex items-center justify-center aspect-square"
+        className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 flex items-center justify-center aspect-square"
         variants={childVariants}
         whileHover={{ scale: 1.1 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}

@@ -46,7 +46,7 @@ export default function SpotifyNowPlaying() {
   }, []);
 
   return (
-    <div className="bg-zinc-900 p-6 rounded-lg h-full flex flex-col">
+    <div className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 h-full flex flex-col">
       {/* Header row with label and icon */}
       <div className="flex justify-between items-center mb-2">
         <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
