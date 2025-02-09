@@ -1,124 +1,167 @@
 "use client";
 
 import { motion } from "framer-motion";
-import projects from "@/data/projects";
-import Image from "next/image";
+import Button from "./Button";
 
 export default function SelectedWork() {
+  // Parent container animation
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-      },
+      transition: { staggerChildren: 0.2 },
     },
   };
 
+  // Child reveal animation
   const childVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 1.0,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
+
+  // Card hover variants (for the entire card)
+  const cardVariants = {
+    initial: { scale: 1, boxShadow: "none" },
+    hover: {
+      scale: 1.02,
+      boxShadow: "0px 8px 24px rgba(0,0,0,0.15)",
+      transition: { duration: 0.3 },
     },
   };
 
   return (
     <motion.section
-      className="bg-gray-50 pt-24 p-4"
+      className="flex flex-col items-start min-h-screen transition-colors duration-300"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
     >
-      <div className="container mx-auto text-center">
-        {/* Section Title */}
-        <motion.div className="mb-2 sm:mb-6 lg:mb-10" variants={childVariants}>
-          <span className="inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-300 rounded-full">
-            <img
-              src="/icons/selected-work.svg"
-              alt="Selected Work Icon"
-              className="w-5 h-5 mr-2"
-            />
-            Selected Work
-          </span>
-
-          <h2 className="mt-4 sm:mt-6 lg:mt-8 text-2xl md:text-4xl font-semibold text-gray-800">
+      {/* Header */}
+      <div className="max-w-6xl w-full mx-auto pt-20 sm:pt-24 lg:pt-60 px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center">
+          <motion.h2
+            className="text-3xl md:text-5xl font-semibold text-slate-100 leading-[1.2] sm:!leading-tight max-w-4xl"
+            variants={childVariants}
+          >
             Some Stuff I’ve Built
-          </h2>
-          <p className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-700 max-w-2xl mx-auto leading-[1.6] sm:!leading-[1.8] px-4">
-            Here’s a peek at the projects where I turned ideas into something
-            cool. From apps to designs, it’s all about making things that work
-            and look awesome.
+          </motion.h2>
+          <motion.div variants={childVariants}>
+            <Button>View all projects</Button>
+          </motion.div>
+        </div>
+        <motion.p
+          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-500 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
+          variants={childVariants}
+        >
+          Here’s a peek at the projects where I turned ideas into something
+          cool. From apps to designs, it’s all about making things that work and
+          look awesome.
+        </motion.p>
+      </div>
+
+      {/* Projects Section */}
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        {/* Main Project Card */}
+        <motion.div
+          className="p-6 rounded-3xl mb-8 border border-slate-900 group"
+          variants={{ ...childVariants, ...cardVariants }}
+          initial="initial"
+          whileHover="hover"
+        >
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-xl font-semibold text-slate-100">
+              Main Project Title
+            </h3>
+            {/* Arrow icon wrapped with Tailwind group-hover classes */}
+            <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">
+              <img src="/icons/ic_arrow.svg" alt="Arrow" className="w-4 h-4" />
+            </span>
+          </div>
+          <p className="text-sm text-slate-400 mb-4">
+            A short description for the main project that spans the full width.
           </p>
+          <div className="mt-4 w-full aspect-[16/10] overflow-hidden rounded-3xl">
+            <img
+              src="/images/dummy-image.jpg"
+              alt="Main Project screenshot"
+              className="w-full h-full object-cover rounded-3xl"
+            />
+          </div>
         </motion.div>
 
-        {/* Projects Grid */}
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2"
-          variants={containerVariants}
-        >
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              className={`py-8 sm:py-8 lg:py-8 lg:px-8 bg-white transition text-left ${project.borderStyles}`}
-              variants={childVariants}
-            >
-              {/* Replace gray container with image */}
-              <div
-                className="relative w-full rounded-md overflow-hidden mb-4 sm:mb-4 lg:mb-6"
-                style={{ paddingBottom: "56.25%" }}
-              >
-                {" "}
-                {/* 16:9 ratio */}
-                <div className="absolute inset-0">
-                  <Image
-                    src={project.image} // Make sure your project data has image URLs
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-              </div>
-              <div className="flex items-center justify-between group">
-                <h3 className="text-2xl md:text-3xl font-medium text-gray-800">
-                  {project.title}
+        {/* Two Smaller Project Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Project Card 1 */}
+          <motion.div
+            className="rounded-3xl overflow-hidden flex flex-col border border-slate-900 group"
+            variants={{ ...childVariants, ...cardVariants }}
+            initial="initial"
+            whileHover="hover"
+          >
+            <div className="p-6 flex-none">
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-semibold text-slate-100">
+                  Project Title A
                 </h3>
-                <a
-                  href={project.link}
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium bg-white-100 shadow-sm border border-gray-300 rounded-lg transition-all duration-300 hover:bg-brand-primary/10 hover:border-brand-primary hover:text-brand-primary"
-                >
-                  View Work{" "}
-                  <span className="ml-1 transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:rotate-45">
-                    <svg
-                      width="12"
-                      height="13"
-                      viewBox="0 0 12 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M2.64121 9.85889L9.35872 3.14138M9.35872 3.14138L9.35872 8.09113M9.35872 3.14138L4.40898 3.14138"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </a>
+                <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">
+                  <img
+                    src="/icons/ic_arrow.svg"
+                    alt="Arrow"
+                    className="w-4 h-4"
+                  />
+                </span>
               </div>
-              <p className="mt-3 text-slate-700 text-md">
-                {project.description}
+              <p className="text-sm text-slate-400 mt-2">
+                Short description for project A.
               </p>
-            </motion.div>
-          ))}
-        </motion.div>
+            </div>
+            <div className="relative flex-1 p-4">
+              <img
+                src="/images/dummy-image.jpg"
+                alt="Project A screenshot"
+                className="w-full h-full object-cover rounded-3xl"
+              />
+            </div>
+          </motion.div>
+
+          {/* Project Card 2 */}
+          <motion.div
+            className="rounded-3xl overflow-hidden flex flex-col border border-slate-900 group"
+            variants={{ ...childVariants, ...cardVariants }}
+            initial="initial"
+            whileHover="hover"
+          >
+            <div className="p-6 flex-none">
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-semibold text-slate-100">
+                  Project Title B
+                </h3>
+                <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">
+                  <img
+                    src="/icons/ic_arrow.svg"
+                    alt="Arrow"
+                    className="w-4 h-4"
+                  />
+                </span>
+              </div>
+              <p className="text-sm text-slate-400 mt-2">
+                Short description for project B.
+              </p>
+            </div>
+            <div className="relative flex-1 p-4">
+              <img
+                src="/images/dummy-image.jpg"
+                alt="Project B screenshot"
+                className="w-full h-full object-cover rounded-3xl"
+              />
+            </div>
+          </motion.div>
+        </div>
       </div>
     </motion.section>
   );

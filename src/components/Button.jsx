@@ -1,10 +1,19 @@
 "use client";
 
 export default function Button({ onClick, children, className = "" }) {
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      // Default behavior: open mailto if no onClick provided
+      window.location.href = "mailto:fikrildev@gmail.com";
+    }
+  };
+
   return (
     <button
-      onClick={() => (window.location.href = "mailto:fikrildev@gmail.com")}
-      className="
+      onClick={handleClick}
+      className={`
         relative
         overflow-hidden
         px-6 py-3 sm:px-8 sm:py-4
@@ -25,7 +34,8 @@ export default function Button({ onClick, children, className = "" }) {
         focus:outline-none
         focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600
         active:scale-95
-      "
+        ${className}
+      `}
     >
       {/* The overlay that creates the curtain effect */}
       <span
@@ -41,7 +51,7 @@ export default function Button({ onClick, children, className = "" }) {
 
       {/* Content wrapper ensures text & icon sit above the overlay */}
       <span className="relative z-10 inline-flex items-center">
-        Contact Me
+        {children}
         <span
           className="
             px-2 ml-1
