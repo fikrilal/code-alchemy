@@ -50,7 +50,7 @@ export default function MainSection() {
           Available for freelance work
         </motion.p>
         <motion.h1
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-900"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-200 mt-2 lg:mt-4"
           variants={childVariants}
         >
           About Me
@@ -99,10 +99,10 @@ export default function MainSection() {
             </div>
 
             {/* Email and Bio */}
-            <p className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-slate-900">
+            <p className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-slate-200">
               fikrildev@gmail.com
             </p>
-            <p className="px-8 lg:px-0 mt-2 sm:mt-2 lg:mt-3 text-base md:text-lg text-slate-700 max-w-sm leading-[1.6] sm:!leading-[1.6]">
+            <p className="px-8 lg:px-0 mt-2 sm:mt-2 lg:mt-3 text-base md:text-lg text-slate-400 max-w-sm leading-[1.6] sm:!leading-[1.6]">
               Mobile Engineer by day, Warhammer 40K enthusiast by night.
             </p>
           </motion.div>
@@ -113,26 +113,26 @@ export default function MainSection() {
           className="w-full lg:w-1/2 text-left lg:text-left"
           variants={childVariants}
         >
-          <p className="text-base md:text-lg text-slate-800 font-medium mb-4 leading-[1.6] sm:!leading-[1.8]">
+          <p className="text-base md:text-lg text-slate-300 font-medium mb-4 leading-[1.6] sm:!leading-[1.8]">
             Hi, I’m Fikril—a mobile engineer and UX enthusiast based in Jakarta,
             Indonesia. My journey in tech started with a curiosity for how
             things work, and over the years, it’s turned into a passion for
             building apps that people love to use.
           </p>
-          <p className="text-base md:text-lg text-slate-800 font-medium mb-4 leading-[1.6] sm:!leading-[1.8]">
+          <p className="text-base md:text-lg text-slate-300 font-medium mb-4 leading-[1.6] sm:!leading-[1.8]">
             I specialize in creating seamless mobile experiences with Flutter,
             Kotlin, and Jetpack Compose, blending technical precision with
             thoughtful design. Whether it’s coding complex features or crafting
             intuitive interfaces, I’m all about solving problems and making
             ideas come to life.
           </p>
-          <p className="text-base md:text-lg text-slate-800 font-medium mb-4 leading-[1.6] sm:!leading-[1.8]">
+          <p className="text-base md:text-lg text-slate-300 font-medium mb-4 leading-[1.6] sm:!leading-[1.8]">
             When I’m not coding, you’ll probably find me diving into the
             grimdark universe of Warhammer 40K, listening to my favorite bands
             (Starset and Linkin Park, anyone?), or brainstorming the next big
             idea over a cup of coffee.
           </p>
-          <p className="text-base md:text-lg text-slate-900 font-bold mb-4 leading-[1.6] sm:!leading-[1.8]">
+          <p className="text-base md:text-lg text-slate-300 font-bold mb-4 leading-[1.6] sm:!leading-[1.8]">
             Let’s build something amazing together—because to me, every project
             is a story worth telling!
           </p>

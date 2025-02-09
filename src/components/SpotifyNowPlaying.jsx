@@ -65,8 +65,8 @@ export default function SpotifyNowPlaying() {
       <div className="flex-grow flex items-center">
         {track ? (
           <div className="flex items-center gap-4">
-            {/* Outer container with only a rounded border and inner padding */}
-            <div className="relative w-16 h-16 rounded-full border border-slate-800 p-2">
+            {/* Outer container with fixed dimensions */}
+            <div className="relative w-20 h-20 flex-none rounded-full border border-slate-800 p-2">
               {/* Spinning album image */}
               <div className="w-full h-full rounded-full overflow-hidden">
                 <img
@@ -76,8 +76,6 @@ export default function SpotifyNowPlaying() {
                   style={{ animationDuration: "10s" }}
                 />
               </div>
-              {/* Fixed center spindle (hole) */}
-              {/* <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-zinc-900 rounded-full -translate-x-1/2 -translate-y-1/2"></div> */}
             </div>
 
             {/* Song details */}

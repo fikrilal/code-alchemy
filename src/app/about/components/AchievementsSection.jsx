@@ -16,7 +16,7 @@ export default function AchievementsSection({
       viewport={{ once: true, amount: 0.2 }}
     >
       <motion.h2
-        className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-900 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
+        className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-200 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
         variants={childVariants}
       >
         Achievements
@@ -25,17 +25,17 @@ export default function AchievementsSection({
         {achievements.map((achievement, index) => (
           <motion.div
             key={index}
-            className={`pt-8 border-t border-slate-200 ${
+            className={`pt-8 border-t border-slate-900 ${
               index === 0 ? "border-t-0 pt-0" : ""
             }`}
             variants={childVariants}
           >
             <div className="mb-2">
-              <h3 className="text-xl font-medium text-slate-900 mb-2 leading-[1.5]">
+              <h3 className="text-xl font-medium text-slate-200 mb-2 leading-[1.5]">
                 {achievement.title}
               </h3>
               <div className="flex flex-row justify-between items-center text-sm">
-                <p className="text-base text-slate-600">
+                <p className="text-base text-slate-400">
                   {achievement.organization}
                 </p>
                 <p className="text-slate-500 whitespace-nowrap">

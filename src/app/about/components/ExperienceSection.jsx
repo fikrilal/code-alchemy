@@ -16,7 +16,7 @@ export default function ExperienceSection({
       viewport={{ once: true, amount: 0.2 }}
     >
       <motion.h2
-        className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-900 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
+        className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-200 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
         variants={childVariants}
       >
         Experience
@@ -25,17 +25,17 @@ export default function ExperienceSection({
         {experiences.map((experience, index) => (
           <motion.div
             key={index}
-            className={`pt-8 border-t border-slate-200 ${
+            className={`pt-8 border-t border-slate-900 ${
               index === 0 ? "border-t-0 pt-0" : ""
             }`}
             variants={childVariants}
           >
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="text-xl font-medium text-slate-900">
+                <h3 className="text-xl font-medium text-slate-200">
                   {experience.title}
                 </h3>
-                <p className="pt-2 text-slate-600">{experience.organization}</p>
+                <p className="pt-2 text-slate-400">{experience.organization}</p>
               </div>
               <p className="text-sm text-slate-500">{experience.date}</p>
             </div>
