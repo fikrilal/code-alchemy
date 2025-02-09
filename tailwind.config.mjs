@@ -5,12 +5,14 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       borderWidth: {
         0.5: "0.5px",
       },
       colors: {
+        darkbg: "#07090C",
         background: {
           default: "var(--background)",
           foreground: "var(--foreground)",
@@ -114,7 +116,7 @@ export default {
           "utilities-measurement": "var(--pink-400)",
         },
         brand: {
-          primary: "#7732ad",
+          primary: "#6A42C2",
           100: "#f5f5f5",
           200: "#e6e6e6",
           300: "#d9d9d9",
@@ -137,6 +139,7 @@ export default {
           800: "#434343",
           900: "#303030",
           1000: "#242424",
+          1100: "#0F0F0F",
         },
         red: {
           100: "#fee9e7",

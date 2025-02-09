@@ -11,10 +11,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed w-full bg-white-100 z-50">
-      <div className="container mx-auto px-6 py-6 flex justify-between items-center">
+    <nav className="fixed w-full bg-transparent z-50 backdrop-blur-md">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="text-2xl font-bold text-gray-800">
+        <Link href="/" className="text-2xl font-bold text-slate-100">
           fikrilal.
         </Link>
 
@@ -22,25 +22,25 @@ export default function Navbar() {
         <div className="space-x-8 hidden md:flex">
           <Link
             href="#case-studies"
-            className="text-slate-900 hover:text-brand-primary"
+            className="text-slate-100 hover:text-brand-primary"
           >
             Case Studies
           </Link>
           <Link
             href="#work"
-            className="text-slate-900 hover:text-brand-primary"
+            className="text-slate-100 hover:text-brand-primary"
           >
             Work
           </Link>
           <Link
             href="/blog"
-            className="text-slate-900 hover:text-brand-primary"
+            className="text-slate-100 hover:text-brand-primary"
           >
             Blog
           </Link>
           <Link
             href="/about"
-            className="text-slate-900 hover:text-brand-primary"
+            className="text-slate-100 hover:text-brand-primary"
           >
             About
           </Link>
@@ -48,8 +48,7 @@ export default function Navbar() {
 
         {/* Available Badge (Desktop) */}
         <div className="hidden md:block">
-          <div className="relative flex items-center px-2 py-1 bg-brand-900 text-slate-100 text-sm font-medium rounded-full border border-brand-900 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-100/15 to-transparent rounded-full"></div>
+          <div className="relative flex items-center px-2 py-1 text-slate-100 text-sm font-medium rounded-full overflow-hidden">
             <div className="relative flex items-center">
               <div className="mr-2">
                 <svg
@@ -63,7 +62,7 @@ export default function Navbar() {
                   <circle cx="8" cy="8" r="4" fill="#22C55E" />
                 </svg>
               </div>
-              Available for Work
+              Available for Project
             </div>
           </div>
         </div>
@@ -76,7 +75,7 @@ export default function Navbar() {
           onClick={toggleMenu}
         >
           <div className="tham-box">
-            <div className="tham-inner bg-slate-900"></div>
+            <div className="tham-inner text-slate-100"></div>
           </div>
         </button>
       </div>
@@ -85,8 +84,7 @@ export default function Navbar() {
       <div
         className={`
           md:hidden
-          bg-white
-          shadow-md
+          bg-transparent
           px-6
           overflow-hidden
           transition-all
@@ -98,33 +96,42 @@ export default function Navbar() {
       >
         <Link
           href="#case-studies"
-          className="block py-2 text-slate-900 hover:text-brand-primary"
+          className="block py-2 text-slate-200 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           Case Studies
         </Link>
         <Link
           href="#work"
-          className="block py-2 text-slate-900 hover:text-brand-primary"
+          className="block py-2 text-slate-200 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           Work
         </Link>
         <Link
           href="/blog"
-          className="block py-2 text-slate-900 hover:text-brand-primary"
+          className="block py-2 text-slate-200 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           Blog
         </Link>
         <Link
           href="/about"
-          className="block py-2 text-slate-900 hover:text-brand-primary"
+          className="block py-2 text-slate-200 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           About
         </Link>
       </div>
+
+      {/* Global style override for the hamburger icon */}
+      <style jsx global>{`
+        .tham-inner,
+        .tham-inner::before,
+        .tham-inner::after {
+          background-color: #cdcdcd !important; /* Change this color as needed */
+        }
+      `}</style>
     </nav>
   );
 }

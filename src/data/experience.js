@@ -10,12 +10,12 @@ const experiences = [
     date: "Aug - Dec 2024",
   },
   {
-    title: "Flutter Mobile Developer",
+    title: "Mobile Developer Intern",
     organization: "Sintech",
     date: "Apr - Jul 2024",
   },
   {
-    title: "Full Stack Developer",
+    title: "Full Stack Developer Intern",
     organization: "Dropify Technologies",
     date: "Feb - May 2024",
   },

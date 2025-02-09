@@ -1,10 +1,11 @@
 import { Inter_Tight, Fragment_Mono } from "next/font/google";
 import "./globals.css";
+import DarkModeProvider from "@/components/DarkModeProvider";
 
 const interTight = Inter_Tight({
   variable: "--font-inter-tight",
   subsets: ["latin"],
-  weights: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 const fragmentMono = Fragment_Mono({
@@ -22,9 +23,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${interTight.variable} ${fragmentMono.variable} font-sans antialiased`}
+        className={`${interTight.variable} ${fragmentMono.variable} font-sans antialiased dark:bg-darkbg dark:text-white`}
       >
-        {children}
+        <DarkModeProvider>{children}</DarkModeProvider>
       </body>
     </html>
   );

@@ -28,7 +28,7 @@ export default function Footer() {
 
   return (
     <motion.footer
-      className="text-gray-400 bg-gray-50 py-2 sm:py-4 lg:py-4 px-2 sm:px-4 lg:px-4"
+      className="text-gray-400 bg-gray-50 py-2 sm:py-4 lg:py-4 px-2 sm:px-4 lg:px-4 pt-20 sm:pt-24 lg:pt-32"
       // Fire the animation when the footer enters the viewport
       variants={containerVariants}
       initial="hidden"
@@ -42,7 +42,7 @@ export default function Footer() {
       >
         {/* Name */}
         <motion.h2
-          className="text-2xl md:text-4xl font-semibold text-slate-100"
+          className="text-2xl md:text-4xl font-semibold text-slate-200"
           variants={childVariants}
         >
           Ahmad Fikril Al Muzakki
@@ -50,7 +50,7 @@ export default function Footer() {
 
         {/* Message */}
         <motion.p
-          className="mt-2 sm:mt-2 lg:mt-4 text-sm md:text-base max-w-2xl text-slate-300 mx-auto !leading-relaxed"
+          className="mt-2 sm:mt-2 lg:mt-4 text-sm md:text-base max-w-2xl text-slate-400 mx-auto !leading-relaxed"
           variants={childVariants}
         >
           Thanks for stopping by! Let’s connect and create something amazing
