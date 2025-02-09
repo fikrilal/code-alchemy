@@ -27,10 +27,6 @@ const childVariants = {
 };
 
 export default function PortfolioSection() {
-  const handleListenAlong = useCallback(() => {
-    window.open("https://open.spotify.com/track/xxxxxxxx", "_blank");
-  }, []);
-
   return (
     <motion.section
       className="w-full px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-16 text-slate-100"
@@ -113,11 +109,10 @@ export default function PortfolioSection() {
         </div>
 
         {/* 2) SECOND ROW: Tech Stack (left) + GitHub (right) */}
-        <div className="relative aspect-[16/5] w-full overflow-hidden rounded-lg">
-          <div className="absolute inset-0 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="relative w-full overflow-hidden rounded-lg lg:aspect-[16/5]">
+          <div className="grid grid-cols-1 lg:absolute lg:inset-0 lg:grid-cols-2 gap-6">
             {/* Tech Stack */}
             <TechStack />
-
             {/* GitHub Activity */}
             <GithubActivity />
           </div>

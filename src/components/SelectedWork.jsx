@@ -50,7 +50,8 @@ export default function SelectedWork() {
           >
             Some Stuff I’ve Built
           </motion.h2>
-          <motion.div variants={childVariants}>
+          {/* Hide button on mobile (below md) */}
+          <motion.div variants={childVariants} className="hidden md:block">
             <Button>View all projects</Button>
           </motion.div>
         </div>
