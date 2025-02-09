@@ -32,10 +32,7 @@ export default function GithubActivity() {
           View Profile
         </a>
       </div>
-      <div
-        className="bg-zinc-800 rounded p-4 overflow-x-auto 
-                   scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-zinc-800"
-      >
+      <div className="bg-zinc-800 rounded p-4 overflow-x-auto custom-scrollbar">
         <GitHubCalendar
           username="fikrilal"
           blockSize={12}
@@ -46,6 +43,31 @@ export default function GithubActivity() {
           }}
         />
       </div>
+
+      {/* Custom Scrollbar Styles */}
+      <style jsx global>{`
+        /* Firefox */
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #4b5563 #1f2937;
+        }
+        /* Webkit-based browsers */
+        .custom-scrollbar::-webkit-scrollbar {
+          height: 8px;
+          width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #1f2937;
+          border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #4b5563;
+          border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: #6b7280;
+        }
+      `}</style>
     </motion.div>
   );
 }

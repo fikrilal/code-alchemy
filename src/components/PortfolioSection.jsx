@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useCallback } from "react";
 import SpotifyNowPlaying from "./SpotifyNowPlaying";
 import GithubActivity from "./GithubActivity";
+import TechStack from "./TechStack";
 
 // Parent fade/sequence
 const containerVariants = {
@@ -179,85 +180,15 @@ export default function PortfolioSection() {
           </motion.div>
         </div>
 
-        {/* ─────────────────────────────────────────────────
-            2) SECOND ROW: Tech Stack (left) + GitHub (right)
-            ───────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Tech Stack */}
-          <motion.div
-            className="bg-zinc-900 p-6 rounded-lg"
-            variants={childVariants}
-          >
-            <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
-              MOBILE TECH STACK
-            </p>
-            <h3 className="text-xl font-semibold mb-2">
-              Tech stacks I’m familiar with
-            </h3>
-            <p className="text-sm text-slate-400 mb-4">
-              Primarily focused on the JavaScript ecosystem, but always eager to
-              explore and learn new technologies.
-            </p>
+        {/* 2) SECOND ROW: Tech Stack (left) + GitHub (right) */}
+        <div className="relative aspect-[16/5] w-full overflow-hidden rounded-lg">
+          <div className="absolute inset-0 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Tech Stack */}
+            <TechStack />
 
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
-              {/* Flutter */}
-              <div className="flex items-center justify-center bg-zinc-800 p-4 rounded">
-                <img
-                  src="/icons/flutter-logo.svg"
-                  alt="Flutter"
-                  className="h-8 w-auto"
-                />
-              </div>
-
-              {/* Kotlin */}
-              <div className="flex items-center justify-center bg-zinc-800 p-4 rounded">
-                <img
-                  src="/icons/kotlin-logo.svg"
-                  alt="Kotlin"
-                  className="h-8 w-auto"
-                />
-              </div>
-
-              {/* Compose */}
-              <div className="flex items-center justify-center bg-zinc-800 p-4 rounded">
-                <img
-                  src="/icons/compose-logo.svg"
-                  alt="Compose"
-                  className="h-8 w-auto"
-                />
-              </div>
-
-              {/* Next */}
-              <div className="flex items-center justify-center bg-zinc-800 p-4 rounded">
-                <img
-                  src="/icons/next.svg"
-                  alt="Next.js"
-                  className="h-8 w-auto"
-                />
-              </div>
-
-              {/* Node */}
-              <div className="flex items-center justify-center bg-zinc-800 p-4 rounded">
-                <img
-                  src="/icons/javascript-logo.svg"
-                  alt="Node.js"
-                  className="h-8 w-auto"
-                />
-              </div>
-
-              {/* React */}
-              <div className="flex items-center justify-center bg-zinc-800 p-4 rounded">
-                <img
-                  src="/icons/javascript-logo.svg"
-                  alt="React"
-                  className="h-8 w-auto"
-                />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* GitHub Activity */}
-          <GithubActivity />
+            {/* GitHub Activity */}
+            <GithubActivity />
+          </div>
         </div>
       </div>
     </motion.section>
