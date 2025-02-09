@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import GitHubCalendar from "react-github-calendar";
+import useSWR from "swr";
 
 const childVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -12,13 +13,18 @@ const childVariants = {
   },
 };
 
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
 export default function GithubActivity() {
+  // Fetch real GitHub stats from our API route
+  const { data: stats, error } = useSWR("/api/githubStats", fetcher);
+
   return (
     <motion.div
-      className="bg-zinc-900 p-6 rounded-lg shadow-lg"
+      className="bg-zinc-900 p-6 rounded-lg shadow-lg flex flex-col h-full"
       variants={childVariants}
     >
-      {/* Header row: label on the left and View Profile on the right */}
+      {/* Header row */}
       <div className="flex items-center justify-between mb-4">
         <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
           GITHUB ACTIVITY
@@ -32,16 +38,41 @@ export default function GithubActivity() {
           View Profile
         </a>
       </div>
-      <div className="bg-zinc-800 rounded p-4 overflow-x-auto custom-scrollbar">
+
+      {/* Calendar container */}
+      <div className="overflow-auto custom-scrollbar flex-1">
         <GitHubCalendar
           username="fikrilal"
           blockSize={12}
           blockMargin={4}
           fontSize={14}
+          hideColorLegend={false} // Ensure the legend is shown
           theme={{
             dark: ["#1f2937", "#374151", "#4b5563", "#6b7280", "#9ca3af"],
           }}
         />
+      </div>
+
+      {/* Additional Stats Section */}
+      <div className="mt-4 grid grid-cols-3 gap-4">
+        <div className="bg-zinc-800 p-4 rounded text-center">
+          <p className="text-xs text-gray-400">Last Commit</p>
+          <p className="text-lg text-white">
+            {stats ? stats.lastCommitDate : "Loading..."}
+          </p>
+        </div>
+        <div className="bg-zinc-800 p-4 rounded text-center">
+          <p className="text-xs text-gray-400">Longest Streak</p>
+          <p className="text-lg text-white">
+            {stats ? `${stats.longestStreak} days` : "Loading..."}
+          </p>
+        </div>
+        <div className="bg-zinc-800 p-4 rounded text-center">
+          <p className="text-xs text-gray-400">Total Contributions</p>
+          <p className="text-lg text-white">
+            {stats ? stats.totalContributions : "Loading..."}
+          </p>
+        </div>
       </div>
 
       {/* Custom Scrollbar Styles */}
