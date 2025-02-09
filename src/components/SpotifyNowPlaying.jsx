@@ -52,7 +52,7 @@ export default function SpotifyNowPlaying() {
         <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
           CURRENTLY PLAYING
         </p>
-        <div className="bg-slate-1000 border border-slate-500 rounded-full flex items-center justify-center w-8 h-8">
+        <div className="bg-slate-1100 border border-slate-500 rounded-full flex items-center justify-center w-8 h-8">
           <img
             src="/icons/ic_spotify.svg"
             alt="Spotify Icon"
@@ -82,7 +82,7 @@ export default function SpotifyNowPlaying() {
 
             {/* Song details */}
             <div>
-              <p className="text-md font-medium">{track.name}</p>
+              <p className="text-md text-slate-200 font-medium">{track.name}</p>
               <p className="pt-1 text-sm text-slate-400">{track.artist}</p>
             </div>
           </div>
@@ -100,7 +100,7 @@ export default function SpotifyNowPlaying() {
             rel="noopener noreferrer"
             className="
               relative overflow-hidden inline-flex items-center group
-              text-xs font-medium text-slate-100 hover:text-slate-900 dark:hover:text-slate-900
+              text-xs font-medium text-slate-200 hover:text-slate-900 dark:hover:text-slate-900
               border border-slate-300 dark:border-slate-700 rounded-full bg-transparent
               px-4 py-2 transition transform-gpu duration-500 ease-out hover:scale-105 hover:shadow-md
               focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600 active:scale-95

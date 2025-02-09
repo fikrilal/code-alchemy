@@ -20,7 +20,7 @@ export default function Button({ onClick, children, className = "" }) {
         w-auto max-w-fit
         inline-flex items-center
         group
-        text-slate-100
+        text-slate-200
         hover:text-slate-900 dark:hover:text-slate-900
         border border-slate-300 dark:border-slate-700
         rounded-full

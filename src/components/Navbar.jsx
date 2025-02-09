@@ -96,33 +96,42 @@ export default function Navbar() {
       >
         <Link
           href="#case-studies"
-          className="block py-2 text-slate-100 hover:text-brand-primary"
+          className="block py-2 text-slate-200 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           Case Studies
         </Link>
         <Link
           href="#work"
-          className="block py-2 text-slate-100 hover:text-brand-primary"
+          className="block py-2 text-slate-200 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           Work
         </Link>
         <Link
           href="/blog"
-          className="block py-2 text-slate-100 hover:text-brand-primary"
+          className="block py-2 text-slate-200 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           Blog
         </Link>
         <Link
           href="/about"
-          className="block py-2 text-slate-100 hover:text-brand-primary"
+          className="block py-2 text-slate-200 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           About
         </Link>
       </div>
+
+      {/* Global style override for the hamburger icon */}
+      <style jsx global>{`
+        .tham-inner,
+        .tham-inner::before,
+        .tham-inner::after {
+          background-color: #cdcdcd !important; /* Change this color as needed */
+        }
+      `}</style>
     </nav>
   );
 }

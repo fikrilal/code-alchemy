@@ -52,7 +52,7 @@ export default function GithubActivity() {
           href="https://github.com/fikrilal"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm font-medium text-blue-400 hover:underline"
+          className="text-sm font-medium text-blue-500 hover:underline"
         >
           View Profile
         </a>
@@ -76,20 +76,20 @@ export default function GithubActivity() {
       {/* Additional Stats Section */}
       <div className="mt-6 lg:mt-4 grid grid-cols-3 gap-4">
         <div className="bg-zinc-900 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-gray-400">Last Commit</p>
-          <p className="text-lg text-gray-100 mt-2">
+          <p className="text-xs text-slate-400">Last Commit</p>
+          <p className="text-lg text-slate-200 mt-2">
             {stats ? stats.lastCommitDate : "Loading..."}
           </p>
         </div>
         <div className="bg-zinc-900 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-gray-400">Longest Streak</p>
-          <p className="text-lg text-gray-100 mt-2">
+          <p className="text-xs text-slate-400">Longest Streak</p>
+          <p className="text-lg  text-slate-200 mt-2">
             {stats ? `${stats.longestStreak} days` : "Loading..."}
           </p>
         </div>
         <div className="bg-zinc-900 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-gray-400">Total Contributions</p>
-          <p className="text-lg text-gray-100 mt-2">
+          <p className="text-xs text-slate-400">Total Contributions</p>
+          <p className="text-lg text-slate-200 mt-2">
             {stats ? stats.totalContributions : "Loading..."}
           </p>
         </div>

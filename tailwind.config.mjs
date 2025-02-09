@@ -116,7 +116,7 @@ export default {
           "utilities-measurement": "var(--pink-400)",
         },
         brand: {
-          primary: "#7732ad",
+          primary: "#6A42C2",
           100: "#f5f5f5",
           200: "#e6e6e6",
           300: "#d9d9d9",

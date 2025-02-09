@@ -42,10 +42,10 @@ export default function SelectedWork() {
       viewport={{ once: true, amount: 0.2 }}
     >
       {/* Header */}
-      <div className="max-w-6xl w-full mx-auto pt-20 sm:pt-24 lg:pt-60 px-4 sm:px-6 lg:px-0">
+      <div className="max-w-6xl w-full mx-auto pt-24 sm:pt-24 lg:pt-60 px-4 sm:px-6 lg:px-0">
         <div className="flex justify-between items-center">
           <motion.h2
-            className="text-3xl md:text-5xl font-semibold text-slate-100 leading-[1.2] sm:!leading-tight max-w-4xl"
+            className="text-3xl md:text-5xl font-semibold text-slate-200 leading-[1.2] sm:!leading-tight max-w-4xl"
             variants={childVariants}
           >
             Some Stuff I’ve Built
@@ -66,7 +66,7 @@ export default function SelectedWork() {
       </div>
 
       {/* Projects Section */}
-      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-0 mt-12">
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-0 mt-12 sm:mt-16 lg:mt-24">
         {/* Main Project Card */}
         <motion.div
           className="p-6 rounded-3xl mb-8 border border-slate-900 group"
@@ -75,7 +75,7 @@ export default function SelectedWork() {
           whileHover="hover"
         >
           <div className="flex justify-between items-center mb-2">
-            <h3 className="text-xl font-semibold text-slate-100">
+            <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
               Main Project Title
             </h3>
             {/* Arrow icon wrapped with Tailwind group-hover classes */}
@@ -83,7 +83,7 @@ export default function SelectedWork() {
               <img src="/icons/ic_arrow.svg" alt="Arrow" className="w-4 h-4" />
             </span>
           </div>
-          <p className="text-sm text-slate-400 mb-4">
+          <p className="text-sm text-slate-400 mb-8">
             A short description for the main project that spans the full width.
           </p>
           <div className="mt-4 w-full aspect-[16/10] overflow-hidden rounded-3xl">
@@ -106,7 +106,7 @@ export default function SelectedWork() {
           >
             <div className="p-6 flex-none">
               <div className="flex justify-between items-center">
-                <h3 className="text-xl font-semibold text-slate-100">
+                <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
                   Project Title A
                 </h3>
                 <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">
@@ -139,7 +139,7 @@ export default function SelectedWork() {
           >
             <div className="p-6 flex-none">
               <div className="flex justify-between items-center">
-                <h3 className="text-xl font-semibold text-slate-100">
+                <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
                   Project Title B
                 </h3>
                 <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">

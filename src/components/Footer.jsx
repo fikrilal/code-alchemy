@@ -42,7 +42,7 @@ export default function Footer() {
       >
         {/* Name */}
         <motion.h2
-          className="text-2xl md:text-4xl font-semibold text-slate-100"
+          className="text-2xl md:text-4xl font-semibold text-slate-200"
           variants={childVariants}
         >
           Ahmad Fikril Al Muzakki
@@ -50,7 +50,7 @@ export default function Footer() {
 
         {/* Message */}
         <motion.p
-          className="mt-2 sm:mt-2 lg:mt-4 text-sm md:text-base max-w-2xl text-slate-300 mx-auto !leading-relaxed"
+          className="mt-2 sm:mt-2 lg:mt-4 text-sm md:text-base max-w-2xl text-slate-400 mx-auto !leading-relaxed"
           variants={childVariants}
         >
           Thanks for stopping by! Let’s connect and create something amazing

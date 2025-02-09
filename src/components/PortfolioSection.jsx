@@ -29,7 +29,7 @@ const childVariants = {
 export default function PortfolioSection() {
   return (
     <motion.section
-      className="w-full px-4 sm:px-6 lg:px-8 pt-16 text-slate-100"
+      className="w-full px-4 sm:px-6 lg:px-8 pt-20 text-slate-100"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -43,7 +43,7 @@ export default function PortfolioSection() {
                   - Currently Playing
                   - 3 equally-sized icon cards
             ───────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
           {/* Recent Project */}
           <motion.div
             className="bg-slate-1100 p-6 rounded-2xl border border-slate-900"
@@ -52,8 +52,10 @@ export default function PortfolioSection() {
             <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
               RECENT PROJECT
             </p>
-            <h3 className="text-xl font-semibold mb-2">Tutor App Mobile</h3>
-            <p className="text-sm text-slate-400">
+            <h3 className="text-xl text-slate-200 font-semibold mb-2">
+              Tutor App Mobile
+            </h3>
+            <p className="text-sm sm:text-base md:text-base text-slate-400">
               A full-stack application that enables users to save tweets to
               Notion via Telegram bot.
             </p>
@@ -76,8 +78,10 @@ export default function PortfolioSection() {
             <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
               SIDE HUSTLE
             </p>
-            <h3 className="text-xl font-semibold mb-2">Sila Mobile</h3>
-            <p className="text-sm text-slate-400">
+            <h3 className="text-xl text-slate-200 font-semibold mb-2">
+              Sila Mobile
+            </h3>
+            <p className="text-sm sm:text-base md:text-base text-slate-400">
               A full-stack application that enables users to save tweets to
               Notion via Telegram bot.
             </p>
@@ -97,7 +101,7 @@ export default function PortfolioSection() {
               2) A row of 3 icon-cards (each aspect-square)
           */}
           <motion.div
-            className="flex flex-col gap-6 h-full"
+            className="flex flex-col gap-4 h-full"
             variants={childVariants}
           >
             {/* Currently Playing */}
@@ -110,7 +114,7 @@ export default function PortfolioSection() {
 
         {/* 2) SECOND ROW: Tech Stack (left) + GitHub (right) */}
         <div className="relative w-full overflow-hidden rounded-lg xl:aspect-[15/5]">
-          <div className="grid grid-cols-1 xl:absolute xl:inset-0 xl:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 xl:absolute xl:inset-0 xl:grid-cols-2 gap-4">
             {/* Tech Stack */}
             <TechStack />
             {/* GitHub Activity */}

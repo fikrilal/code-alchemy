@@ -57,10 +57,10 @@ export default function BlogSection() {
       viewport={{ once: true, amount: 0.2 }}
     >
       {/* Header */}
-      <div className="max-w-6xl w-full mx-auto pt-24 sm:pt-24 lg:pt-60  px-4 px-4 sm:px-6 lg:px-8 xl:px-0">
+      <div className="max-w-6xl w-full mx-auto pt-24 sm:pt-24 lg:pt-60 px-4 px-4 sm:px-6 lg:px-8 xl:px-0">
         <div className="flex justify-between items-center">
           <motion.h2
-            className="text-3xl md:text-5xl font-semibold text-slate-100 leading-[1.2] sm:!leading-tight max-w-2xl"
+            className="text-3xl md:text-5xl font-semibold text-slate-200 leading-[1.2] sm:!leading-tight max-w-2xl"
             variants={childVariants}
           >
             Stories, Code, and Everything In Between
@@ -71,7 +71,7 @@ export default function BlogSection() {
           </motion.div>
         </div>
         <motion.p
-          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-500 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
+          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-400 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
           A space where I share my journey, insights, and lessons learned. From
@@ -81,13 +81,13 @@ export default function BlogSection() {
       </div>
 
       {/* Blog Content Rows */}
-      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 lg:px-8 mt-8 sm:mt-10 lg:mt-16">
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 lg:px-8 mt-2 sm:mt-10 lg:mt-16">
         {blogPosts.slice(0, 3).map((blog, index) => (
           <motion.div
             key={blog.id}
             variants={childVariants}
             className={`flex flex-col md:flex-row items-stretch ${
-              index === 0 ? "" : "border-t border-slate-1000"
+              index === 0 ? "" : "border-t border-slate-900"
             } py-12`}
           >
             {/* Blog Image Container */}
@@ -111,16 +111,16 @@ export default function BlogSection() {
                 <span className="text-sm text-slate-400">
                   {formatDate(blog.date)}
                 </span>
-                <h3 className="text-xl font-semibold text-slate-100 mt-2">
+                <h3 className="text-xl font-semibold text-slate-200 mt-4">
                   {blog.title}
                 </h3>
                 <p className="mt-2 text-slate-400">{blog.description}</p>
               </div>
               <a
                 href="#"
-                className="font-medium inline-flex items-center text-blue-500 hover:text-slate-900 transition-colors text-sm group self-start mt-4 md:mt-0"
+                className="font-medium inline-flex items-center text-blue-500 hover:text-slate-300 transition-colors text-sm group self-start mt-4 md:mt-0"
               >
-                Learn more
+                Read more
                 <span className="ml-1 transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:rotate-45">
                   <svg
                     width="12"

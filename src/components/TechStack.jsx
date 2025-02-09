@@ -32,12 +32,12 @@ export default function TechStack() {
       <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
         MOBILE TECH STACK
       </p>
-      <h3 className="text-xl font-semibold mb-2">
-        Tech stacks I’m familiar with
+      <h3 className="text-xl text-slate-200 font-semibold mb-2">
+        Technologies I’m Proficient In
       </h3>
-      <p className="text-sm text-slate-400">
-        Primarily focused on the JavaScript ecosystem, but always eager to
-        explore and learn new technologies.
+      <p className="text-sm sm:text-base md:text-base text-slate-400">
+        Flutter powers most of my projects—occasionally spiced up with a bit of
+        Kotlin or Compose for fun.
       </p>
 
       {/* 
@@ -94,32 +94,42 @@ export default function TechStack() {
         They expand horizontally but only as tall as their content. 
       */}
       <div className="grid grid-cols-3 gap-4 mt-4">
-        {/* Next.js */}
+        {/* GetX */}
         <motion.div
-          className="bg-zinc-900 rounded-lg rounded flex items-center justify-center p-4"
+          className="bg-zinc-900 rounded-lg flex items-center justify-center p-4 relative group"
           variants={childVariants}
         >
-          <img src="/icons/ic_getx.svg" alt="Next.js" className="h-8 w-auto" />
+          <img src="/icons/ic_getx.svg" alt="GetX" className="h-8 w-auto" />
+          {/* Tooltip: appears above the icon */}
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs text-slate-300 bg-black/60 rounded px-2 py-1 pointer-events-none">
+            GetX
+          </span>
         </motion.div>
 
-        {/* Node.js */}
+        {/* BLOC */}
         <motion.div
-          className="bg-zinc-900 rounded-lg rounded flex items-center justify-center p-2"
+          className="bg-zinc-900 rounded-lg flex items-center justify-center p-2 relative group"
           variants={childVariants}
         >
-          <img src="/icons/ic_bloc.svg" alt="Node.js" className="h-10 w-auto" />
+          <img src="/icons/ic_bloc.svg" alt="BLOC" className="h-10 w-auto" />
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs text-slate-300 bg-black/60 rounded px-2 py-1 pointer-events-none">
+            BLOC
+          </span>
         </motion.div>
 
-        {/* React */}
+        {/* Riverpod */}
         <motion.div
-          className="bg-zinc-900 rounded-lg rounded flex items-center justify-center p-4"
+          className="bg-zinc-900 rounded-lg flex items-center justify-center p-4 relative group"
           variants={childVariants}
         >
           <img
             src="/icons/ic_riverpod.svg"
-            alt="React"
+            alt="Riverpod"
             className="h-8 w-auto"
           />
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs text-slate-300 bg-black/60 rounded px-2 py-1 pointer-events-none">
+            Riverpod
+          </span>
         </motion.div>
       </div>
     </motion.div>
