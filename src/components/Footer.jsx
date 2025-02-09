@@ -28,7 +28,7 @@ export default function Footer() {
 
   return (
     <motion.footer
-      className="text-gray-400 bg-gray-50 py-2 sm:py-4 lg:py-4 px-2 sm:px-4 lg:px-4"
+      className="text-gray-400 bg-gray-50 py-2 sm:py-4 lg:py-4 px-2 sm:px-4 lg:px-4 pt-20 sm:pt-24 lg:pt-32"
       // Fire the animation when the footer enters the viewport
       variants={containerVariants}
       initial="hidden"

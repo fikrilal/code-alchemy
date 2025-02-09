@@ -57,7 +57,7 @@ export default function BlogSection() {
       viewport={{ once: true, amount: 0.2 }}
     >
       {/* Header */}
-      <div className="max-w-6xl w-full mx-auto pt-24 sm:pt-24 lg:pt-60 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl w-full mx-auto pt-24 sm:pt-24 lg:pt-60  px-4 px-4 sm:px-6 lg:px-8 xl:px-0">
         <div className="flex justify-between items-center">
           <motion.h2
             className="text-3xl md:text-5xl font-semibold text-slate-100 leading-[1.2] sm:!leading-tight max-w-2xl"
@@ -81,7 +81,7 @@ export default function BlogSection() {
       </div>
 
       {/* Blog Content Rows */}
-      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-10 lg:mt-16">
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 lg:px-8 mt-8 sm:mt-10 lg:mt-16">
         {blogPosts.slice(0, 3).map((blog, index) => (
           <motion.div
             key={blog.id}

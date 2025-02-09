@@ -42,7 +42,7 @@ export default function SelectedWork() {
       viewport={{ once: true, amount: 0.2 }}
     >
       {/* Header */}
-      <div className="max-w-6xl w-full mx-auto pt-20 sm:pt-24 lg:pt-60 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl w-full mx-auto pt-20 sm:pt-24 lg:pt-60 px-4 sm:px-6 lg:px-0">
         <div className="flex justify-between items-center">
           <motion.h2
             className="text-3xl md:text-5xl font-semibold text-slate-100 leading-[1.2] sm:!leading-tight max-w-4xl"
@@ -66,7 +66,7 @@ export default function SelectedWork() {
       </div>
 
       {/* Projects Section */}
-      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-0 mt-12">
         {/* Main Project Card */}
         <motion.div
           className="p-6 rounded-3xl mb-8 border border-slate-900 group"

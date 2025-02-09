@@ -12,7 +12,7 @@ export default function Navbar() {
 
   return (
     <nav className="fixed w-full bg-transparent z-50 backdrop-blur-md">
-      <div className="container mx-auto px-6 py-6 flex justify-between items-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold text-slate-100">
           fikrilal.
@@ -48,8 +48,7 @@ export default function Navbar() {
 
         {/* Available Badge (Desktop) */}
         <div className="hidden md:block">
-          <div className="relative flex items-center px-2 py-1 bg-brand-900 text-slate-100 text-sm font-medium rounded-full border border-brand-900 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-100/15 to-transparent rounded-full"></div>
+          <div className="relative flex items-center px-2 py-1 text-slate-100 text-sm font-medium rounded-full overflow-hidden">
             <div className="relative flex items-center">
               <div className="mr-2">
                 <svg
@@ -63,7 +62,7 @@ export default function Navbar() {
                   <circle cx="8" cy="8" r="4" fill="#22C55E" />
                 </svg>
               </div>
-              Available for Work
+              Available for Project
             </div>
           </div>
         </div>

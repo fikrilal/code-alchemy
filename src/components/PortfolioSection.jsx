@@ -29,7 +29,7 @@ const childVariants = {
 export default function PortfolioSection() {
   return (
     <motion.section
-      className="w-full px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-16 text-slate-100"
+      className="w-full px-4 sm:px-6 lg:px-8 pt-16 text-slate-100"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -109,8 +109,8 @@ export default function PortfolioSection() {
         </div>
 
         {/* 2) SECOND ROW: Tech Stack (left) + GitHub (right) */}
-        <div className="relative w-full overflow-hidden rounded-lg lg:aspect-[15/5]">
-          <div className="grid grid-cols-1 lg:absolute lg:inset-0 lg:grid-cols-2 gap-6">
+        <div className="relative w-full overflow-hidden rounded-lg xl:aspect-[15/5]">
+          <div className="grid grid-cols-1 xl:absolute xl:inset-0 xl:grid-cols-2 gap-6">
             {/* Tech Stack */}
             <TechStack />
             {/* GitHub Activity */}

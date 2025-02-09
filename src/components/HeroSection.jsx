@@ -23,17 +23,13 @@ export default function Hero() {
 
   return (
     <motion.section
-      className="
-        flex flex-col items-start
-    
-        transition-colors duration-300
-      "
+      className="flex flex-col items-start transition-colors duration-300"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       {/* Center a max-width container, but keep text left-aligned */}
-      <div className="max-w-6xl w-full mx-auto pt-20 sm:pt-24 lg:pt-52 pb-24 sm:pb-24 lg:pb-40 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl w-full mx-auto pt-20 sm:pt-24 lg:pt-52 sm:pb-24 lg:pb-40 px-4 sm:px-6 lg:px-8 xl:px-0">
         {/* Role */}
         <motion.p
           className="text-sm font-mono text-slate-300 tracking-wide uppercase mb-4 mt-16"

@@ -16,11 +16,18 @@ export async function GET(request) {
   }
 
   // Map each year to a fetch promise that queries contributions for that calendar year.
+  // The query now also includes rateLimit info.
   const queries = years.map((year) => {
     const fromDate = `${year}-01-01T00:00:00Z`;
     const toDate = `${year}-12-31T23:59:59Z`;
     const query = `
       query {
+        rateLimit {
+          limit
+          cost
+          remaining
+          resetAt
+        }
         user(login: "${username}") {
           contributionsCollection(from: "${fromDate}", to: "${toDate}") {
             contributionCalendar {
@@ -48,6 +55,11 @@ export async function GET(request) {
 
   // Execute all queries in parallel
   const results = await Promise.all(queries);
+
+  // Log the rate limit info from the first query (they should be similar for all)
+  if (results.length > 0 && results[0].data && results[0].data.rateLimit) {
+    console.log("GitHub API Rate Limit:", results[0].data.rateLimit);
+  }
 
   let totalContributionsAllTime = 0;
   let lastCommitDate = null;
