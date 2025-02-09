@@ -1,6 +1,9 @@
-// /app/api/spotify/route.js
+// src/app/api/spotify/route.js
 
-// A little helper to parse cookies from the request header
+import { NextResponse } from "next/server";
+import { format, parseISO } from "date-fns";
+
+// A helper to parse cookies from the request header (if needed)
 function parseCookies(cookieHeader = "") {
   const cookies = {};
   cookieHeader.split(";").forEach((cookie) => {
@@ -18,13 +21,10 @@ export async function GET(req) {
   const client_id = process.env.SPOTIFY_CLIENT_ID;
   const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
-  // 1. Get refresh token from cookie
-  const cookieHeader = req.headers.get("cookie") || "";
-  const cookies = parseCookies(cookieHeader);
-  const refreshToken = cookies["spotifyRefreshToken"];
-
+  // 1. Use the refresh token from the environment variable instead of a cookie.
+  const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
   if (!refreshToken) {
-    console.error("❌ No refresh token cookie. User must log in again.");
+    console.error("❌ No refresh token available. Set SPOTIFY_REFRESH_TOKEN.");
     return new Response(
       JSON.stringify({ error: "User authentication required" }),
       { status: 401 }
@@ -69,25 +69,16 @@ export async function GET(req) {
   const accessToken = refreshData.access_token;
   console.log("✅ Access token refreshed successfully.");
 
-  // (Optional) If Spotify returns a new refresh token, store it in the cookie again
-  if (refreshData.refresh_token) {
-    const newRefresh = refreshData.refresh_token;
-    console.log("🔄 Updating refresh token cookie.");
-    // (But be aware we have to set it in the response below if we want to keep the user updated.)
-  }
-
   // 3. Fetch the currently playing track
   console.log("🔄 Fetching Currently Playing Track...");
   const res = await fetch(
     "https://api.spotify.com/v1/me/player/currently-playing",
     {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers: { Authorization: `Bearer ${accessToken}` },
     }
   );
 
-  const resultText = await res.text(); // Log raw text for debugging
+  const resultText = await res.text();
   console.log("🔍 Spotify API Response:", resultText);
 
   if (!res.ok) {
@@ -104,9 +95,7 @@ export async function GET(req) {
     console.log("🎵 No track currently playing.");
     return new Response(
       JSON.stringify({ message: "No track currently playing" }),
-      {
-        status: 204,
-      }
+      { status: 204 }
     );
   }
 
