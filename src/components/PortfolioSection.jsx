@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import SpotifyNowPlaying from "./SpotifyNowPlaying";
 import GithubActivity from "./GithubActivity";
 import TechStack from "./TechStack";
+import IconCards from "./IconCards";
 
 // Parent fade/sequence
 const containerVariants = {
@@ -107,76 +108,7 @@ export default function PortfolioSection() {
             <SpotifyNowPlaying />
 
             {/* 3 icon-cards, each 1:1 aspect ratio */}
-            <div className="grid grid-cols-3 gap-4">
-              {/* X Icon */}
-              <motion.div
-                className="
-                  bg-zinc-900 rounded-lg 
-                  flex items-center justify-center
-                  aspect-square
-                "
-                variants={childVariants}
-              >
-                <a
-                  href="https://x.com/yourhandle"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="X"
-                >
-                  <img
-                    src="/icons/icons8-x.svg"
-                    alt="X"
-                    className="w-5 h-5 hover:opacity-80"
-                  />
-                </a>
-              </motion.div>
-
-              {/* GitHub Icon */}
-              <motion.div
-                className="
-                  bg-zinc-900 rounded-lg 
-                  flex items-center justify-center
-                  aspect-square
-                "
-                variants={childVariants}
-              >
-                <a
-                  href="https://github.com/yourprofile"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="GitHub"
-                >
-                  <img
-                    src="/icons/github.svg"
-                    alt="GitHub"
-                    className="w-5 h-5 hover:opacity-80"
-                  />
-                </a>
-              </motion.div>
-
-              {/* LinkedIn Icon */}
-              <motion.div
-                className="
-                  bg-zinc-900 rounded-lg 
-                  flex items-center justify-center
-                  aspect-square
-                "
-                variants={childVariants}
-              >
-                <a
-                  href="https://linkedin.com/in/yourprofile"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="LinkedIn"
-                >
-                  <img
-                    src="/icons/linkedin.svg"
-                    alt="LinkedIn"
-                    className="w-5 h-5 hover:opacity-80"
-                  />
-                </a>
-              </motion.div>
-            </div>
+            <IconCards />
           </motion.div>
         </div>
 

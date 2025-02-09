@@ -65,14 +65,25 @@ export default function SpotifyNowPlaying() {
       <div className="flex-grow flex items-center">
         {track ? (
           <div className="flex items-center gap-4">
-            <img
-              src={track.albumImage}
-              alt="Album Cover"
-              className="w-12 h-12 object-cover rounded"
-            />
+            {/* Outer container with only a rounded border and inner padding */}
+            <div className="relative w-16 h-16 rounded-full border border-slate-800 p-2">
+              {/* Spinning album image */}
+              <div className="w-full h-full rounded-full overflow-hidden">
+                <img
+                  src={track.albumImage}
+                  alt="Album Cover"
+                  className="w-full h-full object-cover rounded-full animate-spin"
+                  style={{ animationDuration: "10s" }}
+                />
+              </div>
+              {/* Fixed center spindle (hole) */}
+              {/* <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-zinc-900 rounded-full -translate-x-1/2 -translate-y-1/2"></div> */}
+            </div>
+
+            {/* Song details */}
             <div>
-              <p className="text-sm font-medium">{track.name}</p>
-              <p className="text-xs text-slate-400">{track.artist}</p>
+              <p className="text-md font-medium">{track.name}</p>
+              <p className="pt-1 text-sm text-slate-400">{track.artist}</p>
             </div>
           </div>
         ) : (
@@ -91,7 +102,7 @@ export default function SpotifyNowPlaying() {
               relative overflow-hidden inline-flex items-center group
               text-xs font-medium text-slate-100 hover:text-slate-900 dark:hover:text-slate-900
               border border-slate-300 dark:border-slate-700 rounded-full bg-transparent
-              px-4 py-1 transition transform-gpu duration-500 ease-out hover:scale-105 hover:shadow-md
+              px-4 py-2 transition transform-gpu duration-500 ease-out hover:scale-105 hover:shadow-md
               focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600 active:scale-95
             "
           >
