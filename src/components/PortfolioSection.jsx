@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useCallback } from "react";
 import SpotifyNowPlaying from "./SpotifyNowPlaying";
+import GithubActivity from "./GithubActivity";
 
 // Parent fade/sequence
 const containerVariants = {
@@ -256,24 +257,7 @@ export default function PortfolioSection() {
           </motion.div>
 
           {/* GitHub Activity */}
-          <motion.div
-            className="bg-zinc-900 p-6 rounded-lg"
-            variants={childVariants}
-          >
-            <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
-              GITHUB ACTIVITY
-            </p>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold">
-                569 contributions in the last year
-              </h3>
-              {/* Potential link: “View profile” */}
-            </div>
-            <div className="bg-zinc-800 rounded h-24 flex items-center justify-center text-slate-400">
-              {/* Placeholder for your real GitHub chart */}
-              <span className="text-sm">Contribution Chart Here</span>
-            </div>
-          </motion.div>
+          <GithubActivity />
         </div>
       </div>
     </motion.section>
