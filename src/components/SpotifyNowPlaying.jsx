@@ -1,43 +1,33 @@
-export const revalidate = 120; // ISR refreshes every 2 minutes (in production)
+export const revalidate = 120; // ✅ ISR refresh every 2 minutes
 
-// 🔹 Dynamic fetching in development, ISR in production
 export async function getStaticProps() {
-  const baseUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://code-alchemy-gamma.vercel.app"; // Change this to your actual domain
+  console.log("⚡ Running ISR getStaticProps...");
 
   try {
-    console.log("🔄 Fetching Spotify Data from API...");
-    const response = await fetch(`${baseUrl}/api/spotify`);
+    console.log("🔄 Fetching Spotify data...");
+    const response = await fetch(
+      "https://code-alchemy-gamma.vercel.app/api/spotify"
+    );
 
     if (!response.ok) {
-      console.error(`❌ Spotify API Error: ${response.statusText}`);
+      console.error(`❌ API Error: ${response.statusText}`);
       return { props: { data: null }, revalidate: 120 };
     }
 
     const data = await response.json();
+    console.log("✅ Spotify API Response:", data);
 
-    // If API returns empty or invalid data, force a retry
     if (!data || !data.item) {
-      console.warn("⚠️ No track playing, forcing ISR revalidate...");
-      return { props: { data: null }, revalidate: 10 }; // Try again faster if empty
+      console.warn("⚠️ No track playing, returning empty data...");
+      return { props: { data: null }, revalidate: 120 };
     }
 
-    console.log("✅ Fetched Spotify Data:", data);
-    return {
-      props: { data },
-      revalidate: 120, // Normal 2-minute refresh in production
-    };
+    return { props: { data }, revalidate: 120 };
   } catch (error) {
-    console.error("❌ Failed to fetch Spotify data:", error);
+    console.error("❌ Error fetching data:", error);
     return { props: { data: null }, revalidate: 120 };
   }
 }
-
-// 🚀 Use SSR (`getServerSideProps`) in Development Mode
-export const getServerSideProps =
-  process.env.NODE_ENV === "development" ? getStaticProps : undefined;
 
 export default function SpotifyNowPlaying({ data }) {
   if (!data || !data.item) {
