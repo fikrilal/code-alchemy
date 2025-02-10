@@ -1,46 +1,20 @@
-"use client"; // ✅ Makes this a Client Component
+export default async function SpotifyNowPlaying() {
+  console.log("🔄 Fetching Spotify data with ISR...");
 
-import { useEffect, useState } from "react";
+  const response = await fetch(
+    "https://code-alchemy-gamma.vercel.app/api/spotify",
+    { next: { revalidate: 120 } }
+  );
 
-export default function SpotifyNowPlaying() {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(false);
+  if (!response.ok) {
+    console.error(`❌ API Error: ${response.statusText}`);
+    return <div>❌ No song playing or failed to load data.</div>;
+  }
 
-  useEffect(() => {
-    async function fetchSpotify() {
-      try {
-        console.log("🔄 Fetching Spotify data...");
-        const response = await fetch(
-          "https://code-alchemy-gamma.vercel.app/api/spotify"
-        );
+  const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error(`API Error: ${response.statusText}`);
-        }
-
-        const result = await response.json();
-        console.log("✅ Fetched Spotify Data:", result);
-
-        if (!result || !result.item) {
-          setError(true);
-          return;
-        }
-
-        setData(result);
-        setError(false);
-      } catch (err) {
-        console.error("❌ Error fetching Spotify data:", err);
-        setError(true);
-      }
-    }
-
-    fetchSpotify(); // Initial Fetch
-    const interval = setInterval(fetchSpotify, 120000); // ⏳ Refresh every 2 minutes
-
-    return () => clearInterval(interval); // Clean up interval on unmount
-  }, []);
-
-  if (error || !data) {
+  if (!data || !data.item) {
+    console.warn("⚠️ No track playing, showing fallback...");
     return <div>❌ No song playing or failed to load data.</div>;
   }
 
