@@ -1,19 +1,5 @@
 // src/app/api/spotify/route.js
 
-import { NextResponse } from "next/server";
-
-// A helper to parse cookies from the request header (if needed)
-function parseCookies(cookieHeader = "") {
-  const cookies = {};
-  cookieHeader.split(";").forEach((cookie) => {
-    const [name, ...rest] = cookie.trim().split("=");
-    if (name && rest.length > 0) {
-      cookies[name] = rest.join("=");
-    }
-  });
-  return cookies;
-}
-
 export async function GET(req) {
   console.log("🟢 API Route /api/spotify Hit");
 

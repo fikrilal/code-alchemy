@@ -46,7 +46,7 @@ export default function Hero() {
           "
           variants={childVariants}
         >
-          Hi, I’m Fikril—a Mobile Engineer based in Jakarta, Indonesia
+          Hi, I’m Fikril—a Mobile Engineer based in Bandung, Indonesia
         </motion.h1>
 
         {/* Subtitle */}
