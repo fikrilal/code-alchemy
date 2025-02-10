@@ -1,36 +1,46 @@
-export const revalidate = 120; // ✅ ISR refresh every 2 minutes
+"use client"; // ✅ Makes this a Client Component
 
-export async function getStaticProps() {
-  console.log("⚡ Running ISR getStaticProps...");
+import { useEffect, useState } from "react";
 
-  try {
-    console.log("🔄 Fetching Spotify data...");
-    const response = await fetch(
-      "https://code-alchemy-gamma.vercel.app/api/spotify"
-    );
+export default function SpotifyNowPlaying() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(false);
 
-    if (!response.ok) {
-      console.error(`❌ API Error: ${response.statusText}`);
-      return { props: { data: null }, revalidate: 120 };
+  useEffect(() => {
+    async function fetchSpotify() {
+      try {
+        console.log("🔄 Fetching Spotify data...");
+        const response = await fetch(
+          "https://code-alchemy-gamma.vercel.app/api/spotify"
+        );
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        console.log("✅ Fetched Spotify Data:", result);
+
+        if (!result || !result.item) {
+          setError(true);
+          return;
+        }
+
+        setData(result);
+        setError(false);
+      } catch (err) {
+        console.error("❌ Error fetching Spotify data:", err);
+        setError(true);
+      }
     }
 
-    const data = await response.json();
-    console.log("✅ Spotify API Response:", data);
+    fetchSpotify(); // Initial Fetch
+    const interval = setInterval(fetchSpotify, 120000); // ⏳ Refresh every 2 minutes
 
-    if (!data || !data.item) {
-      console.warn("⚠️ No track playing, returning empty data...");
-      return { props: { data: null }, revalidate: 120 };
-    }
+    return () => clearInterval(interval); // Clean up interval on unmount
+  }, []);
 
-    return { props: { data }, revalidate: 120 };
-  } catch (error) {
-    console.error("❌ Error fetching data:", error);
-    return { props: { data: null }, revalidate: 120 };
-  }
-}
-
-export default function SpotifyNowPlaying({ data }) {
-  if (!data || !data.item) {
+  if (error || !data) {
     return <div>❌ No song playing or failed to load data.</div>;
   }
 
