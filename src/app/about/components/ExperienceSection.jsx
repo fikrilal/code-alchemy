@@ -9,7 +9,7 @@ export default function ExperienceSection({
 }) {
   return (
     <motion.section
-      className="container mx-auto px-6 lg:px-12 py-12 lg:py-20"
+      className="container mx-auto py-12 lg:py-20"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"

@@ -5,6 +5,7 @@ import skills from "@/data/skill";
 import ExperienceSection from "./ExperienceSection";
 import AchievementsSection from "./AchievementsSection";
 import QuoteSection from "./QuoteSection";
+import ChainOfThought from "./ChainOfThought";
 
 export default function MainSection() {
   // Container variants: controls stagger and a parent fade-in if desired
@@ -33,10 +34,10 @@ export default function MainSection() {
   };
 
   return (
-    <>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-0">
       {/* Top Section */}
       <motion.section
-        className="text-left mb-8 container mx-auto px-6 lg:px-12 pt-28 sm:pt-28 lg:pt-40"
+        className="text-left mb-8 container mx-auto pt-28 sm:pt-28 lg:pt-40"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -59,7 +60,7 @@ export default function MainSection() {
 
       {/* Main Section (About) */}
       <motion.section
-        className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between container mx-auto py-8 lg:py-20 px-6 lg:px-12"
+        className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between container mx-auto py-8 lg:py-20 lg:space-x-8"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -83,28 +84,7 @@ export default function MainSection() {
             className="flex flex-col items-center lg:items-start"
             variants={childVariants}
           >
-            {/* Social Icons */}
-            <div className="flex space-x-4 mb-2 sm:mb-4 md:mb-6 lg:mb-4">
-              {skills.map((skill, index) => (
-                <a
-                  key={index}
-                  href={skill.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:opacity-80 transition-transform transform hover:scale-110"
-                >
-                  <img src={skill.icon} alt={skill.name} className="w-6 h-6" />
-                </a>
-              ))}
-            </div>
-
-            {/* Email and Bio */}
-            <p className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-slate-200">
-              fikrildev@gmail.com
-            </p>
-            <p className="px-8 lg:px-0 mt-2 sm:mt-2 lg:mt-3 text-base md:text-lg text-slate-400 max-w-sm leading-[1.6] sm:!leading-[1.6]">
-              Mobile Engineer by day, Warhammer 40K enthusiast by night.
-            </p>
+            <ChainOfThought />
           </motion.div>
         </motion.div>
 
@@ -156,6 +136,6 @@ export default function MainSection() {
         containerVariants={containerVariants}
         childVariants={childVariants}
       />
-    </>
+    </div>
   );
 }
