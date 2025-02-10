@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function SpotifyNowPlaying() {
   const [track, setTrack] = useState(null);
+  const [isLastPlayed, setIsLastPlayed] = useState(false);
 
   useEffect(() => {
     async function fetchSpotify() {
@@ -27,9 +28,12 @@ export default function SpotifyNowPlaying() {
             albumImage: data.item.album.images[0].url,
             spotifyUrl: data.item.external_urls.spotify,
           });
+          // Check if the flag exists and update the state accordingly.
+          setIsLastPlayed(data.last_played === true);
         } else {
-          console.log("🎵 No track currently playing.");
+          console.log("🎵 No track data available.");
           setTrack(null);
+          setIsLastPlayed(false);
         }
       } catch (error) {
         console.error("❌ Error fetching Spotify data:", error);
@@ -50,7 +54,7 @@ export default function SpotifyNowPlaying() {
       {/* Header row with label and icon */}
       <div className="flex justify-between items-center mb-2">
         <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
-          CURRENTLY PLAYING
+          {isLastPlayed ? "LAST PLAYED" : "CURRENTLY PLAYING"}
         </p>
         <div className="bg-slate-1100 border border-slate-500 rounded-full flex items-center justify-center w-8 h-8">
           <img
@@ -65,9 +69,7 @@ export default function SpotifyNowPlaying() {
       <div className="flex-grow flex items-center">
         {track ? (
           <div className="flex items-center gap-4">
-            {/* Outer container with fixed dimensions */}
             <div className="relative w-20 h-20 flex-none rounded-full border border-slate-800 p-2">
-              {/* Spinning album image */}
               <div className="w-full h-full rounded-full overflow-hidden">
                 <img
                   src={track.albumImage}
@@ -78,7 +80,6 @@ export default function SpotifyNowPlaying() {
               </div>
             </div>
 
-            {/* Song details */}
             <div>
               <p className="text-md text-slate-200 font-medium">{track.name}</p>
               <p className="pt-1 text-sm text-slate-400">{track.artist}</p>
@@ -104,14 +105,12 @@ export default function SpotifyNowPlaying() {
               focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600 active:scale-95
             "
           >
-            {/* Overlay for the hover effect */}
             <span
               className="
                 absolute inset-0 bg-slate-100 dark:bg-slate-100 rounded-full
                 transform origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100
               "
             ></span>
-            {/* Content wrapper */}
             <span className="relative z-10 inline-flex items-center">
               Listen along
               <span className="px-2 ml-1 transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">

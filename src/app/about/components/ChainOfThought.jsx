@@ -74,7 +74,7 @@ const thoughts = [
       "🤖 Massive armies? **Check.** Grimdark lore? **Check.**",
       "🤖 The factions? **All morally questionable, but that’s the fun.**",
       "🤖 The setting? **A never-ending war where everyone loses.**",
-      "🤖 And yet, here I am, **absolutely loving it.** *FOR THE EMPEROR!*",
+      "🤖 And yet, here I am, absolutely loving it. **FOR THE EMPEROR!**",
     ],
   },
   {
@@ -90,7 +90,8 @@ const thoughts = [
   },
   {
     title: "🥑 Best Coding Fuel: Avocados. The elite choice.",
-    content: `"Debugging is easier when you're powered by avocados. Scientifically proven (probably)."`,
+    content:
+      "Debugging is easier when you're powered by avocados. Scientifically proven (probably).",
 
     chain: [
       "🤖 Energy source? Nuclear? Solar?",

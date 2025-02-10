@@ -1,7 +1,6 @@
 // src/app/api/spotify/route.js
 
 import { NextResponse } from "next/server";
-import { format, parseISO } from "date-fns";
 
 // A helper to parse cookies from the request header (if needed)
 function parseCookies(cookieHeader = "") {
@@ -21,7 +20,7 @@ export async function GET(req) {
   const client_id = process.env.SPOTIFY_CLIENT_ID;
   const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
-  // 1. Use the refresh token from the environment variable instead of a cookie.
+  // 1. Use the refresh token from the environment variable.
   const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
   if (!refreshToken) {
     console.error("❌ No refresh token available. Set SPOTIFY_REFRESH_TOKEN.");
@@ -71,36 +70,63 @@ export async function GET(req) {
 
   // 3. Fetch the currently playing track
   console.log("🔄 Fetching Currently Playing Track...");
-  const res = await fetch(
+  const currentRes = await fetch(
     "https://api.spotify.com/v1/me/player/currently-playing",
     {
       headers: { Authorization: `Bearer ${accessToken}` },
     }
   );
 
-  const resultText = await res.text();
-  console.log("🔍 Spotify API Response:", resultText);
+  // If Spotify returns a 204, it means nothing is currently playing.
+  if (currentRes.status === 204) {
+    console.log("🎵 No track currently playing. Fetching last played track...");
 
-  if (!res.ok) {
+    // 4. Fetch the last played track from recently played endpoint
+    const recentRes = await fetch(
+      "https://api.spotify.com/v1/me/player/recently-played?limit=1",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+
+    const recentData = await recentRes.json();
+
+    if (!recentRes.ok || !recentData.items || recentData.items.length === 0) {
+      console.error("❌ Failed to fetch recently played track:", recentData);
+      return new Response(
+        JSON.stringify({ error: "Failed to fetch recently played track" }),
+        { status: recentRes.status }
+      );
+    }
+
+    // Extract the last played track from the first item.
+    const lastPlayedTrack = recentData.items[0].track;
+    console.log("✅ Last played track:", lastPlayedTrack);
+
+    // Return the track info in the same format as the currently playing endpoint.
+    // (We add an extra field to indicate it’s the last played track if needed.)
     return new Response(
-      JSON.stringify({
-        error: "Failed to fetch currently playing track",
-        details: resultText,
-      }),
-      { status: res.status }
+      JSON.stringify({ item: lastPlayedTrack, last_played: true }),
+      {
+        status: 200,
+      }
     );
   }
 
-  if (res.status === 204) {
-    console.log("🎵 No track currently playing.");
+  // Handle any other non-OK responses.
+  if (!currentRes.ok) {
+    const errorText = await currentRes.text();
     return new Response(
-      JSON.stringify({ message: "No track currently playing" }),
-      { status: 204 }
+      JSON.stringify({
+        error: "Failed to fetch currently playing track",
+        details: errorText,
+      }),
+      { status: currentRes.status }
     );
   }
 
   try {
-    const data = JSON.parse(resultText);
+    const data = await currentRes.json();
     console.log("✅ Currently Playing Track:", data);
     return new Response(JSON.stringify(data), { status: 200 });
   } catch (error) {
@@ -108,7 +134,6 @@ export async function GET(req) {
     return new Response(
       JSON.stringify({
         error: "Failed to parse Spotify response",
-        details: resultText,
       }),
       { status: 500 }
     );
