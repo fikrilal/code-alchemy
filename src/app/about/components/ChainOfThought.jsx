@@ -78,14 +78,15 @@ const thoughts = [
     ],
   },
   {
-    title: "🎵 Favorite Bands: Linkin Park, Starset, Breaking Benjamin",
-    content: `"Give me a sign, I wanna believe!" - *Breaking Benjamin* (and me when debugging)`,
+    title: "🎵 Favorite Bands: Imagine Dragons, Aurora, Starset",
+    content:
+      "One moment it’s XXXTentacion, next it’s Aurora. Then Imagine Dragons crashes in. My Spotify algorithm is confused.",
     chain: [
-      "🤖 What’s my **background music** today?",
-      "🤖 Debugging session? Sounds like a **Linkin Park** moment.",
-      "🤖 Oh wait, should I mention **Evanescence** too?",
-      "🤖 Nah, let’s not overwhelm them with too much greatness.",
-      "🤖 Alright, let’s just **list them all**!",
+      "🤖 Hmm… what’s the **vibe check** today?",
+      "🤖 Debugging? Might need some **XXXTentacion or Juice WRLD** energy.",
+      "🤖 But wait, deep focus mode? **Aurora it is.**",
+      "🤖 Suddenly feeling heroic? **Imagine Dragons, let’s go!**",
+      "🤖 Honestly, my Spotify has no idea who I really am.",
     ],
   },
   {
@@ -114,7 +115,7 @@ const thoughts = [
   },
   {
     title: "🎬 Favorite Movie Genre: Sci-Fi & Mind-bending Thrillers",
-    content: `"Reality is often disappointing... but movies? They fix that."`,
+    content: "Reality is often disappointing... but movies? They fix that.",
     chain: [
       "🤖 What’s my go-to entertainment?",
       "🤖 Sci-Fi? Thriller? Anything **Christopher Nolan**?",

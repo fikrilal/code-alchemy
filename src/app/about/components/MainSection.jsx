@@ -94,7 +94,7 @@ export default function MainSection() {
           variants={childVariants}
         >
           <p className="text-base md:text-lg text-slate-300 font-medium mb-4 leading-[1.6] sm:!leading-[1.8]">
-            Hi, I’m Fikril—a mobile engineer and UX enthusiast based in Jakarta,
+            Hi, I’m Fikril—a mobile engineer and UX enthusiast based in Bandung,
             Indonesia. My journey in tech started with a curiosity for how
             things work, and over the years, it’s turned into a passion for
             building apps that people love to use.
