@@ -56,14 +56,14 @@ export default function PortfolioSection() {
               Tutor App Mobile
             </h3>
             <p className="text-sm sm:text-base md:text-base text-slate-400">
-              A full-stack application that enables users to save tweets to
-              Notion via Telegram bot.
+              A mobile app connecting students with tutors and enabling
+              short-form content creation.
             </p>
 
             {/* 16:9 Image */}
             <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl">
               <img
-                src="/images/dummy-image.jpg"
+                src="/images/shot.png"
                 alt="Recent Project screenshot"
                 className="w-full h-full object-cover"
               />

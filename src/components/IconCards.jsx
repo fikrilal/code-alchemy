@@ -7,7 +7,7 @@ const IconCards = ({ childVariants }) => {
     <div className="grid grid-cols-3 gap-4">
       {/* X Icon */}
       <motion.a
-        href="https://x.com/yourhandle"
+        href="https://x.com/fikrilal"
         target="_blank"
         rel="noreferrer"
         aria-label="X"
@@ -25,7 +25,7 @@ const IconCards = ({ childVariants }) => {
 
       {/* GitHub Icon */}
       <motion.a
-        href="https://github.com/yourprofile"
+        href="https://github.com/fikrilal"
         target="_blank"
         rel="noreferrer"
         aria-label="GitHub"
@@ -43,7 +43,7 @@ const IconCards = ({ childVariants }) => {
 
       {/* LinkedIn Icon */}
       <motion.a
-        href="https://linkedin.com/in/yourprofile"
+        href="https://linkedin.com/in/fikrilal"
         target="_blank"
         rel="noreferrer"
         aria-label="LinkedIn"
