@@ -99,69 +99,93 @@ const workDetails = [
 
   {
     id: 2,
-    title: "E-Porter QR+",
-    slug: "eporter-qr-plus",
+    title: "Mobile ERP - Employee Attendance & Workforce Management",
+    slug: "mobile-erp",
     shortDescription:
-      "An AI-powered airport porter service with QR-based tracking.",
+      "A mobile ERP solution for employee attendance, shift management, and payroll access with geofencing-based check-ins.",
     overview:
-      "E-Porter QR+ solves the hassle of finding airport porters. By scanning a QR code, passengers can book a porter instantly, ensuring efficient baggage handling.",
+      "This project was developed for a **Japanese company** while working under **Nodewave**. Managing employee attendance accurately is a challenge for many companies, especially with remote or multiple-location teams. Mobile ERP is a workforce management solution that enables employees to check in securely using geofencing, track shifts, request leave, and access payroll data seamlessly. The app ensures security, preventing location spoofing and unauthorized check-ins.",
     objectives: [
-      "Ensure a seamless porter booking experience through QR codes.",
-      "Reduce lost baggage incidents by 40% using AI tracking.",
-      "Increase porter utilization efficiency by 60%.",
+      "Implement **secure geofencing-based attendance tracking** with OpenStreetMap.",
+      "Develop **a robust authentication system** with session management.",
+      "Enable **real-time shift management** to assign or swap shifts dynamically.",
+      "Ensure **data integrity and security** against GPS spoofing and mock locations.",
     ],
     targetUsers: [
       {
-        role: "Passengers",
-        needs: "Book a porter, track their baggage, and get real-time updates.",
-      },
-      {
-        role: "Porters",
+        role: "Employees",
         needs:
-          "Receive job requests, navigate to the customer, and confirm baggage handoff.",
+          "Check in for work, view shifts, request leave, and access payroll.",
       },
       {
-        role: "Airport Admin",
-        needs: "Monitor porter efficiency and optimize workforce allocation.",
+        role: "HR & Admins",
+        needs:
+          "Monitor attendance logs, approve leave, and manage workforce schedules.",
       },
     ],
     features: [
-      "📲 QR-Based Porter Booking – Scan and get instant service.",
-      "🛅 Real-Time Baggage Tracking – AI-powered monitoring.",
-      "📊 Workforce Optimization – Intelligent task distribution for porters.",
+      "📍 **Geofencing Attendance** – Ensures employees check in within a **100-meter radius** of the workplace.",
+      "📸 **Selfie Verification** – Requires employees to take a **real-time photo** as proof of attendance.",
+      "🚫 **Mock Location Prevention** – Uses **Device Info Plus** and backend validation to detect location spoofing.",
+      "🔑 **Secure Authentication** – Implements **access & refresh tokens** stored with **Flutter Secure Storage**.",
+      "📆 **Shift Management** – Employees can view and request shift changes based on company policies.",
+      "📝 **Leave Request System** – Submit leave applications digitally, with document uploads for approval.",
+      "💰 **Payslip Access** – Employees can **view and download** their monthly salary breakdown in PDF format.",
     ],
-    techStack: ["Flutter", "React", "Firebase", "Node.js"],
+    techStack: [
+      "Flutter (Dart)",
+      "GetX (State Management)",
+      "OpenStreetMap + Leaflet",
+      "Geolocator & Geofence Service",
+      "Device Info Plus (Mock Location Detection)",
+      "Dio (API Requests)",
+      "Shared Preferences & Get Storage",
+      "File Picker & Open File (For document uploads)",
+    ],
     challenges: [
       {
-        problem: "QR scanning latency was too high, affecting user experience.",
-        solution: "Optimized QR decoding algorithm to reduce lag by 70%.",
+        problem: "Ensuring employees only check in at the correct location.",
+        solution:
+          "Implemented **geofencing with OpenStreetMap** and validated GPS coordinates server-side.",
+      },
+      {
+        problem: "Handling mock location & GPS spoofing.",
+        solution:
+          "Used **Device Info Plus** to detect fake GPS apps and added backend validation.",
+      },
+      {
+        problem: "Managing authentication securely.",
+        solution:
+          "Implemented **access & refresh tokens** with auto-renewal using **Flutter Secure Storage**.",
       },
     ],
     results: [
       {
-        number: "42%",
-        description: "Reduced baggage mishandling incidents",
+        number: "85%",
+        description: "Increased attendance accuracy with geofencing.",
       },
       {
-        number: "58%",
-        description: "Increased porter efficiency",
+        number: "100m",
+        description: "Ensured strict geofencing validation for check-ins.",
       },
       {
-        number: "9.2/10",
-        description: "Customer satisfaction score",
+        number: "40%",
+        description:
+          "Reduced administrative workload with automated shift management.",
       },
     ],
     learnings:
-      "Optimizing QR scanning speed was crucial. Future iterations will include AI-driven predictive booking.",
-    timeframe: "Q2 2023 - Q4 2023",
-    link: "https://eporter-qr.com",
-    thumbnail: "/images/shot.png",
+      "Working on this project under **Nodewave** reinforced the importance of **location-based security** and efficient **session management** in workforce applications. Future improvements will focus on AI-powered attendance insights and performance tracking.",
+    timeframe: "Q3 2024 - Q4 2024",
+    link: "https://mobile-erp.com",
+    thumbnail: "/images/mobile-erp-thumbnail.png",
     images: [
-      "/images/dummy-image.jpg",
-      "/images/dummy-image.jpg",
-      "/images/dummy-image.jpg",
+      "/images/mobile-erp-1.jpg",
+      "/images/mobile-erp-2.jpg",
+      "/images/mobile-erp-3.jpg",
     ],
   },
+
   {
     id: 3,
     title: "EduTrack - Smart Attendance System",

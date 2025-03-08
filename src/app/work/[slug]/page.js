@@ -8,6 +8,15 @@ import workDetails from "@/data/workDetails";
 import Button from "@/components/Button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useEffect } from "react";
+
+// Add this renderMarkdown helper function before the CaseStudy component
+function renderMarkdown(text) {
+  if (!text) return "";
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold text
+    .replace(/\*(.*?)\*/g, "<em>$1</em>"); // Italic text
+}
 
 export default function CaseStudy() {
   const { slug } = useParams();
@@ -26,6 +35,31 @@ export default function CaseStudy() {
       </div>
     );
   }
+
+  // Fix the useEffect hook for the hover animation
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const card = e.currentTarget;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
+    };
+
+    const cards = document.querySelectorAll(".result-card");
+    cards.forEach((card) => {
+      card.addEventListener("mousemove", handleMouseMove);
+    });
+
+    return () => {
+      const cards = document.querySelectorAll(".result-card");
+      cards.forEach((card) => {
+        card.removeEventListener("mousemove", handleMouseMove);
+      });
+    };
+  }, [project?.results]);
 
   // Parent container animation
   const containerVariants = {
@@ -57,11 +91,22 @@ export default function CaseStudy() {
         {listItems ? (
           <ul className="list-none lg:text-lg space-y-2 text-slate-400 pt-4">
             {content.map((item, index) => (
-              <li key={index}>{item}</li>
+              <li key={index} className="flex items-start">
+                {/* Add bullet points for Objectives section */}
+                {title === "Objectives" && (
+                  <span className="mr-2 text-slate-500">•</span>
+                )}
+                <span
+                  dangerouslySetInnerHTML={{ __html: renderMarkdown(item) }}
+                ></span>
+              </li>
             ))}
           </ul>
         ) : (
-          <p className="lg:text-lg text-slate-400 pt-4">{content}</p>
+          <p
+            className="lg:text-lg text-slate-400 pt-4"
+            dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
+          ></p>
         )}
       </motion.section>
     );
@@ -88,14 +133,14 @@ export default function CaseStudy() {
                 <span className="absolute inset-0 bg-slate-100 dark:bg-slate-100 rounded-full transform origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100"></span>
                 <span className="relative z-10">
                   <svg
-                    width="12"
-                    height="13"
-                    viewBox="0 0 12 13"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M2.64121 9.85889L9.35872 3.14138M9.35872 3.14138L9.35872 8.09113M9.35872 3.14138L4.40898 3.14138"
+                      d="M12 7H2M2 7L6 3M2 7L6 11"
                       stroke="currentColor"
                       strokeWidth="1.5"
                       strokeLinecap="round"
@@ -195,13 +240,23 @@ export default function CaseStudy() {
                               <h3 className="text-lg font-medium text-slate-200 mb-2">
                                 Challenge {index + 1}
                               </h3>
-                              <p className="text-slate-400">{item.problem}</p>
+                              <p
+                                className="text-slate-400"
+                                dangerouslySetInnerHTML={{
+                                  __html: renderMarkdown(item.problem),
+                                }}
+                              ></p>
                             </div>
                             <div className="p-5 md:p-6 md:w-1/2 bg-slate-900/10">
                               <h3 className="text-lg font-medium text-slate-200 mb-2">
                                 Solution
                               </h3>
-                              <p className="text-slate-400">{item.solution}</p>
+                              <p
+                                className="text-slate-400"
+                                dangerouslySetInnerHTML={{
+                                  __html: renderMarkdown(item.solution),
+                                }}
+                              ></p>
                             </div>
                           </div>
                         ))}
@@ -218,17 +273,52 @@ export default function CaseStudy() {
                       {project.results.map((result, index) => (
                         <div
                           key={index}
-                          className={`bg-slate-900/10 border border-slate-800/40 p-6 rounded-lg text-center 
+                          className={`result-card group relative bg-slate-900/20 border border-slate-800/40 p-6 rounded-lg text-center cursor-pointer
                             ${
                               project.results.length === 3 &&
                               index === 2 &&
                               "sm:col-span-2 lg:col-span-1"
                             }`}
+                          style={{
+                            "--mouse-x": "0px",
+                            "--mouse-y": "0px",
+                          }}
                         >
-                          <div className="text-3xl md:text-4xl font-bold text-slate-200 mb-2">
-                            {result.number}
+                          {/* Glass hover effect */}
+                          <div
+                            className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 rounded-lg"
+                            style={{
+                              background:
+                                "radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.1), transparent 40%)",
+                            }}
+                          ></div>
+
+                          {/* Border glow effect */}
+                          <div
+                            className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"
+                            style={{
+                              background:
+                                "radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.1), transparent 40%)",
+                              left: "-1px",
+                              top: "-1px",
+                              right: "-1px",
+                              bottom: "-1px",
+                              transform: "scale(1.02)",
+                            }}
+                          ></div>
+
+                          {/* Content */}
+                          <div className="relative z-10 transition-transform duration-300 group-hover:scale-105 group-hover:translate-y-[-2px]">
+                            <div className="text-3xl md:text-4xl font-bold text-slate-200 mb-2">
+                              {result.number}
+                            </div>
+                            <p
+                              className="text-slate-400"
+                              dangerouslySetInnerHTML={{
+                                __html: renderMarkdown(result.description),
+                              }}
+                            ></p>
                           </div>
-                          <p className="text-slate-400">{result.description}</p>
                         </div>
                       ))}
                     </div>
