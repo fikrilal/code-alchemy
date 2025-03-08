@@ -14,6 +14,19 @@ export default function CaseStudy() {
   const router = useRouter();
   const project = workDetails.find((work) => work.slug === slug);
 
+  // Redirect to work page if project not found
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-neutral-950 flex items-center justify-center text-white flex-col gap-6">
+        <h1 className="text-3xl">Project not found</h1>
+        <p className="text-slate-400">
+          The project you're looking for doesn't exist or has been removed.
+        </p>
+        <Button onClick={() => router.push("/work")}>Back to Projects</Button>
+      </div>
+    );
+  }
+
   // Parent container animation
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -33,6 +46,27 @@ export default function CaseStudy() {
     },
   };
 
+  // Extract project content sections
+  const renderProjectSection = (title, content, listItems = false) => {
+    if (!content || (Array.isArray(content) && content.length === 0))
+      return null;
+
+    return (
+      <motion.section variants={childVariants}>
+        <h2 className="text-3xl font-semibold text-slate-200">{title}</h2>
+        {listItems ? (
+          <ul className="list-none lg:text-lg space-y-2 text-slate-400 pt-4">
+            {content.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="lg:text-lg text-slate-400 pt-4">{content}</p>
+        )}
+      </motion.section>
+    );
+  };
+
   return (
     <>
       <Navbar />
@@ -49,42 +83,9 @@ export default function CaseStudy() {
             <motion.div variants={childVariants} className="inline-block">
               <button
                 onClick={() => router.back()}
-                className={`
-                  relative
-                  overflow-hidden
-                  p-3
-                  w-auto max-w-fit
-                  inline-flex items-center justify-center
-                  group
-                  text-slate-200
-                  hover:text-slate-900 dark:hover:text-slate-900
-                  border border-slate-300 dark:border-slate-700
-                  rounded-full
-                  bg-transparent
-                  transform-gpu
-                  transition
-                  duration-500
-                  ease-out
-                  hover:scale-105
-                  hover:shadow-md
-                  focus:outline-none
-                  focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600
-                  active:scale-95
-                `}
+                className="relative overflow-hidden p-3 w-auto max-w-fit inline-flex items-center justify-center group text-slate-200 hover:text-slate-900 dark:hover:text-slate-900 border border-slate-300 dark:border-slate-700 rounded-full bg-transparent transform-gpu transition duration-500 ease-out hover:scale-105 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600 active:scale-95"
               >
-                {/* Overlay effect */}
-                <span
-                  className="
-                  absolute inset-0
-                  bg-slate-100 dark:bg-slate-100
-                  rounded-full
-                  transform origin-left scale-x-0
-                  transition-transform duration-500 ease-out
-                  group-hover:scale-x-100
-                "
-                ></span>
-
-                {/* Arrow icon */}
+                <span className="absolute inset-0 bg-slate-100 dark:bg-slate-100 rounded-full transform origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100"></span>
                 <span className="relative z-10">
                   <svg
                     width="12"
@@ -124,7 +125,7 @@ export default function CaseStudy() {
             {/* Hero Image */}
             <motion.div
               className="w-full relative"
-              style={{ aspectRatio: "15/9" }}
+              style={{ aspectRatio: "16/9" }}
               variants={childVariants}
             >
               <Image
@@ -133,6 +134,7 @@ export default function CaseStudy() {
                 fill
                 className="object-cover rounded-lg"
                 priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
               />
             </motion.div>
 
@@ -150,72 +152,114 @@ export default function CaseStudy() {
                   <h3 className="text-lg font-semibold text-slate-200">
                     Tech Stack
                   </h3>
-                  {Object.entries(project.techStack).map(
-                    ([category, items]) => (
-                      <div key={category} className="mt-2">
-                        <p className="text-slate-400 capitalize">{category}:</p>
-                        <p className="text-slate-400 pt-2">
-                          {items.join(", ")}
-                        </p>
-                      </div>
-                    )
-                  )}
+                  <p className="text-slate-400 pt-2">
+                    {project.techStack.join(", ")}
+                  </p>
                 </motion.div>
-                <motion.div variants={childVariants}>
-                  <Button>Visit website</Button>
-                </motion.div>
+                {project.link && (
+                  <motion.div variants={childVariants}>
+                    <Button
+                      onClick={() =>
+                        window.open(
+                          project.link,
+                          "_blank",
+                          "noopener,noreferrer"
+                        )
+                      }
+                    >
+                      Visit website
+                    </Button>
+                  </motion.div>
+                )}
               </div>
 
               {/* Right Column */}
               <div className="md:col-span-2 space-y-10 text-white">
-                <motion.section variants={childVariants}>
-                  <h2 className="text-3xl font-semibold text-slate-200">
-                    Overview
-                  </h2>
-                  <p className="lg:text-lg text-slate-400 pt-4">
-                    {project.overview}
-                  </p>
-                </motion.section>
-
-                <motion.section variants={childVariants}>
-                  <h2 className="text-3xl font-semibold text-slate-200">
-                    Features
-                  </h2>
-                  <ul className="list-none lg:text-lg space-y-2 text-slate-400 pt-4">
-                    {project.features.map((feature, index) => (
-                      <li key={index}>{feature}</li>
-                    ))}
-                  </ul>
-                </motion.section>
-
-                <motion.section variants={childVariants}>
-                  <h2 className="text-3xl font-semibold text-slate-200">
-                    Results
-                  </h2>
-                  <ul className="list-none lg:text-lg space-y-2 text-slate-400 pt-4">
-                    {project.results?.map((result, index) => (
-                      <li key={index}>{result}</li>
-                    ))}
-                  </ul>
-                </motion.section>
+                {renderProjectSection("Overview", project.overview)}
+                {renderProjectSection("Features", project.features, true)}
+                {project.objectives &&
+                  renderProjectSection("Objectives", project.objectives, true)}
+                {project.challenges && (
+                  <motion.section variants={childVariants}>
+                    <h2 className="text-3xl font-semibold text-slate-200">
+                      Challenges & Solutions
+                    </h2>
+                    <div className="pt-4">
+                      <div className="overflow-hidden border border-slate-800 rounded-lg divide-y divide-slate-800">
+                        {project.challenges.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col md:flex-row"
+                          >
+                            <div className="p-5 md:p-6 md:w-1/2 bg-slate-900/20">
+                              <h3 className="text-lg font-medium text-slate-200 mb-2">
+                                Challenge {index + 1}
+                              </h3>
+                              <p className="text-slate-400">{item.problem}</p>
+                            </div>
+                            <div className="p-5 md:p-6 md:w-1/2 bg-slate-900/10">
+                              <h3 className="text-lg font-medium text-slate-200 mb-2">
+                                Solution
+                              </h3>
+                              <p className="text-slate-400">{item.solution}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+                {project.results && (
+                  <motion.section variants={childVariants}>
+                    <h2 className="text-3xl font-semibold text-slate-200">
+                      Results
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
+                      {project.results.map((result, index) => (
+                        <div
+                          key={index}
+                          className={`bg-slate-900/10 border border-slate-800/40 p-6 rounded-lg text-center 
+                            ${
+                              project.results.length === 3 &&
+                              index === 2 &&
+                              "sm:col-span-2 lg:col-span-1"
+                            }`}
+                        >
+                          <div className="text-3xl md:text-4xl font-bold text-slate-200 mb-2">
+                            {result.number}
+                          </div>
+                          <p className="text-slate-400">{result.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+                {project.learnings &&
+                  renderProjectSection("Key Learnings", project.learnings)}
 
                 {/* Project Images Grid */}
-                <motion.div variants={childVariants} className="space-y-8">
-                  {project.images.map((image, index) => (
-                    <motion.div
-                      key={index}
-                      className="relative w-full aspect-[15/9]"
-                      variants={childVariants}
-                    >
-                      <Image
-                        src={image}
-                        alt={`${project.title} Image ${index + 1}`}
-                        fill
-                        className="object-cover rounded-lg"
-                      />
-                    </motion.div>
-                  ))}
-                </motion.div>
+                {project.images && project.images.length > 0 && (
+                  <motion.div variants={childVariants} className="space-y-8">
+                    <h2 className="text-3xl font-semibold text-slate-200 mb-6">
+                      Project Gallery
+                    </h2>
+                    {project.images.map((image, index) => (
+                      <motion.div
+                        key={index}
+                        className="relative w-full aspect-video"
+                        variants={childVariants}
+                      >
+                        <Image
+                          src={image}
+                          alt={`${project.title} Image ${index + 1}`}
+                          fill
+                          className="object-cover rounded-lg"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                        />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
               </div>
             </div>
           </div>

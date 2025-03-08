@@ -1,66 +1,102 @@
 const workDetails = [
   {
     id: 1,
-    title: "Ngawi Smart City",
-    slug: "ngawi-smart-city",
+    title: "Tutor App - Real-Time Online Tutoring Platform",
+    slug: "tutor-app",
     shortDescription:
-      "A digital platform to modernize public services and city management.",
+      "A scalable online tutoring platform with real-time video calls, authentication, and tutor verification.",
     overview:
-      "Many cities struggle with inefficient public service management. The Ngawi Smart City project aimed to create a digital solution for smoother communication between the government and citizens, improving response times and decision-making.",
+      "Finding qualified tutors on demand can be challenging for students. The Tutor App provides an efficient way to match students with tutors based on subject expertise, availability, and ratings. With built-in video calls, real-time notifications, and session tracking, the platform ensures a smooth and interactive learning experience.",
     objectives: [
-      "Reduce traffic congestion by 30% using real-time monitoring.",
-      "Enable digital access to key government services.",
-      "Improve waste management efficiency through IoT-based tracking.",
+      "Develop a scalable architecture using Clean Architecture principles.",
+      "Enable seamless real-time video sessions with reliable reconnection handling.",
+      "Implement a secure authentication system using Flutter Secure Storage.",
+      "Ensure only verified tutors can upload content and accept student session requests.",
     ],
     targetUsers: [
       {
-        role: "Citizens",
-        needs: "Submit complaints, track services, access government updates.",
+        role: "Students",
+        needs:
+          "Book tutors, attend live sessions, and watch educational content.",
       },
       {
-        role: "Government Officials",
-        needs: "Monitor city conditions, optimize resource allocation.",
+        role: "Tutors",
+        needs:
+          "Verify their profiles, create educational content, and accept session requests.",
       },
       {
-        role: "Traffic Department",
-        needs: "Use AI-powered analytics to manage congestion.",
+        role: "Admin",
+        needs: "Approve tutor profiles and moderate content.",
       },
     ],
     features: [
-      "🚀 Real-Time Traffic Monitoring – Uses AI to analyze road congestion.",
-      "📱 Citizen Reporting App – Allows residents to report infrastructure issues.",
-      "💡 Smart Waste Management – IoT-based tracking of garbage collection.",
+      "🎥 Live Video Sessions – Powered by Agora SDK with tracking and auto-pricing.",
+      "💰 Auto-Pricing & Billing – Dynamic pricing based on session duration.",
+      "🔄 Freeze-Unfreeze Mechanism – Prevents session loss due to connectivity issues.",
+      "📩 Real-Time Notifications – Session alerts via Firebase Cloud Messaging (FCM).",
+      "🔑 Secure Authentication – Uses Flutter Secure Storage for token management.",
+      "📹 TikTok-Style Video Feature – Tutors upload educational videos with thumbnails.",
+      "🔍 Profile Verification – Tutors must submit content and details for admin approval.",
+      "📱 Core Component Development – Standardized UI components for scalable development.",
     ],
-    techStack: {
-      frontend: ["Next.js", "TailwindCSS"],
-      backend: ["Node.js", "Express.js"],
-      database: ["Firebase Firestore"],
-      apis: ["Google Maps API", "OpenStreetMap"],
-      infrastructure: ["Docker", "AWS Lambda"],
-    },
+    techStack: [
+      "Flutter (Dart)",
+      "Firebase Firestore",
+      "Firebase Authentication",
+      "GetX (State Management)",
+      "Agora SDK (Real-Time Video Calls)",
+      "Firebase Cloud Messaging (FCM)",
+      "Flutter Secure Storage",
+      "Isar Database (Local Caching)",
+    ],
     challenges: [
       {
-        problem:
-          "Real-time location tracking caused excessive API calls, increasing costs.",
-        solution: "Implemented a caching layer to reduce redundant requests.",
+        problem: "High Firebase Firestore costs due to frequent reads.",
+        solution: "Implemented local caching with Isar to reduce API calls.",
+      },
+      {
+        problem: "Agora RTM signaling was too costly.",
+        solution:
+          "Switched to Firebase Notifications for signaling, reducing expenses.",
+      },
+      {
+        problem: "Students losing connection during sessions.",
+        solution:
+          "Developed a freeze-unfreeze mechanism to allow reconnection without losing progress.",
+      },
+      {
+        problem: "Ensuring only verified tutors can accept sessions.",
+        solution:
+          "Built a profile verification process requiring admin approval.",
       },
     ],
     results: [
-      "🚗 Reduced traffic congestion by 28% in key zones.",
-      "👥 Increased citizen engagement by 50%.",
-      "🏙 Improved waste collection efficiency by 35%.",
+      {
+        number: "40%",
+        description: "Increased tutor-student matching efficiency",
+      },
+      {
+        number: "50%",
+        description: "Reduced Firebase costs using local caching",
+      },
+      {
+        number: "95%",
+        description:
+          "Session completion rate with enhanced connection handling",
+      },
     ],
     learnings:
-      "This project reinforced the importance of real-time data processing in smart cities. Future improvements will focus on AI-driven analytics for even better decision-making.",
-    timeframe: "Q1 2023 - Q3 2023",
-    link: "https://ngawi-smart-city.com",
-    thumbnail: "/images/shot.png",
+      "Leading this project reinforced the importance of Clean Architecture and reusable components in scalable Flutter applications. Future improvements will focus on AI-based tutor recommendations and advanced session analytics for personalized learning experiences.",
+    timeframe: "Q2 2024 - Q4 2024",
+    link: "https://tutor-app.com",
+    thumbnail: "/images/tutor-thumbnail.png",
     images: [
-      "/images/ngawi-1.jpg",
-      "/images/ngawi-2.jpg",
-      "/images/ngawi-3.jpg",
+      "/images/tutor-1.jpg",
+      "/images/tutor-2.jpg",
+      "/images/tutor-3.jpg",
     ],
   },
+
   {
     id: 2,
     title: "E-Porter QR+",
@@ -94,10 +130,7 @@ const workDetails = [
       "🛅 Real-Time Baggage Tracking – AI-powered monitoring.",
       "📊 Workforce Optimization – Intelligent task distribution for porters.",
     ],
-    techStack: {
-      frontend: ["Flutter", "React"],
-      backend: ["Firebase", "Node.js"],
-    },
+    techStack: ["Flutter", "React", "Firebase", "Node.js"],
     challenges: [
       {
         problem: "QR scanning latency was too high, affecting user experience.",
@@ -105,9 +138,18 @@ const workDetails = [
       },
     ],
     results: [
-      "📌 Reduced baggage mishandling incidents by 42%.",
-      "💼 Increased porter efficiency by 58%.",
-      "🎉 Improved customer satisfaction score to 9.2/10.",
+      {
+        number: "42%",
+        description: "Reduced baggage mishandling incidents",
+      },
+      {
+        number: "58%",
+        description: "Increased porter efficiency",
+      },
+      {
+        number: "9.2/10",
+        description: "Customer satisfaction score",
+      },
     ],
     learnings:
       "Optimizing QR scanning speed was crucial. Future iterations will include AI-driven predictive booking.",
@@ -150,12 +192,16 @@ const workDetails = [
       "📍 Geolocation-Based Tracking – Prevents proxy attendance fraud.",
       "📊 Automated Reports – Generates attendance analytics.",
     ],
-    techStack: {
-      frontend: ["React", "TailwindCSS"],
-      backend: ["Django", "PostgreSQL"],
-      apis: ["AWS Rekognition", "Google Maps API"],
-      infrastructure: ["AWS Lambda", "Docker"],
-    },
+    techStack: [
+      "React",
+      "TailwindCSS",
+      "Django",
+      "PostgreSQL",
+      "AWS Rekognition",
+      "Google Maps API",
+      "AWS Lambda",
+      "Docker",
+    ],
     thumbnail: "/images/shot.png",
     images: [
       "/images/edutrack-1.jpg",
@@ -193,12 +239,16 @@ const workDetails = [
       "📞 Instant Doctor Consultation – Connects patients with healthcare professionals.",
       "📊 Health Monitoring Dashboard – Tracks symptoms and vitals over time.",
     ],
-    techStack: {
-      frontend: ["React Native", "Expo"],
-      backend: ["FastAPI", "MongoDB"],
-      apis: ["Google Health API", "Twilio Video"],
-      infrastructure: ["GCP AI Models", "AWS S3"],
-    },
+    techStack: [
+      "React Native",
+      "Expo",
+      "FastAPI",
+      "MongoDB",
+      "Google Health API",
+      "Twilio Video",
+      "GCP AI Models",
+      "AWS S3",
+    ],
     thumbnail: "/images/shot.png",
     images: [
       "/images/medisync-1.jpg",
