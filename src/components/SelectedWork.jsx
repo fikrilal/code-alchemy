@@ -72,14 +72,20 @@ export default function SelectedWork() {
         {workDetails.map((project) => (
           <motion.div
             key={project.id}
-            className="rounded-3xl overflow-hidden flex flex-col border border-slate-900 group"
+            className="rounded-3xl overflow-hidden flex flex-col border border-slate-900 group relative"
             variants={{ ...childVariants, ...cardVariants }}
             initial="hidden"
             whileInView="visible"
             whileHover="hover"
             viewport={{ once: true, amount: 0.2 }}
           >
-            <div className="p-6 flex-none">
+            <Link
+              href={`/work/${project.slug}`}
+              className="absolute inset-0 z-10"
+            >
+              <span className="sr-only">View {project.title} details</span>
+            </Link>
+            <div className="p-6 flex-none relative">
               <div className="flex justify-between items-center">
                 <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
                   {project.title}
@@ -95,15 +101,13 @@ export default function SelectedWork() {
               <p className="text-slate-400 mt-2">{project.shortDescription}</p>
             </div>
             <div className="relative p-4">
-              <Link href={`/work/${project.slug}`}>
-                <div className="relative aspect-[14/9] rounded-2xl overflow-hidden">
-                  <img
-                    src={project.thumbnail}
-                    alt={`${project.title} screenshot`}
-                    className="absolute inset-0 w-full h-full object-cover cursor-pointer"
-                  />
-                </div>
-              </Link>
+              <div className="relative aspect-[14/9] rounded-2xl overflow-hidden">
+                <img
+                  src={project.thumbnail}
+                  alt={`${project.title} screenshot`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
             </div>
           </motion.div>
         ))}
