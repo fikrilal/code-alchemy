@@ -1,12 +1,13 @@
 const workDetails = [
   {
     id: 1,
-    title: "Tutor App - Real-Time Online Tutoring Platform",
+    title: "Tutor App - Online Tutoring Platform",
     slug: "tutor-app",
     shortDescription:
-      "A scalable online tutoring platform with real-time video calls, authentication, and tutor verification.",
+      "A scalable online tutoring platform with real-time video calls, authentication, tutor verification, and educational content creation.",
     overview:
-      "Finding qualified tutors on demand can be challenging for students. The Tutor App provides an efficient way to match students with tutors based on subject expertise, availability, and ratings. With built-in video calls, real-time notifications, and session tracking, the platform ensures a smooth and interactive learning experience.",
+      "Finding qualified tutors on demand can be challenging for students. The Tutor App provides an efficient way to match students with tutors based on subject expertise, availability, and ratings. With built-in **video calls, real-time notifications, session tracking, and a TikTok-style content feature**, the platform enhances learning beyond live sessions. Tutors can create short-form educational videos (Reels), allowing students to access bite-sized learning content anytime.",
+
     objectives: [
       "Develop a scalable architecture using Clean Architecture principles.",
       "Enable seamless real-time video sessions with reliable reconnection handling.",
@@ -99,7 +100,7 @@ const workDetails = [
 
   {
     id: 2,
-    title: "Mobile ERP - Employee Attendance & Workforce Management",
+    title: "Mobile ERP - Workforce Management",
     slug: "mobile-erp",
     shortDescription:
       "A mobile ERP solution for employee attendance, shift management, and payroll access with geofencing-based check-ins.",
@@ -188,7 +189,7 @@ const workDetails = [
 
   {
     id: 3,
-    title: "CeritaKita - AI-Powered Mental Health Support Platform",
+    title: "CeritaKita - Mental Health Support Platform",
     slug: "cerita-kita",
     shortDescription:
       "An AI-integrated mental health platform built with Kotlin & Jetpack Compose, providing counseling services, journaling, and self-help tools.",
@@ -283,7 +284,7 @@ const workDetails = [
   },
   {
     id: 4,
-    title: "SummitUp - Mountain Trip Booking & Gear Rental",
+    title: "SummitUp - Trip Booking & Gear Rental",
     slug: "summitup",
     shortDescription:
       "A mountain trip booking app with integrated payment gateway, rental services, and user reviews.",

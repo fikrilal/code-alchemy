@@ -72,7 +72,7 @@ export default function SelectedWork() {
         {workDetails.map((project) => (
           <motion.div
             key={project.id}
-            className="rounded-3xl overflow-hidden flex flex-col border border-slate-900 group relative"
+            className="rounded-2xl overflow-hidden flex flex-col border border-slate-900 group relative"
             variants={{ ...childVariants, ...cardVariants }}
             initial="hidden"
             whileInView="visible"
@@ -90,7 +90,7 @@ export default function SelectedWork() {
                 <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
                   {project.title}
                 </h3>
-                <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">
+                <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45 ml-2">
                   <img
                     src="/icons/ic_arrow.svg"
                     alt="Arrow"
@@ -101,7 +101,7 @@ export default function SelectedWork() {
               <p className="text-slate-400 mt-2">{project.shortDescription}</p>
             </div>
             <div className="relative p-4">
-              <div className="relative aspect-[14/9] rounded-2xl overflow-hidden">
+              <div className="relative aspect-[14/9] rounded-xl overflow-hidden">
                 <img
                   src={project.thumbnail}
                   alt={`${project.title} screenshot`}

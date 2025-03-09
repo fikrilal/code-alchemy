@@ -1,69 +1,37 @@
 const blogPosts = [
   {
     id: 1,
-    category: "Collaboration",
-    title: "How to Set Up a Collaborative Workspace in 5 Minutes",
+    category: "Tech & Code",
+    title: "Why Clean Architecture is a Lifesaver (Trust Me, I’ve Been There)",
     imageUrl: "/images/dummy-image.jpg",
-    authorName: "Benjamin",
+    authorName: "You",
     authorAvatar: "/images/avatar.jpg",
     description:
-      "Learn how to quickly set up a workspace that fosters collaboration and efficiency for your team.",
+      "Ever had a project turn into spaghetti code faster than instant noodles? Let’s talk about why Clean Architecture saved me (and my sanity).",
     date: "2025-01-01",
   },
   {
     id: 2,
-    category: "Productivity",
-    title: "Breaking Down Big Projects: A Guide to Managing Workload",
+    category: "Dev Life",
+    title:
+      "Handling a Flutter Project Alone: Fun, Pain, and Late-Night Debugging",
     imageUrl: "/images/dummy-image.jpg",
-    authorName: "Chris",
+    authorName: "You",
     authorAvatar: "/images/avatar.jpg",
     description:
-      "Discover actionable steps to divide large projects into manageable tasks and stay productive.",
+      "Took on a full Flutter project solo? Here’s what I learned (including how not to lose your mind in the process).",
     date: "2025-01-05",
   },
   {
     id: 3,
-    category: "Industry",
-    title: "The Evolution of Machine Learning in Business",
+    category: "Real Talk",
+    title: "The Time I Tried to Do Everything Myself (And Why You Shouldn’t)",
     imageUrl: "/images/dummy-image.jpg",
-    authorName: "Jessica",
+    authorName: "You",
     authorAvatar: "/images/avatar.jpg",
     description:
-      "Explore how machine learning is transforming industries and unlocking new opportunities for businesses.",
+      "Spoiler: It didn’t end well. Here’s a raw take on why teamwork actually matters and how I learned the hard way.",
     date: "2025-01-10",
-  },
-  {
-    id: 4,
-    category: "Productivity",
-    title: "10 Quick Hacks to Boost Your Productivity Today",
-    imageUrl: "/images/dummy-image.jpg",
-    authorName: "Benjamin",
-    authorAvatar: "/images/avatar.jpg",
-    description:
-      "Get immediate results with these easy-to-implement hacks to maximize your daily productivity.",
-    date: "2025-01-15",
-  },
-  {
-    id: 5,
-    category: "Collaboration",
-    title: "5 Essential Tools for Effective Remote Collaboration",
-    imageUrl: "/images/dummy-image.jpg",
-    authorName: "Chris",
-    authorAvatar: "/images/avatar.jpg",
-    description:
-      "Equip your team with the best tools to collaborate effectively, no matter where they are.",
-    date: "2025-01-20",
-  },
-  {
-    id: 6,
-    category: "Automation",
-    title: "Top 5 Benefits of Automation for Small Businesses",
-    imageUrl: "/images/dummy-image.jpg",
-    authorName: "Jessica",
-    authorAvatar: "/images/avatar.jpg",
-    description:
-      "Understand how automation can help small businesses save time, reduce costs, and improve efficiency.",
-    date: "2025-01-25",
   },
 ];
 

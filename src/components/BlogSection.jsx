@@ -48,6 +48,11 @@ export default function BlogSection() {
     },
   };
 
+  // Sort blog posts by date (newest first)
+  const sortedBlogPosts = [...blogPosts].sort((a, b) => {
+    return new Date(b.date) - new Date(a.date);
+  });
+
   return (
     <motion.section
       className="flex flex-col items-start min-h-screen transition-colors duration-300"
@@ -82,7 +87,7 @@ export default function BlogSection() {
 
       {/* Blog Content Rows */}
       <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 lg:px-8 mt-2 sm:mt-10 lg:mt-16">
-        {blogPosts.slice(0, 3).map((blog, index) => (
+        {sortedBlogPosts.slice(0, 3).map((blog, index) => (
           <motion.div
             key={blog.id}
             variants={childVariants}

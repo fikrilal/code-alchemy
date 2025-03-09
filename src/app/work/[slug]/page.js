@@ -134,7 +134,7 @@ export default function CaseStudy() {
                   ></h3>
                   {description && (
                     <p
-                      className="text-sm text-slate-400"
+                      className="text-md text-slate-400"
                       dangerouslySetInnerHTML={{
                         __html: renderMarkdown(description),
                       }}

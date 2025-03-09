@@ -53,17 +53,17 @@ export default function PortfolioSection() {
               RECENT PROJECT
             </p>
             <h3 className="text-xl text-slate-200 font-semibold mb-2">
-              Tutor App Mobile
+              Math Tetris Game
             </h3>
             <p className="text-sm sm:text-base md:text-base text-slate-400">
-              A mobile app connecting students with tutors and enabling
-              short-form content creation.
+              A fast-paced mobile game combining math puzzles with Tetris
+              mechanics.
             </p>
 
             {/* 16:9 Image */}
             <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl">
               <img
-                src="/images/shot.png"
+                src="/images/recent-project-thumbnail.png"
                 alt="Recent Project screenshot"
                 className="w-full h-full object-cover"
               />
@@ -82,14 +82,14 @@ export default function PortfolioSection() {
               Shebo Mobile
             </h3>
             <p className="text-sm sm:text-base md:text-base text-slate-400">
-              A full-stack application that enables users to save tweets to
-              Notion via Telegram bot.
+              An AI-powered digital bookshelf. It’s like social media, but for
+              book lovers! :)
             </p>
 
             {/* 16:9 Image */}
             <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl">
               <img
-                src="/images/dummy-image.jpg"
+                src="/images/side-project-thumbnail.png"
                 alt="Side Hustle screenshot"
                 className="w-full h-full object-cover"
               />
