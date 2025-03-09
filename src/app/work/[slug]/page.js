@@ -87,22 +87,22 @@ export default function CaseStudy() {
     };
   }, [project?.results]);
 
-  // Parent container animation
+  // Parent container animation - modified for better mobile support
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 },
+      transition: { staggerChildren: 0.15, delayChildren: 0.1 },
     },
   };
 
-  // Child reveal animation
+  // Child reveal animation - modified for better mobile support
   const childVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: { duration: 0.4, ease: "easeOut" },
     },
   };
 
@@ -186,11 +186,11 @@ export default function CaseStudy() {
       <Navbar />
       <main className="bg-neutral-950 min-h-screen pt-10">
         <motion.section
-          className="flex flex-col items-start transition-colors duration-300 px-4 sm:px-6 lg:px-8 xl:px-0 py-24"
+          className="flex flex-col items-start transition-colors duration-300 px-4 sm:px-6 lg:px-8 xl:px-0 py-12 md:py-24"
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate="visible" // Changed from whileInView to animate
+          viewport={{ once: true, amount: 0.05 }} // Reduced amount for better mobile trigger
         >
           <div className="max-w-6xl w-full mx-auto space-y-12">
             {/* Back Button */}
@@ -236,9 +236,9 @@ export default function CaseStudy() {
               </motion.p>
             </div>
 
-            {/* Hero Image */}
+            {/* Hero Image - Modified for better mobile display */}
             <motion.div
-              className="w-full relative"
+              className="w-full relative rounded-lg overflow-hidden"
               style={{ aspectRatio: "16/9" }}
               variants={childVariants}
             >
@@ -246,14 +246,14 @@ export default function CaseStudy() {
                 src={project.thumbnail}
                 alt={project.title}
                 fill
-                className="object-cover rounded-lg"
+                className="object-cover"
                 priority
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
               />
             </motion.div>
 
-            {/* Grid Content */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {/* Grid Content - Modified for better mobile spacing */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-8 md:mt-12">
               {/* Left Column */}
               <div className="md:col-span-1 space-y-6 text-white">
                 <motion.div variants={childVariants}>
