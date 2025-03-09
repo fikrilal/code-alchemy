@@ -88,7 +88,9 @@ export default function GithubActivity() {
           </p>
         </div>
         <div className="bg-zinc-900 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-slate-400">Total Contributions</p>
+          <p className="text-xs text-slate-400 break-words">
+            Total Contributions
+          </p>
           <p className="text-lg text-slate-200 mt-2">
             {stats ? stats.totalContributions : "Loading..."}
           </p>
