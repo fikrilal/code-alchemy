@@ -45,6 +45,8 @@ export default function AchievementsSection({
             </div>
             <a
               href={achievement.credentialLink}
+              target="_blank"
+              rel="noopener noreferrer"
               className="font-medium inline-flex items-center text-brand-primary hover:text-slate-900 transition-colors text-sm group"
             >
               Credential
