@@ -89,7 +89,7 @@ const workDetails = [
     learnings:
       "Leading this project reinforced the importance of Clean Architecture and reusable components in scalable Flutter applications. Future improvements will focus on AI-based tutor recommendations and advanced session analytics for personalized learning experiences.",
     timeframe: "Q2 2024 - Q4 2024",
-    link: "https://tutor-app.com",
+    link: "#",
     thumbnail: "/images/tutor-app-thumbnail.png",
     images: [
       "/images/tutor-1.jpg",
@@ -178,7 +178,7 @@ const workDetails = [
     learnings:
       "Working on this project under **Nodewave** reinforced the importance of **location-based security** and efficient **session management** in workforce applications. Future improvements will focus on AI-powered attendance insights and performance tracking.",
     timeframe: "Q3 2024 - Q4 2024",
-    link: "https://mobile-erp.com",
+    link: "#",
     thumbnail: "/images/mobile-erp-app-thumbnail.png",
     images: [
       "/images/mobile-erp-1.jpg",
@@ -274,7 +274,7 @@ const workDetails = [
     learnings:
       "This project reinforced my expertise in **Kotlin, Jetpack Compose, and Firebase integration**. The experience of working with **AI-powered APIs** also improved my skills in backend API communication and secure session management.",
     timeframe: "Q1 2024 - Q3 2024",
-    link: "https://ceritakita.app",
+    link: "#",
     thumbnail: "/images/ceritakita-app-thumbnail.png",
     images: [
       "/images/ceritakita-1.jpg",
@@ -368,7 +368,7 @@ const workDetails = [
     learnings:
       "Building SummitUp strengthened my expertise in **payment gateway integration, backend development with Next.js, and managing state using BLoC**. Handling **real-time trip bookings and transactions** required deep coordination between the frontend and backend, reinforcing my problem-solving skills in full-stack development.",
     timeframe: "Q2 2024 - Q3 2024",
-    link: "https://summitup.com",
+    link: "#",
     thumbnail: "/images/summitup-app-thumbnail.png",
     images: [
       "/images/summitup-1.jpg",
