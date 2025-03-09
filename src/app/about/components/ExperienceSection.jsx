@@ -35,10 +35,26 @@ export default function ExperienceSection({
                 <h3 className="text-xl font-medium text-slate-200">
                   {experience.title}
                 </h3>
-                <p className="pt-2 text-slate-400">{experience.organization}</p>
+                <div className="pt-2 flex flex-wrap items-center gap-2 text-slate-400">
+                  <span>{experience.organization}</span>
+                  <span className="text-slate-600">•</span>
+                  <span className="text-slate-500">{experience.location}</span>
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="px-2 py-0.5 text-xs rounded-full bg-slate-800/40 text-slate-400 border border-slate-700/50">
+                    {experience.workType}
+                  </span>
+                </div>
               </div>
-              <p className="text-sm text-slate-500">{experience.date}</p>
+              <p className="text-sm text-slate-500 whitespace-nowrap">
+                {experience.date}
+              </p>
             </div>
+            {experience.description && (
+              <p className="mt-3 text-slate-400 text-sm leading-relaxed">
+                {experience.description}
+              </p>
+            )}
           </motion.div>
         ))}
       </div>

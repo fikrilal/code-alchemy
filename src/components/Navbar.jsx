@@ -27,12 +27,6 @@ export default function Navbar() {
             Case Studies
           </Link>
           <Link
-            href="#work"
-            className="text-slate-100 hover:text-brand-primary"
-          >
-            Work
-          </Link>
-          <Link
             href="#blog"
             className="text-slate-100 hover:text-brand-primary"
           >
@@ -100,13 +94,6 @@ export default function Navbar() {
           onClick={toggleMenu}
         >
           Case Studies
-        </Link>
-        <Link
-          href="#work"
-          className="block py-2 text-slate-200 hover:text-brand-primary"
-          onClick={toggleMenu}
-        >
-          Work
         </Link>
         <Link
           href="#blog"

@@ -34,7 +34,7 @@ export default function AchievementsSection({
               <h3 className="text-xl font-medium text-slate-200 mb-2 leading-[1.5]">
                 {achievement.title}
               </h3>
-              <div className="flex flex-row justify-between items-center text-sm">
+              <div className="flex flex-row justify-between items-center text-sm gap-4">
                 <p className="text-base text-slate-400">
                   {achievement.organization}
                 </p>

@@ -8,7 +8,7 @@ export default function Footer() {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.3, // tweak to your liking
+        staggerChildren: 0.3,
       },
     },
   };
@@ -20,7 +20,7 @@ export default function Footer() {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 1.0,
+        duration: 0.8,
         ease: "easeOut",
       },
     },

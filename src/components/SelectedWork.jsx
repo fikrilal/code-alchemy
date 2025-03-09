@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import workDetails from "@/data/workDetails";
 import Button from "./Button";
+import Link from "next/link";
 
 export default function SelectedWork() {
   // Parent container animation
@@ -23,7 +25,7 @@ export default function SelectedWork() {
     },
   };
 
-  // Card hover variants (for the entire card)
+  // Card hover variants
   const cardVariants = {
     initial: { scale: 1, boxShadow: "none" },
     hover: {
@@ -35,7 +37,7 @@ export default function SelectedWork() {
 
   return (
     <motion.section
-      className="flex flex-col items-start min-h-screen transition-colors duration-300  px-4 sm:px-6 lg:px-8 xl:px-0"
+      className="flex flex-col items-start min-h-screen transition-colors duration-300 px-4 sm:px-6 lg:px-8 xl:px-0"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
@@ -48,9 +50,9 @@ export default function SelectedWork() {
             className="text-3xl md:text-5xl font-semibold text-slate-200 leading-[1.2] sm:!leading-tight max-w-4xl"
             variants={childVariants}
           >
-            Some Stuff I’ve Built
+            Some Stuff I’ve Cooked
           </motion.h2>
-          {/* Hide button on mobile (below md) */}
+          {/* Hide button on mobile */}
           <motion.div variants={childVariants} className="hidden md:block">
             <Button>View all projects</Button>
           </motion.div>
@@ -66,53 +68,29 @@ export default function SelectedWork() {
       </div>
 
       {/* Projects Section */}
-      <div className="max-w-6xl w-full mx-auto mt-12 sm:mt-16 lg:mt-24">
-        {/* Main Project Card */}
-        {/* <motion.div
-          className="p-6 rounded-3xl mb-8 border border-slate-900 group"
-          variants={{ ...childVariants, ...cardVariants }}
-          initial="hidden"
-          whileInView="visible"
-          whileHover="hover"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
-              Main Project Title
-            </h3>
-            <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">
-              <img src="/icons/ic_arrow.svg" alt="Arrow" className="w-4 h-4" />
-            </span>
-          </div>
-          <p className="text-sm text-slate-400 mb-8">
-            A short description for the main project that spans the full width.
-          </p>
-          <div className="mt-4 w-full aspect-[16/10] overflow-hidden rounded-3xl">
-            <img
-              src="/images/dummy-image.jpg"
-              alt="Main Project screenshot"
-              className="w-full h-full object-cover rounded-3xl"
-            />
-          </div>
-        </motion.div> */}
-
-        {/* Two Smaller Project Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Project Card 1 */}
+      <div className="max-w-6xl w-full mx-auto mt-12 sm:mt-16 lg:mt-24 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {workDetails.map((project) => (
           <motion.div
-            className="rounded-3xl overflow-hidden flex flex-col border border-slate-900 group"
+            key={project.id}
+            className="rounded-2xl overflow-hidden flex flex-col border border-slate-900 group relative"
             variants={{ ...childVariants, ...cardVariants }}
             initial="hidden"
             whileInView="visible"
             whileHover="hover"
             viewport={{ once: true, amount: 0.2 }}
           >
-            <div className="p-6 flex-none">
+            <Link
+              href={`/work/${project.slug}`}
+              className="absolute inset-0 z-10"
+            >
+              <span className="sr-only">View {project.title} details</span>
+            </Link>
+            <div className="p-6 flex-none relative">
               <div className="flex justify-between items-center">
                 <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
-                  Project Title A
+                  {project.title}
                 </h3>
-                <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">
+                <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45 ml-2">
                   <img
                     src="/icons/ic_arrow.svg"
                     alt="Arrow"
@@ -120,127 +98,19 @@ export default function SelectedWork() {
                   />
                 </span>
               </div>
-              <p className="text-sm text-slate-400 mt-2">
-                Short description for project A.
-              </p>
+              <p className="text-slate-400 mt-2">{project.shortDescription}</p>
             </div>
-            <div className="relative flex-1 p-4">
-              <img
-                src="/images/dummy-image.jpg"
-                alt="Project A screenshot"
-                className="w-full h-full object-cover rounded-3xl"
-              />
-            </div>
-          </motion.div>
-
-          {/* Project Card 2 */}
-          <motion.div
-            className="rounded-3xl overflow-hidden flex flex-col border border-slate-900 group"
-            variants={{ ...childVariants, ...cardVariants }}
-            initial="hidden"
-            whileInView="visible"
-            whileHover="hover"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            <div className="p-6 flex-none">
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
-                  Project Title B
-                </h3>
-                <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">
-                  <img
-                    src="/icons/ic_arrow.svg"
-                    alt="Arrow"
-                    className="w-4 h-4"
-                  />
-                </span>
+            <div className="relative p-4">
+              <div className="relative aspect-[14/9] rounded-xl overflow-hidden">
+                <img
+                  src={project.thumbnail}
+                  alt={`${project.title} screenshot`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
               </div>
-              <p className="text-sm text-slate-400 mt-2">
-                Short description for project B.
-              </p>
-            </div>
-            <div className="relative flex-1 p-4">
-              <img
-                src="/images/dummy-image.jpg"
-                alt="Project B screenshot"
-                className="w-full h-full object-cover rounded-3xl"
-              />
             </div>
           </motion.div>
-        </div>
-
-        {/* Two Smaller Project Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          {/* Project Card 1 */}
-          <motion.div
-            className="rounded-3xl overflow-hidden flex flex-col border border-slate-900 group"
-            variants={{ ...childVariants, ...cardVariants }}
-            initial="hidden"
-            whileInView="visible"
-            whileHover="hover"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            <div className="p-6 flex-none">
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
-                  Project Title A
-                </h3>
-                <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">
-                  <img
-                    src="/icons/ic_arrow.svg"
-                    alt="Arrow"
-                    className="w-4 h-4"
-                  />
-                </span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">
-                Short description for project A.
-              </p>
-            </div>
-            <div className="relative flex-1 p-4">
-              <img
-                src="/images/dummy-image.jpg"
-                alt="Project A screenshot"
-                className="w-full h-full object-cover rounded-3xl"
-              />
-            </div>
-          </motion.div>
-
-          {/* Project Card 2 */}
-          <motion.div
-            className="rounded-3xl overflow-hidden flex flex-col border border-slate-900 group"
-            variants={{ ...childVariants, ...cardVariants }}
-            initial="hidden"
-            whileInView="visible"
-            whileHover="hover"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            <div className="p-6 flex-none">
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
-                  Project Title B
-                </h3>
-                <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45">
-                  <img
-                    src="/icons/ic_arrow.svg"
-                    alt="Arrow"
-                    className="w-4 h-4"
-                  />
-                </span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">
-                Short description for project B.
-              </p>
-            </div>
-            <div className="relative flex-1 p-4">
-              <img
-                src="/images/dummy-image.jpg"
-                alt="Project B screenshot"
-                className="w-full h-full object-cover rounded-3xl"
-              />
-            </div>
-          </motion.div>
-        </div>
+        ))}
       </div>
     </motion.section>
   );
