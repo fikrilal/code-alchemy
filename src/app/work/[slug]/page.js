@@ -18,6 +18,32 @@ function renderMarkdown(text) {
     .replace(/\*(.*?)\*/g, "<em>$1</em>"); // Italic text
 }
 
+// Add this helper function to extract emojis from feature text
+function extractEmojiAndText(feature) {
+  // Match emoji at the beginning of the string
+  const emojiMatch = feature.match(
+    /^([\u{1F300}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{1F100}-\u{1F1FF}])(.+)/u
+  );
+
+  if (emojiMatch) {
+    const emoji = emojiMatch[1];
+    // Extract title and description (separated by ' – ' or ' - ')
+    const remaining = emojiMatch[2].trim();
+    const parts = remaining.split(/\s[–-]\s/);
+
+    if (parts.length >= 2) {
+      return {
+        emoji,
+        title: parts[0],
+        description: parts.slice(1).join(" – "),
+      };
+    }
+    return { emoji, title: remaining, description: "" };
+  }
+
+  return { emoji: "", title: feature, description: "" };
+}
+
 export default function CaseStudy() {
   const { slug } = useParams();
   const router = useRouter();
@@ -78,6 +104,49 @@ export default function CaseStudy() {
       y: 0,
       transition: { duration: 0.6, ease: "easeOut" },
     },
+  };
+
+  // Create a special renderer for the Features section
+  const renderFeatures = (features) => {
+    if (!features || features.length === 0) return null;
+
+    return (
+      <motion.section variants={childVariants}>
+        <h2 className="text-3xl font-semibold text-slate-200">Features</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
+          {features.map((feature, index) => {
+            const { emoji, title, description } = extractEmojiAndText(feature);
+
+            return (
+              <div
+                key={index}
+                className="flex space-x-4 p-4 rounded-lg border border-slate-800/40 bg-slate-900/10 hover:bg-slate-900/20 transition-colors duration-200"
+              >
+                {emoji && (
+                  <div className="flex-shrink-0 text-2xl w-10 h-10 flex items-center justify-center rounded-md bg-slate-800/50">
+                    {emoji}
+                  </div>
+                )}
+                <div className="space-y-1">
+                  <h3
+                    className="text-lg font-medium text-slate-200"
+                    dangerouslySetInnerHTML={{ __html: renderMarkdown(title) }}
+                  ></h3>
+                  {description && (
+                    <p
+                      className="text-sm text-slate-400"
+                      dangerouslySetInnerHTML={{
+                        __html: renderMarkdown(description),
+                      }}
+                    ></p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </motion.section>
+    );
   };
 
   // Extract project content sections
@@ -221,7 +290,7 @@ export default function CaseStudy() {
               {/* Right Column */}
               <div className="md:col-span-2 space-y-10 text-white">
                 {renderProjectSection("Overview", project.overview)}
-                {renderProjectSection("Features", project.features, true)}
+                {project.features && renderFeatures(project.features)}
                 {project.objectives &&
                   renderProjectSection("Objectives", project.objectives, true)}
                 {project.challenges && (
@@ -328,7 +397,7 @@ export default function CaseStudy() {
                   renderProjectSection("Key Learnings", project.learnings)}
 
                 {/* Project Images Grid */}
-                {project.images && project.images.length > 0 && (
+                {/* {project.images && project.images.length > 0 && (
                   <motion.div variants={childVariants} className="space-y-8">
                     <h2 className="text-3xl font-semibold text-slate-200 mb-6">
                       Project Gallery
@@ -349,7 +418,7 @@ export default function CaseStudy() {
                       </motion.div>
                     ))}
                   </motion.div>
-                )}
+                )} */}
               </div>
             </div>
           </div>

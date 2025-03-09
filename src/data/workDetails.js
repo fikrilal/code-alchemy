@@ -89,7 +89,7 @@ const workDetails = [
       "Leading this project reinforced the importance of Clean Architecture and reusable components in scalable Flutter applications. Future improvements will focus on AI-based tutor recommendations and advanced session analytics for personalized learning experiences.",
     timeframe: "Q2 2024 - Q4 2024",
     link: "https://tutor-app.com",
-    thumbnail: "/images/tutor-thumbnail.png",
+    thumbnail: "/images/tutor-app-thumbnail.png",
     images: [
       "/images/tutor-1.jpg",
       "/images/tutor-2.jpg",
@@ -178,7 +178,7 @@ const workDetails = [
       "Working on this project under **Nodewave** reinforced the importance of **location-based security** and efficient **session management** in workforce applications. Future improvements will focus on AI-powered attendance insights and performance tracking.",
     timeframe: "Q3 2024 - Q4 2024",
     link: "https://mobile-erp.com",
-    thumbnail: "/images/mobile-erp-thumbnail.png",
+    thumbnail: "/images/mobile-erp-app-thumbnail.png",
     images: [
       "/images/mobile-erp-1.jpg",
       "/images/mobile-erp-2.jpg",
@@ -188,96 +188,191 @@ const workDetails = [
 
   {
     id: 3,
-    title: "EduTrack - Smart Attendance System",
-    slug: "edutrack-smart-attendance",
+    title: "CeritaKita - AI-Powered Mental Health Support Platform",
+    slug: "cerita-kita",
     shortDescription:
-      "A biometric and geolocation-based attendance tracking system for schools and businesses.",
+      "An AI-integrated mental health platform built with Kotlin & Jetpack Compose, providing counseling services, journaling, and self-help tools.",
     overview:
-      "Many institutions face challenges in tracking attendance accurately. EduTrack provides a seamless, fraud-proof solution by integrating facial recognition and geofencing technology.",
+      "Developed during Bangkit 2024, CeritaKita is an **AI-powered mental health app** designed to provide **accessible, affordable, and stigma-free mental health support** for Indonesian users. The platform allows users to track their emotional well-being, book counseling sessions, and access self-help resources. Built entirely with **Kotlin & Jetpack Compose**, the app integrates AI-based emotion recognition and counselor recommendations via **backend APIs**. The project was proposed for **140 million IDR in funding** and is positioned as a scalable solution to Indonesia’s mental health challenges.",
     objectives: [
-      "Eliminate buddy punching and manual attendance fraud.",
-      "Ensure real-time tracking of employee and student attendance.",
-      "Generate automated reports for HR and school administrators.",
+      "Develop a **Kotlin-based Android application** with Jetpack Compose for a modern UI experience.",
+      "Integrate AI-powered **emotion recognition and counselor recommendations** via backend APIs.",
+      "Implement **secure authentication & session management** using Firebase.",
+      "Ensure a **smooth and intuitive user experience** for booking counseling sessions.",
     ],
-    timeframe: "Q3 2023 - Q1 2024",
-    link: "https://edutrack-system.com",
     targetUsers: [
       {
-        role: "Students & Employees",
-        needs: "Easily mark attendance without manual sign-ins.",
+        role: "Adolescents & Young Adults",
+        needs:
+          "Safe mental health support without stigma, access to peer mentoring, and self-help tools.",
       },
       {
-        role: "Administrators",
-        needs: "Track and verify attendance records in real-time.",
+        role: "Corporate Employees & Professionals",
+        needs:
+          "Counseling and mental wellness programs to manage workplace stress and burnout.",
+      },
+      {
+        role: "Mental Health Experts & NGOs",
+        needs:
+          "A platform to extend mental health support to a broader audience efficiently.",
       },
     ],
     features: [
-      "📸 Biometric Authentication – Facial recognition ensures identity verification.",
-      "📍 Geolocation-Based Tracking – Prevents proxy attendance fraud.",
-      "📊 Automated Reports – Generates attendance analytics.",
+      "📖 **Journaling & Self-Help Tools** – Users can track emotions, write daily reflections, and access mental health guides.",
+      "📅 **Session Booking System** – Seamlessly schedule counseling with professionals or peer mentors.",
+      "🧠 **AI Integration for Emotion Detection** – Backend API integration for **text & image-based emotion analysis**.",
+      "📩 **Personalized Counselor Matching** – AI-driven recommendations based on user needs.",
+      "🔐 **Secure Authentication** – Firebase Authentication for user login and data security.",
+      "🌎 **Cloud-Connected Infrastructure** – Uses **Google Cloud Firestore** for real-time data management.",
     ],
     techStack: [
-      "React",
-      "TailwindCSS",
-      "Django",
-      "PostgreSQL",
-      "AWS Rekognition",
-      "Google Maps API",
-      "AWS Lambda",
-      "Docker",
+      "Kotlin (Jetpack Compose) - Android Development",
+      "Firebase Authentication - Secure Login",
+      "Google Cloud Firestore - Database",
+      "Retrofit - API Integration",
+      "FastAPI - AI Model API",
+      "Jetpack Navigation - App Flow Management",
     ],
-    thumbnail: "/images/shot.png",
+    challenges: [
+      {
+        problem:
+          "Integrating AI-powered emotion recognition seamlessly into the mobile app.",
+        solution:
+          "Used **Retrofit** to connect with the **FastAPI-based ML API**, ensuring **real-time data processing**.",
+      },
+      {
+        problem:
+          "Building a responsive UI with Jetpack Compose for various screen sizes.",
+        solution:
+          "Implemented **adaptive layouts** and Material 3 components for a modern user experience.",
+      },
+      {
+        problem: "Ensuring secure authentication and session management.",
+        solution:
+          "Used **Firebase Authentication** with token-based access control for user data security.",
+      },
+    ],
+    results: [
+      {
+        number: "140M IDR",
+        description:
+          "Proposed funding for platform development. (**Rejected**—guess investors weren’t ready for AI-powered therapy)",
+      },
+      {
+        number: "95%",
+        description:
+          "Project completed in under 2 months with positive user feedback.",
+      },
+      {
+        number: "5+ Features",
+        description:
+          "Integrated session booking, journaling, and authentication.",
+      },
+    ],
+
+    learnings:
+      "This project reinforced my expertise in **Kotlin, Jetpack Compose, and Firebase integration**. The experience of working with **AI-powered APIs** also improved my skills in backend API communication and secure session management.",
+    timeframe: "Q1 2024 - Q3 2024",
+    link: "https://ceritakita.app",
+    thumbnail: "/images/ceritakita-app-thumbnail.png",
     images: [
-      "/images/edutrack-1.jpg",
-      "/images/edutrack-2.jpg",
-      "/images/edutrack-3.jpg",
+      "/images/ceritakita-1.jpg",
+      "/images/ceritakita-2.jpg",
+      "/images/ceritakita-3.jpg",
     ],
   },
   {
     id: 4,
-    title: "MediSync - AI Health Assistant",
-    slug: "medisync-ai-health",
+    title: "SummitUp - Mountain Trip Booking & Gear Rental",
+    slug: "summitup",
     shortDescription:
-      "A virtual health assistant that provides AI-powered medical recommendations.",
+      "A mountain trip booking app with integrated payment gateway, rental services, and user reviews.",
     overview:
-      "Patients often struggle with self-diagnosis and medical queries. MediSync leverages AI to provide preliminary health assessments and connects users with healthcare professionals.",
+      "SummitUp is a **hiking-focused marketplace** that helps outdoor enthusiasts **book guided trips, rent hiking gear, and leave reviews**. The platform lists **mountains across Indonesia**, each offering various trip packages and equipment rentals. Users can book trips, make secure payments via **Midtrans**, and manage their hiking plans seamlessly. I worked on both the **mobile app (Flutter + BLoC) and backend (Next.js + SQL)**, ensuring a smooth end-to-end experience.",
     objectives: [
-      "Provide 24/7 AI-based health assessments.",
-      "Reduce unnecessary doctor visits by 35%.",
-      "Connect patients with healthcare professionals efficiently.",
+      "Develop a **full-stack solution** for booking mountain trips and renting hiking gear.",
+      "Implement a **secure payment gateway using Midtrans** for seamless transactions.",
+      "Enable **real-time booking & availability tracking** for trips and rentals.",
+      "Ensure a **scalable backend** with Next.js and SQL for handling transactions and user data.",
     ],
-    timeframe: "Q1 2024 - Present",
-    link: "https://medisync-ai.com",
     targetUsers: [
       {
-        role: "Patients",
-        needs: "Receive AI-powered health insights and doctor recommendations.",
+        role: "Hikers & Adventure Enthusiasts",
+        needs:
+          "Find and book guided hiking trips, rent gear, and explore Indonesia’s mountains.",
       },
       {
-        role: "Doctors",
-        needs: "Access AI-assisted patient reports for better decision-making.",
+        role: "Trip Organizers",
+        needs:
+          "Manage trip bookings, update availability, and process payments securely.",
+      },
+      {
+        role: "Gear Rental Providers",
+        needs: "List hiking equipment, track rentals, and handle user reviews.",
       },
     ],
     features: [
-      "🤖 AI-Powered Health Recommendations – Assists in preliminary diagnosis.",
-      "📞 Instant Doctor Consultation – Connects patients with healthcare professionals.",
-      "📊 Health Monitoring Dashboard – Tracks symptoms and vitals over time.",
+      "⛰ **Mountain Listings** – Explore **detailed hiking destinations** across Indonesia.",
+      "🎒 **Gear Rental System** – Rent hiking equipment for trips **directly in the app**.",
+      "📅 **Trip Booking System** – Book **guided hikes** with **real-time availability tracking**.",
+      "💳 **Integrated Payment Gateway** – Secure transactions using **Midtrans** for credit cards, e-wallets, and bank transfers.",
+      "🔄 **Order & Booking Management** – Users can **view, cancel, or reschedule trips and rentals**.",
+      "⭐ **User Reviews & Ratings** – Leave feedback on **trips, guides, and rented gear**.",
+      "📜 **Transaction History** – Track **past bookings and payments** with detailed invoices.",
     ],
     techStack: [
-      "React Native",
-      "Expo",
-      "FastAPI",
-      "MongoDB",
-      "Google Health API",
-      "Twilio Video",
-      "GCP AI Models",
-      "AWS S3",
+      "Flutter (Dart) - Mobile App",
+      "BLoC - State Management",
+      "Next.js - Backend",
+      "SQL - Database",
+      "Midtrans - Payment Gateway",
+      "Firebase Authentication - Secure Login",
+      "Dio - API Communication",
+      "Jetstream & Laravel Sanctum - User Authentication (Backend)",
     ],
-    thumbnail: "/images/shot.png",
+    challenges: [
+      {
+        problem: "Handling secure transactions with a **payment gateway**.",
+        solution:
+          "Integrated **Midtrans API** with real-time payment verification & automatic booking confirmation.",
+      },
+      {
+        problem: "Ensuring real-time **trip availability updates**.",
+        solution:
+          "Implemented **database polling and caching** to keep availability accurate without excessive queries.",
+      },
+      {
+        problem:
+          "Synchronizing backend & frontend for a smooth booking experience.",
+        solution:
+          "Used **BLoC for structured state management** and **optimized API response times**.",
+      },
+    ],
+    results: [
+      {
+        number: "100+",
+        description: "Successful bookings processed via **Midtrans**.",
+      },
+      {
+        number: "3 Payment Methods",
+        description:
+          "Supports **credit cards, e-wallets, and bank transfers**.",
+      },
+      {
+        number: "90%",
+        description:
+          "Users completed their bookings without issues. (The remaining 10% probably changed their minds mid-hike.)",
+      },
+    ],
+    learnings:
+      "Building SummitUp strengthened my expertise in **payment gateway integration, backend development with Next.js, and managing state using BLoC**. Handling **real-time trip bookings and transactions** required deep coordination between the frontend and backend, reinforcing my problem-solving skills in full-stack development.",
+    timeframe: "Q2 2024 - Q3 2024",
+    link: "https://summitup.com",
+    thumbnail: "/images/summitup-app-thumbnail.png",
     images: [
-      "/images/medisync-1.jpg",
-      "/images/medisync-2.jpg",
-      "/images/medisync-3.jpg",
+      "/images/summitup-1.jpg",
+      "/images/summitup-2.jpg",
+      "/images/summitup-3.jpg",
     ],
   },
 ];
