@@ -17,7 +17,7 @@ const fragmentMono = Fragment_Mono({
 export const metadata = {
   title: "Ahmad Fikril Al Muzakki | Mobile Engineer & UX Designer",
   description:
-    "Portfolio of Ahmad Fikril Al Muzakki (Fikril), a Mobile Engineer and UX Designer based in Bandung, Indonesia. Specializing in mobile app development and user experience design.",
+    "Hey there! I'm Fikril, a mobile engineering wizard turning wild ideas into sleek apps that people actually love to use. Coffee-powered code and pixel-perfect designs are my superpowers!",
   keywords: [
     "Ahmad Fikril Al Muzakki",
     "Fikril",
