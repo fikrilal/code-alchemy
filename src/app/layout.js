@@ -1,6 +1,8 @@
 import { Inter_Tight, Fragment_Mono } from "next/font/google";
 import "./globals.css";
 import DarkModeProvider from "@/components/DarkModeProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const interTight = Inter_Tight({
   variable: "--font-inter-tight",
@@ -119,6 +121,8 @@ export default function RootLayout({ children }) {
       <body
         className={`${interTight.variable} ${fragmentMono.variable} font-sans antialiased dark:bg-darkbg dark:text-white`}
       >
+        <SpeedInsights />
+        <Analytics />
         <DarkModeProvider>{children}</DarkModeProvider>
       </body>
     </html>
