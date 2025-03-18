@@ -1,0 +1,25 @@
+# robots.txt for https://www.fikril.dev/
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /*?
+Disallow: /*/admin/
+
+# Allow major search engines
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Slurp
+User-agent: DuckDuckBot
+Allow: /
+
+# Allow AI crawlers to access content
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: Google-Extended
+User-agent: CCBot
+User-agent: anthropic-ai
+Allow: /
+
+# Specify sitemap location
+Sitemap: https://www.fikril.dev/sitemap.xml
