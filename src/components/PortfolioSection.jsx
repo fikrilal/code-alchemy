@@ -79,11 +79,11 @@ export default function PortfolioSection() {
               SIDE HUSTLE
             </p>
             <h3 className="text-xl text-slate-200 font-semibold mb-2">
-              Shebo Mobile
+              Quowrld.com
             </h3>
             <p className="text-sm sm:text-base md:text-base text-slate-400">
-              An AI-powered digital bookshelf. It’s like social media, but for
-              book lovers! :)
+              A platform to write, share, and save quotes — beautifully
+              organized by vibe.
             </p>
 
             {/* 16:9 Image */}

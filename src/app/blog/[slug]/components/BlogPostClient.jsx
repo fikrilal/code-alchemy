@@ -61,12 +61,12 @@ export default function BlogPostClient({ post, formattedDate }) {
 
         {/* Post Header */}
         <motion.header variants={childVariants} className="mb-8">
-          <div className="text-sm text-slate-400 mb-2">
+          <div className="text-sm text-slate-400 mb-2 ">
             {formattedDate} • {post.readTime || "5 min read"}
           </div>
           <motion.h1
             variants={childVariants}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-100 mb-4"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-100 mb-4 mt-4"
           >
             {post.title}
           </motion.h1>
