@@ -14,8 +14,8 @@ export default function Home() {
       <Navbar />
       <main className="overflow-hidden">
         <HeroSection />
-        <SelectedWork />
         <PortfolioSection />
+        <SelectedWork />
         <BlogSection blogPosts={blogPosts} />
       </main>
       <Footer />
