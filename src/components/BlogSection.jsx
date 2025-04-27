@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Button from "./Button";
-import blogPosts from "@/data/blogPost";
+import Link from "next/link";
 
 // Helper to add ordinal suffix to day
 function getOrdinal(n) {
@@ -28,7 +28,7 @@ function formatDate(dateString) {
   return `${month}, ${getOrdinal(day)} ${year}`;
 }
 
-export default function BlogSection() {
+export default function BlogSection({ blogPosts = [] }) {
   // Parent container animation
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -48,7 +48,7 @@ export default function BlogSection() {
     },
   };
 
-  // Sort blog posts by date (newest first)
+  // Sort blog posts by date (newest first) if not already sorted
   const sortedBlogPosts = [...blogPosts].sort((a, b) => {
     return new Date(b.date) - new Date(a.date);
   });
@@ -72,7 +72,9 @@ export default function BlogSection() {
           </motion.h2>
           {/* Hide button on mobile (below md) */}
           <motion.div variants={childVariants} className="hidden md:block">
-            <Button>View all posts</Button>
+            <Link href="/blog">
+              <Button>View all posts</Button>
+            </Link>
           </motion.div>
         </div>
         <motion.p
@@ -80,7 +82,7 @@ export default function BlogSection() {
           variants={childVariants}
         >
           A space where I share my journey, insights, and lessons learned. From
-          coding tips to design musings, it’s all about growth, creativity, and
+          coding tips to design musings, it's all about growth, creativity, and
           a little bit of fun along the way.
         </motion.p>
       </div>
@@ -89,7 +91,7 @@ export default function BlogSection() {
       <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 lg:px-8 mt-2 sm:mt-10 lg:mt-16">
         {sortedBlogPosts.slice(0, 3).map((blog, index) => (
           <motion.div
-            key={blog.id}
+            key={blog.slug}
             variants={childVariants}
             className={`flex flex-col md:flex-row items-stretch ${
               index === 0 ? "" : "border-t border-slate-900"
@@ -103,8 +105,8 @@ export default function BlogSection() {
                 style={{ paddingBottom: "56.25%" }}
               >
                 <img
-                  src={blog.imageUrl}
-                  alt="Blog Post Thumbnail"
+                  src={blog.coverImage || `/images/blog/${blog.slug}.jpg`}
+                  alt={blog.title}
                   className="absolute inset-0 w-full h-full object-cover rounded-md"
                 />
               </div>
@@ -121,8 +123,8 @@ export default function BlogSection() {
                 </h3>
                 <p className="mt-2 text-slate-400">{blog.description}</p>
               </div>
-              <a
-                href="#"
+              <Link
+                href={`/blog/${blog.slug}`}
                 className="font-medium inline-flex items-center text-blue-500 hover:text-slate-300 transition-colors text-sm group self-start mt-4 md:mt-0"
               >
                 Read more
@@ -143,7 +145,7 @@ export default function BlogSection() {
                     />
                   </svg>
                 </span>
-              </a>
+              </Link>
             </div>
           </motion.div>
         ))}
