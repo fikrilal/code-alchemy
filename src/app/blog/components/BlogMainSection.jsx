@@ -73,7 +73,7 @@ export default function BlogMainSection({ blogPosts }) {
 
       {/* Blog Posts List - with narrower width */}
       <motion.section
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 py-16"
+        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 py-4 sm:py-12 md:py-16"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
