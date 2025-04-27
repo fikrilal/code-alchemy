@@ -1,5 +1,5 @@
 ---
-title: "I Don't Think AI Is Here to Replace Us — I Think It's Here to Challenge Us"
+title: "AI Isn't Here to Replace Us — It's Here to Challenge Us to Evolve"
 date: "2025-04-27"
 description: "I believe AI doesn't mark the end of human relevance — it challenges us to grow, evolve, and unlock the next version of ourselves."
 coverImage: "/images/blog/ai-challenge-evolve.jpg"
