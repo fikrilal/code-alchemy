@@ -10,8 +10,6 @@ tags: [""]
 featured: true
 ---
 
-## The setup that used to work (until it didn't)
-
 I used to manage API keys with a `.env` file and load them at runtime with the `dotenv` package.  
 That approach is fine when you're solo on a small project, but it can bite hard as the codebase grows.
 
