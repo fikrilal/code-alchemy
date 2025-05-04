@@ -23,8 +23,6 @@ Actually, big problem:
 
 ---
 
-## The new approach
-
 As I gained new experience, I changed my approach to this:
 
 ```
