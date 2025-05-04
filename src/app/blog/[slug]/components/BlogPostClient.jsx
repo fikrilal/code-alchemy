@@ -66,13 +66,13 @@ export default function BlogPostClient({ post, formattedDate }) {
           </div>
           <motion.h1
             variants={childVariants}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-100 mb-4 mt-4"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-100 mb-4 mt-4 leading-[1.2]"
           >
             {post.title}
           </motion.h1>
           <motion.p
             variants={childVariants}
-            className="text-base sm:text-base md:text-lg lg:text-xl text-slate-300 mb-6"
+            className="text-base sm:text-base md:text-lg lg:text-lg text-slate-300 mb-6"
           >
             {post.description}
           </motion.p>
@@ -115,7 +115,16 @@ export default function BlogPostClient({ post, formattedDate }) {
         {/* Post Content */}
         <motion.div
           variants={childVariants}
-          className="prose prose-lg md:prose-xl prose-invert mx-auto"
+          className="prose prose-lg md:prose-xl prose-invert 
+            prose-code:text-cyan-300 
+            prose-pre:bg-slate-900 
+            prose-pre:border 
+            prose-pre:border-slate-700 
+            prose-pre:p-4 
+            prose-pre:rounded-lg
+            prose-code:before:content-none 
+            prose-code:after:content-none
+            mx-auto"
         >
           <div
             className="blog-content"

@@ -37,23 +37,36 @@ export async function generateStaticParams() {
 
 // Generate metadata for the page
 export async function generateMetadata({ params }) {
-  const post = await getPostData(params.slug);
+  // Need to await params before using it
+  const resolvedParams = await params;
 
-  return {
-    title: `${post.title} | Code Alchemy Blog`,
-    description: post.description,
-    openGraph: {
-      title: post.title,
+  try {
+    const post = await getPostData(resolvedParams.slug);
+
+    return {
+      title: `${post.title} | Code Alchemy Blog`,
       description: post.description,
-      images: [post.coverImage || "/images/blog-default.jpg"],
-    },
-  };
+      openGraph: {
+        title: post.title,
+        description: post.description,
+        images: [post.coverImage || "/images/blog-default.jpg"],
+      },
+    };
+  } catch (error) {
+    return {
+      title: "Blog Post Not Found | Code Alchemy Blog",
+      description: "The requested blog post could not be found",
+    };
+  }
 }
 
 export default async function BlogPost({ params }) {
+  // Need to await params before using it
+  const resolvedParams = await params;
+
   let post;
   try {
-    post = await getPostData(params.slug);
+    post = await getPostData(resolvedParams.slug);
   } catch (error) {
     return notFound();
   }

@@ -119,6 +119,7 @@ body {
   border-radius: 0.5rem;
   overflow-x: auto;
   margin-bottom: 1.5rem;
+  margin: 1.5em 0;
 }
 
 .blog-content code {
@@ -127,12 +128,17 @@ body {
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
   font-size: 0.9em;
+  color: #7dd3fc !important; /* bright cyan color */
 }
 
 .blog-content pre code {
   background: transparent;
   padding: 0;
   border-radius: 0;
+  display: block;
+  padding: 1em;
+  color: #e2e8f0 !important; /* light gray for better readability */
+  line-height: 1.6;
 }
 
 .blog-content img {
@@ -146,4 +152,29 @@ body {
   margin: 2rem 0;
   border: 0;
   border-top: 1px solid #334155;
+}
+
+/* Syntax highlighting overrides */
+.blog-content .hljs-keyword,
+.blog-content .hljs-selector-tag,
+.blog-content .hljs-title,
+.blog-content .hljs-section,
+.blog-content .hljs-doctag,
+.blog-content .hljs-name,
+.blog-content .hljs-strong {
+  color: #f472b6; /* pink */
+}
+
+.blog-content .hljs-string,
+.blog-content .hljs-attr {
+  color: #a5d6ff; /* light blue */
+}
+
+.blog-content .hljs-comment {
+  color: #64748b; /* slate */
+}
+
+.blog-content .hljs-number,
+.blog-content .hljs-literal {
+  color: #ffa657; /* orange */
 }

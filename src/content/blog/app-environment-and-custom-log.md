@@ -1,10 +1,13 @@
 ---
 title: "About App Environment and a Custom Log"
-date: "May 2025"
+date: "2025-5-4"
 author: "Ahmad Fikril"
-readingTime: "5 min read"
-cover: "/images/blog/env‑config‑cover.png"
+description: "How I manage environment configurations and implement a custom logging system for Flutter applications to improve security and debugging."
+readTime: "5 min read"
+coverImage: "/images/blog/env‑config‑cover.png"
+authorImage: "/images/avatar-2.jpg"
 tags: [""]
+featured: true
 ---
 
 ## The setup that used to work (until it didn't)
@@ -24,7 +27,7 @@ Actually, big problem:
 
 ## The new approach
 
-Here's the folder structure I'm using now:
+As I gained new experience, I changed my approach to this:
 
 ```
 env/
@@ -44,9 +47,15 @@ lib/core/configs/
 - A script generates a `.g.dart` file with `const` maps—the compiler tree‑shakes everything else.
 - No extra assets, no unexpected runtime overrides.
 
+So let’s dive into the implementation.
+
 ---
 
 ## 1 · Create the YAML files
+
+First, you need to create a new folder called env in the root of your project. Fill it with `dev.yaml`, `staging.yaml`, `prod.yaml`, or whatever flavors you need. You can store each flavor's configuration inside it.
+
+For example, here’s a basic use case:
 
 ```yaml
 # env/dev.yaml
@@ -56,11 +65,13 @@ profile: https://dev‑profile.example.com
 enableLogging: true # drives the custom logger
 ```
 
-Duplicate and tweak for stage.yaml and prod.yaml.
+Duplicate and tweak for `stage.yaml` and `prod.yaml`.
 
 ---
 
 ## 2 · Write the config generator (tool/gen_config.dart)
+
+Then you need to create the config generator. Place it under the tool folder and give it a name like `gen_config.dart` or any name you prefer.
 
 ```dart
 void main(List<String> argv) {
@@ -97,11 +108,13 @@ void main(List<String> argv) {
 }
 ```
 
-Add yaml and args to pubspec.yaml.
+You need to install the `yaml` and `args` packages, don’t forget that.
 
 ---
 
 ## 3 · Create build_config.dart
+
+Then create the build_config file. I placed it under `lib/core/config`, but you can put it wherever you like based on your project architecture.
 
 ```dart
 enum BuildEnv { dev, stage, prod }
@@ -130,7 +143,7 @@ class BuildConfig {
 
 ## 4 · Gradle Integration
 
-Then we need to declare app flavors in build.gradle.kts. Add this inside the android {} tag:
+Then we need to declare app flavors in build.gradle.kts. Add this inside the `android {}` tag:
 
 ```kotlin
 /* ───── Flavours ───────────────────────────────────────────────── */
@@ -153,25 +166,49 @@ productFlavors {
 }
 ```
 
-We need to inject the config-generation task into each of those variants, keyed by flavor name (env). Add outside the android{} tag:
+We need to inject the config-generation task into each of those variants, keyed by flavor name (env). Add outside the `android {}` tag:
 
 ```kotlin
-android.applicationVariants.all {
-    val variantName = name
-    val flavorName = flavorName
-
-    task("generate${variantName.capitalize()}Config", JavaExec::class) {
-        group = "build"
-        classpath = files("${rootDir}/build-tools/")
-        main = "GenerateConfig"
-        args = listOf(flavorName)
-
-        tasks.getByName("pre${variantName.capitalize()}Build").dependsOn(this)
-    }
+val dartBin: String = if (project.hasProperty("dartBin")) {
+    project.property("dartBin") as String
+} else {
+    "dart"
 }
+
+afterEvaluate {
+    android.applicationVariants
+        .configureEach {
+            val env = flavorName ?: "dev"
+
+            val genTaskName = "generate${
+                name.replaceFirstChar { char ->
+                    char.uppercase()
+                }
+            }Config"
+
+            val genConfig = tasks.register<Exec>(genTaskName) {
+                group = "build"
+                description = "Generate build_config.g.dart for $env"
+                workingDir = rootProject.projectDir.parentFile
+                commandLine(
+                    dartBin,
+                    "run",
+                    "tool/gen_config.dart",
+                    "--env", env
+                )
+                inputs.files(file("env/$env.yaml"), file("tool/gen_config.dart"))
+                outputs.file(file("lib/core/configs/build_config.g.dart"))
+            }
+
+            preBuildProvider.configure {
+                dependsOn(genConfig)
+            }
+        }
+}
+
 ```
 
-This keeps build_config.g.dart perfectly in sync with whatever flavor is being assembled, whether we run from the IDE, CI, or command line.
+This keeps `build_config.g.dart` perfectly in sync with whatever flavor is being assembled, whether we run from the IDE, CI, or command line.
 
 ---
 
@@ -179,21 +216,21 @@ This keeps build_config.g.dart perfectly in sync with whatever flavor is being a
 
 Create a run configuration per flavour (start with dev).
 
+In Additional run args set `--dart-define=ENV=dev`.
+
+Build flavour → `dev`.
+
+Repeat for stage and prod.
+
 ![Android Studio Run Debug Configuration](/images/blog/run-debug-config.png)
 
 Under Before launch, add Run External Tool:
 
 ![Generate Config External Tool](/images/blog/gen-config.png)
 
-- Program: dart
-- Arguments: run tool/gen_config.dart --env dev
-- Working dir: $ProjectFileDir$
-
-In Additional run args set --dart-define=ENV=dev.
-
-Build flavour → dev.
-
-Repeat for stage and prod.
+- Point the “Program” to your SDK folder, specifically to the `dart.bat` file inside the bin folder
+- Fill the “Arguments” field with the command: `run tool/gen_config.dart --env dev`. This will execute `gen_config.dart`, but you’ll need to change "dev" when creating a different flavor
+- Lastly, for the “Working directory”, you can set it to `$ProjectFileDir$`
 
 ---
 
@@ -301,7 +338,7 @@ try {
 
 - Namespace/tag → easy filtering when 17 modules scream at once.
 - Level gating via BuildConfig.logEnabled → silent in prod, verbose in dev.
-- Crashlytics opt‑in (report: true) → only actionable errors hit the dashboard.
+- Crashlytics opt‑in (`report: true`) → only actionable errors hit the dashboard.
 - developer.log integration → timestamps + colour in the IDE console.
 
 This will be a huge benefit if you’re building a production app, where you can add an optional Crashlytics reporter to your logs—since not all errors are automatically caught by Crashlytics, especially those inside a try-catch block.
@@ -324,4 +361,4 @@ The nice thing is that logging is automatically disabled in production, but Cras
 - AppConfig (optional) is runtime; good for tokens or tenant IDs.
 - A 40‑line generator + one dart-define flag > fragile runtime dotenv.
 
-Happy shipping—and fewer “oops” moments! 🎉
+Happy shipping everyone! 🎉
