@@ -6,6 +6,7 @@ import SpotifyNowPlaying from "./SpotifyNowPlaying";
 import GithubActivity from "./GithubActivity";
 import TechStack from "./TechStack";
 import IconCards from "./IconCards";
+import Image from "next/image";
 
 // Parent fade/sequence
 const containerVariants = {
@@ -62,9 +63,11 @@ export default function PortfolioSection() {
 
             {/* 16:9 Image */}
             <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl">
-              <img
+              <Image
                 src="/images/recent-project-thumbnail.png"
                 alt="Recent Project screenshot"
+                width={1390}
+                height={782}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -88,9 +91,11 @@ export default function PortfolioSection() {
 
             {/* 16:9 Image */}
             <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl">
-              <img
+              <Image
                 src="/images/side-project-thumbnail.png"
                 alt="Side Hustle screenshot"
+                width={1390}
+                height={782}
                 className="w-full h-full object-cover"
               />
             </div>
