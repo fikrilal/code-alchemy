@@ -1,36 +1,55 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Local Setup
 
-First, run the development server:
+1. Install **Node.js 18+** and clone this repository.
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create a `.env.local` file and populate it with the environment variables shown below.
+4. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be available at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Run `npm run lint` to execute ESLint checks during development.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Building
 
-## Learn More
+Create an optimized production build with:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The generated output can be served locally using `npm start` or deployed to your preferred hosting provider.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Running in Production
 
-## Deploy on Vercel
+After building, start the Next.js server:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ensure all required environment variables are available in the environment where the server runs.
+
+## Environment Variables
+
+Configure the following variables in `.env.local` (or your production environment):
+
+- `SPOTIFY_CLIENT_ID` – Spotify application client ID used for authentication.
+- `SPOTIFY_CLIENT_SECRET` – Spotify application client secret.
+- `SPOTIFY_REDIRECT_URI` – OAuth redirect URI configured in your Spotify dashboard.
+- `SPOTIFY_REFRESH_TOKEN` – Refresh token used to fetch currently playing tracks.
+- `GITHUB_TOKEN` – GitHub Personal Access Token for the `/api/githubStats` endpoint.
+
+## Deployment Notes
+
+This project works out of the box on platforms like **Vercel** or any Node.js host. On Vercel, set the environment variables in the dashboard and the platform will run the build and start commands automatically. When self‑hosting, run `npm run build` followed by `npm start` and ensure the environment variables are available.
