@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import workDetails from "@/data/workDetails";
 import Button from "./Button";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function SelectedWork() {
   // Parent container animation
@@ -91,9 +92,11 @@ export default function SelectedWork() {
                   {project.title}
                 </h3>
                 <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45 ml-2">
-                  <img
+                  <Image
                     src="/icons/ic_arrow.svg"
                     alt="Arrow"
+                    width={20}
+                    height={20}
                     className="w-4 h-4"
                   />
                 </span>
@@ -102,9 +105,11 @@ export default function SelectedWork() {
             </div>
             <div className="relative p-4">
               <div className="relative aspect-[14/9] rounded-xl overflow-hidden">
-                <img
+                <Image
                   src={project.thumbnail}
                   alt={`${project.title} screenshot`}
+                  width={1998}
+                  height={1124}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
