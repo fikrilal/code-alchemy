@@ -49,6 +49,11 @@ Configure the following variables in `.env.local` (or your production environmen
 - `SPOTIFY_REDIRECT_URI` – OAuth redirect URI configured in your Spotify dashboard.
 - `SPOTIFY_REFRESH_TOKEN` – Refresh token used to fetch currently playing tracks.
 - `GITHUB_TOKEN` – GitHub Personal Access Token for the `/api/githubStats` endpoint.
+- `SMTP_HOST` – SMTP server host used for contact form.
+- `SMTP_PORT` – SMTP server port.
+- `SMTP_USER` – SMTP username for authentication.
+- `SMTP_PASS` – SMTP password for authentication.
+- `CONTACT_TO_EMAIL` – Destination address for contact form submissions.
 
 ## Deployment Notes
 

@@ -74,13 +74,9 @@ export default function Hero() {
           "
           variants={childVariants}
         >
-          <Button
-            onClick={() =>
-              (window.location.href = "mailto:fikrildev@gmail.com")
-            }
-          >
-            Contact Me
-          </Button>
+        <Button onClick={() => (window.location.href = "/contact")}>
+          Contact Me
+        </Button>
         </motion.div>
       </div>
     </motion.section>

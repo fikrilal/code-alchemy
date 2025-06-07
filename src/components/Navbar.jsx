@@ -32,13 +32,19 @@ export default function Navbar() {
           >
             Blog
           </Link>
-          <Link
-            href="/about"
-            className="text-slate-100 hover:text-brand-primary"
-          >
-            About
-          </Link>
-        </div>
+        <Link
+          href="/about"
+          className="text-slate-100 hover:text-brand-primary"
+        >
+          About
+        </Link>
+        <Link
+          href="/contact"
+          className="text-slate-100 hover:text-brand-primary"
+        >
+          Contact
+        </Link>
+      </div>
 
         {/* Available Badge (Desktop) */}
         <div className="hidden md:block">
@@ -108,6 +114,13 @@ export default function Navbar() {
           onClick={toggleMenu}
         >
           About
+        </Link>
+        <Link
+          href="/contact"
+          className="block py-2 text-slate-200 hover:text-brand-primary"
+          onClick={toggleMenu}
+        >
+          Contact
         </Link>
       </div>
 
