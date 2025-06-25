@@ -28,7 +28,7 @@ export default function Footer() {
 
   return (
     <motion.footer
-      className="text-gray-400 bg-gray-50 py-2 sm:py-4 lg:py-4 px-2 sm:px-4 lg:px-4 pt-20 sm:pt-24 lg:pt-32"
+      className="text-gray-400  py-2 sm:py-4 lg:py-4 px-2 sm:px-4 lg:px-4 pt-20 sm:pt-24 lg:pt-32"
       // Fire the animation when the footer enters the viewport
       variants={containerVariants}
       initial="hidden"
@@ -36,7 +36,7 @@ export default function Footer() {
       viewport={{ once: true, amount: 0.2 }}
     >
       <motion.div
-        className="bg-gray-1000 mx-auto px-6 md:px-24 py-12 sm:py-16 lg:py-24 text-center rounded-xl w-full"
+        className="bg-[#0E1012] mx-auto px-6 md:px-24 py-12 sm:py-16 lg:py-24 text-center rounded-xl w-full"
         // This <div> becomes the parent container for staggering children
         variants={containerVariants}
       >
