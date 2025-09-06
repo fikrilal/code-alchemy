@@ -154,6 +154,30 @@ body {
   border-top: 1px solid #334155;
 }
 
+/* Tables */
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.blog-content th,
+.blog-content td {
+  border: 1px solid #334155;
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+}
+
+.blog-content th {
+  color: #f1f5f9; /* header text color to match h2/h3 */
+  font-weight: 600;
+  text-align: left;
+}
+
+.blog-content td {
+  color: #cbd5e1; /* body text color to match paragraphs */
+}
+
 /* Syntax highlighting overrides */
 .blog-content .hljs-keyword,
 .blog-content .hljs-selector-tag,

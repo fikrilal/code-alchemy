@@ -1,7 +1,7 @@
 ---
 title: "Understanding Hallucination and Sycophancy in AI Models"
 date: "2025-09-06"
-description: "What hallucination and sycophancy are in AI and how they affect engineering decisions, with examples and sources."
+description: "Your AI doesn’t have to be a jerk to be smart."
 coverImage: "/images/blog/you-are-absolutely-right.png"
 tags: ["AI", "Factuality", "Sycophancy", "Hallucination"]
 readTime: "4 min read"
