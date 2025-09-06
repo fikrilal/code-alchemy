@@ -57,13 +57,13 @@ From my experience, GPT‑5 Thinking works best for me. It’s the most honest a
 
 4o is the model I used the longest. I’ve been using it since August 2024, when I first subscribed to ChatGPT Plus. It’s a good model, but back then I wasn’t aware of hallucinations and sycophancy. This model suck everything comes from my mouth. I stopped using it once o4‑mini and o3 arrived.
 
-I don’t need a cheerleader—I need a teammate who will push back when I’m wrong. The “warm and friendly” vibe is nice, but it shouldn’t come at the cost of made-up facts or rubber-stamped decisions. GPT-5 Thinking has felt closer to a senior engineer: it pauses, checks itself, and says “not sure” when the evidence is thin.
+I don’t need a cheerleader, I need a teammate who will push back when I’m wrong. The “warm and friendly” vibe is nice, but it shouldn’t come at the cost of made-up facts or rubber-stamped decisions. GPT-5 Thinking has felt closer to a senior engineer: it pauses, checks itself, and says “not sure” when the evidence is thin.
 
-Conclusion: Pick the best frontier thinking model—or don’t use one
+**Conclusion: Pick the best frontier thinking model, or don’t use one**
 
 If you care about correctness over vibes, default to a frontier model with a strong thinking/abstention behavior (today: GPT-5 Thinking). Use it for anything that affects money, architecture, security, or production code. The data backs this choice (lower hallucinations, lower sycophancy), and the UX is simple: you’ll get fact-first answers, gentle pushback when you’re off, and honest “not sure” when the model needs to look it up.
 [OpenAI — GPT-5 System Card](https://cdn.openai.com/gpt-5-system-card.pdf)
 
-For casual ideation or small talk, a warmer model is fine—but don’t let a chatty persona make calls that require truth. If a trustworthy thinking model isn’t available, it’s better to hold off or add a human review step than to ship decisions from a model that guesses or agrees to please.
+For casual ideation or small talk, a warmer model is fine, but don’t let a chatty persona make calls that require truth. If a trustworthy thinking model isn’t available, it’s better to hold off or add a human review step than to ship decisions from a model that guesses or agrees to please.
 
 ![GPT-5 Thinking](/images/blog/goatpt-5.png)
