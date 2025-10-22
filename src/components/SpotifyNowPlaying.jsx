@@ -8,35 +8,35 @@ export default function SpotifyNowPlaying() {
 
   useEffect(() => {
     async function fetchSpotify() {
-      console.log("🔄 Fetching currently playing track from API...");
+      // console.log("🔄 Fetching currently playing track from API...");
 
       try {
         const res = await fetch("/api/spotify");
         const data = await res.json();
 
         if (!res.ok) {
-          console.error("❌ API Error:", data);
+          // console.error("❌ API Error:", data);
           return;
         }
 
         if (data && data.item) {
-          console.log("✅ Track Found:", data.item);
+          // console.log("✅ Track Found:", data.item);
 
           setTrack({
             name: data.item.name,
-            artist: data.item.artists.map((artist) => artist.name).join(", "),
+            artist: data.item.artists.map((artist) => artist.name).join(", " ),
             albumImage: data.item.album.images[0].url,
             spotifyUrl: data.item.external_urls.spotify,
           });
           // Check if the flag exists and update the state accordingly.
           setIsLastPlayed(data.last_played === true);
         } else {
-          console.log("🎵 No track data available.");
+          // console.log("🎵 No track data available.");
           setTrack(null);
           setIsLastPlayed(false);
         }
       } catch (error) {
-        console.error("❌ Error fetching Spotify data:", error);
+        // console.error("❌ Error fetching Spotify data:", error);
       }
     }
 
