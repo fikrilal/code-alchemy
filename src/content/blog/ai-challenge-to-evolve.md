@@ -6,7 +6,7 @@ coverImage: "/images/blog/ai-challenge-evolve.jpg"
 tags: []
 readTime: "5 min read"
 author: "Ahmad Fikril"
-authorImage: "/images/avatar-2.jpg"
+authorImage: "/images/avatar.png"
 featured: true
 ---
 

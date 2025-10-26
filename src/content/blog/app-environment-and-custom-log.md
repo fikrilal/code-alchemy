@@ -5,7 +5,7 @@ author: "Ahmad Fikril"
 description: "How I manage environment configurations and implement a custom logging system for Flutter applications to improve security and debugging."
 readTime: "5 min read"
 coverImage: "/images/blog/env‑config‑cover.png"
-authorImage: "/images/avatar-2.jpg"
+authorImage: "/images/avatar.png"
 tags: [""]
 featured: true
 ---

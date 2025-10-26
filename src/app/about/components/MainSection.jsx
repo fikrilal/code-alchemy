@@ -73,7 +73,7 @@ export default function MainSection() {
         >
           {/* Avatar */}
           <motion.img
-            src="/images/avatar.jpg"
+            src="/images/avatar.png"
             alt="Your Avatar"
             className="w-32 h-32 rounded-full mb-4 lg:mb-0 lg:mr-6"
             variants={childVariants}

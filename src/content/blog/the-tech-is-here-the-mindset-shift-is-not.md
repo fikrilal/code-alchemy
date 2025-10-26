@@ -6,7 +6,7 @@ coverImage: "/images/blog/tech-mindset-shift.jpg"
 tags: []
 readTime: "2 min read"
 author: "Ahmad Fikril"
-authorImage: "/images/avatar-2.jpg"
+authorImage: "/images/avatar.png"
 featured: true
 ---
 
