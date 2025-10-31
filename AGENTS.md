@@ -1,5 +1,16 @@
 # Repository Guidelines
 
+## Active Re-Architecture & Migration
+- We are actively re-architecting and migrating to a server-first Next.js stack with TypeScript (strict), MDX, Zod, and typed API libs.
+- Before making changes, read these docs for context and requirements:
+  - `docs/engineering-rules.md`
+  - `docs/re-architecture-typescript-migration.md`
+  - `docs/migration-plan.md`
+  - `docs/ARCHITECTURE.md`
+  - `docs/CONTENT_AUTHORING.md`
+  - `docs/ENVIRONMENT.md`
+- Keep PRs aligned with the migration phases and acceptance criteria. Avoid ad-hoc features or refactors that conflict with the rules above.
+
 ## Project Structure & Module Organization
 - App Router with route groups: `src/app/(marketing|blog|work)`; pages are server by default (`page.tsx`, `layout.tsx`).
 - APIs are thin handlers: `src/app/api/{github-stats,spotify}/route.ts` calling typed libs.
