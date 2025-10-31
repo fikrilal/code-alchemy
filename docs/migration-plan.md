@@ -149,7 +149,7 @@ Acceptance
 
 - [x] Phase 0: CI created; MDX approach confirmed (next‑mdx‑remote/rsc). Tracking issues pending.
 - [x] Phase 1: tsconfig added; ESLint updated (warn-only for disruptive rules during migration); typography plugin installed; `src/lib/env.ts` added.
-- [ ] Phase 2: MDX utility and frontmatter types added; blog detail migrated off `dangerouslySetInnerHTML`; list uses metadata only; visuals match.
+- [x] Phase 2: MDX utility added; blog detail migrated off `dangerouslySetInnerHTML` to server-rendered MDX; list continues to use metadata only; visuals preserved.
 - [ ] Phase 3: Route groups added; pages server‑first; `next/image` standardized with `sizes`.
 - [ ] Phase 4: `src/lib/github.ts` and `src/lib/spotify.ts` implemented with Zod + caching; API routes converted to TS and thinned.
 - [ ] Phase 5: UI primitives created; components migrated to TS; a11y lint passes; client islands minimized.

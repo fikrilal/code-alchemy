@@ -45,6 +45,14 @@
 - `npm run typecheck` — `tsc --noEmit` (add if missing).
 - `npm run test` — unit tests (Vitest or Jest) (add if missing).
 
+## Validate Changes Before Commit
+- Always validate locally and iterate until clean:
+  - `npm run lint`
+  - `npm run typecheck`
+  - `npm run build`
+- For content/MDX or visual changes, verify a local or Vercel Preview render.
+- If validation needs internet or env secrets, fetch docs/versions or ask the user to provide access/variables.
+
 ## Coding Style & Naming Conventions
 - TypeScript strict; no `any`. Prefer `type` aliases; use `satisfies` and `as const` on configs.
 - Validate env and external data with Zod (`src/lib/env.ts`, typed API libs).
