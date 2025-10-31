@@ -147,8 +147,8 @@ Acceptance
 
 ## Tracking Checklist (copy into GitHub issues)
 
-- [ ] Phase 0: CI and tracking issues created; MDX approach confirmed (next‑mdx‑remote/rsc).
-- [ ] Phase 1: tsconfig added; ESLint updated; typography plugin installed; `src/lib/env.ts` added.
+- [x] Phase 0: CI created; MDX approach confirmed (next‑mdx‑remote/rsc). Tracking issues pending.
+- [x] Phase 1: tsconfig added; ESLint updated (warn-only for disruptive rules during migration); typography plugin installed; `src/lib/env.ts` added.
 - [ ] Phase 2: MDX utility and frontmatter types added; blog detail migrated off `dangerouslySetInnerHTML`; list uses metadata only; visuals match.
 - [ ] Phase 3: Route groups added; pages server‑first; `next/image` standardized with `sizes`.
 - [ ] Phase 4: `src/lib/github.ts` and `src/lib/spotify.ts` implemented with Zod + caching; API routes converted to TS and thinned.

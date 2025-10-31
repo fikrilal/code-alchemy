@@ -16,6 +16,18 @@
 - Prefer official sites (npmjs.com, nodejs.org, framework docs) over third-party summaries.
 - If internet access is unavailable in the environment, pause and ask the user to provide the needed info or enable access (e.g., exact package versions, links, or excerpts).
 
+## Windows CMD & Git (from this environment)
+- Access Windows CMD from bash using `cmd.exe /c "<command>"`.
+- Run multiple commands by chaining with `&&` and using `/d` to switch drives:
+  - Example: `cmd.exe /c "cd /d C:\\Development\\Web-Project\\code-alchemy && git status"`
+- Commit flow via CMD (uses the host Git):
+  - Stage: `cmd.exe /c "cd /d C:\\Development\\Web-Project\\code-alchemy && git add -A"`
+  - Commit: `cmd.exe /c "cd /d C:\\Development\\Web-Project\\code-alchemy && git commit -m \"feat: message\""`
+  - Push: `cmd.exe /c "cd /d C:\\Development\\Web-Project\\code-alchemy && git push origin main"`
+- If quoting becomes tricky, write a temporary `.bat` and execute it.
+- Line endings: Windows may warn about CRLF; this is expected. Configure as needed: `git config core.autocrlf true`.
+- If CMD/Git access is unavailable, pause and ask the user to run the git commands or provide access.
+
 ## Project Structure & Module Organization
 - App Router with route groups: `src/app/(marketing|blog|work)`; pages are server by default (`page.tsx`, `layout.tsx`).
 - APIs are thin handlers: `src/app/api/{github-stats,spotify}/route.ts` calling typed libs.
