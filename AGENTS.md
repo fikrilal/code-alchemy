@@ -11,6 +11,11 @@
   - `docs/ENVIRONMENT.md`
 - Keep PRs aligned with the migration phases and acceptance criteria. Avoid ad-hoc features or refactors that conflict with the rules above.
 
+## Internet Access & External References
+- Always consult authoritative sources when needed (package docs, release notes, API refs, Node LTS table).
+- Prefer official sites (npmjs.com, nodejs.org, framework docs) over third-party summaries.
+- If internet access is unavailable in the environment, pause and ask the user to provide the needed info or enable access (e.g., exact package versions, links, or excerpts).
+
 ## Project Structure & Module Organization
 - App Router with route groups: `src/app/(marketing|blog|work)`; pages are server by default (`page.tsx`, `layout.tsx`).
 - APIs are thin handlers: `src/app/api/{github-stats,spotify}/route.ts` calling typed libs.

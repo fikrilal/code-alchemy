@@ -3,7 +3,7 @@
 Thanks for helping improve this project. This repository is migrating to a modern, industry‑standard stack: Next.js (App Router) + TypeScript (strict) + MDX + Tailwind + Zod + typed API libs. Please keep changes small, focused, and reversible.
 
 ## Setup
-- Prereqs: Node.js 18+ and npm.
+- Prereqs: Node.js 24 LTS and npm.
 - Install: `npm install`
 - Run dev server: `npm run dev`
 - Build locally: `npm run build`

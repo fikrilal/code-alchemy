@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Local Setup
 
-1. Install **Node.js 18+** and clone this repository.
+1. Install **Node.js 24 LTS** and clone this repository.
 2. Install dependencies:
 
 ```bash
