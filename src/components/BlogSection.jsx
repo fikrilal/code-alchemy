@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Button from "./Button";
 import Link from "next/link";
+import Image from "next/image";
 
 // Helper to add ordinal suffix to day
 function getOrdinal(n) {
@@ -100,14 +101,13 @@ export default function BlogSection({ blogPosts = [] }) {
             {/* Blog Image Container */}
             <div className="w-full md:w-1/3">
               {/* This container forces a 16:9 aspect ratio */}
-              <div
-                className="relative w-full"
-                style={{ paddingBottom: "56.25%" }}
-              >
-                <img
+              <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                <Image
                   src={blog.coverImage || `/images/blog/${blog.slug}.jpg`}
                   alt={blog.title}
+                  fill
                   className="absolute inset-0 w-full h-full object-cover rounded-md"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
             </div>
