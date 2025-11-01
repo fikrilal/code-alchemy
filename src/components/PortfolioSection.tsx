@@ -1,12 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useCallback } from "react";
+import Image from "next/image";
+
 import SpotifyNowPlaying from "./SpotifyNowPlaying";
 import GithubActivity from "./GithubActivity";
 import TechStack from "./TechStack";
 import IconCards from "./IconCards";
-import Image from "next/image";
 
 // Parent fade/sequence
 const containerVariants = {

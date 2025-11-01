@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 // Animation variants
 const containerVariants = {
@@ -22,7 +22,7 @@ const childVariants = {
   },
 };
 
-function getOrdinal(n) {
+function getOrdinal(n: number) {
   if (n > 3 && n < 21) return n + "th";
   switch (n % 10) {
     case 1:
@@ -36,7 +36,7 @@ function getOrdinal(n) {
   }
 }
 
-function formatDate(dateString) {
+function formatDate(dateString: string) {
   const date = new Date(dateString);
   const month = date.toLocaleString("default", { month: "long" });
   const day = date.getDate();
@@ -44,7 +44,16 @@ function formatDate(dateString) {
   return `${month}, ${getOrdinal(day)} ${year}`;
 }
 
-export default function BlogMainSection({ blogPosts }) {
+type BlogPost = {
+  slug: string;
+  date: string;
+  title: string;
+  description: string;
+  coverImage?: string;
+  readTime?: string;
+};
+
+export default function BlogMainSection({ blogPosts }: { blogPosts: BlogPost[] }) {
   return (
     <div className="min-h-screen transition-colors duration-300">
       {/* Header - keeping original width */}

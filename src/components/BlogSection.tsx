@@ -1,12 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Button from "./Button";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+
+import Button from "@/components/ui/Button";
 
 // Helper to add ordinal suffix to day
-function getOrdinal(n) {
+function getOrdinal(n: number) {
   if (n > 3 && n < 21) return n + "th";
   switch (n % 10) {
     case 1:
@@ -21,7 +22,7 @@ function getOrdinal(n) {
 }
 
 // Format date as "Month, DayWithOrdinal Year" e.g., "February, 8th 2025"
-function formatDate(dateString) {
+function formatDate(dateString: string) {
   const date = new Date(dateString);
   const month = date.toLocaleString("default", { month: "long" });
   const day = date.getDate();
@@ -29,7 +30,15 @@ function formatDate(dateString) {
   return `${month}, ${getOrdinal(day)} ${year}`;
 }
 
-export default function BlogSection({ blogPosts = [] }) {
+type BlogPostCard = {
+  slug: string;
+  date: string;
+  title: string;
+  description: string;
+  coverImage?: string;
+};
+
+export default function BlogSection({ blogPosts = [] as BlogPostCard[] }) {
   // Parent container animation
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -51,7 +60,7 @@ export default function BlogSection({ blogPosts = [] }) {
 
   // Sort blog posts by date (newest first) if not already sorted
   const sortedBlogPosts = [...blogPosts].sort((a, b) => {
-    return new Date(b.date) - new Date(a.date);
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
   return (

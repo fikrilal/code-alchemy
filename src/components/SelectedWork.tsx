@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import workDetails from "@/data/workDetails";
-import Button from "./Button";
 import Link from "next/link";
 import Image from "next/image";
+
+import workDetails from "@/data/workDetails";
+import Button from "@/components/ui/Button";
 
 export default function SelectedWork() {
   // Parent container animation
