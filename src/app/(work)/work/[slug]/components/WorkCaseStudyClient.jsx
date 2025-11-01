@@ -3,8 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
-import workDetails from "@/data/workDetails";
+import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import { useEffect } from "react";
 
@@ -32,12 +31,11 @@ function extractEmojiAndText(feature) {
   return { emoji: "", title: feature, description: "" };
 }
 
-export default function WorkCaseStudyClient() {
-  const { slug } = useParams();
+export default function WorkCaseStudyClient({ project }) {
   const router = useRouter();
-  const project = workDetails.find((w) => w.slug === slug);
 
   useEffect(() => {
+    if (!project) return;
     const handleMouseMove = (e) => {
       const card = e.currentTarget;
       const rect = card.getBoundingClientRect();

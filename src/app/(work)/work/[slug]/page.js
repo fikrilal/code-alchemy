@@ -1,13 +1,74 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WorkCaseStudyClient from "./components/WorkCaseStudyClient";
+import workDetails from "@/data/workDetails";
+import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
+import Image from "next/image";
 
-export default function WorkCaseStudyPage() {
-  return (
-    <>
-      <Navbar />
-      <WorkCaseStudyClient />
-      <Footer />
-    </>
-  );
+export async function generateStaticParams() {
+  const mdxSlugs = getWorkSlugs();
+  const dataSlugs = workDetails.map((w) => w.slug);
+  const unique = Array.from(new Set([...mdxSlugs, ...dataSlugs]));
+  return unique.map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  try {
+    const { frontmatter } = await loadWorkBySlug(slug);
+    return {
+      title: `${frontmatter.title} | Case Study`,
+      description: frontmatter.shortDescription,
+      openGraph: {
+        title: frontmatter.title,
+        description: frontmatter.shortDescription,
+        images: [frontmatter.thumbnail || "/images/og-image.png"],
+      },
+    };
+  } catch {
+    const project = workDetails.find((w) => w.slug === slug);
+    return {
+      title: project ? `${project.title} | Case Study` : "Case Study",
+      description: project?.shortDescription ?? undefined,
+    };
+  }
+}
+
+export default async function WorkCaseStudyPage({ params }) {
+  const { slug } = await params;
+  // Try MDX first
+  try {
+    const { content, frontmatter } = await loadWorkBySlug(slug);
+    return (
+      <>
+        <Navbar />
+        <main className="bg-neutral-950 min-h-screen pt-10">
+          <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <header className="mb-8">
+              <h1 className="text-3xl md:text-5xl font-bold text-slate-100">{frontmatter.title}</h1>
+              {frontmatter.shortDescription && (
+                <p className="text-slate-400 mt-3">{frontmatter.shortDescription}</p>
+              )}
+            </header>
+            {frontmatter.thumbnail && (
+              <div className="relative w-full mb-10 rounded-lg overflow-hidden" style={{ aspectRatio: "16/9" }}>
+                <Image src={frontmatter.thumbnail} alt={frontmatter.title} fill className="object-cover" />
+              </div>
+            )}
+            <div className="prose prose-invert max-w-3xl">{content}</div>
+          </article>
+        </main>
+        <Footer />
+      </>
+    );
+  } catch {
+    const project = workDetails.find((w) => w.slug === slug) || null;
+    return (
+      <>
+        <Navbar />
+        <WorkCaseStudyClient project={project} />
+        <Footer />
+      </>
+    );
+  }
 }
