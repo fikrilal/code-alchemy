@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const runtime = "nodejs";
+
 import { env } from "@/lib/env";
 
 export async function GET() {
@@ -15,4 +17,3 @@ export async function GET() {
 
   return NextResponse.redirect(authUrl);
 }
-

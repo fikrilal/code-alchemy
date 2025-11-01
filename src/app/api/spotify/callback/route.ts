@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const runtime = "nodejs";
+
 import { env } from "@/lib/env";
 
 export async function GET(req: Request) {
@@ -46,4 +48,3 @@ export async function GET(req: Request) {
   );
   return res;
 }
-
