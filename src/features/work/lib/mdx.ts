@@ -7,12 +7,20 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSanitize from "rehype-sanitize";
- 
+
 import mdxComponents from "@/features/mdx/components";
+
+import type { ReactElement } from "react";
+
+export type WorkFrontmatter = {
+  title: string;
+  shortDescription?: string;
+  thumbnail?: string;
+};
 
 const WORK_DIR = path.join(process.cwd(), "src/content/work");
 
-export function getWorkSlugs() {
+export function getWorkSlugs(): string[] {
   if (!fs.existsSync(WORK_DIR)) return [];
   return fs
     .readdirSync(WORK_DIR)
@@ -20,8 +28,8 @@ export function getWorkSlugs() {
     .map((f) => f.replace(/\.(md|mdx)$/i, ""));
 }
 
-export async function compileWork(source) {
-  const { content, frontmatter } = await compileMDX({
+export async function compileWork(source: string): Promise<{ content: ReactElement; frontmatter: WorkFrontmatter }> {
+  const { content, frontmatter } = await compileMDX<WorkFrontmatter>({
     source,
     components: mdxComponents,
     options: {
@@ -40,7 +48,7 @@ export async function compileWork(source) {
   return { content, frontmatter };
 }
 
-export async function loadWorkBySlug(slug) {
+export async function loadWorkBySlug(slug: string): Promise<{ content: ReactElement; frontmatter: WorkFrontmatter }> {
   const mdxPath = path.join(WORK_DIR, `${slug}.mdx`);
   const mdPath = path.join(WORK_DIR, `${slug}.md`);
   let filePath = null;

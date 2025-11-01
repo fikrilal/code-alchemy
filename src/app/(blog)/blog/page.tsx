@@ -4,8 +4,17 @@ import Footer from "@/components/Footer";
 
 import BlogMainSection from "./components/BlogMainSection";
 
+type BlogPost = {
+  slug: string;
+  date: string;
+  title: string;
+  description: string;
+  coverImage?: string;
+  readTime?: string;
+};
+
 export default function BlogPage() {
-  const blogPosts = getSortedPostsData();
+  const blogPosts = getSortedPostsData() as BlogPost[];
 
   return (
     <>
