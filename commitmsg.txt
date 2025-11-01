@@ -1,1 +1,1 @@
-chore: remove legacy empty app dirs and unused components (Button, Skills)
+feat: convert GithubActivity and TextCursor to TSX with types

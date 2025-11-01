@@ -1,20 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import GitHubCalendar from "react-github-calendar";
 import useSWR from "swr";
-import { useState, useEffect } from "react";
+
+import type { Variants } from "framer-motion";
 
 // Custom hook to detect mobile screens
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+function useIsMobile(): boolean {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
     // Adjust the breakpoint as needed (here it's 768px)
     const mediaQuery = window.matchMedia("(max-width: 768px)");
     setIsMobile(mediaQuery.matches);
 
-    const handler = (e) => setIsMobile(e.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
     mediaQuery.addEventListener("change", handler);
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
@@ -22,7 +24,7 @@ function useIsMobile() {
   return isMobile;
 }
 
-const childVariants = {
+const childVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
@@ -31,12 +33,18 @@ const childVariants = {
   },
 };
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
+type Stats = {
+  lastCommitDate: string;
+  longestStreak: number;
+  totalContributions: number;
+};
+
+const fetcher = (url: string): Promise<Stats> => fetch(url).then((res) => res.json());
 
 export default function GithubActivity() {
   const isMobile = useIsMobile();
   // Fetch real GitHub stats from our API route
-  const { data: stats, error } = useSWR("/api/githubStats", fetcher);
+  const { data: stats } = useSWR<Stats>("/api/githubStats", fetcher);
 
   return (
     <motion.div
@@ -77,23 +85,17 @@ export default function GithubActivity() {
       <div className="mt-6 lg:mt-4 grid grid-cols-3 gap-4">
         <div className="bg-zinc-900 rounded-lg p-4 rounded text-center">
           <p className="text-xs text-slate-400">Last Commit</p>
-          <p className="text-lg text-slate-200 mt-2">
-            {stats ? stats.lastCommitDate : "Loading..."}
-          </p>
+          <p className="text-lg text-slate-200 mt-2">{stats?.lastCommitDate ?? "Loading..."}</p>
         </div>
         <div className="bg-zinc-900 rounded-lg p-4 rounded text-center">
           <p className="text-xs text-slate-400">Longest Streak</p>
-          <p className="text-lg  text-slate-200 mt-2">
-            {stats ? `${stats.longestStreak} days` : "Loading..."}
-          </p>
+          <p className="text-lg  text-slate-200 mt-2">{stats ? `${stats.longestStreak} days` : "Loading..."}</p>
         </div>
         <div className="bg-zinc-900 rounded-lg p-4 rounded text-center">
           <p className="text-xs text-slate-400 break-words">
             Total Contributions
           </p>
-          <p className="text-lg text-slate-200 mt-2">
-            {stats ? stats.totalContributions : "Loading..."}
-          </p>
+          <p className="text-lg text-slate-200 mt-2">{stats?.totalContributions ?? "Loading..."}</p>
         </div>
       </div>
 

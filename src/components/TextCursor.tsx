@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+type Point = { x: number; y: number };
+type Cell = { x: number; y: number; char: string; opacity: number; lastUpdated: number };
 
 export default function TextCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [grid, setGrid] = useState([]);
-  const gridRef = useRef([]);
-  const requestRef = useRef();
-  const positionRef = useRef({ x: 0, y: 0 });
+  const [position, setPosition] = useState<Point>({ x: 0, y: 0 });
+  const [grid, setGrid] = useState<Cell[]>([]);
+  const gridRef = useRef<Cell[]>([]);
+  const requestRef = useRef<number | null>(null);
+  const positionRef = useRef<Point>({ x: 0, y: 0 });
   const matrixChars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>?/;:[]{}!@#$%^&*()_+";
 
@@ -34,7 +37,7 @@ export default function TextCursor() {
     setGrid(newGrid);
 
     // Track mouse movement
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       positionRef.current = { x: e.clientX, y: e.clientY };
       setPosition({ x: e.clientX, y: e.clientY });
     };
@@ -42,7 +45,7 @@ export default function TextCursor() {
     window.addEventListener("mousemove", handleMouseMove);
 
     // Update function for animation
-    const updateMatrix = (time) => {
+    const updateMatrix = (time: number) => {
       const updatedGrid = [...gridRef.current];
       let hasChanges = false;
       const currentPosition = positionRef.current;
@@ -126,7 +129,7 @@ export default function TextCursor() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(requestRef.current);
+      if (requestRef.current !== null) cancelAnimationFrame(requestRef.current);
     };
   }, []);
 
