@@ -5,6 +5,8 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSanitize from "rehype-sanitize";
+import mdxComponents from "@/features/mdx/components";
 
 const WORK_DIR = path.join(process.cwd(), "src/content/work");
 
@@ -19,6 +21,7 @@ export function getWorkSlugs() {
 export async function compileWork(source) {
   const { content, frontmatter } = await compileMDX({
     source,
+    components: mdxComponents,
     options: {
       parseFrontmatter: true,
       mdxOptions: {
@@ -27,6 +30,7 @@ export async function compileWork(source) {
           rehypeSlug,
           [rehypeAutolinkHeadings, { properties: { className: ["anchor"] } }],
           [rehypePrettyCode, { theme: "github-dark" }],
+          rehypeSanitize,
         ],
       },
     },
@@ -45,4 +49,3 @@ export async function loadWorkBySlug(slug) {
   const source = fs.readFileSync(filePath, "utf8");
   return compileWork(source);
 }
-

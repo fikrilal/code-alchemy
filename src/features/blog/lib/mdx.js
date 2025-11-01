@@ -5,12 +5,15 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSanitize from "rehype-sanitize";
+import mdxComponents from "@/features/mdx/components";
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
 
 export async function compileSource(source) {
   const { content, frontmatter } = await compileMDX({
     source,
+    components: mdxComponents,
     options: {
       parseFrontmatter: true,
       mdxOptions: {
@@ -29,6 +32,7 @@ export async function compileSource(source) {
               theme: "github-dark",
             },
           ],
+          rehypeSanitize,
         ],
       },
     },
