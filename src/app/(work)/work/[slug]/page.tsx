@@ -1,7 +1,6 @@
 import Image from "next/image";
 
 import { getWorkSlugs, loadWorkBySlug, type WorkFrontmatter } from "@/features/work/lib/mdx";
-import workDetails from "@/data/workDetails";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -11,9 +10,7 @@ import type { Metadata } from "next";
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   const mdxSlugs = getWorkSlugs();
-  const dataSlugs = workDetails.map((w) => w.slug);
-  const unique = Array.from(new Set([...mdxSlugs, ...dataSlugs]));
-  return unique.map((slug) => ({ slug }));
+  return mdxSlugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -30,10 +27,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       },
     } satisfies Metadata;
   } catch {
-    const project = workDetails.find((w) => w.slug === slug);
     return {
-      title: project ? `${project.title} | Case Study` : "Case Study",
-      description: project?.shortDescription ?? undefined,
+      title: "Case Study",
+      description: undefined,
     } satisfies Metadata;
   }
 }
@@ -66,11 +62,16 @@ export default async function WorkCaseStudyPage({ params }: { params: Promise<{ 
       </>
     );
   } catch {
-    const project = workDetails.find((w) => w.slug === slug) || null;
+    // If MDX not found, let Next.js render 404
     return (
       <>
         <Navbar />
-        <WorkCaseStudyClient project={project} />
+        <main className="bg-neutral-950 min-h-screen pt-10">
+          <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-slate-300">
+            <h1 className="text-3xl font-semibold mb-2">Case Study Not Found</h1>
+            <p className="text-slate-400">This case study is not available yet.</p>
+          </article>
+        </main>
         <Footer />
       </>
     );

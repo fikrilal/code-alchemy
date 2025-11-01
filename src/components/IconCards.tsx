@@ -41,7 +41,7 @@ const IconCards = ({ childVariants }: Props) => {
 
       {/* LinkedIn Icon */}
       <motion.a
-        href="https://linkedin.com/in/fikrilal"
+        href="https://www.linkedin.com/in/fikrilal/"
         target="_blank"
         rel="noreferrer"
         aria-label="LinkedIn"

@@ -48,9 +48,9 @@ export default function ConsoleSection() {
       } else if (input.toLowerCase() === "email") {
         setOutput((prev) => [...prev, "📩 Contact: fikrildev@gmail.com"]);
       } else if (input.toLowerCase() === "github") {
-        window.open("https://github.com/yourprofile", "_blank");
+        window.open("https://github.com/fikrilal", "_blank");
       } else if (input.toLowerCase() === "linkedin") {
-        window.open("https://linkedin.com/in/yourprofile", "_blank");
+        window.open("https://www.linkedin.com/in/fikrilal/", "_blank");
       } else if (input.toLowerCase() === "warhammer") {
         const facts = [
           "The Emperor protects, but He does not forgive.",

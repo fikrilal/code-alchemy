@@ -7,12 +7,12 @@ export type SkillLink = {
 const skills: SkillLink[] = [
   {
     name: "LinkedIn",
-    link: "https://linkedin.com",
+    link: "https://www.linkedin.com/in/fikrilal/",
     icon: "/icons/icons8-linkedin.svg",
   },
   {
     name: "Instagram",
-    link: "https://instagram.com",
+    link: "https://www.instagram.com/fikril.al/",
     icon: "/icons/icons8-instagram.svg",
   },
   {
@@ -23,4 +23,3 @@ const skills: SkillLink[] = [
 ];
 
 export default skills;
-

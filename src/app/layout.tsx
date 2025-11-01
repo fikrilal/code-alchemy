@@ -117,10 +117,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 addressCountry: "Indonesia",
               },
               sameAs: [
-                "https://linkedin.com/in/fikrilal",
+                "https://www.linkedin.com/in/fikrilal/",
                 "https://github.com/fikrilal",
                 "https://twitter.com/fikrilal",
-                "https://instagram.com/fikrilal",
+                "https://www.instagram.com/fikril.al/",
               ],
             }),
           }}

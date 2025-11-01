@@ -3,11 +3,21 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import useSWR from "swr";
 
-import workDetails from "@/data/workDetails";
 import Button from "@/components/ui/Button";
 
+type WorkSummary = {
+  slug: string;
+  title: string;
+  shortDescription: string;
+  thumbnail: string;
+};
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
 export default function SelectedWork() {
+  const { data: workDetails } = useSWR<WorkSummary[]>("/api/work/list", fetcher);
   // Parent container animation
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -71,9 +81,9 @@ export default function SelectedWork() {
 
       {/* Projects Section */}
       <div className="max-w-6xl w-full mx-auto mt-12 sm:mt-16 lg:mt-24 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {workDetails.map((project) => (
+        {(workDetails ?? []).map((project) => (
           <motion.div
-            key={project.id}
+            key={project.slug}
             className="rounded-2xl overflow-hidden flex flex-col border border-slate-900 group relative"
             variants={{ ...childVariants, ...cardVariants }}
             initial="hidden"
