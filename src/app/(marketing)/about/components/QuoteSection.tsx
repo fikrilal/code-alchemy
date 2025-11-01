@@ -1,19 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 
-export default function QuoteSection({ containerVariants, childVariants }) {
+export default function QuoteSection({ containerVariants, childVariants }: { containerVariants?: Variants; childVariants?: Variants }) {
+  const v = (containerVariants ?? {}) as Variants;
+  const c = (childVariants ?? {}) as Variants;
   return (
     <motion.section
       className="container mx-auto px-6 lg:px-12 py-12 lg:py-20"
-      variants={containerVariants}
+      variants={v}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
     >
       <motion.div
         className="relative max-w-3xl mx-auto group"
-        variants={childVariants}
+        variants={c}
       >
         <div className="absolute -left-6 top-0 h-full w-1 bg-green-400 rounded-full opacity-20 transition-opacity group-hover:opacity-40"></div>
 

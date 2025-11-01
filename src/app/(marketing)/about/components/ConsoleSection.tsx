@@ -13,15 +13,15 @@ const messages = [
 ];
 
 export default function ConsoleSection() {
-  const [output, setOutput] = useState([]);
-  const [input, setInput] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [output, setOutput] = useState<string[]>([]);
+  const [input, setInput] = useState<string>("");
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
       if (index < messages.length) {
-        setOutput((prev) => [...prev, messages[index]]);
+        setOutput((prev) => [...prev, messages[index] as string]);
         index++;
       } else {
         clearInterval(interval);

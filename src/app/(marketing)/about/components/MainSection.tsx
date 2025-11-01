@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
+
 import skills from "@/data/skill";
 import ExperienceSection from "./ExperienceSection";
 import AchievementsSection from "./AchievementsSection";
@@ -9,7 +11,7 @@ import ChainOfThought from "./ChainOfThought";
 
 export default function MainSection() {
   // Container variants: controls stagger and a parent fade-in if desired
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -21,7 +23,7 @@ export default function MainSection() {
   };
 
   // Child variants: each element fades in from below
-  const childVariants = {
+  const childVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
