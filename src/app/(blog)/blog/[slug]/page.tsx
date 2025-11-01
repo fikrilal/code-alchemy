@@ -3,10 +3,12 @@ import Image from "next/image";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getSortedPostsData } from "@/lib/blog";
+import { getSortedPostsData, type BlogListItem } from "@/lib/blog";
 import { loadPostBySlug } from "@/features/blog/lib/mdx";
 
-function getOrdinal(n) {
+import type { Metadata } from "next";
+
+function getOrdinal(n: number) {
   if (n > 3 && n < 21) return n + "th";
   switch (n % 10) {
     case 1:
@@ -20,7 +22,7 @@ function getOrdinal(n) {
   }
 }
 
-function formatDate(dateString) {
+function formatDate(dateString: string) {
   const date = new Date(dateString);
   const month = date.toLocaleString("default", { month: "long" });
   const day = date.getDate();
@@ -29,19 +31,16 @@ function formatDate(dateString) {
 }
 
 // Generate static params for all blog posts
-export async function generateStaticParams() {
-  const posts = getSortedPostsData();
-
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
+  const posts = getSortedPostsData() as BlogListItem[];
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 // Generate metadata for the page
-export async function generateMetadata({ params }) {
-  const resolvedParams = await params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
   try {
-    const { frontmatter } = await loadPostBySlug(resolvedParams.slug);
+    const { frontmatter } = await loadPostBySlug(slug);
     return {
       title: `${frontmatter.title} | Code Alchemy Blog`,
       description: frontmatter.description,
@@ -50,20 +49,20 @@ export async function generateMetadata({ params }) {
         description: frontmatter.description,
         images: [frontmatter.coverImage || "/images/blog-default.jpg"],
       },
-    };
+    } satisfies Metadata;
   } catch (error) {
     return {
       title: "Blog Post Not Found | Code Alchemy Blog",
       description: "The requested blog post could not be found",
-    };
+    } satisfies Metadata;
   }
 }
 
-export default async function BlogPost({ params }) {
-  const resolvedParams = await params;
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   let compiled;
   try {
-    compiled = await loadPostBySlug(resolvedParams.slug);
+    compiled = await loadPostBySlug(slug);
   } catch (error) {
     return notFound();
   }

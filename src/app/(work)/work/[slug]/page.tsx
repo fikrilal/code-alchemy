@@ -1,20 +1,22 @@
 import Image from "next/image";
 
-import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
+import { getWorkSlugs, loadWorkBySlug, type WorkFrontmatter } from "@/features/work/lib/mdx";
 import workDetails from "@/data/workDetails";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 import WorkCaseStudyClient from "./components/WorkCaseStudyClient";
 
-export async function generateStaticParams() {
+import type { Metadata } from "next";
+
+export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   const mdxSlugs = getWorkSlugs();
   const dataSlugs = workDetails.map((w) => w.slug);
   const unique = Array.from(new Set([...mdxSlugs, ...dataSlugs]));
   return unique.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   try {
     const { frontmatter } = await loadWorkBySlug(slug);
@@ -26,17 +28,17 @@ export async function generateMetadata({ params }) {
         description: frontmatter.shortDescription,
         images: [frontmatter.thumbnail || "/images/og-image.png"],
       },
-    };
+    } satisfies Metadata;
   } catch {
     const project = workDetails.find((w) => w.slug === slug);
     return {
       title: project ? `${project.title} | Case Study` : "Case Study",
       description: project?.shortDescription ?? undefined,
-    };
+    } satisfies Metadata;
   }
 }
 
-export default async function WorkCaseStudyPage({ params }) {
+export default async function WorkCaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   // Try MDX first
   try {

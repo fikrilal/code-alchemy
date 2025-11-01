@@ -18,6 +18,9 @@ export type BlogFrontmatter = {
   description: string;
   coverImage?: string;
   readTime?: string;
+  author?: string;
+  authorImage?: string;
+  tags?: string[];
 };
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");

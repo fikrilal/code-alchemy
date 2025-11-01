@@ -1,6 +1,12 @@
 "use client";
 
-export default function GlobalError({ error, reset }) {
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   return (
     <main className="min-h-screen flex items-center justify-center text-center p-8">
       <div>

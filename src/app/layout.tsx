@@ -5,6 +5,9 @@ import { Analytics } from "@vercel/analytics/next";
 import DarkModeProvider from "@/components/DarkModeProvider";
 import "./globals.css";
 
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+
 const interTight = Inter_Tight({
   variable: "--font-inter-tight",
   subsets: ["latin"],
@@ -17,7 +20,7 @@ const fragmentMono = Fragment_Mono({
   weight: ["400"],
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Ahmad Fikril Al Muzakki | Mobile Engineer & UX Designer",
   description:
     "Hey there! I'm Fikril, a mobile engineering wizard turning wild ideas into sleek apps that people actually love to use. Coffee-powered code and pixel-perfect designs are my superpowers!",
@@ -83,7 +86,7 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
