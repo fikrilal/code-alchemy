@@ -154,7 +154,7 @@ Acceptance
 - [x] Phase 4: `src/lib/github.ts` and `src/lib/spotify.ts` implemented with Zod + caching; API routes converted to TS and thinned; env consumed via `src/lib/env.ts`.
 - [x] Phase 5: UI primitives created (Button, Card, Badge in TS); initial adoption in work page; further component TS migration and a11y cleanups planned.
 - [x] Phase 6: Work/case studies support via MDX added; SSG params + metadata implemented; fallback to existing data preserved for non‑migrated items.
-- [ ] Phase 7: Obsolete JS and custom prose CSS removed; error/not‑found routes; docs updated.
+- [x] Phase 7: Obsolete JS and custom prose CSS removed; error/not‑found routes; docs updated.
 
 ---
 
