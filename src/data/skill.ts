@@ -1,4 +1,10 @@
-const skills = [
+export type SkillLink = {
+  name: string;
+  link: string;
+  icon: string;
+};
+
+const skills: SkillLink[] = [
   {
     name: "LinkedIn",
     link: "https://linkedin.com",
@@ -17,3 +23,4 @@ const skills = [
 ];
 
 export default skills;
+

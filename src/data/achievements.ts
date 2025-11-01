@@ -1,4 +1,11 @@
-const achievements = [
+export type Achievement = {
+  title: string;
+  organization: string;
+  date: string;
+  credentialLink: string;
+};
+
+const achievements: Achievement[] = [
   {
     title:
       "Awarded Kemendikbudristek Funding for the Karsa Cipta (PKM-KC) Student Creativity Program in 2023",
@@ -36,3 +43,4 @@ const achievements = [
 ];
 
 export default achievements;
+

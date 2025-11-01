@@ -1,4 +1,15 @@
-const blogPosts = [
+export type BlogCard = {
+  id: number;
+  category: string;
+  title: string;
+  imageUrl: string;
+  authorName: string;
+  authorAvatar: string;
+  description: string;
+  date: string;
+};
+
+const blogPosts: BlogCard[] = [
   {
     id: 1,
     category: "Tech & Code",
@@ -36,3 +47,4 @@ const blogPosts = [
 ];
 
 export default blogPosts;
+

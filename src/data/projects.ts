@@ -1,11 +1,19 @@
-const projects = [
+export type ProjectCard = {
+  title: string;
+  description: string;
+  link: string;
+  borderStyles: string;
+  image: string;
+};
+
+const projects: ProjectCard[] = [
   {
     title: "eDamkar",
     description:
       "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
     link: "/projects/edamkar",
     borderStyles: "border-b lg:border-b border-gray-200",
-    image: "/images/dummy-image.jpg", // Added image path
+    image: "/images/dummy-image.jpg",
   },
   {
     title: "ePKK",
@@ -13,7 +21,7 @@ const projects = [
       "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
     link: "/projects/epkk",
     borderStyles: "border-b lg:border-b lg:border-l border-gray-200",
-    image: "/images/dummy-image.jpg", // Added image path
+    image: "/images/dummy-image.jpg",
   },
   {
     title: "Ngawi Smart City",
@@ -21,7 +29,7 @@ const projects = [
       "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
     link: "/projects/ngawi-smart-city",
     borderStyles: "border-b lg:border-none border-gray-200",
-    image: "/images/dummy-image.jpg", // Added image path
+    image: "/images/dummy-image.jpg",
   },
   {
     title: "Lofo - leftover food",
@@ -29,8 +37,9 @@ const projects = [
       "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet.",
     link: "/projects/lofo",
     borderStyles: "lg:border-l border-gray-200",
-    image: "/images/dummy-image.jpg", // Added image path
+    image: "/images/dummy-image.jpg",
   },
 ];
 
 export default projects;
+
