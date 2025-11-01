@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const IconCards = ({ childVariants }) => {
   return (
@@ -16,11 +17,7 @@ const IconCards = ({ childVariants }) => {
         whileHover={{ scale: 1.1 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
-        <img
-          src="/icons/icons8-x.svg"
-          alt="X"
-          className="w-10 h-10" // increased size for better visibility
-        />
+        <Image src="/icons/icons8-x.svg" alt="X" width={40} height={40} className="w-10 h-10" />
       </motion.a>
 
       {/* GitHub Icon */}
@@ -34,11 +31,7 @@ const IconCards = ({ childVariants }) => {
         whileHover={{ scale: 1.1 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
-        <img
-          src="/icons/github.svg"
-          alt="GitHub"
-          className="w-10 h-10" // increased size for better visibility
-        />
+        <Image src="/icons/github.svg" alt="GitHub" width={40} height={40} className="w-10 h-10" />
       </motion.a>
 
       {/* LinkedIn Icon */}
@@ -52,11 +45,7 @@ const IconCards = ({ childVariants }) => {
         whileHover={{ scale: 1.1 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
-        <img
-          src="/icons/linkedin.svg"
-          alt="LinkedIn"
-          className="w-10 h-10" // increased size for better visibility
-        />
+        <Image src="/icons/linkedin.svg" alt="LinkedIn" width={40} height={40} className="w-10 h-10" />
       </motion.a>
     </div>
   );

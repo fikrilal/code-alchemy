@@ -2,6 +2,7 @@
 
 import Marquee from "react-fast-marquee";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Carousel({ images }) {
   const containerVariants = {
@@ -37,11 +38,16 @@ export default function Carousel({ images }) {
             className="h-[280px] sm:h-[300px] md:h-[450px] lg:h-[560px] mx-2 sm:mx-3 lg:mx-4 flex-none"
             variants={childVariants}
           >
-            <img
-              src={image}
-              alt={`Slide ${index + 1}`}
-              className="h-full w-full object-contain rounded-xl"
-            />
+            <div className="relative h-full w-full">
+              <Image
+                src={image}
+                alt={`Slide ${index + 1}`}
+                fill
+                className="object-contain rounded-xl"
+                sizes="(max-width: 1024px) 80vw, 60vw"
+                priority={index === 0}
+              />
+            </div>
           </motion.div>
         ))}
       </Marquee>

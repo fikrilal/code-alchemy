@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function SpotifyNowPlaying() {
   const [track, setTrack] = useState(null);
@@ -57,11 +58,7 @@ export default function SpotifyNowPlaying() {
           {isLastPlayed ? "LAST PLAYED" : "CURRENTLY PLAYING"}
         </p>
         <div className="bg-slate-1100 border border-slate-500 rounded-full flex items-center justify-center w-8 h-8">
-          <img
-            src="/icons/ic_spotify.svg"
-            alt="Spotify Icon"
-            className="w-4 h-4"
-          />
+          <Image src="/icons/ic_spotify.svg" alt="Spotify Icon" width={16} height={16} className="w-4 h-4" />
         </div>
       </div>
 
@@ -70,11 +67,13 @@ export default function SpotifyNowPlaying() {
         {track ? (
           <div className="flex items-center gap-4">
             <div className="relative w-20 h-20 flex-none rounded-full border border-slate-800 p-2">
-              <div className="w-full h-full rounded-full overflow-hidden">
-                <img
+              <div className="w-full h-full rounded-full overflow-hidden relative">
+                <Image
                   src={track.albumImage}
                   alt="Album Cover"
-                  className="w-full h-full object-cover rounded-full animate-spin"
+                  fill
+                  unoptimized
+                  className="object-cover rounded-full animate-spin"
                   style={{ animationDuration: "10s" }}
                 />
               </div>

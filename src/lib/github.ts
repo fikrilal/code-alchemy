@@ -1,6 +1,6 @@
-import { env } from "@/lib/env";
 import { z } from "zod";
 import { format, parseISO } from "date-fns";
+import { env } from "@/lib/env";
 
 const ContributionDay = z.object({
   date: z.string(),
@@ -125,4 +125,3 @@ export async function getGithubStats(opts?: {
     longestStreak,
   };
 }
-

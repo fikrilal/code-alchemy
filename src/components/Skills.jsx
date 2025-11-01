@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Skills() {
   const tools = [
     { name: "Flutter", level: "EXPERT", icon: "/icons/flutter-logo.svg" },
@@ -64,10 +66,12 @@ export default function Skills() {
             key={index}
             className={`flex items-center p-8 bg-white ${borders[index]} border-gray-200`}
           >
-            <img
+            <Image
               src={tool.icon}
               alt={tool.name}
-              className="w-12 h-12 mr-4" // Icon on the left
+              width={48}
+              height={48}
+              className="w-12 h-12 mr-4"
             />
             <div className="flex flex-col">
               <p className="text-lg font-semibold text-slate-600">

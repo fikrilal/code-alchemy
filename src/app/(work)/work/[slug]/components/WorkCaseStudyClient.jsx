@@ -37,16 +37,6 @@ export default function WorkCaseStudyClient() {
   const router = useRouter();
   const project = workDetails.find((w) => w.slug === slug);
 
-  if (!project) {
-    return (
-      <div className="min-h-screen bg-neutral-950 flex items-center justify-center text-white flex-col gap-6">
-        <h1 className="text-3xl">Project not found</h1>
-        <p className="text-slate-400">The project you're looking for doesn't exist or has been removed.</p>
-        <Button onClick={() => router.push("/work")}>Back to Projects</Button>
-      </div>
-    );
-  }
-
   useEffect(() => {
     const handleMouseMove = (e) => {
       const card = e.currentTarget;
@@ -107,6 +97,16 @@ export default function WorkCaseStudyClient() {
       </motion.section>
     );
   };
+
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-neutral-950 flex items-center justify-center text-white flex-col gap-6">
+        <h1 className="text-3xl">Project not found</h1>
+        <p className="text-slate-400">The project you're looking for doesn't exist or has been removed.</p>
+        <Button onClick={() => router.push("/work")}>Back to Projects</Button>
+      </div>
+    );
+  }
 
   return (
     <main className="bg-neutral-950 min-h-screen pt-10">

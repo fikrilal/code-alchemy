@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 // Parent fade/sequence
 const containerVariants = {
@@ -52,11 +53,7 @@ export default function TechStack() {
             className="bg-zinc-900 rounded-lg flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
-            <img
-              src="/icons/ic_flutter.svg"
-              alt="Flutter"
-              className="h-8 w-auto"
-            />
+            <Image src="/icons/ic_flutter.svg" alt="Flutter" width={32} height={32} className="h-8 w-auto" />
             <p className="mt-6 text-sm text-slate-100">Flutter</p>
           </motion.div>
 
@@ -65,11 +62,7 @@ export default function TechStack() {
             className="bg-zinc-900 rounded-lg rounded flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
-            <img
-              src="/icons/ic_kotlin.svg"
-              alt="Kotlin"
-              className="h-8 w-auto"
-            />
+            <Image src="/icons/ic_kotlin.svg" alt="Kotlin" width={32} height={32} className="h-8 w-auto" />
             <p className="mt-6 text-sm text-slate-100">Kotlin</p>
           </motion.div>
 
@@ -78,11 +71,7 @@ export default function TechStack() {
             className="bg-zinc-900 rounded-lg rounded flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
-            <img
-              src="/icons/ic_compose.svg"
-              alt="Compose"
-              className="h-8 w-auto"
-            />
+            <Image src="/icons/ic_compose.svg" alt="Compose" width={32} height={32} className="h-8 w-auto" />
             <p className="mt-6 text-sm text-slate-100">Compose</p>
           </motion.div>
         </div>
@@ -99,7 +88,7 @@ export default function TechStack() {
           className="bg-zinc-900 rounded-lg flex items-center justify-center p-4 relative group"
           variants={childVariants}
         >
-          <img src="/icons/ic_getx.svg" alt="GetX" className="h-8 w-auto" />
+          <Image src="/icons/ic_getx.svg" alt="GetX" width={32} height={32} className="h-8 w-auto" />
           {/* Tooltip: appears above the icon */}
           <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs text-slate-300 bg-black/60 rounded px-2 py-1 pointer-events-none">
             GetX
@@ -111,7 +100,7 @@ export default function TechStack() {
           className="bg-zinc-900 rounded-lg flex items-center justify-center p-2 relative group"
           variants={childVariants}
         >
-          <img src="/icons/ic_bloc.svg" alt="BLOC" className="h-10 w-auto" />
+          <Image src="/icons/ic_bloc.svg" alt="BLOC" width={40} height={40} className="h-10 w-auto" />
           <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs text-slate-300 bg-black/60 rounded px-2 py-1 pointer-events-none">
             BLOC
           </span>
@@ -122,11 +111,7 @@ export default function TechStack() {
           className="bg-zinc-900 rounded-lg flex items-center justify-center p-4 relative group"
           variants={childVariants}
         >
-          <img
-            src="/icons/ic_riverpod.svg"
-            alt="Riverpod"
-            className="h-8 w-auto"
-          />
+          <Image src="/icons/ic_riverpod.svg" alt="Riverpod" width={32} height={32} className="h-8 w-auto" />
           <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs text-slate-300 bg-black/60 rounded px-2 py-1 pointer-events-none">
             Riverpod
           </span>

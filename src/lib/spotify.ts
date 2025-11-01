@@ -1,5 +1,5 @@
-import { env } from "@/lib/env";
 import { z } from "zod";
+import { env } from "@/lib/env";
 
 const SpotifyImage = z.object({ url: z.string().url() });
 const SpotifyExternalUrls = z.object({ spotify: z.string().url() });
@@ -78,4 +78,3 @@ export async function getCurrentOrLastPlayed(revalidateSec = 60): Promise<
   const track = SpotifyTrack.parse(currentJson?.item);
   return { item: simplify(track) };
 }
-
