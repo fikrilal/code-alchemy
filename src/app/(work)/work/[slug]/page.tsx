@@ -1,6 +1,5 @@
-import Image from "next/image";
-
 import { getWorkSlugs, loadWorkBySlug, type WorkFrontmatter } from "@/features/work/lib/mdx";
+import WorkGallery from "@/features/work/components/WorkGallery";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -50,11 +49,7 @@ export default async function WorkCaseStudyPage({ params }: { params: Promise<{ 
                 <p className="text-slate-400 mt-3">{frontmatter.shortDescription}</p>
               )}
             </header>
-            {frontmatter.thumbnail && (
-              <div className="relative w-full mb-10 rounded-lg overflow-hidden" style={{ aspectRatio: "16/9" }}>
-                <Image src={frontmatter.thumbnail} alt={frontmatter.title} fill className="object-cover" />
-              </div>
-            )}
+            <WorkGallery slug={slug} title={frontmatter.title} thumbnail={frontmatter.thumbnail ?? undefined} />
             <div className="prose prose-invert max-w-3xl">{content}</div>
           </article>
         </main>
