@@ -54,6 +54,8 @@ type BlogPost = {
 };
 
 export default function BlogMainSection({ blogPosts }: { blogPosts: BlogPost[] }) {
+  const items = Array.isArray(blogPosts) ? blogPosts : [];
+
   return (
     <div className="min-h-screen transition-colors duration-300">
       {/* Header - keeping original width */}
@@ -91,7 +93,7 @@ export default function BlogMainSection({ blogPosts }: { blogPosts: BlogPost[] }
         {/* Added wrapper div with narrower max width */}
         <div className="max-w-5xl mx-auto">
           <div className="space-y-2">
-            {blogPosts.map((post, index) => (
+            {items.map((post, index) => (
               <motion.div
                 key={post.slug}
                 className={`flex flex-col md:flex-row items-stretch ${
@@ -109,6 +111,8 @@ export default function BlogMainSection({ blogPosts }: { blogPosts: BlogPost[] }
                       src={post.coverImage || "/images/blog-default.jpg"}
                       alt={post.title}
                       fill
+                      priority={index === 0}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 40vw"
                       className="absolute inset-0 w-full h-full object-cover rounded-md"
                     />
                   </div>
@@ -154,6 +158,11 @@ export default function BlogMainSection({ blogPosts }: { blogPosts: BlogPost[] }
                 </div>
               </motion.div>
             ))}
+            {items.length === 0 && (
+              <motion.div className="py-12 text-slate-400" variants={childVariants}>
+                No posts published yet. Check back soon.
+              </motion.div>
+            )}
           </div>
         </div>
       </motion.section>
