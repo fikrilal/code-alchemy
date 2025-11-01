@@ -51,6 +51,19 @@ export default async function WorkCaseStudyPage({ params }: { params: Promise<{ 
             </header>
             <WorkGallery slug={slug} title={frontmatter.title} thumbnail={frontmatter.thumbnail ?? undefined} />
             <div className="prose prose-invert max-w-3xl">{content}</div>
+            {Array.isArray((frontmatter as unknown as { techStack?: string[] }).techStack) &&
+              (frontmatter as unknown as { techStack?: string[] }).techStack!.length > 0 && (
+              <section className="mt-10">
+                <h2 className="text-2xl font-semibold text-slate-200 mb-3">Tech Stack</h2>
+                <ul className="flex flex-wrap gap-2">
+                  {(frontmatter as unknown as { techStack?: string[] }).techStack!.map((t: string, i: number) => (
+                    <li key={i} className="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-sm">
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
           </article>
         </main>
         <Footer />
