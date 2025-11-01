@@ -1,7 +1,8 @@
+import { getSortedPostsData } from "@/lib/blog";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogMainSection from "./components/BlogMainSection";
-import { getSortedPostsData } from "@/lib/blog";
 
 export default function BlogPage() {
   const blogPosts = getSortedPostsData();

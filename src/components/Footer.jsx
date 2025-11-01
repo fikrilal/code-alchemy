@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Footer() {
   // Container variants control staggering (the delay between each child anim).
@@ -67,9 +68,11 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img
+            <Image
               src="/icons/github.svg"
               alt="GitHub"
+              width={32}
+              height={32}
               className="w-6 h-6 md:w-8 md:h-8 hover:opacity-80 transition"
             />
           </a>
@@ -78,16 +81,20 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img
+            <Image
               src="/icons/linkedin.svg"
               alt="LinkedIn"
+              width={32}
+              height={32}
               className="w-6 h-6 md:w-8 md:h-8 hover:opacity-80 transition"
             />
           </a>
           <a href="mailto:fikrildev@gmail.com">
-            <img
+            <Image
               src="/icons/email.svg"
               alt="Email"
+              width={32}
+              height={32}
               className="w-6 h-6 md:w-8 md:h-8 hover:opacity-80 transition"
             />
           </a>
@@ -96,9 +103,11 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img
+            <Image
               src="/icons/medium.svg"
               alt="Medium"
+              width={32}
+              height={32}
               className="w-6 h-6 md:w-8 md:h-8 hover:opacity-80 transition"
             />
           </a>
@@ -107,9 +116,11 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img
+            <Image
               src="/icons/instagram.svg"
               alt="Instagram"
+              width={32}
+              height={32}
               className="w-6 h-6 md:w-8 md:h-8 hover:opacity-80 transition"
             />
           </a>

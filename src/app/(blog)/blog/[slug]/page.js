@@ -1,8 +1,9 @@
-import { getSortedPostsData } from "@/lib/blog";
 import { notFound } from "next/navigation";
+import Image from "next/image";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Image from "next/image";
+import { getSortedPostsData } from "@/lib/blog";
 import { loadPostBySlug } from "@/features/blog/lib/mdx";
 
 function getOrdinal(n) {

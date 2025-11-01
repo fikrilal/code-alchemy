@@ -1,8 +1,9 @@
 import { Inter_Tight, Fragment_Mono } from "next/font/google";
-import "./globals.css";
-import DarkModeProvider from "@/components/DarkModeProvider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+
+import DarkModeProvider from "@/components/DarkModeProvider";
+import "./globals.css";
 
 const interTight = Inter_Tight({
   variable: "--font-inter-tight",
