@@ -1,1 +1,0 @@
-feat: convert WorkCaseStudyClient to TSX and add commitmsg.txt to gitignore
