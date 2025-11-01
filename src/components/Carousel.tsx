@@ -4,7 +4,9 @@ import Marquee from "react-fast-marquee";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export default function Carousel({ images }) {
+type CarouselProps = { images: string[] };
+
+export default function Carousel({ images }: CarouselProps) {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

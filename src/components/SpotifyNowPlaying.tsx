@@ -3,9 +3,16 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+type Track = {
+  name: string;
+  artist: string;
+  albumImage: string;
+  spotifyUrl: string;
+};
+
 export default function SpotifyNowPlaying() {
-  const [track, setTrack] = useState(null);
-  const [isLastPlayed, setIsLastPlayed] = useState(false);
+  const [track, setTrack] = useState<Track | null>(null);
+  const [isLastPlayed, setIsLastPlayed] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchSpotify() {
@@ -24,10 +31,12 @@ export default function SpotifyNowPlaying() {
           // console.log("✅ Track Found:", data.item);
 
           setTrack({
-            name: data.item.name,
-            artist: data.item.artists.map((artist) => artist.name).join(", " ),
-            albumImage: data.item.album.images[0].url,
-            spotifyUrl: data.item.external_urls.spotify,
+            name: data.item.name as string,
+            artist: (data.item.artists as Array<{ name: string }>)
+              .map((artist: { name: string }) => artist.name)
+              .join(", "),
+            albumImage: (data.item.album.images[0].url as string) ?? "",
+            spotifyUrl: data.item.external_urls.spotify as string,
           });
           // Check if the flag exists and update the state accordingly.
           setIsLastPlayed(data.last_played === true);

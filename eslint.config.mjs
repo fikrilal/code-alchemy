@@ -60,6 +60,34 @@ const eslintConfig = [
       "jsx-a11y/anchor-is-valid": "warn",
     },
   },
+  {
+    files: [
+      "src/components/Footer.tsx",
+      "src/components/Navbar.tsx",
+      "src/components/IconCards.tsx",
+      "src/components/SpotifyNowPlaying.tsx",
+      "src/components/Carousel.tsx",
+      "src/components/TechStack.tsx",
+    ],
+    rules: {
+      "import/order": [
+        "error",
+        {
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+            "object",
+            "type",
+          ],
+          "newlines-between": "always",
+        },
+      ],
+    },
+  },
 ];
 
 export default eslintConfig;
