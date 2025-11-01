@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Variants } from "framer-motion";
 
 import experiences from "@/data/experience";
+
+import type { Variants } from "framer-motion";
 
 type Experience = {
   title: string;

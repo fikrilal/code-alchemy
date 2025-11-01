@@ -1,11 +1,13 @@
 import fs from "fs";
 import path from "path";
+
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSanitize from "rehype-sanitize";
+ 
 import mdxComponents from "@/features/mdx/components";
 
 const WORK_DIR = path.join(process.cwd(), "src/content/work");

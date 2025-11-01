@@ -1,13 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Variants } from "framer-motion";
 
 import skills from "@/data/skill";
+
 import ExperienceSection from "./ExperienceSection";
 import AchievementsSection from "./AchievementsSection";
 import QuoteSection from "./QuoteSection";
 import ChainOfThought from "./ChainOfThought";
+
+import type { Variants } from "framer-motion";
 
 export default function MainSection() {
   // Container variants: controls stagger and a parent fade-in if desired

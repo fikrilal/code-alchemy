@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+
 import type { Variants } from "framer-motion";
 
 export default function QuoteSection({ containerVariants, childVariants }: { containerVariants?: Variants; childVariants?: Variants }) {

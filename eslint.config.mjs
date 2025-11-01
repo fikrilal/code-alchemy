@@ -37,7 +37,7 @@ const eslintConfig = [
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       "@typescript-eslint/consistent-type-imports": "error",
       "import/order": [
-        "warn",
+        "error",
         {
           groups: [
             "builtin",

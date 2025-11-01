@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Variants } from "framer-motion";
 
 import achievements from "@/data/achievements";
+
+import type { Variants } from "framer-motion";
 
 type Achievement = {
   title: string;

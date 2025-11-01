@@ -1,9 +1,11 @@
+import Image from "next/image";
+
+import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
+import workDetails from "@/data/workDetails";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
 import WorkCaseStudyClient from "./components/WorkCaseStudyClient";
-import workDetails from "@/data/workDetails";
-import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
-import Image from "next/image";
 
 export async function generateStaticParams() {
   const mdxSlugs = getWorkSlugs();

@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { env } from "@/lib/env";
 
 const SpotifyImage = z.object({ url: z.string().url() });

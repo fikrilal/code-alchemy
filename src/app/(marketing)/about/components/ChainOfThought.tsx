@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-// This parse function is used for the chain messages.
-function parseBoldText(text) {
-  const parts = text.split(/(\*\*.*?\*\*)/g); // Split at bold markers
+import type { Variants } from "framer-motion";
+
+function parseBoldText(text: string): ReactNode[] {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
   return parts.map((part, index) =>
     part.startsWith("**") && part.endsWith("**") ? (
       <strong key={index}>{part.slice(2, -2)}</strong>
@@ -15,8 +16,9 @@ function parseBoldText(text) {
   );
 }
 
-// Thoughts array with personalized chain-of-thought messages.
-const thoughts = [
+type Thought = { title: string; content: string; chain?: string[] };
+
+const thoughts: Thought[] = [
   {
     title: "📩 fikrildev@gmail.com",
     content:
@@ -137,24 +139,22 @@ const thoughts = [
   },
 ];
 
-// Fallback dynamic prefix if a thought has no custom chain.
-function getDynamicPrefixFallback(thought) {
-  if (thought.title.includes("@")) {
+function getDynamicPrefixFallback(thought: Thought): string {
+  if (thought.title.includes("@"))
     return "🤖 Hmm... Perhaps I should show my email:";
-  } else if (thought.content.toLowerCase().includes("engineer")) {
+  const c = thought.content.toLowerCase();
+  if (c.includes("engineer"))
     return "🤖 Hmm... Maybe I should showcase my engineering side:";
-  } else if (thought.content.toLowerCase().includes("developer")) {
+  if (c.includes("developer"))
     return "🤖 Hmm... Maybe I should introduce the developer:";
-  } else if (thought.content.toLowerCase().includes("designer")) {
+  if (c.includes("designer"))
     return "🤖 Hmm... Perhaps my design portfolio would do:";
-  } else {
-    return "🤖 Hmm... Maybe I should show:";
-  }
+  return "🤖 Hmm... Maybe I should show:";
 }
 
-function getChainMessages(thought) {
+function getChainMessages(thought: Thought): string[] {
   return (
-    thought.chain || [
+    thought.chain ?? [
       getDynamicPrefixFallback(thought),
       "🤖 Let me think about it...",
       "🤖 Processing the details...",
@@ -163,9 +163,18 @@ function getChainMessages(thought) {
   );
 }
 
-// ScrambleText: animates text by gradually revealing the real text amidst random characters.
-function ScrambleText({ text, className, duration = 1000, interval = 50 }) {
-  const [displayed, setDisplayed] = useState(text);
+function ScrambleText({
+  text,
+  className,
+  duration = 1000,
+  interval = 50,
+}: {
+  text: string;
+  className?: string;
+  duration?: number;
+  interval?: number;
+}) {
+  const [displayed, setDisplayed] = useState<string>(text);
 
   useEffect(() => {
     let frame = 0;
@@ -176,11 +185,8 @@ function ScrambleText({ text, className, duration = 1000, interval = 50 }) {
       frame++;
       let newText = "";
       for (let i = 0; i < text.length; i++) {
-        if (i < (frame / totalFrames) * text.length) {
-          newText += text[i];
-        } else {
-          newText += chars[Math.floor(Math.random() * chars.length)];
-        }
+        if (i < (frame / totalFrames) * text.length) newText += text[i];
+        else newText += chars[Math.floor(Math.random() * chars.length)];
       }
       setDisplayed(newText);
       if (frame >= totalFrames) {
@@ -188,21 +194,23 @@ function ScrambleText({ text, className, duration = 1000, interval = 50 }) {
         setDisplayed(text);
       }
     }, interval);
-
     return () => clearInterval(scrambleInterval);
   }, [text, duration, interval]);
 
   return <span className={className}>{displayed}</span>;
 }
 
-// New component: ScrambleParsedText applies the scramble effect to content while parsing **bold** markers.
 function ScrambleParsedText({
   text,
   className,
   duration = 1000,
   interval = 50,
+}: {
+  text: string;
+  className?: string;
+  duration?: number;
+  interval?: number;
 }) {
-  // Split the text at bold markers.
   const parts = text.split(/(\*\*.*?\*\*)/g);
   return (
     <>
@@ -211,7 +219,7 @@ function ScrambleParsedText({
           <strong key={index}>
             <ScrambleText
               text={part.slice(2, -2)}
-              className={className}
+              className={className ?? ""}
               duration={duration}
               interval={interval}
             />
@@ -220,7 +228,7 @@ function ScrambleParsedText({
           <ScrambleText
             key={index}
             text={part}
-            className={className}
+            className={className ?? ""}
             duration={duration}
             interval={interval}
           />
@@ -231,43 +239,29 @@ function ScrambleParsedText({
 }
 
 export default function ChainOfThought() {
-  // 'displayIndex' holds the index of the currently visible content.
-  const [displayIndex, setDisplayIndex] = useState(0);
-  // 'reasoningIndex' is for the thought being "reasoned about" (its chain messages).
-  // We initialize it to 1 so that the first cycle reasons about the upcoming content.
-  const [reasoningIndex, setReasoningIndex] = useState(1);
+  const [displayIndex, setDisplayIndex] = useState<number>(0);
+  const [reasoningIndex, setReasoningIndex] = useState<number>(1);
 
-  // Get the chain messages for the thought that’s being reasoned.
-  const chainMessages = getChainMessages(thoughts[reasoningIndex]);
-  // Define a final pause message (without shimmer).
+  const safeReasoningIndex = reasoningIndex % thoughts.length;
+  const chainMessages = getChainMessages(thoughts[safeReasoningIndex]!);
   const finalChainMessage = "🤖 Reasoned for 8 seconds.";
-  // Total chain steps: the chain messages plus one extra pause step.
-  const totalChainSteps = chainMessages.length + 1;
-
-  // 'chainStepIndex' tracks the current step in the chain-of-thought sequence.
-  const [chainStepIndex, setChainStepIndex] = useState(0);
+  const [chainStepIndex, setChainStepIndex] = useState<number>(0);
 
   useEffect(() => {
-    let timer;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     if (chainStepIndex < chainMessages.length) {
-      // Advance through the chain messages every 2 seconds.
-      timer = setTimeout(() => {
-        setChainStepIndex((prev) => prev + 1);
-      }, 2000);
+      timer = setTimeout(() => setChainStepIndex((prev) => prev + 1), 2000);
     } else if (chainStepIndex === chainMessages.length) {
-      // When the final pause message appears, update the visible content immediately.
       setDisplayIndex(reasoningIndex);
-      // Then, after a pause (4 seconds), set up the next reasoning cycle.
       timer = setTimeout(() => {
         setReasoningIndex((prev) => (prev + 1) % thoughts.length);
         setChainStepIndex(0);
       }, 4000);
     }
-    return () => clearTimeout(timer);
+    return () => timer && clearTimeout(timer);
   }, [chainStepIndex, chainMessages, reasoningIndex]);
 
-  // Framer Motion variants for chain messages (used only for animated chain steps).
-  const chainVariants = {
+  const chainVariants: Variants = {
     initial: { opacity: 0, y: 10 },
     animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
     exit: { opacity: 0, y: -10, transition: { duration: 0.5 } },
@@ -275,7 +269,6 @@ export default function ChainOfThought() {
 
   return (
     <div className="w-full max-w-lg">
-      {/* Chain-of-Thought block */}
       {chainStepIndex < chainMessages.length ? (
         <AnimatePresence mode="wait">
           <motion.div
@@ -287,12 +280,15 @@ export default function ChainOfThought() {
             className="mb-4"
           >
             <p className="text-sm md:text-base text-slate-400 shimmer-text">
-              {parseBoldText(chainMessages[chainStepIndex])}
+              {(() => {
+                const safe = chainMessages.length > 0 ? chainMessages : [""];
+                const msg = safe[chainStepIndex % safe.length] ?? "";
+                return parseBoldText(msg);
+              })()}
             </p>
           </motion.div>
         </AnimatePresence>
       ) : (
-        // Final chain message: rendered as static text without shimmer or animation.
         <div className="mb-4">
           <p className="text-sm md:text-base text-slate-400">
             {finalChainMessage}
@@ -300,11 +296,10 @@ export default function ChainOfThought() {
         </div>
       )}
 
-      {/* Content block: always visible, using ScrambleParsedText for scramble effect with bold parsing. */}
       <div className="mb-4">
         <p className="text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-medium text-slate-200 max-w-sm overflow-hidden break-words">
           <ScrambleParsedText
-            text={thoughts[displayIndex].title}
+            text={thoughts[displayIndex % thoughts.length]!.title}
             className=""
             duration={1000}
             interval={50}
@@ -312,7 +307,7 @@ export default function ChainOfThought() {
         </p>
         <p className="mt-2 sm:mt-2 lg:mt-3 text-base md:text-lg text-slate-400 max-w-sm overflow-hidden break-words leading-[1.6]">
           <ScrambleParsedText
-            text={thoughts[displayIndex].content}
+            text={thoughts[displayIndex % thoughts.length]!.content}
             className=""
             duration={1000}
             interval={50}
