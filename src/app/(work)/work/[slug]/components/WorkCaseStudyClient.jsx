@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import workDetails from "@/data/workDetails";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import { useEffect } from "react";
 
 // Helper to render minimal markdown formatting in strings
