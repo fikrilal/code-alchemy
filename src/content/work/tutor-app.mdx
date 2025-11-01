@@ -3,14 +3,24 @@ title: "Tutor App — Online Tutoring Platform"
 slug: "tutor-app"
 shortDescription: "A scalable online tutoring platform with real-time calls and content."
 timeframe: "Q2 2024 - Q4 2024"
-techStack: ["Flutter (Dart)", "GetX", "WebRTC", "Firebase"]
+techStack:
+  [
+    "Flutter (Dart)",
+    "Firebase Firestore",
+    "Firebase Authentication",
+    "GetX (State Management)",
+    "Agora SDK (Real-Time Video Calls)",
+    "Firebase Cloud Messaging (FCM)",
+    "Flutter Secure Storage",
+    "Isar Database (Local Caching)",
+  ]
 thumbnail: "/images/tutor-app-thumbnail.png"
 link: "/work/tutor-app"
 ---
 
-# Tutor App — Online Tutoring Platform
+## Overview
 
-Tutor App helps students connect with qualified tutors, schedule sessions, and learn via real‑time video calls. It also supports short‑form educational content to extend learning beyond the classroom.
+Finding qualified tutors on demand can be challenging. Tutor App matches students with tutors by subject, availability, and ratings. With real‑time video calls, notifications, session tracking, and short‑form educational content (Reels), learning continues beyond live sessions.
 
 ## Objectives
 
@@ -20,15 +30,34 @@ Tutor App helps students connect with qualified tutors, schedule sessions, and l
 
 ## Key Features
 
-- Real‑time video calls (WebRTC)
-- Authentication + tutor verification
-- Educational reels (short‑form content)
-- Reviews & basic analytics
+- 🎥 Live Video Sessions — Agora‑backed with tracking and auto‑pricing.
+- 🔑 Secure Authentication — Flutter Secure Storage for token management.
+- 📹 TikTok‑Style Video — Tutors upload educational videos with thumbnails.
+- 📩 Real‑Time Notifications — Session alerts via FCM.
+- 🔍 Profile Verification — Admin‑approved tutor submissions.
+- 📱 Core Components — Standardized UI for scale.
 
 ## Tech Stack
 
 {frontmatter.techStack.join(", ")}
 
-## What I Learned
+## Challenges & Solutions
 
-Clean Architecture and reusable UI components made the codebase easy to scale. Next steps include AI‑driven tutor recommendations and session analytics.
+- High Firestore costs due to frequent reads  
+  Solution: Isar‑based local caching to reduce API calls.
+- Signaling costs with Agora RTM  
+  Solution: Switched to FCM for signaling.
+- Connectivity interruptions during sessions  
+  Solution: Freeze‑unfreeze mechanism to preserve progress.
+- Verified tutor access control  
+  Solution: Admin verification flow.
+
+## Results
+
+- 40% — Increased tutor‑student matching efficiency.
+- 50% — Reduced Firebase costs via caching.
+- 95% — Session completion rate with better connection handling.
+
+## Learnings
+
+Clean Architecture + reusable components scaled well. Next: AI‑based tutor recommendations and advanced analytics.
