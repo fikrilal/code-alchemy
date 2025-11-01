@@ -1,65 +1,85 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, type CSSProperties } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import Button from "@/components/ui/Button";
 
+import type { Variants } from "framer-motion";
+
 // Helper to render minimal markdown formatting in strings
-function renderMarkdown(text) {
+function renderMarkdown(text: string | undefined): string {
   if (!text) return "";
   return text
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.*?)\*/g, "<em>$1</em>");
 }
 
-function extractEmojiAndText(feature) {
+function extractEmojiAndText(feature: string): { emoji: string; title: string; description: string } {
   const emojiMatch = feature.match(
     /^(\p{Extended_Pictographic})(.+)/u
   );
   if (emojiMatch) {
-    const emoji = emojiMatch[1];
-    const remaining = emojiMatch[2].trim();
+    const emoji = emojiMatch[1] ?? "";
+    const remaining = (emojiMatch[2] ?? "").trim();
     const parts = remaining.split(/\s[–-]\s/);
     if (parts.length >= 2) {
-      return { emoji, title: parts[0], description: parts.slice(1).join(" – ") };
+      return { emoji, title: parts[0]!, description: parts.slice(1).join(" – ") };
     }
     return { emoji, title: remaining, description: "" };
   }
   return { emoji: "", title: feature, description: "" };
 }
 
-export default function WorkCaseStudyClient({ project }) {
+type Challenge = { problem: string; solution: string };
+type Result = { number: string | number; description: string };
+type Project = {
+  title: string;
+  slug: string;
+  shortDescription?: string;
+  overview?: string;
+  objectives?: string[];
+  features?: string[];
+  techStack: string[];
+  challenges?: Challenge[];
+  results?: Result[];
+  learnings?: string;
+  timeframe: string;
+  link?: string;
+  thumbnail: string;
+  images?: string[];
+};
+
+export default function WorkCaseStudyClient({ project }: { project: Project | null }) {
   const router = useRouter();
 
   useEffect(() => {
     if (!project) return;
-    const handleMouseMove = (e) => {
-      const card = e.currentTarget;
+    const handleMouseMove = (e: MouseEvent) => {
+      const card = e.currentTarget as HTMLElement;
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       card.style.setProperty("--mouse-x", `${x}px`);
       card.style.setProperty("--mouse-y", `${y}px`);
     };
-    const cards = document.querySelectorAll(".result-card");
+    const cards = document.querySelectorAll<HTMLElement>(".result-card");
     cards.forEach((card) => card.addEventListener("mousemove", handleMouseMove));
     return () => cards.forEach((card) => card.removeEventListener("mousemove", handleMouseMove));
-  }, [project?.results]);
+  }, [project]);
 
-  const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.1 } } };
-  const childVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } } };
+  const containerVariants: Variants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.1 } } };
+  const childVariants: Variants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } } };
 
-  const renderFeatures = (features) => {
+  const renderFeatures = (features: string[] | undefined) => {
     if (!features?.length) return null;
     return (
       <motion.section variants={childVariants}>
         <h2 className="text-3xl font-semibold text-slate-200">Features</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
-          {features.map((feature, index) => {
+          {features.map((feature: string, index: number) => {
             const { emoji, title, description } = extractEmojiAndText(feature);
             return (
               <div key={index} className="flex space-x-4 p-4 rounded-lg border border-slate-800/40 bg-slate-900/10 hover:bg-slate-900/20 transition-colors duration-200">
@@ -76,14 +96,14 @@ export default function WorkCaseStudyClient({ project }) {
     );
   };
 
-  const renderProjectSection = (title, content, listItems = false) => {
+  const renderProjectSection = (title: string, content: string | string[] | undefined, listItems = false) => {
     if (!content || (Array.isArray(content) && content.length === 0)) return null;
     return (
       <motion.section variants={childVariants}>
         <h2 className="text-3xl font-semibold text-slate-200">{title}</h2>
         {listItems ? (
           <ul className="list-none lg:text-lg space-y-2 text-slate-400 pt-4">
-            {content.map((item, index) => (
+            {(content as string[]).map((item: string, index: number) => (
               <li key={index} className="flex items-start">
                 {title === "Objectives" && <span className="mr-2 text-slate-500">•</span>}
                 <span dangerouslySetInnerHTML={{ __html: renderMarkdown(item) }} />
@@ -91,7 +111,7 @@ export default function WorkCaseStudyClient({ project }) {
             ))}
           </ul>
         ) : (
-          <p className="lg:text-lg text-slate-400 pt-4" dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }} />
+          <p className="lg:text-lg text-slate-400 pt-4" dangerouslySetInnerHTML={{ __html: renderMarkdown(content as string) }} />
         )}
       </motion.section>
     );
@@ -150,12 +170,12 @@ export default function WorkCaseStudyClient({ project }) {
               {renderProjectSection("Overview", project.overview)}
               {project.features && renderFeatures(project.features)}
               {project.objectives && renderProjectSection("Objectives", project.objectives, true)}
-              {project.challenges && (
+              {(project.challenges ?? []).length > 0 && (
                 <motion.section variants={childVariants}>
                   <h2 className="text-3xl font-semibold text-slate-200">Challenges & Solutions</h2>
                   <div className="pt-4">
                     <div className="overflow-hidden border border-slate-800 rounded-lg divide-y divide-slate-800">
-                      {project.challenges.map((item, index) => (
+                      {(project.challenges ?? []).map((item: Challenge, index: number) => (
                         <div key={index} className="flex flex-col md:flex-row">
                           <div className="p-5 md:p-6 md:w-1/2 bg-slate-900/20">
                             <h3 className="text-lg font-medium text-slate-200 mb-2">{item.problem}</h3>
@@ -171,12 +191,16 @@ export default function WorkCaseStudyClient({ project }) {
                   </div>
                 </motion.section>
               )}
-              {project.results && (
+              {(project.results ?? []).length > 0 && (
                 <motion.section variants={childVariants}>
                   <h2 className="text-3xl font-semibold text-slate-200">Results</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
-                    {project.results.map((result, index) => (
-                      <div key={index} className={`result-card group relative bg-slate-900/20 border border-slate-800/40 p-6 rounded-lg text-center cursor-pointer ${project.results.length === 3 && index === 2 && "sm:col-span-2 lg:col-span-1"}`} style={{ "--mouse-x": "0px", "--mouse-y": "0px" }}>
+                    {(project.results ?? []).map((result: Result, index: number, arr: Result[]) => (
+                      <div
+                        key={index}
+                        className={`result-card group relative bg-slate-900/20 border border-slate-800/40 p-6 rounded-lg text-center cursor-pointer ${arr.length === 3 && index === 2 && "sm:col-span-2 lg:col-span-1"}`}
+                        style={{ "--mouse-x": "0px", "--mouse-y": "0px" } as CSSProperties}
+                      >
                         <div className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 rounded-lg" style={{ background: "radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.1), transparent 40%)" }} />
                         <div className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" style={{ background: "radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.1), transparent 40%)", left: "-1px", top: "-1px", right: "-1px", bottom: "-1px", transform: "scale(1.02)" }} />
                         <div className="relative z-10 transition-transform duration-300 group-hover:scale-105 group-hover:translate-y-[-2px]">

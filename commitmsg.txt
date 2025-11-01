@@ -1,1 +1,1 @@
-feat: convert GithubActivity and TextCursor to TSX with types
+feat: convert WorkCaseStudyClient to TSX and add commitmsg.txt to gitignore
