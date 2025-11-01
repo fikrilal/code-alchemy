@@ -34,7 +34,12 @@ export function getSortedPostsData(): BlogListItem[] {
     } as BlogListItem;
   });
 
-  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
+  const toMillis = (value: BlogListItem) => {
+    const time = new Date(value.date).getTime();
+    return Number.isNaN(time) ? 0 : time;
+  };
+
+  return allPostsData.sort((a, b) => toMillis(b) - toMillis(a));
 }
 
 // Note: Content is rendered via MDX. `getPostData` is intentionally removed.

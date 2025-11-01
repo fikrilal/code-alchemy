@@ -108,7 +108,7 @@ export default function BlogMainSection({ blogPosts }: { blogPosts: BlogPost[] }
                     style={{ paddingBottom: "56.25%" }}
                   >
                     <Image
-                      src={post.coverImage || "/images/blog-default.jpg"}
+                      src={post.coverImage || "/images/dummy-image.jpg"}
                       alt={post.title}
                       fill
                       priority={index === 0}
