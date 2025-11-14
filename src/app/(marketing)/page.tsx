@@ -5,9 +5,13 @@ import PortfolioSection from "@/components/PortfolioSection";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { getSortedPostsData, type BlogListItem } from "@/lib/blog";
+import { getWorkSummaries } from "@/lib/work";
 
-export default function Home() {
-  const blogPosts = getSortedPostsData() as BlogListItem[];
+export default async function Home() {
+  const [blogPosts, workItems] = await Promise.all([
+    Promise.resolve(getSortedPostsData() as BlogListItem[]),
+    getWorkSummaries(),
+  ]);
 
   return (
     <>
@@ -15,7 +19,7 @@ export default function Home() {
       <main className="overflow-hidden">
         <HeroSection />
         <PortfolioSection />
-        <SelectedWork />
+        <SelectedWork workItems={workItems} />
         <BlogSection blogPosts={blogPosts} />
       </main>
       <Footer />
