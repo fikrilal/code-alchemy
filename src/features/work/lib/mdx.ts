@@ -10,13 +10,8 @@ import rehypeSanitize from "rehype-sanitize";
 
 import mdxComponents from "@/features/mdx/components";
 
+import type { WorkFrontmatter } from "@/features/work/types";
 import type { ReactElement } from "react";
-
-export type WorkFrontmatter = {
-  title: string;
-  shortDescription?: string;
-  thumbnail?: string;
-};
 
 const WORK_DIR = path.join(process.cwd(), "src/content/work");
 

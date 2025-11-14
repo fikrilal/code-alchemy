@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import MotionElement from "@/components/animations/Motion";
 
-import type { BlogListItem } from "@/lib/blog";
+import type { BlogSummary } from "@/features/blog/types";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -44,7 +44,7 @@ function formatDate(dateString: string) {
   return `${month}, ${day} ${year}`;
 }
 
-export default function BlogMainSection({ blogPosts }: { blogPosts: BlogListItem[] }) {
+export default function BlogMainSection({ blogPosts }: { blogPosts: BlogSummary[] }) {
   const items = Array.isArray(blogPosts) ? blogPosts : [];
 
   return (

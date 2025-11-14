@@ -1,11 +1,8 @@
-import { getWorkSlugs, loadWorkBySlug, type WorkFrontmatter } from "@/features/work/lib/mdx";
+import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
 
-export type WorkSummary = {
-  slug: string;
-  title: string;
-  shortDescription: string;
-  thumbnail: string;
-};
+import type { WorkFrontmatter, WorkSummary } from "@/features/work/types";
+
+export type { WorkSummary };
 
 export async function getWorkSummaries(): Promise<WorkSummary[]> {
   const slugs = getWorkSlugs();
@@ -14,7 +11,7 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
   for (const slug of slugs) {
     try {
       const { frontmatter } = await loadWorkBySlug(slug);
-      const fm = frontmatter as WorkFrontmatter & { shortDescription?: string; thumbnail?: string };
+      const fm = frontmatter as WorkFrontmatter;
       summaries.push({
         slug,
         title: fm.title,

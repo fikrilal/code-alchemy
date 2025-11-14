@@ -4,13 +4,7 @@ import Link from "next/link";
 import MotionElement from "@/components/animations/Motion";
 import Button from "@/components/ui/Button";
 
-type BlogPostCard = {
-  slug: string;
-  date: string;
-  title: string;
-  description: string;
-  coverImage?: string;
-};
+import type { BlogSummary } from "@/features/blog/types";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -51,7 +45,7 @@ function formatDate(dateString: string) {
   return `${month}, ${day} ${year}`;
 }
 
-export default function BlogSection({ blogPosts = [] as BlogPostCard[] }) {
+export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
   const sortedBlogPosts = [...blogPosts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (

@@ -10,18 +10,8 @@ import rehypeSanitize from "rehype-sanitize";
 
 import mdxComponents from "@/features/mdx/components";
 
+import type { BlogFrontmatter } from "@/features/blog/types";
 import type { ReactElement } from "react";
-
-export type BlogFrontmatter = {
-  title: string;
-  date: string;
-  description: string;
-  coverImage?: string;
-  readTime?: string;
-  author?: string;
-  authorImage?: string;
-  tags?: string[];
-};
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
 

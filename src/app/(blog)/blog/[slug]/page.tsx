@@ -1,11 +1,12 @@
-import { notFound } from "next/navigation";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getSortedPostsData, type BlogListItem } from "@/lib/blog";
+import Navbar from "@/components/Navbar";
 import { loadPostBySlug } from "@/features/blog/lib/mdx";
+import { getSortedPostsData } from "@/lib/blog";
 
+import type { BlogSummary } from "@/features/blog/types";
 import type { Metadata } from "next";
 
 function getOrdinal(n: number) {
@@ -32,7 +33,7 @@ function formatDate(dateString: string) {
 
 // Generate static params for all blog posts
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const posts = getSortedPostsData() as BlogListItem[];
+  const posts = getSortedPostsData() as BlogSummary[];
   return posts.map((post) => ({ slug: post.slug }));
 }
 
