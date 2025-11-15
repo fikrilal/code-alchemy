@@ -45,16 +45,9 @@ export default function Navbar() {
           <div className="relative flex items-center px-2 py-1 text-slate-100 text-sm font-medium rounded-full overflow-hidden">
             <div className="relative flex items-center">
               <div className="mr-2">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="8" cy="8" r="8" fill="#86EFAC" opacity="0.4" />
-                  <circle cx="8" cy="8" r="4" fill="#22C55E" />
-                </svg>
+                <span className="availability-dot" aria-hidden="true">
+                  <span className="availability-dot__core" />
+                </span>
               </div>
               Available for Project
             </div>
@@ -116,7 +109,45 @@ export default function Navbar() {
         .tham-inner,
         .tham-inner::before,
         .tham-inner::after {
-          background-color: #cdcdcd !important; /* Change this color as needed */
+          background-color: #cdcdcd !important;
+        }
+        .availability-dot {
+          position: relative;
+          display: inline-flex;
+          width: 18px;
+          height: 18px;
+          align-items: center;
+          justify-content: center;
+        }
+        .availability-dot::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 9999px;
+          background: rgba(134, 239, 172, 0.4);
+          animation: availabilityPulse 2.2s ease-in-out infinite;
+        }
+        .availability-dot__core {
+          position: relative;
+          width: 10px;
+          height: 10px;
+          border-radius: 9999px;
+          background: #22c55e;
+          box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+        }
+        @keyframes availabilityPulse {
+          0% {
+            transform: scale(0.4);
+            opacity: 0.8;
+          }
+          50% {
+            transform: scale(1);
+            opacity: 0.4;
+          }
+          100% {
+            transform: scale(1.6);
+            opacity: 0;
+          }
         }
       `}</style>
     </nav>

@@ -46,7 +46,9 @@ function formatDate(dateString: string) {
 }
 
 export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
-  const sortedBlogPosts = [...blogPosts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const sortedBlogPosts = [...blogPosts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 
   return (
     <MotionElement
@@ -66,7 +68,11 @@ export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
           >
             Stories, Code, and Everything In Between
           </MotionElement>
-          <MotionElement as="div" variants={childVariants} className="hidden md:block">
+          <MotionElement
+            as="div"
+            variants={childVariants}
+            className="hidden md:block"
+          >
             <Link href="/blog">
               <Button>View all posts</Button>
             </Link>
@@ -77,21 +83,27 @@ export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
           className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-400 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
-          A space where I share my journey, insights, and lessons learned. From coding tips to design musings, it's all
-          about growth, creativity, and a little bit of fun along the way.
+          A space where I share my journey, insights, and lessons learned. From
+          coding tips to design musings, it's all about growth, creativity, and
+          a little bit of fun along the way.
         </MotionElement>
       </div>
 
-      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 lg:px-8 mt-2 sm:mt-10 lg:mt-16">
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 lg:px-8 lg:mt-4">
         {sortedBlogPosts.slice(0, 3).map((blog, index) => (
           <MotionElement
             key={blog.slug}
             as="div"
             variants={childVariants}
-            className={`flex flex-col md:flex-row items-stretch ${index === 0 ? "" : "border-t border-slate-900"} py-12`}
+            className={`flex flex-col md:flex-row items-stretch ${
+              index === 0 ? "" : "border-t border-slate-900"
+            } py-12`}
           >
             <div className="w-full md:w-1/3">
-              <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+              <div
+                className="relative w-full"
+                style={{ paddingBottom: "56.25%" }}
+              >
                 <Image
                   src={blog.coverImage || `/images/blog/${blog.slug}.jpg`}
                   alt={blog.title}
@@ -103,8 +115,12 @@ export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
             </div>
             <div className="w-full md:w-2/3 md:pl-6 mt-4 md:mt-0 flex flex-col justify-between">
               <div>
-                <span className="text-sm text-slate-400">{formatDate(blog.date)}</span>
-                <h3 className="text-xl font-semibold text-slate-200 mt-4">{blog.title}</h3>
+                <span className="text-sm text-slate-400">
+                  {formatDate(blog.date)}
+                </span>
+                <h3 className="text-xl font-semibold text-slate-200 mt-4">
+                  {blog.title}
+                </h3>
                 <p className="mt-2 text-slate-400">{blog.description}</p>
               </div>
               <Link
@@ -113,7 +129,13 @@ export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
               >
                 Read more
                 <span className="ml-1 transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:rotate-45">
-                  <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="12"
+                    height="13"
+                    viewBox="0 0 12 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M2.64121 9.85889L9.35872 3.14138M9.35872 3.14138L9.35872 8.09113M9.35872 3.14138L4.40898 3.14138"
                       stroke="currentColor"

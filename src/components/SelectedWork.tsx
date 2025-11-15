@@ -29,7 +29,11 @@ const cardHover = {
   transition: { duration: 0.3 },
 };
 
-export default function SelectedWork({ workItems }: { workItems: WorkSummary[] }) {
+export default function SelectedWork({
+  workItems,
+}: {
+  workItems: WorkSummary[];
+}) {
   return (
     <MotionElement
       as="section"
@@ -48,7 +52,11 @@ export default function SelectedWork({ workItems }: { workItems: WorkSummary[] }
           >
             Some Stuff I’ve Cooked
           </MotionElement>
-          <MotionElement as="div" variants={childVariants} className="hidden md:block">
+          <MotionElement
+            as="div"
+            variants={childVariants}
+            className="hidden md:block"
+          >
             <Button>View all projects</Button>
           </MotionElement>
         </div>
@@ -57,12 +65,13 @@ export default function SelectedWork({ workItems }: { workItems: WorkSummary[] }
           className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-500 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
-          Here’s a peek at the projects where I turned ideas into something cool. From apps to designs, it’s all about
-          making things that work and look awesome.
+          Here’s a peek at the projects where I turned ideas into something
+          cool. From apps to designs, it’s all about making things that work and
+          look awesome.
         </MotionElement>
       </div>
 
-      <div className="max-w-6xl w-full mx-auto mt-12 sm:mt-16 lg:mt-24 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="max-w-6xl w-full mx-auto mt-8 sm:mt-16 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
         {workItems.map((project) => (
           <MotionElement
             key={project.slug}
@@ -71,14 +80,25 @@ export default function SelectedWork({ workItems }: { workItems: WorkSummary[] }
             variants={childVariants}
             whileHover={cardHover}
           >
-            <Link href={`/work/${project.slug}`} className="absolute inset-0 z-10">
+            <Link
+              href={`/work/${project.slug}`}
+              className="absolute inset-0 z-10"
+            >
               <span className="sr-only">View {project.title} details</span>
             </Link>
             <div className="p-6 flex-none relative">
               <div className="flex justify-between items-center">
-                <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">{project.title}</h3>
+                <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
+                  {project.title}
+                </h3>
                 <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45 ml-2">
-                  <Image src="/icons/ic_arrow.svg" alt="Arrow" width={20} height={20} className="w-4 h-4" />
+                  <Image
+                    src="/icons/ic_arrow.svg"
+                    alt="Arrow"
+                    width={20}
+                    height={20}
+                    className="w-4 h-4"
+                  />
                 </span>
               </div>
               <p className="text-slate-400 mt-2">{project.shortDescription}</p>

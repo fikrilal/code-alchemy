@@ -43,7 +43,7 @@ export default async function WorkCaseStudyPage({ params }: { params: Promise<{ 
       <>
         <Navbar />
         <main className="bg-neutral-950 min-h-screen pt-10">
-          <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <article className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <header className="mb-8">
               <h1 className="text-3xl md:text-5xl font-bold text-slate-100">{frontmatter.title}</h1>
               {frontmatter.shortDescription && (
@@ -51,7 +51,7 @@ export default async function WorkCaseStudyPage({ params }: { params: Promise<{ 
               )}
             </header>
             <WorkGallery slug={slug} title={frontmatter.title} thumbnail={frontmatter.thumbnail ?? undefined} />
-            <div className="prose prose-invert max-w-3xl">{content}</div>
+            <div className="prose prose-invert max-w-none [&>h1:first-of-type]:hidden">{content}</div>
             {Array.isArray(frontmatter.techStack) && frontmatter.techStack.length > 0 && (
               <section className="mt-10">
                 <h2 className="text-2xl font-semibold text-slate-200 mb-3">Tech Stack</h2>
@@ -75,7 +75,7 @@ export default async function WorkCaseStudyPage({ params }: { params: Promise<{ 
       <>
         <Navbar />
         <main className="bg-neutral-950 min-h-screen pt-10">
-          <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-slate-300">
+          <article className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-slate-300">
             <h1 className="text-3xl font-semibold mb-2">Case Study Not Found</h1>
             <p className="text-slate-400">This case study is not available yet.</p>
           </article>
