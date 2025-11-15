@@ -5,6 +5,7 @@ import SpotifyNowPlaying from "@/components/SpotifyNowPlaying";
 import GithubActivity from "@/components/GithubActivity";
 import TechStack from "@/components/TechStack";
 import IconCards from "@/components/IconCards";
+import SideHustleFlashCard from "@/components/SideHustleFlashCard";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -51,21 +52,8 @@ export default function PortfolioSection() {
             </div>
           </MotionElement>
 
-          <MotionElement as="div" className="bg-slate-1100 p-6 rounded-2xl border border-slate-900" variants={childVariants}>
-            <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">SIDE HUSTLE</p>
-            <h3 className="text-xl text-slate-200 font-semibold mb-2">Quowrld.com</h3>
-            <p className="text-sm sm:text-base md:text-base text-slate-400">
-              A platform to write, share, and save quotes — beautifully organized by vibe.
-            </p>
-            <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl">
-              <Image
-                src="/images/side-project-thumbnail.png"
-                alt="Side Hustle screenshot"
-                width={1390}
-                height={782}
-                className="w-full h-full object-cover"
-              />
-            </div>
+          <MotionElement as="div" variants={childVariants}>
+            <SideHustleFlashCard />
           </MotionElement>
 
           <MotionElement as="div" className="flex flex-col gap-4 h-full" variants={childVariants}>
