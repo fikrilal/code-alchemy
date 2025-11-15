@@ -2,6 +2,8 @@ import { Inter_Tight, Fragment_Mono } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
+import NextTopLoader from "nextjs-toploader";
+
 import DarkModeProvider from "@/components/DarkModeProvider";
 import "./globals.css";
 
@@ -131,6 +133,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <SpeedInsights />
         <Analytics />
+        <NextTopLoader
+          color="#6A42C2"
+          crawlSpeed={150}
+          height={3}
+          showSpinner={false}
+          easing="ease"
+          crawl
+        />
         <DarkModeProvider>{children}</DarkModeProvider>
       </body>
     </html>

@@ -56,7 +56,7 @@ export default function HeroSection() {
 
         <MotionElement
           as="div"
-          className="mt-8 sm:mt-8 lg:mt-10 flex flex-col md:flex-row gap-4 pb-4 w-full justify-start"
+          className="mt-8 sm:mt-8 lg:mt-10 flex flex-col md:flex-row gap-4 pb-4 w-full justify-start items-start md:items-center"
           variants={childVariants}
         >
           <Button as="a" href="mailto:fikrildev@gmail.com">
