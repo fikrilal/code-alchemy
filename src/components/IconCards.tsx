@@ -19,7 +19,7 @@ const IconCards = ({ childVariants }: Props) => {
         aria-label="X"
         className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 flex items-center justify-center aspect-square"
         variants={v}
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.04 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
         <Image src="/icons/icons8-x.svg" alt="X" width={40} height={40} className="w-10 h-10" />
@@ -33,7 +33,7 @@ const IconCards = ({ childVariants }: Props) => {
         aria-label="GitHub"
         className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 flex items-center justify-center aspect-square"
         variants={v}
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.04 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
         <Image src="/icons/github.svg" alt="GitHub" width={40} height={40} className="w-10 h-10" />
@@ -47,7 +47,7 @@ const IconCards = ({ childVariants }: Props) => {
         aria-label="LinkedIn"
         className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 flex items-center justify-center aspect-square"
         variants={v}
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.04 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
         <Image src="/icons/linkedin.svg" alt="LinkedIn" width={40} height={40} className="w-10 h-10" />

@@ -15,7 +15,7 @@ type ButtonProps = ButtonBaseProps &
   );
 
 const baseClasses =
-  "relative overflow-hidden inline-flex items-center group text-slate-200 hover:text-slate-900 border border-slate-300 dark:border-slate-700 rounded-full bg-transparent px-6 py-3 sm:px-8 sm:py-4 transform-gpu transition duration-500 ease-out hover:scale-105 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600 active:scale-95";
+  "relative overflow-hidden inline-flex items-center group text-slate-200 hover:text-slate-900 border border-slate-300 dark:border-slate-700 rounded-full bg-transparent px-6 py-3 sm:px-8 sm:py-4 transform-gpu transition duration-500 ease-out hover:scale-[1.02] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600 active:scale-95";
 
 export function Button({ as = "button", children, className = "", ...rest }: ButtonProps) {
   const content = (
