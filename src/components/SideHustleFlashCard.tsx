@@ -69,12 +69,16 @@ export default function SideHustleFlashCard() {
       onPointerLeave={() => setIsStackVisible(false)}
     >
       {stackItems.map((item, idx) => {
-        const offset = previewOffsets[idx] ?? previewOffsets[previewOffsets.length - 1];
+        const offset = previewOffsets[idx];
+
+        if (!offset) {
+          return null;
+        }
 
         return (
           <motion.div
             key={`${item.title}-${item.index}`}
-            className="absolute inset-0 hidden sm:block rounded-3xl border border-white/10 bg-slate-1000/90 text-left p-6 text-slate-200 shadow-2xl"
+            className="absolute inset-0 hidden sm:block"
             style={{ pointerEvents: "none", zIndex: idx }}
             initial={false}
             animate={
@@ -96,10 +100,28 @@ export default function SideHustleFlashCard() {
             }
             transition={{ duration: 0.28, ease: "easeOut", delay: idx * 0.04 }}
           >
-            <div className="absolute inset-0 rounded-3xl overflow-hidden opacity-50">
-              <Image src={item.image} alt={item.title} fill sizes="300px" className="object-cover" />
+            <div className="h-full rounded-2xl border border-slate-900 bg-slate-1100 p-6 text-slate-200 shadow-[0_20px_45px_rgba(3,5,14,0.65)]">
+              <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">SIDE HUSTLE</p>
+              <div className="flex items-baseline gap-3 justify-between">
+                <div>
+                  <h3 className="text-xl text-slate-200 font-semibold mb-1">{item.title}</h3>
+                  <p className="text-xs uppercase tracking-[0.25em] text-slate-500">{item.tagline}</p>
+                </div>
+                <span className="text-[11px] px-2 py-0.5 rounded-full border border-slate-800 text-slate-400">
+                  {String(item.index + 1).padStart(2, "0")} / {String(totalItems).padStart(2, "0")}
+                </span>
+              </div>
+              <p className="text-sm text-slate-400 mt-3 line-clamp-3">{item.description}</p>
+              <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl relative">
+                <Image
+                  src={item.image}
+                  alt={`${item.title} screenshot`}
+                  fill
+                  sizes="300px"
+                  className="object-cover"
+                />
+              </div>
             </div>
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-slate-900/80 to-black/60" aria-hidden />
           </motion.div>
         );
       })}
