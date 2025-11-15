@@ -74,34 +74,57 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     <>
       <Navbar />
       <main className="bg-neutral-950 min-h-screen pt-10">
-        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-16 sm:pt-24">
+        <article className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-16 sm:pt-24">
           {/* Header */}
           <header className="mb-8">
-            <div className="text-sm text-slate-400 mb-2 ">{formattedDate} • {frontmatter.readTime || "5 min read"}</div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-100 mb-4 mt-4 leading-[1.2]">{frontmatter.title}</h1>
+            <div className="text-xs sm:text-sm text-slate-400 flex flex-wrap items-center gap-x-3 gap-y-1 mb-3">
+              <span>{formattedDate}</span>
+              <span className="opacity-50">•</span>
+              <span>{frontmatter.readTime || "5 min read"}</span>
+            </div>
+            <h1 className="text-3xl md:text-[40px] font-semibold tracking-tight text-slate-100 leading-tight">
+              {frontmatter.title}
+            </h1>
             {frontmatter.description && (
-              <p className="text-base sm:text-base md:text-lg lg:text-lg text-slate-300 mb-6">{frontmatter.description}</p>
+              <p className="text-base md:text-lg text-slate-400 leading-relaxed mt-3">{frontmatter.description}</p>
             )}
             {frontmatter.author && (
-              <div className="flex items-center">
+              <div className="flex items-center mt-6 gap-3">
                 {frontmatter.authorImage && (
-                  <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
-                    <Image src={frontmatter.authorImage} alt={frontmatter.author} width={40} height={40} className="object-cover" />
+                  <div className="w-12 h-12 rounded-full overflow-hidden border border-slate-800">
+                    <Image
+                      src={frontmatter.authorImage}
+                      alt={frontmatter.author}
+                      width={48}
+                      height={48}
+                      className="object-cover"
+                    />
                   </div>
                 )}
-                <div className="text-slate-300">{frontmatter.author}</div>
+                <div className="text-sm text-slate-300">
+                  <p className="font-medium tracking-tight">{frontmatter.author}</p>
+                  <p className="text-slate-500">{formattedDate}</p>
+                </div>
               </div>
             )}
           </header>
 
           {frontmatter.coverImage && (
-            <div className="relative w-full mb-10 rounded-lg overflow-hidden">
-              <Image src={frontmatter.coverImage} alt={frontmatter.title} width={1200} height={675} className="object-cover w-full h-auto rounded-lg" priority />
+            <div className="relative w-full mb-10 rounded-2xl overflow-hidden border border-slate-900/40">
+              <Image
+                src={frontmatter.coverImage}
+                alt={frontmatter.title}
+                width={1600}
+                height={900}
+                className="object-cover w-full h-auto"
+                sizes="(max-width: 768px) 100vw, 680px"
+                priority
+              />
             </div>
           )}
 
           {/* Content */}
-          <div className="prose prose-lg md:prose-xl prose-invert prose-code:text-cyan-300 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-700 prose-pre:p-4 prose-pre:rounded-lg prose-code:before:content-none prose-code:after:content-none mx-auto">
+          <div className="prose prose-sm md:prose-base prose-invert prose-headings:text-slate-100 prose-headings:tracking-tight prose-headings:font-semibold prose-p:text-slate-300 prose-p:leading-relaxed prose-strong:text-slate-50 prose-em:text-slate-200 prose-blockquote:border-l-slate-700 prose-blockquote:text-slate-300 prose-code:text-cyan-300 prose-pre:bg-slate-900/70 prose-pre:border prose-pre:border-slate-800 prose-pre:p-4 prose-pre:rounded-xl prose-code:before:content-none prose-code:after:content-none max-w-none">
             {content}
           </div>
 
