@@ -115,30 +115,18 @@ export default function SideHustleFlashCard() {
     <div className="relative group">
       <div className="opacity-0 pointer-events-none" aria-hidden="true">
         <div className="bg-slate-1100 p-6 rounded-2xl border border-slate-900">
-          <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
-            SIDE HUSTLE
-          </p>
-          <div className="flex items-baseline gap-3 justify-between">
-            <div>
-              <h3 className="text-xl text-slate-200 font-semibold">
-                {activeItem.title}
-              </h3>
-            </div>
-            <div className="hidden sm:inline-flex items-center gap-1">
-              <button
-                type="button"
-                className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-800 text-slate-400"
-              />
-              <span className="text-[11px] px-2 py-0.5 rounded-full border border-slate-800 text-slate-400">
-                {String(activeIndex + 1).padStart(2, "0")} /{" "}
-                {String(totalItems).padStart(2, "0")}
-              </span>
-              <button
-                type="button"
-                className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-800 text-slate-400"
-              />
-            </div>
+          <div className="mb-2 flex items-baseline justify-between">
+            <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
+              SIDE HUSTLE
+            </p>
+            <p className="text-xs font-mono text-slate-500 tracking-widest">
+              {String(activeIndex + 1).padStart(2, "0")} /{" "}
+              {String(totalItems).padStart(2, "0")}
+            </p>
           </div>
+          <h3 className="text-xl text-slate-200 font-semibold">
+            {activeItem.title}
+          </h3>
           <p className="text-sm sm:text-base md:text-base text-slate-400">
             {activeItem.description}
           </p>
@@ -202,6 +190,7 @@ export default function SideHustleFlashCard() {
             drag={isFront ? "x" : false}
             dragElastic={0.2}
             dragConstraints={{ left: 0, right: 0 }}
+            {...(isFront ? { whileDrag: { y: 32 } } : {})}
             onDragEnd={(_, info) => {
               if (!isFront) return;
               const swipeThreshold = 80;
@@ -218,75 +207,18 @@ export default function SideHustleFlashCard() {
                   : "relative z-10 bg-slate-1100 p-6 rounded-2xl border border-slate-900 shadow-[0_18px_40px_rgba(3,5,14,0.6)]"
               }
             >
-              <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
-                SIDE HUSTLE
-              </p>
-              <div className="flex items-baseline gap-3 justify-between">
-                <div>
-                  <h3 className="text-xl text-slate-200 font-semibold mb-2">
-                    {item.title}
-                  </h3>
-                </div>
-                {isFront ? (
-                  <div className="hidden sm:inline-flex items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={goToPrevious}
-                      aria-label="Previous side hustle"
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-800 text-slate-400 hover:border-slate-600 hover:text-slate-200 transition-colors"
-                    >
-                      <span className="sr-only">Previous</span>
-                      <svg
-                        width="10"
-                        height="10"
-                        viewBox="0 0 10 10"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M6.5 2L3.5 5L6.5 8"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                    <span className="text-[11px] px-2 py-0.5 rounded-full border border-slate-800 text-slate-400">
-                      {String(index + 1).padStart(2, "0")} /{" "}
-                      {String(totalItems).padStart(2, "0")}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={goToNext}
-                      aria-label="Next side hustle"
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-800 text-slate-400 hover:border-slate-600 hover:text-slate-200 transition-colors"
-                    >
-                      <span className="sr-only">Next</span>
-                      <svg
-                        width="10"
-                        height="10"
-                        viewBox="0 0 10 10"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M3.5 2L6.5 5L3.5 8"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                ) : (
-                  <span className="hidden sm:inline-flex text-[11px] px-2 py-0.5 rounded-full border border-slate-800 text-slate-400">
-                    {String(index + 1).padStart(2, "0")} /{" "}
-                    {String(totalItems).padStart(2, "0")}
-                  </span>
-                )}
+              <div className="mb-2 flex items-baseline justify-between">
+                <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
+                  SIDE HUSTLE
+                </p>
+                <p className="text-xs font-mono text-slate-500 tracking-widest">
+                  {String(index + 1).padStart(2, "0")} /{" "}
+                  {String(totalItems).padStart(2, "0")}
+                </p>
               </div>
+              <h3 className="text-xl text-slate-200 font-semibold mb-2">
+                {item.title}
+              </h3>
               <p className="text-sm sm:text-base md:text-base text-slate-400">
                 {item.description}
               </p>
