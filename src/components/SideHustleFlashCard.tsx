@@ -112,11 +112,7 @@ export default function SideHustleFlashCard() {
   };
 
   return (
-    <div
-      className="relative group"
-      onPointerEnter={() => setIsStackVisible(true)}
-      onPointerLeave={() => setIsStackVisible(false)}
-    >
+    <div className="relative group">
       <div className="opacity-0 pointer-events-none" aria-hidden="true">
         <div className="bg-slate-1100 p-6 rounded-2xl border border-slate-900">
           <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
@@ -189,7 +185,7 @@ export default function SideHustleFlashCard() {
             y: offset.y,
             rotate: offset.rotate,
             scale: offset.scale,
-            opacity: isStackVisible ? 1 : 0,
+            opacity: isStackVisible ? 1 : 1,
           };
         }
 
@@ -203,6 +199,16 @@ export default function SideHustleFlashCard() {
             }}
             initial={false}
             animate={animate}
+            drag={isFront ? "x" : false}
+            dragElastic={0.2}
+            dragConstraints={{ left: 0, right: 0 }}
+            onDragEnd={(_, info) => {
+              if (!isFront) return;
+              const swipeThreshold = 80;
+              if (Math.abs(info.offset.x) > swipeThreshold) {
+                goToNext();
+              }
+            }}
             transition={{ duration: 0.35, ease: "easeInOut" }}
           >
             <div
@@ -324,23 +330,6 @@ export default function SideHustleFlashCard() {
         );
       })}
 
-      <div className="mt-3 flex flex-wrap gap-2 sm:hidden">
-        {hustles.map((item, idx) => (
-          <button
-            key={item.title}
-            type="button"
-            onClick={() => setActiveByIndex(idx)}
-            aria-pressed={idx === activeIndex}
-            className={`text-[11px] px-2 py-1 rounded-full border ${
-              idx === activeIndex
-                ? "border-white/40 text-white"
-                : "border-slate-700 text-slate-400"
-            }`}
-          >
-            {item.title}
-          </button>
-        ))}
-      </div>
     </div>
   );
 }
