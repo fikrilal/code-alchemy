@@ -14,18 +14,21 @@ type SideHustle = {
 const hustles: SideHustle[] = [
   {
     title: "Quowrld.com",
-    description: "A platform to write, share, and save quotes — beautifully organized by vibe.",
+    description:
+      "A platform to write, share, and save quotes — beautifully organized by vibe.",
     image: "/images/side-project-thumbnail.png",
     link: "https://quowrld.com",
   },
   {
     title: "Pixelary Studio",
-    description: "Micro-agency for brand systems, deck design, and iconography crafted for indie founders.",
+    description:
+      "Micro-agency for brand systems, deck design, and iconography crafted for indie founders.",
     image: "/images/image1.png",
   },
   {
     title: "Mentor Hours",
-    description: "Weekly sessions helping junior engineers level up Kotlin, Compose, and UX craft.",
+    description:
+      "Weekly sessions helping junior engineers level up Kotlin, Compose, and UX craft.",
     image: "/images/image2.png",
   },
 ];
@@ -46,7 +49,9 @@ const getSlotForIndex = (index: number, order: number[]): CardSlot => {
 };
 
 export default function SideHustleFlashCard() {
-  const [order, setOrder] = useState<number[]>(() => hustles.map((_, index) => index));
+  const [order, setOrder] = useState<number[]>(() =>
+    hustles.map((_, index) => index)
+  );
   const [isStackVisible, setIsStackVisible] = useState(false);
 
   const totalItems = hustles.length;
@@ -96,7 +101,10 @@ export default function SideHustleFlashCard() {
         const baseOrder = hustles.map((_, index) => index);
         const targetPosition = baseOrder.indexOf(targetIndex);
         if (targetPosition <= 0) return baseOrder;
-        return [...baseOrder.slice(targetPosition), ...baseOrder.slice(0, targetPosition)];
+        return [
+          ...baseOrder.slice(targetPosition),
+          ...baseOrder.slice(0, targetPosition),
+        ];
       }
 
       return [...prev.slice(position), ...prev.slice(0, position)];
@@ -111,10 +119,14 @@ export default function SideHustleFlashCard() {
     >
       <div className="opacity-0 pointer-events-none" aria-hidden="true">
         <div className="bg-slate-1100 p-6 rounded-2xl border border-slate-900">
-          <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">SIDE HUSTLE</p>
+          <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
+            SIDE HUSTLE
+          </p>
           <div className="flex items-baseline gap-3 justify-between">
             <div>
-              <h3 className="text-xl text-slate-200 font-semibold mb-1">{activeItem.title}</h3>
+              <h3 className="text-xl text-slate-200 font-semibold">
+                {activeItem.title}
+              </h3>
             </div>
             <div className="hidden sm:inline-flex items-center gap-1">
               <button
@@ -122,7 +134,8 @@ export default function SideHustleFlashCard() {
                 className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-800 text-slate-400"
               />
               <span className="text-[11px] px-2 py-0.5 rounded-full border border-slate-800 text-slate-400">
-                {String(activeIndex + 1).padStart(2, "0")} / {String(totalItems).padStart(2, "0")}
+                {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                {String(totalItems).padStart(2, "0")}
               </span>
               <button
                 type="button"
@@ -130,7 +143,9 @@ export default function SideHustleFlashCard() {
               />
             </div>
           </div>
-          <p className="text-sm sm:text-base md:text-base text-slate-400 mt-3">{activeItem.description}</p>
+          <p className="text-sm sm:text-base md:text-base text-slate-400">
+            {activeItem.description}
+          </p>
           <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl relative">
             <Image
               src={activeItem.image}
@@ -197,10 +212,14 @@ export default function SideHustleFlashCard() {
                   : "relative z-10 bg-slate-1100 p-6 rounded-2xl border border-slate-900 shadow-[0_18px_40px_rgba(3,5,14,0.6)]"
               }
             >
-              <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">SIDE HUSTLE</p>
+              <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
+                SIDE HUSTLE
+              </p>
               <div className="flex items-baseline gap-3 justify-between">
                 <div>
-                  <h3 className="text-xl text-slate-200 font-semibold mb-1">{item.title}</h3>
+                  <h3 className="text-xl text-slate-200 font-semibold mb-2">
+                    {item.title}
+                  </h3>
                 </div>
                 {isFront ? (
                   <div className="hidden sm:inline-flex items-center gap-1">
@@ -211,7 +230,12 @@ export default function SideHustleFlashCard() {
                       className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-800 text-slate-400 hover:border-slate-600 hover:text-slate-200 transition-colors"
                     >
                       <span className="sr-only">Previous</span>
-                      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        aria-hidden="true"
+                      >
                         <path
                           d="M6.5 2L3.5 5L6.5 8"
                           fill="none"
@@ -223,7 +247,8 @@ export default function SideHustleFlashCard() {
                       </svg>
                     </button>
                     <span className="text-[11px] px-2 py-0.5 rounded-full border border-slate-800 text-slate-400">
-                      {String(index + 1).padStart(2, "0")} / {String(totalItems).padStart(2, "0")}
+                      {String(index + 1).padStart(2, "0")} /{" "}
+                      {String(totalItems).padStart(2, "0")}
                     </span>
                     <button
                       type="button"
@@ -232,7 +257,12 @@ export default function SideHustleFlashCard() {
                       className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-800 text-slate-400 hover:border-slate-600 hover:text-slate-200 transition-colors"
                     >
                       <span className="sr-only">Next</span>
-                      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        aria-hidden="true"
+                      >
                         <path
                           d="M3.5 2L6.5 5L3.5 8"
                           fill="none"
@@ -246,11 +276,12 @@ export default function SideHustleFlashCard() {
                   </div>
                 ) : (
                   <span className="hidden sm:inline-flex text-[11px] px-2 py-0.5 rounded-full border border-slate-800 text-slate-400">
-                    {String(index + 1).padStart(2, "0")} / {String(totalItems).padStart(2, "0")}
+                    {String(index + 1).padStart(2, "0")} /{" "}
+                    {String(totalItems).padStart(2, "0")}
                   </span>
                 )}
               </div>
-              <p className="text-sm sm:text-base md:text-base text-slate-400 mt-3">
+              <p className="text-sm sm:text-base md:text-base text-slate-400">
                 {item.description}
               </p>
               <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl relative">
@@ -270,7 +301,13 @@ export default function SideHustleFlashCard() {
                     className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white/90 backdrop-blur transition hover:bg-white/25"
                   >
                     Visit
-                    <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg
+                      width="12"
+                      height="13"
+                      viewBox="0 0 12 13"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <path
                         d="M2.64121 9.85889L9.35872 3.14138M9.35872 3.14138L9.35872 8.09113M9.35872 3.14138L4.40898 3.14138"
                         stroke="currentColor"
@@ -295,7 +332,9 @@ export default function SideHustleFlashCard() {
             onClick={() => setActiveByIndex(idx)}
             aria-pressed={idx === activeIndex}
             className={`text-[11px] px-2 py-1 rounded-full border ${
-              idx === activeIndex ? "border-white/40 text-white" : "border-slate-700 text-slate-400"
+              idx === activeIndex
+                ? "border-white/40 text-white"
+                : "border-slate-700 text-slate-400"
             }`}
           >
             {item.title}
