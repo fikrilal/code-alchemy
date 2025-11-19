@@ -21,10 +21,10 @@ export default function Navbar() {
         {/* Navigation Links (Desktop) */}
         <div className="space-x-8 hidden md:flex">
           <Link
-            href="#case-studies"
+            href="/work"
             className="text-slate-100 hover:text-brand-primary"
           >
-            Case Studies
+            Work
           </Link>
           <Link
             href="/blog"
@@ -82,11 +82,11 @@ export default function Navbar() {
         `}
       >
         <Link
-          href="#case-studies"
+          href="/work"
           className="block py-2 text-slate-200 hover:text-brand-primary"
           onClick={toggleMenu}
         >
-          Case Studies
+          Work
         </Link>
         <Link
           href="/blog"

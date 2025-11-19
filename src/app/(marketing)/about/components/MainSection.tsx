@@ -47,13 +47,6 @@ export default function MainSection() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
-        <motion.p
-          className="flex items-center text-sm text-green-500 mb-2"
-          variants={childVariants}
-        >
-          <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-          Available for freelance work
-        </motion.p>
         <motion.h1
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-200 mt-2 lg:mt-4"
           variants={childVariants}

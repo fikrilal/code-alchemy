@@ -14,6 +14,7 @@ export default async function Home() {
     Promise.resolve(getSortedPostsData() as BlogSummary[]),
     getWorkSummaries(),
   ]);
+  const featuredWork = workItems.slice(0, 4);
 
   return (
     <>
@@ -21,7 +22,7 @@ export default async function Home() {
       <main className="overflow-hidden">
         <HeroSection />
         <PortfolioSection />
-        <SelectedWork workItems={workItems} />
+        <SelectedWork workItems={featuredWork} />
         <BlogSection blogPosts={blogPosts} />
       </main>
       <Footer />

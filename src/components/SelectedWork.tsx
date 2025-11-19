@@ -6,6 +6,15 @@ import Button from "@/components/ui/Button";
 
 import type { WorkSummary } from "@/lib/work";
 
+type SelectedWorkProps = {
+  workItems: WorkSummary[];
+  heading?: string;
+  description?: string;
+  ctaHref?: string;
+  ctaLabel?: string;
+  limit?: number;
+};
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -31,9 +40,16 @@ const cardHover = {
 
 export default function SelectedWork({
   workItems,
-}: {
-  workItems: WorkSummary[];
-}) {
+  heading = "Some Stuff I’ve Cooked",
+  description = "Here’s a peek at the projects where I turned ideas into something cool. From apps to designs, it’s all about making things that work and look awesome.",
+  ctaHref = "/work",
+  ctaLabel = "View all work",
+  limit,
+}: SelectedWorkProps) {
+  const list = Array.isArray(workItems) ? workItems : [];
+  const items = typeof limit === "number" ? list.slice(0, limit) : list;
+  const showCta = Boolean(ctaHref && ctaLabel);
+
   return (
     <MotionElement
       as="section"
@@ -50,29 +66,42 @@ export default function SelectedWork({
             className="text-3xl md:text-5xl font-semibold text-slate-200 leading-[1.2] sm:!leading-tight max-w-4xl"
             variants={childVariants}
           >
-            Some Stuff I’ve Cooked
+            {heading}
           </MotionElement>
-          <MotionElement
-            as="div"
-            variants={childVariants}
-            className="hidden md:block"
-          >
-            <Button>View all projects</Button>
-          </MotionElement>
+          {showCta && (
+            <MotionElement
+              as="div"
+              variants={childVariants}
+              className="hidden md:block"
+            >
+              <Button as="a" href={ctaHref}>
+                {ctaLabel}
+              </Button>
+            </MotionElement>
+          )}
         </div>
         <MotionElement
           as="p"
           className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-500 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
-          Here’s a peek at the projects where I turned ideas into something
-          cool. From apps to designs, it’s all about making things that work and
-          look awesome.
+          {description}
         </MotionElement>
+        {showCta && (
+          <MotionElement
+            as="div"
+            variants={childVariants}
+            className="mt-6 md:hidden"
+          >
+            <Button as="a" href={ctaHref} className="w-full justify-center">
+              {ctaLabel}
+            </Button>
+          </MotionElement>
+        )}
       </div>
 
       <div className="max-w-6xl w-full mx-auto mt-8 sm:mt-16 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {workItems.map((project) => (
+        {items.map((project) => (
           <MotionElement
             key={project.slug}
             as="div"
