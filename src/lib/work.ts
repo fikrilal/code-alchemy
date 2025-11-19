@@ -17,6 +17,7 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
         title: fm.title,
         shortDescription: fm.shortDescription ?? "",
         thumbnail: fm.thumbnail ?? "/images/og-image.png",
+        category: deriveCategory(fm),
       });
     } catch {
       // Skip entries that fail to load; api route retains separate logging
@@ -24,4 +25,14 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
   }
 
   return summaries;
+}
+
+function deriveCategory(fm: WorkFrontmatter): string {
+  if (fm.category && fm.category.trim().length > 0) return fm.category;
+  const firstStack = Array.isArray(fm.techStack) ? fm.techStack[0] : undefined;
+  if (firstStack) {
+    const label = firstStack.split("-")[0]?.trim();
+    if (label) return label;
+  }
+  return "Case Study";
 }

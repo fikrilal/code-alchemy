@@ -11,6 +11,7 @@ export type WorkFrontmatter = {
   link?: string;
   techStack?: string[];
   images?: WorkImages;
+  category?: string;
 };
 
 export type WorkSummary = {
@@ -18,4 +19,5 @@ export type WorkSummary = {
   title: string;
   shortDescription: string;
   thumbnail: string;
+  category?: string;
 };

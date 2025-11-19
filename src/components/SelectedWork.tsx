@@ -50,6 +50,12 @@ export default function SelectedWork({
   const items = typeof limit === "number" ? list.slice(0, limit) : list;
   const showCta = Boolean(ctaHref && ctaLabel);
 
+  const formatTitle = (value: string) => {
+    const parts = value.split(/\s[–—-]\s/);
+    if (parts.length > 1) return parts[0];
+    return value;
+  };
+
   return (
     <MotionElement
       as="section"
@@ -105,7 +111,7 @@ export default function SelectedWork({
           <MotionElement
             key={project.slug}
             as="div"
-            className="rounded-2xl overflow-hidden flex flex-col border border-slate-900 group relative"
+            className="group relative flex flex-col gap-3"
             variants={childVariants}
             whileHover={cardHover}
           >
@@ -115,33 +121,26 @@ export default function SelectedWork({
             >
               <span className="sr-only">View {project.title} details</span>
             </Link>
-            <div className="p-6 flex-none relative">
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl xl:text-2xl font-semibold text-slate-200">
-                  {project.title}
-                </h3>
-                <span className="inline-flex items-center transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-45 ml-2">
-                  <Image
-                    src="/icons/ic_arrow.svg"
-                    alt="Arrow"
-                    width={20}
-                    height={20}
-                    className="w-4 h-4"
-                  />
-                </span>
-              </div>
-              <p className="text-slate-400 mt-2">{project.shortDescription}</p>
-            </div>
-            <div className="relative p-4">
-              <div className="relative aspect-[14/9] rounded-xl overflow-hidden">
+            <div className="relative">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-900">
                 <Image
                   src={project.thumbnail}
                   alt={`${project.title} screenshot`}
-                  width={1998}
-                  height={1124}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
+            </div>
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2 min-w-0 text-slate-100">
+                <h3 className="text-lg font-semibold text-slate-100 truncate tracking-wide uppercase">
+                  {formatTitle(project.title)}
+                </h3>
+              </div>
+              <span className="text-sm text-slate-400 whitespace-nowrap">
+                {project.category ?? "Case Study"}
+              </span>
             </div>
           </MotionElement>
         ))}
