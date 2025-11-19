@@ -9,12 +9,27 @@ import Button from "@/components/ui/Button";
 
 import type { Variants } from "framer-motion";
 
-// Helper to render minimal markdown formatting in strings
-function renderMarkdown(text: string | undefined): string {
-  if (!text) return "";
-  return text
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/g, "<em>$1</em>");
+// Helper to render minimal markdown formatting into React nodes (bold/italic only)
+function renderInline(text: string | undefined) {
+  if (!text) return null;
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={index}>
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return (
+        <em key={index}>
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
 }
 
 function extractEmojiAndText(feature: string): { emoji: string; title: string; description: string } {
@@ -85,8 +100,14 @@ export default function WorkCaseStudyClient({ project }: { project: Project | nu
               <div key={index} className="flex space-x-4 p-4 rounded-lg border border-slate-800/40 bg-slate-900/10 hover:bg-slate-900/20 transition-colors duration-200">
                 {emoji && <div className="flex-shrink-0 text-2xl w-10 h-10 flex items-center justify-center rounded-md bg-slate-800/50">{emoji}</div>}
                 <div className="space-y-1">
-                  <h3 className="text-lg font-medium text-slate-200" dangerouslySetInnerHTML={{ __html: renderMarkdown(title) }} />
-                  {description && <p className="text-md text-slate-400" dangerouslySetInnerHTML={{ __html: renderMarkdown(description) }} />}
+                  <h3 className="text-lg font-medium text-slate-200">
+                    {renderInline(title)}
+                  </h3>
+                  {description && (
+                    <p className="text-md text-slate-400">
+                      {renderInline(description)}
+                    </p>
+                  )}
                 </div>
               </div>
             );
@@ -106,12 +127,14 @@ export default function WorkCaseStudyClient({ project }: { project: Project | nu
             {(content as string[]).map((item: string, index: number) => (
               <li key={index} className="flex items-start">
                 {title === "Objectives" && <span className="mr-2 text-slate-500">•</span>}
-                <span dangerouslySetInnerHTML={{ __html: renderMarkdown(item) }} />
+                <span>{renderInline(item)}</span>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="lg:text-lg text-slate-400 pt-4" dangerouslySetInnerHTML={{ __html: renderMarkdown(content as string) }} />
+          <p className="lg:text-lg text-slate-400 pt-4">
+            {renderInline(content as string)}
+          </p>
         )}
       </motion.section>
     );
@@ -179,11 +202,15 @@ export default function WorkCaseStudyClient({ project }: { project: Project | nu
                         <div key={index} className="flex flex-col md:flex-row">
                           <div className="p-5 md:p-6 md:w-1/2 bg-slate-900/20">
                             <h3 className="text-lg font-medium text-slate-200 mb-2">{item.problem}</h3>
-                            <p className="text-slate-400" dangerouslySetInnerHTML={{ __html: renderMarkdown(item.solution) }} />
+                            <p className="text-slate-400">
+                              {renderInline(item.solution)}
+                            </p>
                           </div>
                           <div className="p-5 md:p-6 md:w-1/2">
                             <h3 className="text-lg font-medium text-slate-200 mb-2">Solution</h3>
-                            <p className="text-slate-400" dangerouslySetInnerHTML={{ __html: renderMarkdown(item.solution) }} />
+                            <p className="text-slate-400">
+                              {renderInline(item.solution)}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -205,7 +232,9 @@ export default function WorkCaseStudyClient({ project }: { project: Project | nu
                         <div className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" style={{ background: "radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.1), transparent 40%)", left: "-1px", top: "-1px", right: "-1px", bottom: "-1px", transform: "scale(1.02)" }} />
                         <div className="relative z-10 transition-transform duration-300 group-hover:scale-105 group-hover:translate-y-[-2px]">
                           <div className="text-3xl md:text-4xl font-bold text-slate-200 mb-2">{result.number}</div>
-                          <p className="text-slate-400" dangerouslySetInnerHTML={{ __html: renderMarkdown(result.description) }} />
+                          <p className="text-slate-400">
+                            {renderInline(result.description)}
+                          </p>
                         </div>
                       </div>
                     ))}
