@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
 import WorkGallery from "@/features/work/components/WorkGallery";
 import Navbar from "@/components/Navbar";
@@ -70,18 +72,6 @@ export default async function WorkCaseStudyPage({ params }: { params: Promise<{ 
       </>
     );
   } catch {
-    // If MDX not found, let Next.js render 404
-    return (
-      <>
-        <Navbar />
-        <main className="bg-neutral-950 min-h-screen pt-10">
-          <article className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-slate-300">
-            <h1 className="text-3xl font-semibold mb-2">Case Study Not Found</h1>
-            <p className="text-slate-400">This case study is not available yet.</p>
-          </article>
-        </main>
-        <Footer />
-      </>
-    );
+    return notFound();
   }
 }

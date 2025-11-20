@@ -29,13 +29,26 @@ const ContributionsResponse = z.object({
 
 type ContributionsResponse = z.infer<typeof ContributionsResponse>;
 
-async function fetchContributionYear(username: string, year: number, revalidateSec: number) {
-  const fromDate = `${year}-01-01T00:00:00Z`;
-  const toDate = `${year}-12-31T23:59:59Z`;
+type StatsCache = {
+  value: GithubStats;
+  expiresAt: number;
+};
+
+const githubStatsCache: StatsCache =
+  (globalThis as unknown as { __githubStatsCache?: StatsCache }).__githubStatsCache ?? {
+    value: { totalContributions: 0, lastCommitDate: null, longestStreak: 0 },
+    expiresAt: 0,
+  };
+
+function setGithubStatsCache(entry: StatsCache) {
+  (globalThis as unknown as { __githubStatsCache?: StatsCache }).__githubStatsCache = entry;
+}
+
+async function fetchContributionRange(username: string, from: Date, to: Date, revalidateSec: number) {
   const query = `
-    query {
-      user(login: "${username}") {
-        contributionsCollection(from: "${fromDate}", to: "${toDate}") {
+    query ($username: String!, $from: DateTime!, $to: DateTime!) {
+      user(login: $username) {
+        contributionsCollection(from: $from, to: $to) {
           contributionCalendar {
             totalContributions
             weeks { contributionDays { date contributionCount } }
@@ -51,7 +64,14 @@ async function fetchContributionYear(username: string, year: number, revalidateS
       "Content-Type": "application/json",
       Authorization: `Bearer ${env.GITHUB_TOKEN}`,
     },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({
+      query,
+      variables: {
+        username,
+        from: from.toISOString(),
+        to: to.toISOString(),
+      },
+    }),
     next: { revalidate: revalidateSec },
   });
 
@@ -81,28 +101,29 @@ export async function getGithubStats(opts?: {
   const startYear = opts?.startYear ?? 2015;
   const revalidateSec = opts?.revalidateSec ?? 60 * 60; // 1 hour
 
-  const currentYear = new Date().getFullYear();
-  const years: number[] = [];
-  for (let y = startYear; y <= currentYear; y++) years.push(y);
+  const cacheExpiresAt = githubStatsCache.expiresAt;
+  if (cacheExpiresAt > Date.now()) {
+    return githubStatsCache.value;
+  }
 
-  const calendars = await Promise.all(
-    years.map((y) => fetchContributionYear(username, y, revalidateSec))
-  );
+  const now = new Date();
+  const fromDate = new Date(Date.UTC(startYear, 0, 1, 0, 0, 0));
+  const toDate = new Date(Date.UTC(now.getFullYear(), 11, 31, 23, 59, 59));
+
+  const calendar = await fetchContributionRange(username, fromDate, toDate, revalidateSec);
 
   let totalContributionsAllTime = 0;
   let lastCommitDate: string | null = null;
   const allDays: Array<{ date: string; contributionCount: number }> = [];
 
-  for (const cal of calendars) {
-    totalContributionsAllTime += cal.totalContributions;
-    const days = cal.weeks.flatMap((w) => w.contributionDays);
-    allDays.push(...days);
+  totalContributionsAllTime += calendar.totalContributions;
+  const days = calendar.weeks.flatMap((w) => w.contributionDays);
+  allDays.push(...days);
 
-    const yearLast = [...days].reverse().find((d) => d.contributionCount > 0)?.date;
-    if (yearLast) {
-      if (!lastCommitDate || new Date(yearLast) > new Date(lastCommitDate)) {
-        lastCommitDate = yearLast;
-      }
+  const rangeLast = [...days].reverse().find((d) => d.contributionCount > 0)?.date;
+  if (rangeLast) {
+    if (!lastCommitDate || new Date(rangeLast) > new Date(lastCommitDate)) {
+      lastCommitDate = rangeLast;
     }
   }
 
@@ -120,9 +141,16 @@ export async function getGithubStats(opts?: {
 
   const formattedLastCommitDate = lastCommitDate ? format(parseISO(lastCommitDate), "MMMM do") : null;
 
-  return {
+  const stats: GithubStats = {
     totalContributions: totalContributionsAllTime,
     lastCommitDate: formattedLastCommitDate,
     longestStreak,
   };
+
+  setGithubStatsCache({
+    value: stats,
+    expiresAt: Date.now() + revalidateSec * 1000,
+  });
+
+  return stats;
 }
