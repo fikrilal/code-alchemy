@@ -1,7 +1,6 @@
-import { Inter_Tight, Fragment_Mono } from "next/font/google";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Fragment_Mono, Inter_Tight } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
 import DarkModeProvider from "@/components/DarkModeProvider";
@@ -96,36 +95,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta
           name="google-site-verification"
           content="zUCZgB63GISFL-K7CBVwrLJGN1VLnGn-p1lzrwnbqVU"
-        />
-        {/* Person Schema.org structured data for better search results */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Ahmad Fikril Al Muzakki",
-              givenName: "Ahmad Fikril",
-              familyName: "Al Muzakki",
-              alternateName: "Fikril",
-              jobTitle: "Mobile Engineer",
-              description:
-                "Mobile Engineer and UX Designer based in Bandung, Indonesia",
-              url: "https://www.fikril.dev",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Bandung",
-                addressRegion: "West Java",
-                addressCountry: "Indonesia",
-              },
-              sameAs: [
-                "https://www.linkedin.com/in/fikrilal/",
-                "https://github.com/fikrilal",
-                "https://twitter.com/fikrilal",
-                "https://www.instagram.com/fikril.al/",
-              ],
-            }),
-          }}
         />
       </head>
       <body

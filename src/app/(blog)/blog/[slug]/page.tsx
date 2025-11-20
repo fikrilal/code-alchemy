@@ -38,8 +38,8 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 }
 
 // Generate metadata for the page
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const { slug } = params;
   try {
     const { frontmatter } = await loadPostBySlug(slug);
     return {
@@ -59,8 +59,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   let compiled;
   try {
     compiled = await loadPostBySlug(slug);

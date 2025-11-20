@@ -15,8 +15,8 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   return mdxSlugs.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const { slug } = params;
   try {
     const { frontmatter } = await loadWorkBySlug(slug);
     return {
@@ -36,8 +36,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-export default async function WorkCaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function WorkCaseStudyPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   // Try MDX first
   try {
     const { content, frontmatter } = await loadWorkBySlug(slug);

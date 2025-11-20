@@ -98,15 +98,19 @@ export async function getGithubStats(opts?: {
   revalidateSec?: number;
 }): Promise<GithubStats> {
   const username = opts?.username ?? "fikrilal";
-  const startYear = opts?.startYear ?? 2015;
   const revalidateSec = opts?.revalidateSec ?? 60 * 60; // 1 hour
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const startYear = Math.min(
+    currentYear,
+    Math.max(opts?.startYear ?? currentYear - 1, 2008) // default: last two years window; clamp to a sane floor
+  );
 
   const cacheExpiresAt = githubStatsCache.expiresAt;
   if (cacheExpiresAt > Date.now()) {
     return githubStatsCache.value;
   }
 
-  const now = new Date();
   const fromDate = new Date(Date.UTC(startYear, 0, 1, 0, 0, 0));
   const toDate = new Date(Date.UTC(now.getFullYear(), 11, 31, 23, 59, 59));
 

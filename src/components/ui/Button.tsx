@@ -34,9 +34,9 @@ export function Button({ as = "button", children, className = "", ...rest }: But
   );
 
   if (as === "a") {
-    const { href } = rest as React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string };
+    const { href, ...anchorProps } = rest as React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string };
     return (
-      <Link href={href} className={`${baseClasses} ${className}`}>
+      <Link href={href} className={`${baseClasses} ${className}`} {...anchorProps}>
         {overlay}
         {content}
       </Link>
