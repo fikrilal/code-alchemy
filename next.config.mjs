@@ -5,7 +5,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "script-src 'self' 'unsafe-inline'",
   "font-src 'self' data:",
-  "connect-src 'self' https://api.github.com https://api.spotify.com https://accounts.spotify.com https://vitals.vercel-insights.com",
+  "connect-src 'self' https://api.github.com https://api.spotify.com https://accounts.spotify.com https://vitals.vercel-insights.com https://github-contributions-api.jogruber.de",
 ].join("; ");
 
 /** @type {import('next').NextConfig} */

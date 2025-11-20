@@ -32,12 +32,18 @@ type ContributionsResponse = z.infer<typeof ContributionsResponse>;
 type StatsCache = {
   value: GithubStats;
   expiresAt: number;
+  username: string;
+  fromISO: string;
+  toISO: string;
 };
 
 const githubStatsCache: StatsCache =
   (globalThis as unknown as { __githubStatsCache?: StatsCache }).__githubStatsCache ?? {
     value: { totalContributions: 0, lastCommitDate: null, longestStreak: 0 },
     expiresAt: 0,
+    username: "",
+    fromISO: "",
+    toISO: "",
   };
 
 function setGithubStatsCache(entry: StatsCache) {
@@ -105,40 +111,50 @@ export async function getGithubStats(opts?: {
 }): Promise<GithubStats> {
   const username = opts?.username ?? "fikrilal";
   const revalidateSec = opts?.revalidateSec ?? 60 * 60; // 1 hour
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const startYear = Math.min(
-    currentYear,
-    Math.max(opts?.startYear ?? currentYear - 1, 2008) // default: last two years window; clamp to a sane floor
-  );
+  const toDate = new Date();
+  const fromDate = (() => {
+    if (typeof opts?.startYear === "number") {
+      return new Date(Date.UTC(opts.startYear, 0, 1, 0, 0, 0));
+    }
+    const fallback = new Date(toDate);
+    fallback.setFullYear(toDate.getFullYear() - 1); // default: trailing 12 months
+    return fallback;
+  })();
 
   const cacheExpiresAt = githubStatsCache.expiresAt;
-  if (cacheExpiresAt > Date.now()) {
+  const cacheValid =
+    cacheExpiresAt > Date.now() &&
+    githubStatsCache.username === username &&
+    githubStatsCache.fromISO === fromDate.toISOString() &&
+    githubStatsCache.toISO === toDate.toISOString();
+
+  if (cacheValid) {
     return githubStatsCache.value;
   }
 
-  const calendars = await Promise.all(
-    Array.from({ length: currentYear - startYear + 1 }, (_, i) => startYear + i).map((year) => {
-      const fromDate = new Date(Date.UTC(year, 0, 1, 0, 0, 0));
-      const toDate = new Date(Date.UTC(year, 11, 31, 23, 59, 59));
-      return fetchContributionRange(username, fromDate, toDate, revalidateSec);
-    })
-  );
+  let calendar;
+  try {
+    calendar = await fetchContributionRange(username, fromDate, toDate, revalidateSec);
+  } catch (error) {
+    // Fallback to stale cache if available to avoid hard failures
+    if (githubStatsCache.value.totalContributions > 0) {
+      return githubStatsCache.value;
+    }
+    throw error;
+  }
 
   let totalContributionsAllTime = 0;
   let lastCommitDate: string | null = null;
   const allDays: Array<{ date: string; contributionCount: number }> = [];
 
-  for (const calendar of calendars) {
-    totalContributionsAllTime += calendar.totalContributions;
-    const days = calendar.weeks.flatMap((w) => w.contributionDays);
-    allDays.push(...days);
+  totalContributionsAllTime += calendar.totalContributions;
+  const days = calendar.weeks.flatMap((w) => w.contributionDays);
+  allDays.push(...days);
 
-    const rangeLast = [...days].reverse().find((d) => d.contributionCount > 0)?.date;
-    if (rangeLast) {
-      if (!lastCommitDate || new Date(rangeLast) > new Date(lastCommitDate)) {
-        lastCommitDate = rangeLast;
-      }
+  const rangeLast = [...days].reverse().find((d) => d.contributionCount > 0)?.date;
+  if (rangeLast) {
+    if (!lastCommitDate || new Date(rangeLast) > new Date(lastCommitDate)) {
+      lastCommitDate = rangeLast;
     }
   }
 
@@ -165,6 +181,9 @@ export async function getGithubStats(opts?: {
   setGithubStatsCache({
     value: stats,
     expiresAt: Date.now() + revalidateSec * 1000,
+    username,
+    fromISO: fromDate.toISOString(),
+    toISO: toDate.toISOString(),
   });
 
   return stats;
