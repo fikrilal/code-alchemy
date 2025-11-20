@@ -38,7 +38,11 @@ export function getSortedPostsData(): BlogSummary[] {
 
     return {
       slug,
-      ...data,
+      title: data.title,
+      date: data.date,
+      description: data.description,
+      ...(data.coverImage ? { coverImage: data.coverImage } : {}),
+      ...(data.readTime ? { readTime: data.readTime } : {}),
     } satisfies BlogSummary;
   });
 

@@ -75,10 +75,16 @@ async function fetchContributionRange(username: string, from: Date, to: Date, re
     next: { revalidate: revalidateSec },
   });
 
-  if (!res.ok) {
-    throw new Error(`GitHub API error (${res.status})`);
-  }
   const json = await res.json();
+  const errorMessages =
+    Array.isArray(json?.errors) && json.errors.length > 0
+      ? json.errors.map((e: { message?: string }) => e.message ?? "Unknown error").join("; ")
+      : null;
+
+  if (!res.ok || errorMessages) {
+    throw new Error(`GitHub API error (${res.status}): ${errorMessages ?? "request failed"}`);
+  }
+
   const parsed = ContributionsResponse.safeParse(json);
   if (!parsed.success) {
     throw new Error("Invalid GitHub response shape");
@@ -111,23 +117,28 @@ export async function getGithubStats(opts?: {
     return githubStatsCache.value;
   }
 
-  const fromDate = new Date(Date.UTC(startYear, 0, 1, 0, 0, 0));
-  const toDate = new Date(Date.UTC(now.getFullYear(), 11, 31, 23, 59, 59));
-
-  const calendar = await fetchContributionRange(username, fromDate, toDate, revalidateSec);
+  const calendars = await Promise.all(
+    Array.from({ length: currentYear - startYear + 1 }, (_, i) => startYear + i).map((year) => {
+      const fromDate = new Date(Date.UTC(year, 0, 1, 0, 0, 0));
+      const toDate = new Date(Date.UTC(year, 11, 31, 23, 59, 59));
+      return fetchContributionRange(username, fromDate, toDate, revalidateSec);
+    })
+  );
 
   let totalContributionsAllTime = 0;
   let lastCommitDate: string | null = null;
   const allDays: Array<{ date: string; contributionCount: number }> = [];
 
-  totalContributionsAllTime += calendar.totalContributions;
-  const days = calendar.weeks.flatMap((w) => w.contributionDays);
-  allDays.push(...days);
+  for (const calendar of calendars) {
+    totalContributionsAllTime += calendar.totalContributions;
+    const days = calendar.weeks.flatMap((w) => w.contributionDays);
+    allDays.push(...days);
 
-  const rangeLast = [...days].reverse().find((d) => d.contributionCount > 0)?.date;
-  if (rangeLast) {
-    if (!lastCommitDate || new Date(rangeLast) > new Date(lastCommitDate)) {
-      lastCommitDate = rangeLast;
+    const rangeLast = [...days].reverse().find((d) => d.contributionCount > 0)?.date;
+    if (rangeLast) {
+      if (!lastCommitDate || new Date(rangeLast) > new Date(lastCommitDate)) {
+        lastCommitDate = rangeLast;
+      }
     }
   }
 

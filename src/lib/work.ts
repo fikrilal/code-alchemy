@@ -14,7 +14,7 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
   const contentDir = path.join(process.cwd(), "src/content/work");
 
   const summaryResults = await Promise.allSettled(
-    slugs.map(async (slug) => {
+    slugs.map<Promise<WorkSummary>>(async (slug) => {
       const mdxPath = path.join(contentDir, `${slug}.mdx`);
       const mdPath = path.join(contentDir, `${slug}.md`);
       const filePath = fs.existsSync(mdxPath) ? mdxPath : fs.existsSync(mdPath) ? mdPath : null;
