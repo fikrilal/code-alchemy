@@ -35,11 +35,20 @@ export default function PortfolioSection() {
     >
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-          <MotionElement as="div" className="bg-slate-1100 p-6 rounded-2xl border border-slate-900" variants={childVariants}>
-            <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">RECENT PROJECT</p>
-            <h3 className="text-xl text-slate-200 font-semibold mb-2">Math Tetris Game</h3>
-            <p className="text-sm sm:text-base md:text-base text-slate-400">
-              A fast-paced mobile game combining math puzzles with Tetris mechanics.
+          <MotionElement
+            as="div"
+            className="bg-slate-1000 p-6 rounded-2xl border border-slate-800"
+            variants={childVariants}
+          >
+            <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
+              RECENT PROJECT
+            </p>
+            <h3 className="text-xl text-slate-100 font-semibold mb-2">
+              Math Tetris Game
+            </h3>
+            <p className="text-sm sm:text-base md:text-base font-light text-slate-300">
+              A fast-paced mobile game combining math puzzles with Tetris
+              mechanics.
             </p>
             <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl">
               <Image
@@ -56,7 +65,11 @@ export default function PortfolioSection() {
             <SideHustleFlashCard />
           </MotionElement>
 
-          <MotionElement as="div" className="flex flex-col gap-4 h-full" variants={childVariants}>
+          <MotionElement
+            as="div"
+            className="flex flex-col gap-4 h-full"
+            variants={childVariants}
+          >
             <SpotifyNowPlaying />
             <IconCards />
           </MotionElement>

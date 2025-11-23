@@ -50,29 +50,47 @@ export default function TechStack() {
         <div className="grid grid-cols-3 gap-4 h-full">
           {/* Flutter */}
           <motion.div
-            className="bg-zinc-900 rounded-lg flex flex-col items-center justify-center p-4"
+            className="bg-slate-1000 rounded-lg flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
-            <Image src="/icons/ic_flutter.svg" alt="Flutter" width={32} height={32} className="h-8 w-auto" />
-            <p className="mt-6 text-sm text-slate-100">Flutter</p>
+            <Image
+              src="/icons/ic_flutter.svg"
+              alt="Flutter"
+              width={32}
+              height={32}
+              className="h-8 w-auto"
+            />
+            <p className="mt-6 text-sm text-slate-100 font-mono">Flutter</p>
           </motion.div>
 
           {/* Kotlin */}
           <motion.div
-            className="bg-zinc-900 rounded-lg rounded flex flex-col items-center justify-center p-4"
+            className="bg-slate-1000 rounded-lg rounded flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
-            <Image src="/icons/ic_kotlin.svg" alt="Kotlin" width={32} height={32} className="h-8 w-auto" />
-            <p className="mt-6 text-sm text-slate-100">Kotlin</p>
+            <Image
+              src="/icons/ic_kotlin.svg"
+              alt="Kotlin"
+              width={32}
+              height={32}
+              className="h-8 w-auto"
+            />
+            <p className="mt-6 text-sm text-slate-100 font-mono">Kotlin</p>
           </motion.div>
 
           {/* Compose */}
           <motion.div
-            className="bg-zinc-900 rounded-lg rounded flex flex-col items-center justify-center p-4"
+            className="bg-slate-1000 rounded-lg rounded flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
-            <Image src="/icons/ic_compose.svg" alt="Compose" width={32} height={32} className="h-8 w-auto" />
-            <p className="mt-6 text-sm text-slate-100">Compose</p>
+            <Image
+              src="/icons/ic_compose.svg"
+              alt="Compose"
+              width={32}
+              height={32}
+              className="h-8 w-auto"
+            />
+            <p className="mt-6 text-sm text-slate-100 font-mono">Compose</p>
           </motion.div>
         </div>
       </div>
@@ -85,10 +103,16 @@ export default function TechStack() {
       <div className="grid grid-cols-3 gap-4 mt-4">
         {/* GetX */}
         <motion.div
-          className="bg-zinc-900 rounded-lg flex items-center justify-center p-4 relative group"
+          className="bg-slate-1000 rounded-lg flex items-center justify-center p-4 relative group"
           variants={childVariants}
         >
-          <Image src="/icons/ic_getx.svg" alt="GetX" width={32} height={32} className="h-8 w-auto" />
+          <Image
+            src="/icons/ic_getx.svg"
+            alt="GetX"
+            width={32}
+            height={32}
+            className="h-8 w-auto"
+          />
           {/* Tooltip: appears above the icon */}
           <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs text-slate-300 bg-black/60 rounded px-2 py-1 pointer-events-none">
             GetX
@@ -97,10 +121,16 @@ export default function TechStack() {
 
         {/* BLOC */}
         <motion.div
-          className="bg-zinc-900 rounded-lg flex items-center justify-center p-2 relative group"
+          className="bg-slate-1000 rounded-lg flex items-center justify-center p-2 relative group"
           variants={childVariants}
         >
-          <Image src="/icons/ic_bloc.svg" alt="BLOC" width={40} height={40} className="h-10 w-auto" />
+          <Image
+            src="/icons/ic_bloc.svg"
+            alt="BLOC"
+            width={40}
+            height={40}
+            className="h-10 w-auto"
+          />
           <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs text-slate-300 bg-black/60 rounded px-2 py-1 pointer-events-none">
             BLOC
           </span>
@@ -108,10 +138,16 @@ export default function TechStack() {
 
         {/* Riverpod */}
         <motion.div
-          className="bg-zinc-900 rounded-lg flex items-center justify-center p-4 relative group"
+          className="bg-slate-1000 rounded-lg flex items-center justify-center p-4 relative group"
           variants={childVariants}
         >
-          <Image src="/icons/ic_riverpod.svg" alt="Riverpod" width={32} height={32} className="h-8 w-auto" />
+          <Image
+            src="/icons/ic_riverpod.svg"
+            alt="Riverpod"
+            width={32}
+            height={32}
+            className="h-8 w-auto"
+          />
           <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs text-slate-300 bg-black/60 rounded px-2 py-1 pointer-events-none">
             Riverpod
           </span>

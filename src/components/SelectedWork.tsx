@@ -33,9 +33,9 @@ const childVariants = {
 };
 
 const cardHover = {
-  scale: 1.02,
-  boxShadow: "0px 8px 24px rgba(0,0,0,0.15)",
-  transition: { duration: 0.3 },
+  scale: 1.01,
+  translateY: -2,
+  transition: { duration: 0.25, ease: "easeOut" },
 };
 
 export default function SelectedWork({
@@ -106,7 +106,7 @@ export default function SelectedWork({
         )}
       </div>
 
-      <div className="max-w-6xl w-full mx-auto mt-8 sm:mt-16 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="max-w-6xl w-full mx-auto mt-8 sm:mt-16 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
         {items.map((project) => (
           <MotionElement
             key={project.slug}
@@ -121,23 +121,20 @@ export default function SelectedWork({
             >
               <span className="sr-only">View {project.title} details</span>
             </Link>
-            <div className="relative">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-900">
-                <Image
-                  src={project.thumbnail}
-                  alt={`${project.title} screenshot`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              </div>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-900 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+              <Image
+                src={project.thumbnail}
+                alt={`${project.title} screenshot`}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                priority={false}
+              />
             </div>
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2 min-w-0 text-slate-100">
-                <h3 className="text-lg font-semibold text-slate-100 truncate tracking-wide uppercase">
-                  {formatTitle(project.title)}
-                </h3>
-              </div>
+            <div className="flex items-center justify-between gap-3 pt-3">
+              <h3 className="text-base font-normal text-slate-100 truncate uppercase tracking-[0.15em] font-mono">
+                {formatTitle(project.title)}
+              </h3>
               <span className="text-sm text-slate-400 whitespace-nowrap">
                 {project.category ?? "Case Study"}
               </span>

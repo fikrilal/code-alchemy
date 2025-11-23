@@ -39,7 +39,8 @@ type Stats = {
   totalContributions: number;
 };
 
-const fetcher = (url: string): Promise<Stats> => fetch(url).then((res) => res.json());
+const fetcher = (url: string): Promise<Stats> =>
+  fetch(url).then((res) => res.json());
 
 export default function GithubActivity() {
   const isMobile = useIsMobile();
@@ -83,19 +84,25 @@ export default function GithubActivity() {
 
       {/* Additional Stats Section */}
       <div className="mt-6 lg:mt-4 grid grid-cols-3 gap-4">
-        <div className="bg-zinc-900 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-slate-400">Last Commit</p>
-          <p className="text-lg text-slate-200 mt-2">{stats?.lastCommitDate ?? "Loading..."}</p>
-        </div>
-        <div className="bg-zinc-900 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-slate-400">Longest Streak</p>
-          <p className="text-lg  text-slate-200 mt-2">{stats ? `${stats.longestStreak} days` : "Loading..."}</p>
-        </div>
-        <div className="bg-zinc-900 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-slate-400 break-words">
-            Total Contributions
+        <div className="bg-slate-1000 border border-slate-800 rounded-lg p-4 rounded text-center">
+          <p className="text-xs text-slate-400 font-mono">Last Commit</p>
+          <p className="text-lg text-slate-200 mt-2">
+            {stats?.lastCommitDate ?? "Loading..."}
           </p>
-          <p className="text-lg text-slate-200 mt-2">{stats?.totalContributions ?? "Loading..."}</p>
+        </div>
+        <div className="bg-slate-1000 border border-slate-800 rounded-lg p-4 rounded text-center">
+          <p className="text-xs text-slate-400 font-mono">Longest Streak</p>
+          <p className="text-lg  text-slate-200 mt-2">
+            {stats ? `${stats.longestStreak} days` : "Loading..."}
+          </p>
+        </div>
+        <div className="bg-slate-1000 border border-slate-800 rounded-lg p-4 rounded text-center">
+          <p className="text-xs text-slate-400 break-words font-mono">
+            Contributions
+          </p>
+          <p className="text-lg text-slate-200 mt-2">
+            {stats?.totalContributions ?? "Loading..."}
+          </p>
         </div>
       </div>
 

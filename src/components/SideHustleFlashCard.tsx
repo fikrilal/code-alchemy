@@ -114,7 +114,7 @@ export default function SideHustleFlashCard() {
   return (
     <div className="relative group">
       <div className="opacity-0 pointer-events-none" aria-hidden="true">
-        <div className="bg-slate-1100 p-6 rounded-2xl border border-slate-900">
+        <div className="bg-slate-1000 p-6 rounded-2xl border border-slate-800">
           <div className="mb-2 flex items-baseline justify-between">
             <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
               SIDE HUSTLE
@@ -124,10 +124,10 @@ export default function SideHustleFlashCard() {
               {String(totalItems).padStart(2, "0")}
             </p>
           </div>
-          <h3 className="text-xl text-slate-200 font-semibold">
+          <h3 className="text-xl text-slate-100 font-semibold">
             {activeItem.title}
           </h3>
-          <p className="text-sm sm:text-base md:text-base text-slate-400">
+          <p className="text-sm sm:text-base md:text-base text-slate-300">
             {activeItem.description}
           </p>
           <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl relative">
@@ -203,8 +203,8 @@ export default function SideHustleFlashCard() {
             <div
               className={
                 isFront
-                  ? "relative z-10 bg-slate-1100 p-6 rounded-2xl border border-slate-900 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-[0_20px_45px_rgba(3,5,14,0.65)]"
-                  : "relative z-10 bg-slate-1100 p-6 rounded-2xl border border-slate-900 shadow-[0_18px_40px_rgba(3,5,14,0.6)]"
+                  ? "relative z-10 bg-slate-1000 p-6 rounded-2xl border border-slate-800 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-[0_20px_45px_rgba(3,5,14,0.65)]"
+                  : "relative z-10 bg-slate-1000 p-6 rounded-2xl border border-slate-800 shadow-[0_18px_40px_rgba(3,5,14,0.6)]"
               }
             >
               <div className="mb-2 flex items-baseline justify-between">
@@ -216,10 +216,10 @@ export default function SideHustleFlashCard() {
                   {String(totalItems).padStart(2, "0")}
                 </p>
               </div>
-              <h3 className="text-xl text-slate-200 font-semibold mb-2">
+              <h3 className="text-xl text-slate-100 font-semibold mb-2">
                 {item.title}
               </h3>
-              <p className="text-sm sm:text-base md:text-base text-slate-400">
+              <p className="text-sm sm:text-base md:text-base text-slate-300">
                 {item.description}
               </p>
               <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl relative">
@@ -261,7 +261,6 @@ export default function SideHustleFlashCard() {
           </motion.div>
         );
       })}
-
     </div>
   );
 }

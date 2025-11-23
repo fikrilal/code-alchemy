@@ -60,13 +60,13 @@ export default function SpotifyNowPlaying() {
   }, []);
 
   return (
-    <div className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 h-full flex flex-col">
+    <div className="bg-slate-1000 p-6 rounded-2xl border border-slate-800 h-full flex flex-col">
       {/* Header row with label and icon */}
       <div className="flex justify-between items-center mb-2">
         <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
           {isLastPlayed ? "LAST PLAYED" : "CURRENTLY PLAYING"}
         </p>
-        <div className="bg-slate-1100 border border-slate-500 rounded-full flex items-center justify-center w-8 h-8">
+        <div className="bg-slate-1000 border border-slate-800 rounded-full flex items-center justify-center w-8 h-8">
           <Image src="/icons/ic_spotify.svg" alt="Spotify Icon" width={16} height={16} className="w-4 h-4" />
         </div>
       </div>
@@ -89,12 +89,12 @@ export default function SpotifyNowPlaying() {
             </div>
 
             <div>
-              <p className="text-md text-slate-200 font-medium">{track.name}</p>
-              <p className="pt-1 text-sm text-slate-400">{track.artist}</p>
+              <p className="text-md text-slate-100 font-medium">{track.name}</p>
+              <p className="pt-1 text-sm text-slate-300">{track.artist}</p>
             </div>
           </div>
         ) : (
-          <p className="text-sm text-slate-400">Nothing playing right now</p>
+          <p className="text-sm text-slate-300">Nothing playing right now</p>
         )}
       </div>
 
