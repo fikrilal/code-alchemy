@@ -46,7 +46,7 @@ export default function PortfolioSection() {
             <h3 className="text-xl text-slate-100 font-semibold mb-2">
               Math Tetris Game
             </h3>
-            <p className="text-sm sm:text-base md:text-base font-light text-slate-300">
+            <p className="text-sm sm:text-base md:text-base text-slate-300">
               A fast-paced mobile game combining math puzzles with Tetris
               mechanics.
             </p>
