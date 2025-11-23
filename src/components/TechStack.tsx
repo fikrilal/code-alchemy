@@ -36,7 +36,7 @@ export default function TechStack() {
       <h3 className="text-xl text-slate-200 font-semibold mb-2">
         Technologies I’m Proficient In
       </h3>
-      <p className="text-sm sm:text-base md:text-base text-slate-400">
+      <p className="text-sm sm:text-base md:text-base text-slate-300">
         Flutter powers most of my projects—occasionally spiced up with a bit of
         Kotlin or Compose for fun.
       </p>

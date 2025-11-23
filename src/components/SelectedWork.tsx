@@ -69,7 +69,7 @@ export default function SelectedWork({
         <div className="flex justify-between items-center">
           <MotionElement
             as="h2"
-            className="text-3xl md:text-5xl font-semibold text-slate-200 leading-[1.2] sm:!leading-tight max-w-4xl"
+            className="text-3xl md:text-5xl font-semibold text-slate-100 leading-[1.2] sm:!leading-tight max-w-4xl"
             variants={childVariants}
           >
             {heading}
@@ -88,7 +88,7 @@ export default function SelectedWork({
         </div>
         <MotionElement
           as="p"
-          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-500 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
+          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-300 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
           {description}
@@ -135,7 +135,7 @@ export default function SelectedWork({
               <h3 className="text-base font-normal text-slate-100 truncate uppercase tracking-[0.15em] font-mono">
                 {formatTitle(project.title)}
               </h3>
-              <span className="text-sm text-slate-400 whitespace-nowrap">
+              <span className="text-sm text-slate-300 whitespace-nowrap">
                 {project.category ?? "Case Study"}
               </span>
             </div>

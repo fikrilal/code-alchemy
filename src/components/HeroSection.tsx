@@ -30,7 +30,7 @@ export default function HeroSection() {
       <div className="max-w-6xl w-full mx-auto pt-20 sm:pt-24 lg:pt-52 sm:pb-24 lg:pb-40 px-4 sm:px-6 lg:px-8 xl:px-0">
         <MotionElement
           as="p"
-          className="text-sm font-mono text-slate-500 tracking-wide uppercase mb-4 mt-16"
+          className="text-sm font-mono text-slate-400 tracking-wide uppercase mb-4 mt-16"
           variants={childVariants}
         >
           MOBILE ENGINEER • UX DESIGNER
@@ -38,7 +38,7 @@ export default function HeroSection() {
 
         <MotionElement
           as="h1"
-          className="text-4xl md:text-6xl font-semibold text-slate-200 leading-[1.2] sm:!leading-tight max-w-4xl"
+          className="text-4xl md:text-6xl font-semibold text-slate-100 leading-[1.2] sm:!leading-tight max-w-4xl"
           variants={childVariants}
         >
           Hi, I’m Fikril—a Mobile Engineer based in Bandung, Indonesia
@@ -46,7 +46,7 @@ export default function HeroSection() {
 
         <MotionElement
           as="p"
-          className="mt-3 sm:mt-4 lg:mt-5 text-base sm:text-base md:text-xl text-slate-400 max-w-4xl leading-[1.6] sm:!leading-[1.8]"
+          className="mt-3 sm:mt-4 lg:mt-5 text-base sm:text-base md:text-xl text-slate-300 max-w-4xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
           I love building apps and crafting designs that people actually enjoy

@@ -63,7 +63,7 @@ export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
         <div className="flex justify-between items-center">
           <MotionElement
             as="h2"
-            className="text-3xl md:text-5xl font-semibold text-slate-200 leading-[1.2] sm:!leading-tight max-w-2xl"
+            className="text-3xl md:text-5xl font-semibold text-slate-100 leading-[1.2] sm:!leading-tight max-w-2xl"
             variants={childVariants}
           >
             Stories, Code, and Everything In Between
@@ -80,7 +80,7 @@ export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
         </div>
         <MotionElement
           as="p"
-          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-400 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
+          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-300 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
           A space where I share my journey, insights, and lessons learned. From
