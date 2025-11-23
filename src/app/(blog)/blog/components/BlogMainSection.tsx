@@ -44,7 +44,11 @@ function formatDate(dateString: string) {
   return `${month}, ${day} ${year}`;
 }
 
-export default function BlogMainSection({ blogPosts }: { blogPosts: BlogSummary[] }) {
+export default function BlogMainSection({
+  blogPosts,
+}: {
+  blogPosts: BlogSummary[];
+}) {
   const items = Array.isArray(blogPosts) ? blogPosts : [];
 
   return (
@@ -66,11 +70,12 @@ export default function BlogMainSection({ blogPosts }: { blogPosts: BlogSummary[
         </MotionElement>
         <MotionElement
           as="p"
-          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-500 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
+          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-300 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
-          A space where I share my journey, insights, and lessons learned. From coding tips to design musings, it's all
-          about growth, creativity, and a little bit of fun along the way.
+          A space where I share my journey, insights, and lessons learned. From
+          coding tips to design musings, it's all about growth, creativity, and
+          a little bit of fun along the way.
         </MotionElement>
       </MotionElement>
 
@@ -89,10 +94,15 @@ export default function BlogMainSection({ blogPosts }: { blogPosts: BlogSummary[
                 key={post.slug}
                 as="div"
                 variants={childVariants}
-                className={`flex flex-col md:flex-row items-stretch ${index !== 0 ? "border-t border-slate-900" : ""} py-12`}
+                className={`flex flex-col md:flex-row items-stretch ${
+                  index !== 0 ? "border-t border-slate-900" : ""
+                } py-12`}
               >
                 <div className="w-full md:w-1/3">
-                  <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                  <div
+                    className="relative w-full"
+                    style={{ paddingBottom: "56.25%" }}
+                  >
                     <Image
                       src={post.coverImage || "/images/dummy-image.jpg"}
                       alt={post.title}
@@ -121,7 +131,13 @@ export default function BlogMainSection({ blogPosts }: { blogPosts: BlogSummary[
                   >
                     Read more
                     <span className="ml-1 transition-transform duration-300 ease-in-out group-hover:translate-x-1 group-hover:rotate-45">
-                      <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg
+                        width="12"
+                        height="13"
+                        viewBox="0 0 12 13"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
                         <path
                           d="M2.64121 9.85889L9.35872 3.14138M9.35872 3.14138L9.35872 8.09113M9.35872 3.14138L4.40898 3.14138"
                           stroke="currentColor"
@@ -136,7 +152,11 @@ export default function BlogMainSection({ blogPosts }: { blogPosts: BlogSummary[
               </MotionElement>
             ))}
             {items.length === 0 && (
-              <MotionElement as="div" className="py-12 text-slate-400" variants={childVariants}>
+              <MotionElement
+                as="div"
+                className="py-12 text-slate-400"
+                variants={childVariants}
+              >
                 No posts published yet. Check back soon.
               </MotionElement>
             )}

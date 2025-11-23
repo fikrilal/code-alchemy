@@ -279,7 +279,7 @@ export default function ChainOfThought() {
             exit="exit"
             className="mb-4"
           >
-            <p className="text-sm md:text-base text-slate-400 shimmer-text">
+            <p className="text-sm md:text-base text-slate-300 shimmer-text">
               {(() => {
                 const safe = chainMessages.length > 0 ? chainMessages : [""];
                 const msg = safe[chainStepIndex % safe.length] ?? "";
@@ -290,7 +290,7 @@ export default function ChainOfThought() {
         </AnimatePresence>
       ) : (
         <div className="mb-4">
-          <p className="text-sm md:text-base text-slate-400">
+          <p className="text-sm md:text-base text-slate-300">
             {finalChainMessage}
           </p>
         </div>
