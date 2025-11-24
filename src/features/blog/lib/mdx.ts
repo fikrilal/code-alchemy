@@ -8,6 +8,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSanitize from "rehype-sanitize";
 
+import { remarkMermaid } from "@/features/mdx/remark-mermaid";
 import mdxComponents from "@/features/mdx/components";
 
 import type { BlogFrontmatter } from "@/features/blog/types";
@@ -22,7 +23,7 @@ export async function compileSource(source: string): Promise<{ content: ReactEle
     options: {
       parseFrontmatter: true,
       mdxOptions: {
-        remarkPlugins: [remarkGfm],
+        remarkPlugins: [remarkGfm, remarkMermaid],
         rehypePlugins: [
           rehypeSlug,
           [
