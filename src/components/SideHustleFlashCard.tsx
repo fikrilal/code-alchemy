@@ -19,18 +19,18 @@ const hustles: SideHustle[] = [
     image: "/images/side-project-thumbnail.png",
     link: "https://quowrld.com",
   },
-  {
-    title: "Pixelary Studio",
-    description:
-      "Micro-agency for brand systems, deck design, and iconography crafted for indie founders.",
-    image: "/images/image1.png",
-  },
-  {
-    title: "Mentor Hours",
-    description:
-      "Weekly sessions helping junior engineers level up Kotlin, Compose, and UX craft.",
-    image: "/images/image2.png",
-  },
+  // {
+  //   title: "Pixelary Studio",
+  //   description:
+  //     "Micro-agency for brand systems, deck design, and iconography crafted for indie founders.",
+  //   image: "/images/image1.png",
+  // },
+  // {
+  //   title: "Mentor Hours",
+  //   description:
+  //     "Weekly sessions helping junior engineers level up Kotlin, Compose, and UX craft.",
+  //   image: "/images/image2.png",
+  // },
 ];
 
 const previewOffsets = [

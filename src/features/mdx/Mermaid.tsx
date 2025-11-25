@@ -15,7 +15,11 @@ export function Mermaid({ code, className }: MermaidProps) {
     mermaid.initialize({
       startOnLoad: false,
       theme: "dark",
-      securityLevel: "strict",
+      // Allow client-side rendering without DOMPurify hooks failing in SSR/test.
+      securityLevel: "loose",
+      flowchart: {
+        htmlLabels: false,
+      },
     });
 
     const renderDiagram = async () => {
