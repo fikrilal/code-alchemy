@@ -74,10 +74,10 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     <>
       <Navbar />
       <main className="bg-neutral-950 min-h-screen pt-10">
-        <article className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-16 sm:pt-24">
+        <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-16 sm:pt-24">
           {/* Header */}
           <header className="mb-8">
-            <div className="text-xs sm:text-sm text-slate-400 flex flex-wrap items-center gap-x-3 gap-y-1 mb-3">
+            <div className="text-xs sm:text-sm text-slate-300 flex flex-wrap items-center gap-x-3 gap-y-1 mb-3">
               <span>{formattedDate}</span>
               <span className="opacity-50">•</span>
               <span>{frontmatter.readTime || "5 min read"}</span>
@@ -86,7 +86,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               {frontmatter.title}
             </h1>
             {frontmatter.description && (
-              <p className="text-base md:text-lg text-slate-400 leading-relaxed mt-3">{frontmatter.description}</p>
+              <p className="text-base md:text-lg text-slate-300 leading-relaxed mt-3">{frontmatter.description}</p>
             )}
             {frontmatter.author && (
               <div className="flex items-center mt-6 gap-3">
@@ -103,28 +103,26 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 )}
                 <div className="text-sm text-slate-300">
                   <p className="font-medium tracking-tight">{frontmatter.author}</p>
-                  <p className="text-slate-500">{formattedDate}</p>
+                  <p className="text-slate-400">{formattedDate}</p>
                 </div>
               </div>
             )}
           </header>
 
           {frontmatter.coverImage && (
-            <div className="relative w-full mb-10 rounded-2xl overflow-hidden border border-slate-900/40">
-              <Image
+            <div className="w-full mb-10 rounded-2xl overflow-hidden border border-slate-900/40 bg-black/20">
+              {/* Use native img for natural aspect ratio; next/image was forcing 16:9 */}
+              <img
                 src={frontmatter.coverImage}
                 alt={frontmatter.title}
-                width={1600}
-                height={900}
-                className="object-cover w-full h-auto"
-                sizes="(max-width: 768px) 100vw, 680px"
-                priority
+                className="w-full h-auto object-contain"
+                loading="lazy"
               />
             </div>
           )}
 
           {/* Content */}
-          <div className="prose prose-invert prose-headings:text-slate-100 prose-headings:tracking-tight prose-headings:font-semibold prose-p:text-slate-300 prose-p:leading-relaxed prose-strong:text-slate-50 prose-em:text-slate-200 prose-blockquote:border-l-slate-700 prose-blockquote:text-slate-300 prose-code:text-cyan-300 prose-pre:bg-slate-900/70 prose-pre:border prose-pre:border-slate-800 prose-pre:p-4 prose-pre:rounded-xl prose-code:before:content-none prose-code:after:content-none max-w-none">
+          <div className="prose prose-invert prose-headings:text-slate-100 prose-headings:tracking-tight prose-headings:font-semibold prose-p:text-slate-200 prose-li:text-slate-200 prose-p:leading-relaxed prose-strong:text-slate-100 prose-em:text-slate-200 prose-blockquote:border-l-slate-700 prose-blockquote:text-slate-300 prose-code:text-cyan-300 prose-pre:bg-slate-900/70 prose-pre:border prose-pre:border-slate-800 prose-pre:p-4 prose-pre:rounded-xl prose-code:before:content-none prose-code:after:content-none max-w-none [&>h1:first-of-type]:hidden">
             {content}
           </div>
 

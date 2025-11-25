@@ -53,7 +53,7 @@ export default async function WorkCaseStudyPage({
       <>
         <Navbar />
         <main className="bg-neutral-950 min-h-screen pt-10">
-          <article className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <header className="mb-8">
               <h1 className="text-3xl md:text-5xl font-bold text-slate-100">
                 {frontmatter.title}

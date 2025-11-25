@@ -1,31 +1,23 @@
 ---
 title: "Capability-Based Entitlement System"
-slug: "capability-based-entitlement-system"
-shortDescription: "A capability-based entitlement layer for a multi-tenant Flutter app used by guardians and pesantren."
-timeframe: "2024"
-thumbnail: "/images/recent-project-thumbnail.png"
-techStack:
-  [
-    "Flutter (Dart)",
-    "Multi-tenant Architecture",
-    "Capability-Based Entitlements",
-    "REST API Backend",
-  ]
----
-
-# Capability-Based Entitlement System
-
-A scalable way to manage plan-based features in a multi-tenant Flutter application.
-
+date: "2025-11-25"
+description: "A capability-based entitlement layer for a multi-tenant Flutter app used by parents and schools."
+coverImage: "/images/blog/entitlements-main.png"
+tags: ["Architecture", "Flutter", "Entitlements"]
+readTime: "8 min read"
+author: "Ahmad Fikril"
+authorImage: "/images/avatar.png"
+featured: false
 ---
 
 ## Context
 
-The app is used by guardians and schools (pesantren) that can subscribe to different plans:
-**Basic**, **Gold**, and **Platinum**.  
-Each pesantren can have its own plan, and the user can switch between multiple pesantren inside the
-app. Certain features (like advanced reports or financial dashboards) should only be available on
-higher‑tier plans.
+In this project I worked on a mobile app used by guardians/parents and schools, where each school can
+subscribe to one of several plans: **Basic**, **Gold**, or **Platinum**.
+
+A single guardian/parent can be connected to multiple schools and switch between them inside the app. Some
+features (like advanced reports or financial dashboards) should only be available on higher‑tier
+plans, depending on the active school’s subscription.
 
 ---
 
@@ -64,17 +56,16 @@ We needed a way to ask **“Can this user do X right now?”** that works consis
 service to controllers and UI components. The system uses capability-based access control to
 decouple feature availability from specific plan names.
 
-<Mermaid
-  code={`
+```mermaid
 flowchart LR
     subgraph Backend
-        B["Plan data per pesantren
+        B["Plan data per school
         (e.g. appPackage = basic/gold/platinum)"]
     end
 
     subgraph App
         US["Current User Service
-        (User + selected pesantren)"]
+        (User + selected school)"]
         ES["Entitlement Service
         (plan + capabilities set)"]
         MW["Route Guard / Middleware
@@ -90,8 +81,7 @@ flowchart LR
     ES --> C
     C --> UI
     MW --> UI
-`}
-/>
+```
 
 ---
 
@@ -101,8 +91,7 @@ flowchart LR
 has the `security.manage_pin` capability and updates the UI accordingly. The UI automatically reacts
 when the user switches pesantren or when plan changes occur.
 
-<Mermaid
-  code={`
+```mermaid
 sequenceDiagram
     actor U as User
     participant US as Current User Service
@@ -110,7 +99,7 @@ sequenceDiagram
     participant C as Account Security Controller
     participant UI as Account Security Screen
 
-    Note over US: Startup / pesantren change
+    Note over US: Startup / school change
     US-->>ES: User snapshot (appPackage, selection)
     ES->>ES: Map plan variant to capabilities set
     ES-->>ES: Update current plan + caps
@@ -130,25 +119,24 @@ sequenceDiagram
         UI-->>U: Hide or lock PIN actions
     end
 
-    Note over US,ES: Later: user switches pesantren / plan changes
+    Note over US,ES: Later: user switches school / plan changes
     US-->>ES: New user snapshot (new appPackage)
     ES->>ES: Recompute plan + capabilities
     ES-->>C: New entitlements
     C-->>UI: Update canManagePin
     UI-->>U: UI reacts (button appears / disappears)
-`}
-/>
+```
 
 ### How this flow works
 
 #### 1. Backend → current user → entitlements
 
-- The backend associates each pesantren with a plan (e.g. via a plan code or package string).
+- The backend associates each school with a plan (e.g. via a plan code or package string).
 - The app fetches the current user snapshot, which contains:
   - User information.
-  - The currently selected pesantren.
-  - That pesantren's plan indicator (e.g. `basic`, `gold`, `platinum`).
-- Whenever the snapshot changes (login, logout, switch pesantren), the entitlement service:
+  - The currently selected school.
+  - That school’s plan indicator (e.g. `basic`, `gold`, `platinum`).
+- Whenever the snapshot changes (login, logout, switch school), the entitlement service:
   - Reads the plan indicator.
   - Maps it to a plan variant.
   - Looks up the corresponding capability set from a central mapping.
@@ -163,7 +151,7 @@ sequenceDiagram
 - On initialization:
   - Controllers call `hasCapability(...)` once to seed booleans like `canManagePin`,
     `canSeeFinancialOverview`, `canUseMarketplace`.
-  - When features must react to plan changes at runtime (e.g. user switches pesantren),
+  - When features must react to plan changes at runtime (e.g. user switches school),
     controllers subscribe to the entitlements stream and update those booleans whenever a new
     plan / capability set arrives.
 - Widgets then bind to those booleans and:
@@ -179,8 +167,7 @@ sequenceDiagram
 or direct navigation). A route guard checks capabilities before allowing access, preventing
 unauthorized navigation even via direct URLs.
 
-<Mermaid
-  code={`
+```mermaid
 sequenceDiagram
     actor U as User
     participant UI as Menu / Navigation
@@ -190,7 +177,7 @@ sequenceDiagram
     U->>UI: Tap "Advanced Reports"
     UI->>MW: Attempt to navigate to premium route
 
-    MW->>ES: hasCapability(guardian.advanced_reports)?
+    MW->>ES: hasCapability(parents.advanced_reports)?
     ES-->>MW: true / false
 
     alt capability present
@@ -200,8 +187,7 @@ sequenceDiagram
         MW-->>UI: block or redirect (e.g. back to Home / upsell)
         UI-->>U: Show message or upgrade prompt
     end
-`}
-/>
+```
 
 ### Routing and deep-link protection
 
@@ -221,7 +207,7 @@ sequenceDiagram
 ## What this system does
 
 - Models three commercial plan variants (**Basic**, **Gold**, **Platinum**) and maps each plan to a
-  set of **capabilities** (features the user is allowed to use, like “manage PIN”, “guardian
+  set of **capabilities** (features the user is allowed to use, like “manage PIN”, “parent
   financial overview”, “advanced reports”, “marketplace”).
 - Provides a single **entitlement service** that answers:
   - “What plan is active for the currently selected pesantren?”
@@ -241,35 +227,132 @@ sequenceDiagram
 A simple label like `basic`, `gold`, or `platinum` derived from the backend‑provided `appPackage` on
 the current user snapshot. Conceptually this reflects the active pesantren’s subscription plan.
 
+```dart
+// Plan variants (lib/core/services/entitlements/plan_variant.dart)
+enum PlanVariant { basic, gold, platinum }
+```
+
 ### Capability
 
 A stable, namespaced “ability” such as:
 
 - `security.manage_pin`
-- `guardian.financial_overview`
-- `guardian.advanced_reports`
+- `parent.financial_overview`
+- `parent.advanced_reports`
 - `marketplace.core`
+
+```dart
+// Capability value object and per-module capabilities
+// (lib/core/services/entitlements/capability.dart and capabilities/*.dart)
+
+class Capability {
+  final String id;
+  final String? group;
+
+  const Capability(this.id, {this.group});
+}
+
+class SecurityCapabilities {
+  const SecurityCapabilities._();
+
+  static const Capability managePin = Capability(
+    'security.manage_pin',
+    group: 'security',
+  );
+}
+```
 
 ### Plan → capabilities mapping
 
 A central map that describes which capabilities each plan includes, for example:
 
 - **Basic** → `{donation.basic}`
-- **Gold** → `{donation.basic, guardian.financial_overview, marketplace.core, security.manage_pin}`
-- **Platinum** → everything in Gold + `guardian.advanced_reports`
+- **Gold** → `{donation.basic, parent.financial_overview, marketplace.core, security.manage_pin}`
+- **Platinum** → everything in Gold + `parent.advanced_reports`
+
+```dart
+// Central mapping (lib/core/services/entitlements/plan_capability_mapping.dart)
+
+final Map<PlanVariant, Set<Capability>> kPlanCapabilities = {
+  PlanVariant.basic: {
+    DonationCapabilities.basicDonation,
+  },
+  PlanVariant.gold: {
+    DonationCapabilities.basicDonation,
+    ParentCapabilities.financialOverview,
+    MarketplaceCapabilities.core,
+    SecurityCapabilities.managePin,
+  },
+  PlanVariant.platinum: {
+    DonationCapabilities.basicDonation,
+    ParentCapabilities.financialOverview,
+    MarketplaceCapabilities.core,
+    ParentCapabilities.advancedReports,
+    SecurityCapabilities.managePin,
+  },
+};
+
+Set<Capability> capabilitiesForPlan(PlanVariant plan) {
+  return kPlanCapabilities[plan] ?? <Capability>{};
+}
+```
 
 This mapping is the **only** place that encodes which plan gets which features. Feature code never
 hard‑codes “Gold” or “Platinum”; it only asks for capabilities.
 
 ### Entitlement service
 
-- Listens to changes in the current user snapshot (including selected pesantren and its plan).
+- Listens to changes in the current user snapshot (including selected school and its plan).
 - Converts backend / plan data into:
   - The effective plan variant.
   - The full set of capabilities for that plan.
 - Exposes:
   - A quick `hasCapability(...)` check.
-  - A stream of updates so the UI can react to plan / pesantren changes.
+  - A stream of updates so the UI can react to plan / school changes.
+
+```dart
+// Interface and implementation (lib/core/services/entitlements/feature_entitlement_service.dart,
+// lib/core/services/entitlements/feature_entitlement_service_impl.dart)
+
+class FeatureEntitlements {
+  final PlanVariant plan;
+  final Set<Capability> capabilities;
+
+  const FeatureEntitlements({required this.plan, required this.capabilities});
+}
+
+abstract class IFeatureEntitlementService {
+  PlanVariant get currentPlan;
+  bool hasCapability(Capability capability);
+  Stream<FeatureEntitlements> watch();
+}
+
+class FeatureEntitlementServiceImpl implements IFeatureEntitlementService {
+  final ICurrentUserService _currentUserService;
+  FeatureEntitlements _current = const FeatureEntitlements(
+    plan: PlanVariant.basic,
+    capabilities: <Capability>{},
+  );
+
+  // ...
+
+  @override
+  bool hasCapability(Capability capability) {
+    return _current.capabilities.contains(capability);
+  }
+
+  PlanVariant _resolvePlanForSnapshot(UserSnapshot? snapshot) {
+    final userPackageRaw = snapshot?.user.appPackage.trim().toLowerCase() ?? '';
+    if (userPackageRaw.isNotEmpty) {
+      final mapped = _mapPackageStringToPlan(userPackageRaw);
+      if (mapped != null) {
+        return mapped;
+      }
+    }
+    return PlanVariant.basic;
+  }
+}
+```
 
 ---
 
@@ -304,3 +387,31 @@ hard‑codes “Gold” or “Platinum”; it only asks for capabilities.
 5. **Reactive updates:**  
    When the plan changes (pesantren switch, upgrade / downgrade), the stream propagates updates
    throughout the app.
+
+```dart
+// Example controller usage (lib/features/profile/presentation/getx/security/account_security_controller.dart)
+
+class AccountSecurityController extends GetxController {
+  final IFeatureEntitlementService _entitlementService;
+
+  final RxBool canManagePin = false.obs;
+  StreamSubscription<FeatureEntitlements>? _entitlementSubscription;
+
+  // ...
+
+  void _bootstrapEntitlements() {
+    // Seed from current entitlements
+    canManagePin.value =
+        _entitlementService.hasCapability(SecurityCapabilities.managePin);
+
+    // React to future plan / school changes
+    _entitlementSubscription = _entitlementService.watch().listen((entitlements) {
+      final allowed =
+          entitlements.capabilities.contains(SecurityCapabilities.managePin);
+      if (canManagePin.value != allowed) {
+        canManagePin.value = allowed;
+      }
+    });
+  }
+}
+```
