@@ -22,7 +22,7 @@ const fragmentMono = Fragment_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ahmad Fikril Al Muzakki | Mobile Engineer & UX Designer",
+  title: "Ahmad Fikril Al Muzakki | Mobile Engineer & Founding Engineer",
   description:
     "Hey there! I'm Fikril, a mobile engineering wizard turning wild ideas into sleek apps that people actually love to use. Coffee-powered code and pixel-perfect designs are my superpowers!",
   keywords: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     "Fikril",
     "Fikrilal",
     "Mobile Engineer",
-    "UX Designer",
+    "Founding Engineer",
     "Flutter Developer",
     "UI/UX Design",
     "Mobile App Development",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     apple: "/favicon.png",
   },
   openGraph: {
-    title: "Ahmad Fikril Al Muzakki | Mobile Engineer & UX Designer",
+    title: "Ahmad Fikril Al Muzakki | Mobile Engineer & Founding Engineer",
     description:
       "Hey there! I'm Fikril, a mobile engineering wizard turning wild ideas into sleek apps that people actually love to use. Coffee-powered code and pixel-perfect designs are my superpowers!",
     url: "https://www.fikril.dev",
@@ -70,7 +70,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Ahmad Fikril Al Muzakki | Mobile Engineer",
-    description: "Mobile Engineer & UX Designer based in Bandung, Indonesia",
+    description:
+      "Mobile Engineer & Founding Engineer based in Bandung, Indonesia",
     creator: "@fikrilal",
   },
   alternates: {

@@ -40,8 +40,8 @@ const cardHover = {
 
 export default function SelectedWork({
   workItems,
-  heading = "Some Stuff I’ve Cooked",
-  description = "Here’s a peek at the projects where I turned ideas into something cool. From apps to designs, it’s all about making things that work and look awesome.",
+  heading = "Selected Work",
+  description = "A look at the products I’ve helped ship — real users, real constraints, and the kind of mobile work I like to take end to end.",
   ctaHref = "/work",
   ctaLabel = "View all work",
   limit,

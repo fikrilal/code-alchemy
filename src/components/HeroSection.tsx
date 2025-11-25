@@ -33,7 +33,7 @@ export default function HeroSection() {
           className="text-sm font-mono text-slate-400 tracking-wide uppercase mb-4 mt-16"
           variants={childVariants}
         >
-          MOBILE ENGINEER • UX DESIGNER
+          MOBILE ENGINEER • FOUNDING ENGINEER
         </MotionElement>
 
         <MotionElement
@@ -49,9 +49,9 @@ export default function HeroSection() {
           className="mt-3 sm:mt-4 lg:mt-5 text-base sm:text-base md:text-xl text-slate-300 max-w-4xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
-          I love building apps and crafting designs that people actually enjoy
-          using. Whether it’s coding something cool or tweaking pixels to
-          perfection, I’m all about turning ideas into reality.
+          I’m comfortable with end-to-end ownership across the 0 → 1 phase:
+          defining Flutter app architecture, patterns, tooling, and driving the
+          initial release into production.
         </MotionElement>
 
         <MotionElement

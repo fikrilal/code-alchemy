@@ -83,9 +83,8 @@ export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
           className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-300 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
-          A space where I share my journey, insights, and lessons learned. From
-          coding tips to design musings, it's all about growth, creativity, and
-          a little bit of fun along the way.
+          A place to dump notes from the journey — what worked, what broke, and
+          the small realizations I don’t want to forget.
         </MotionElement>
       </div>
 
