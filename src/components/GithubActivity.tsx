@@ -54,7 +54,7 @@ export default function GithubActivity() {
     >
       {/* Header row */}
       <div className="flex items-center justify-between mb-8">
-        <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
+        <p className="text-xs font-mono text-slate-400 tracking-widest uppercase">
           GITHUB ACTIVITY
         </p>
         <a

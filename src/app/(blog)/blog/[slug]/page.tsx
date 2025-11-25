@@ -38,7 +38,11 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 }
 
 // Generate metadata for the page
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   try {
     const { frontmatter } = await loadPostBySlug(slug);
@@ -59,7 +63,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPost({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   let compiled;
   try {
@@ -86,7 +94,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               {frontmatter.title}
             </h1>
             {frontmatter.description && (
-              <p className="text-base md:text-lg text-slate-300 leading-relaxed mt-3">{frontmatter.description}</p>
+              <p className="text-base md:text-lg text-slate-300 leading-relaxed mt-3">
+                {frontmatter.description}
+              </p>
             )}
             {frontmatter.author && (
               <div className="flex items-center mt-6 gap-3">
@@ -101,9 +111,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     />
                   </div>
                 )}
-                <div className="text-sm text-slate-300">
-                  <p className="font-medium tracking-tight">{frontmatter.author}</p>
-                  <p className="text-slate-400">{formattedDate}</p>
+                <div className="text-sm text-slate-200">
+                  <p className="font-medium tracking-tight">
+                    {frontmatter.author}
+                  </p>
+                  <p className="text-slate-300">{formattedDate}</p>
                 </div>
               </div>
             )}
@@ -132,7 +144,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             <div className="mt-10 pt-6 border-t border-slate-800">
               <div className="flex flex-wrap gap-2">
                 {frontmatter.tags.map((tag) => (
-                  <span key={tag} className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm">{tag}</span>
+                  <span
+                    key={tag}
+                    className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm"
+                  >
+                    {tag}
+                  </span>
                 ))}
               </div>
             </div>

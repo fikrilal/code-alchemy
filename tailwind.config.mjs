@@ -129,6 +129,7 @@ export default {
           1000: "#111111",
         },
         slate: {
+          50: "#F3F3F3",
           100: "#c9d1d9", // subtle text on darkest bg
           200: "#b1bac4",
           300: "#8b949e", // muted text

@@ -114,13 +114,13 @@ export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
             </div>
             <div className="w-full md:w-2/3 md:pl-6 mt-4 md:mt-0 flex flex-col justify-between">
               <div>
-                <span className="text-sm text-slate-400">
+                <span className="text-sm text-slate-300">
                   {formatDate(blog.date)}
                 </span>
                 <h3 className="text-xl font-semibold text-slate-200 mt-4">
                   {blog.title}
                 </h3>
-                <p className="mt-2 text-slate-300">{blog.description}</p>
+                <p className="mt-2 text-slate-200">{blog.description}</p>
               </div>
               <Link
                 href={`/blog/${blog.slug}`}

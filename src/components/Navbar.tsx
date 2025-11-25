@@ -83,21 +83,21 @@ export default function Navbar() {
       >
         <Link
           href="/work"
-          className="block py-2 text-slate-200 hover:text-brand-primary"
+          className="block py-2 text-slate-100 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           Work
         </Link>
         <Link
           href="/blog"
-          className="block py-2 text-slate-200 hover:text-brand-primary"
+          className="block py-2 text-slate-100 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           Blog
         </Link>
         <Link
           href="/about"
-          className="block py-2 text-slate-200 hover:text-brand-primary"
+          className="block py-2 text-slate-100 hover:text-brand-primary"
           onClick={toggleMenu}
         >
           About
@@ -153,4 +153,3 @@ export default function Navbar() {
     </nav>
   );
 }
-

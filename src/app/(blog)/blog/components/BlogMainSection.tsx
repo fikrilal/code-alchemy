@@ -63,14 +63,14 @@ export default function BlogMainSection({
       >
         <MotionElement
           as="h1"
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-200 leading-[1.2] sm:!leading-tight max-w-2xl"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-100 leading-[1.2] sm:!leading-tight max-w-2xl"
           variants={childVariants}
         >
           Blog Stuff
         </MotionElement>
         <MotionElement
           as="p"
-          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-300 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
+          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-200 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
           variants={childVariants}
         >
           A place to dump notes from the journey — what worked, what broke, and
@@ -114,15 +114,15 @@ export default function BlogMainSection({
                 </div>
                 <div className="w-full md:w-2/3 md:pl-6 mt-4 md:mt-0 flex flex-col justify-between">
                   <div>
-                    <span className="text-sm text-slate-400">
+                    <span className="text-sm text-slate-300">
                       {formatDate(post.date)} • {post.readTime || "5 min read"}
                     </span>
                     <Link href={`/blog/${post.slug}`}>
-                      <h2 className="text-xl sm:text-xl md:text-2xl font-bold text-slate-200 mt-4 hover:text-slate-300 transition-colors">
+                      <h2 className="text-xl sm:text-xl md:text-2xl font-bold text-slate-100 mt-4 hover:text-slate-300 transition-colors">
                         {post.title}
                       </h2>
                     </Link>
-                    <p className="mt-2 text-slate-300">{post.description}</p>
+                    <p className="mt-2 text-slate-200">{post.description}</p>
                   </div>
                   <Link
                     href={`/blog/${post.slug}`}

@@ -25,7 +25,7 @@ export default function QuoteSection({
         <div className="absolute -left-6 top-0 h-full w-1 bg-green-400 rounded-full opacity-20 transition-opacity group-hover:opacity-40"></div>
 
         <div className="pl-8">
-          <blockquote className="text-2xl md:text-3xl leading-[1.6] md:leading-[1.5] font-medium text-slate-300 italic relative">
+          <blockquote className="text-2xl md:text-3xl leading-[1.6] md:leading-[1.5] font-medium text-slate-200 italic relative">
             <span className="absolute -left-8 -top-4 text-7xl text-green-400 opacity-25 select-none">
               “
             </span>

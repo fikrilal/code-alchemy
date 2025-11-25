@@ -48,7 +48,7 @@ export default function MainSection() {
         viewport={{ once: true, amount: 0.2 }}
       >
         <motion.h1
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-100 mt-2 lg:mt-4"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-50 mt-2 lg:mt-4"
           variants={childVariants}
         >
           About Me
@@ -101,7 +101,7 @@ export default function MainSection() {
             download and use.
           </p>
           <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:!leading-[1.8]">
-            I’m comfortable owning the end-to-end 0→1 phase: defining how a
+            I’m comfortable owning the end-to-end 0 → 1 phase: defining how a
             Flutter app is structured, how data flows, how state is managed, how
             we ship, and then driving the first release into production. Over
             time, I like turning those decisions into standards the rest of the

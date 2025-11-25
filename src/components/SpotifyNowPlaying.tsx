@@ -63,7 +63,7 @@ export default function SpotifyNowPlaying() {
     <div className="bg-slate-1000 p-6 rounded-2xl border border-slate-600 h-full flex flex-col">
       {/* Header row with label and icon */}
       <div className="flex justify-between items-center mb-2">
-        <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
+        <p className="text-xs font-mono text-slate-400 tracking-widest uppercase">
           {isLastPlayed ? "LAST PLAYED" : "CURRENTLY PLAYING"}
         </p>
         <div className="bg-slate-1000 border border-slate-800 rounded-full flex items-center justify-center w-8 h-8">

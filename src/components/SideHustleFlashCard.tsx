@@ -116,10 +116,10 @@ export default function SideHustleFlashCard() {
       <div className="opacity-0 pointer-events-none" aria-hidden="true">
         <div className="bg-slate-1000 p-6 rounded-2xl border border-slate-600">
           <div className="mb-2 flex items-baseline justify-between">
-            <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
+            <p className="text-xs font-mono text-slate-400 tracking-widest uppercase">
               SIDE HUSTLE
             </p>
-            <p className="text-xs font-mono text-slate-500 tracking-widest">
+            <p className="text-xs font-mono text-slate-400 tracking-widest">
               {String(activeIndex + 1).padStart(2, "0")} /{" "}
               {String(totalItems).padStart(2, "0")}
             </p>
@@ -208,10 +208,10 @@ export default function SideHustleFlashCard() {
               }
             >
               <div className="mb-2 flex items-baseline justify-between">
-                <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
+                <p className="text-xs font-mono text-slate-400 tracking-widest uppercase">
                   SIDE HUSTLE
                 </p>
-                <p className="text-xs font-mono text-slate-500 tracking-widest">
+                <p className="text-xs font-mono text-slate-400 tracking-widest">
                   {String(index + 1).padStart(2, "0")} /{" "}
                   {String(totalItems).padStart(2, "0")}
                 </p>

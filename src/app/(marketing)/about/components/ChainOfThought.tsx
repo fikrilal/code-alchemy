@@ -305,7 +305,7 @@ export default function ChainOfThought() {
             interval={50}
           />
         </p>
-        <p className="mt-2 sm:mt-2 lg:mt-3 text-base md:text-lg text-slate-400 max-w-sm overflow-hidden break-words leading-[1.6]">
+        <p className="mt-2 sm:mt-2 lg:mt-3 text-base md:text-lg text-slate-300 max-w-sm overflow-hidden break-words leading-[1.6]">
           <ScrambleParsedText
             text={thoughts[displayIndex % thoughts.length]!.content}
             className=""

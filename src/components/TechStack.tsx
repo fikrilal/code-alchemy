@@ -30,7 +30,7 @@ export default function TechStack() {
       animate="visible"
     >
       {/* Header / Intro */}
-      <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
+      <p className="text-xs font-mono text-slate-400 tracking-widest mb-2 uppercase">
         MOBILE TECH STACK
       </p>
       <h3 className="text-xl text-slate-200 font-semibold mb-2">

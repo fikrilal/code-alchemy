@@ -33,7 +33,7 @@ export default function ExperienceSection({
       viewport={{ once: true, amount: 0.2 }}
     >
       <motion.h2
-        className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-100 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
+        className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-50 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
         variants={c}
       >
         Experience
@@ -50,28 +50,28 @@ export default function ExperienceSection({
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-xl font-medium text-slate-200">
+                  <h3 className="text-xl font-medium text-slate-100">
                     {experience.title}
                   </h3>
-                  <div className="pt-2 flex flex-wrap items-center gap-2 text-slate-300">
+                  <div className="pt-2 flex flex-wrap items-center gap-2 text-slate-200">
                     <span>{experience.organization}</span>
                     <span className="text-slate-400">•</span>
-                    <span className="text-slate-300">
+                    <span className="text-slate-200">
                       {experience.location}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="px-2 py-0.5 text-xs rounded-full bg-slate-800/40 text-slate-300 border border-slate-700/50">
+                    <span className="px-3 py-1 text-xs rounded-full bg-slate-800/40 text-slate-200 border border-slate-400/50">
                       {experience.workType}
                     </span>
                   </div>
                 </div>
-                <p className="text-sm text-slate-300 whitespace-nowrap">
+                <p className="text-sm text-slate-200 whitespace-nowrap">
                   {experience.date}
                 </p>
               </div>
               {experience.description && (
-                <p className="mt-3 text-slate-300 text-sm leading-relaxed">
+                <p className="mt-3 text-slate-200 text-sm leading-relaxed">
                   {experience.description}
                 </p>
               )}

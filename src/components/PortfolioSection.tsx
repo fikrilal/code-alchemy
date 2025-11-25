@@ -40,7 +40,7 @@ export default function PortfolioSection() {
             className="bg-slate-1000 p-6 rounded-2xl border border-slate-600"
             variants={childVariants}
           >
-            <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">
+            <p className="text-xs font-mono text-slate-400 tracking-widest mb-2 uppercase">
               RECENT PROJECT
             </p>
             <h3 className="text-xl text-slate-100 font-semibold mb-2">

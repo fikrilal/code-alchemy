@@ -31,7 +31,7 @@ export default function AchievementsSection({
       viewport={{ once: true, amount: 0.2 }}
     >
       <motion.h2
-        className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-100 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
+        className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-slate-50 mb-2 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12"
         variants={c}
       >
         Achievements
@@ -47,14 +47,14 @@ export default function AchievementsSection({
               variants={c}
             >
               <div className="mb-2">
-                <h3 className="text-xl font-medium text-slate-200 mb-2 leading-[1.5]">
+                <h3 className="text-xl font-medium text-slate-100 mb-2 leading-[1.5]">
                   {achievement.title}
                 </h3>
                 <div className="flex flex-row justify-between items-center text-sm gap-4">
-                  <p className="text-base text-slate-300">
+                  <p className="text-base text-slate-200">
                     {achievement.organization}
                   </p>
-                  <p className="text-slate-300 whitespace-nowrap">
+                  <p className="text-slate-200 whitespace-nowrap">
                     {achievement.date}
                   </p>
                 </div>

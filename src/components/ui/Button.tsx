@@ -21,7 +21,7 @@ type ButtonProps = ButtonBaseProps &
   );
 
 const baseClasses =
-  "relative overflow-hidden inline-flex items-center group text-slate-100 hover:text-slate-900 border border-slate-100 dark:border-slate-700 rounded-full bg-transparent px-6 py-3 sm:px-8 sm:py-4 transform-gpu transition duration-500 ease-out hover:scale-[1.02] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600 active:scale-95";
+  "relative overflow-hidden inline-flex items-center group text-slate-50 hover:text-slate-900 border border-slate-50 dark:border-slate-500 rounded-full bg-transparent px-6 py-3 sm:px-8 sm:py-4 transform-gpu transition duration-500 ease-out hover:scale-[1.02] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600 active:scale-95";
 
 export function Button({
   as = "button",
@@ -53,7 +53,7 @@ export function Button({
   );
 
   const overlay = (
-    <span className="absolute inset-0 bg-slate-100 dark:bg-slate-100 rounded-full transform origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+    <span className="absolute inset-0 bg-slate-50 dark:bg-slate-50 rounded-full transform origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100" />
   );
 
   if (as === "a") {
