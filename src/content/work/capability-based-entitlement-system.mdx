@@ -1,0 +1,306 @@
+---
+title: "Capability-Based Entitlement System"
+slug: "capability-based-entitlement-system"
+shortDescription: "A capability-based entitlement layer for a multi-tenant Flutter app used by guardians and pesantren."
+timeframe: "2024"
+thumbnail: "/images/recent-project-thumbnail.png"
+techStack:
+  [
+    "Flutter (Dart)",
+    "Multi-tenant Architecture",
+    "Capability-Based Entitlements",
+    "REST API Backend",
+  ]
+---
+
+# Capability-Based Entitlement System
+
+A scalable way to manage plan-based features in a multi-tenant Flutter application.
+
+---
+
+## Context
+
+The app is used by guardians and schools (pesantren) that can subscribe to different plans:
+**Basic**, **Gold**, and **Platinum**.  
+Each pesantren can have its own plan, and the user can switch between multiple pesantren inside the
+app. Certain features (like advanced reports or financial dashboards) should only be available on
+higher‑tier plans.
+
+---
+
+## Problem
+
+The naive implementation would be to sprinkle checks like `if (plan == "gold")` across controllers
+and widgets. This quickly becomes:
+
+- Hard to maintain as the app grows.
+- Easy to get wrong (especially with deep links and direct route calls).
+- Difficult to change when business wants to move features between plans, run promotions, or
+  introduce new variants.
+
+We needed a way to ask **“Can this user do X right now?”** that works consistently across:
+
+- Routing and deep links.
+- Controllers and UI.
+- Domain logic and use cases.
+
+---
+
+## Goals
+
+- Have a **single source of truth** for “which features are available on which plan”.
+- Let feature code depend on **capabilities** (“manage PIN”, “view advanced reports”), not plan
+  names (“Gold”, “Platinum”).
+- Make plan changes safe and easy: update one mapping instead of editing many screens.
+- Enforce entitlements in layers (UI visibility, route guards, domain checks) so the experience is
+  both user‑friendly and robust against navigation tricks.
+
+---
+
+## 1️⃣ System Architecture Overview
+
+**Overview:** This diagram shows how plan information flows from the backend through the entitlement
+service to controllers and UI components. The system uses capability-based access control to
+decouple feature availability from specific plan names.
+
+<Mermaid
+  code={`
+flowchart LR
+    subgraph Backend
+        B["Plan data per pesantren
+        (e.g. appPackage = basic/gold/platinum)"]
+    end
+
+    subgraph App
+        US["Current User Service
+        (User + selected pesantren)"]
+        ES["Entitlement Service
+        (plan + capabilities set)"]
+        MW["Route Guard / Middleware
+        (Capability check)"]
+        C["Feature Controllers
+        (e.g. Account Security)"]
+        UI["Widgets / Screens"]
+    end
+
+    B --> US
+    US --> ES
+    ES --> MW
+    ES --> C
+    C --> UI
+    MW --> UI
+`}
+/>
+
+---
+
+## 2️⃣ Runtime Flow: Capability Check
+
+**Scenario:** The user navigates to the Account Security screen. The system checks whether the user
+has the `security.manage_pin` capability and updates the UI accordingly. The UI automatically reacts
+when the user switches pesantren or when plan changes occur.
+
+<Mermaid
+  code={`
+sequenceDiagram
+    actor U as User
+    participant US as Current User Service
+    participant ES as Entitlement Service
+    participant C as Account Security Controller
+    participant UI as Account Security Screen
+
+    Note over US: Startup / pesantren change
+    US-->>ES: User snapshot (appPackage, selection)
+    ES->>ES: Map plan variant to capabilities set
+    ES-->>ES: Update current plan + caps
+    ES-->>C: Emit entitlements stream
+
+    Note over U,UI: User opens security screen
+    U->>UI: Navigate to Account Security
+    UI->>C: onInit()
+
+    C->>ES: hasCapability(security.manage_pin)?
+    ES-->>C: true / false
+    C-->>UI: expose canManagePin flag
+
+    alt canManagePin == true
+        UI-->>U: Show "Create PIN" action
+    else
+        UI-->>U: Hide or lock PIN actions
+    end
+
+    Note over US,ES: Later: user switches pesantren / plan changes
+    US-->>ES: New user snapshot (new appPackage)
+    ES->>ES: Recompute plan + capabilities
+    ES-->>C: New entitlements
+    C-->>UI: Update canManagePin
+    UI-->>U: UI reacts (button appears / disappears)
+`}
+/>
+
+### How this flow works
+
+#### 1. Backend → current user → entitlements
+
+- The backend associates each pesantren with a plan (e.g. via a plan code or package string).
+- The app fetches the current user snapshot, which contains:
+  - User information.
+  - The currently selected pesantren.
+  - That pesantren's plan indicator (e.g. `basic`, `gold`, `platinum`).
+- Whenever the snapshot changes (login, logout, switch pesantren), the entitlement service:
+  - Reads the plan indicator.
+  - Maps it to a plan variant.
+  - Looks up the corresponding capability set from a central mapping.
+  - Stores this as the **current plan + capabilities** and emits an update.
+
+#### 2. Controllers & UI using capabilities (not plans)
+
+- Feature controllers never ask “is this Gold or Platinum?” directly.
+- Instead they ask the entitlement service: **“Do we have capability X?”**
+  - Example: the account security controller asks for `security.manage_pin` to decide whether to
+    show the “Create PIN” action.
+- On initialization:
+  - Controllers call `hasCapability(...)` once to seed booleans like `canManagePin`,
+    `canSeeFinancialOverview`, `canUseMarketplace`.
+  - When features must react to plan changes at runtime (e.g. user switches pesantren),
+    controllers subscribe to the entitlements stream and update those booleans whenever a new
+    plan / capability set arrives.
+- Widgets then bind to those booleans and:
+  - Show or hide actions.
+  - Show a “locked” state with an upsell message.
+  - Or route the user to an upgrade flow.
+
+---
+
+## 3️⃣ Route Protection Flow
+
+**Scenario:** The user attempts to navigate to a premium feature (for example via menu, deep link,
+or direct navigation). A route guard checks capabilities before allowing access, preventing
+unauthorized navigation even via direct URLs.
+
+<Mermaid
+  code={`
+sequenceDiagram
+    actor U as User
+    participant UI as Menu / Navigation
+    participant MW as Capability Guard
+    participant ES as Entitlement Service
+
+    U->>UI: Tap "Advanced Reports"
+    UI->>MW: Attempt to navigate to premium route
+
+    MW->>ES: hasCapability(guardian.advanced_reports)?
+    ES-->>MW: true / false
+
+    alt capability present
+        MW-->>UI: allow navigation
+        UI-->>U: Show premium screen
+    else
+        MW-->>UI: block or redirect (e.g. back to Home / upsell)
+        UI-->>U: Show message or upgrade prompt
+    end
+`}
+/>
+
+### Routing and deep-link protection
+
+- Some screens are premium and should never be accessible without the right plan, even if:
+  - A developer calls the route directly by mistake.
+  - A deep link or push notification points to the premium route.
+- For these routes, the navigation layer can attach a **capability guard**:
+  - Before navigation completes, the guard calls `hasCapability(...)`.
+  - If the capability is present, navigation proceeds.
+  - If not, navigation is blocked or redirected (e.g. back to home, or to an upgrade screen).
+- This acts as a safety net on top of the UI gating:
+  - UI **tries** not to show buttons and links the user shouldn’t see.
+  - Route guards **ensure** the user cannot reach protected screens without entitlements.
+
+---
+
+## What this system does
+
+- Models three commercial plan variants (**Basic**, **Gold**, **Platinum**) and maps each plan to a
+  set of **capabilities** (features the user is allowed to use, like “manage PIN”, “guardian
+  financial overview”, “advanced reports”, “marketplace”).
+- Provides a single **entitlement service** that answers:
+  - “What plan is active for the currently selected pesantren?”
+  - “Does the current user have capability X right now?”
+  - “Notify me when plan / capabilities change.”
+- Uses those answers in:
+  - Controllers & UI to show / hide or lock specific actions and menu items.
+  - Route guards to prevent navigation to premium screens without the right capabilities, even via
+    deep links.
+
+---
+
+## Core concepts in the flow
+
+### Plan variant
+
+A simple label like `basic`, `gold`, or `platinum` derived from the backend‑provided `appPackage` on
+the current user snapshot. Conceptually this reflects the active pesantren’s subscription plan.
+
+### Capability
+
+A stable, namespaced “ability” such as:
+
+- `security.manage_pin`
+- `guardian.financial_overview`
+- `guardian.advanced_reports`
+- `marketplace.core`
+
+### Plan → capabilities mapping
+
+A central map that describes which capabilities each plan includes, for example:
+
+- **Basic** → `{donation.basic}`
+- **Gold** → `{donation.basic, guardian.financial_overview, marketplace.core, security.manage_pin}`
+- **Platinum** → everything in Gold + `guardian.advanced_reports`
+
+This mapping is the **only** place that encodes which plan gets which features. Feature code never
+hard‑codes “Gold” or “Platinum”; it only asks for capabilities.
+
+### Entitlement service
+
+- Listens to changes in the current user snapshot (including selected pesantren and its plan).
+- Converts backend / plan data into:
+  - The effective plan variant.
+  - The full set of capabilities for that plan.
+- Exposes:
+  - A quick `hasCapability(...)` check.
+  - A stream of updates so the UI can react to plan / pesantren changes.
+
+---
+
+## Why this design is useful
+
+- **Capabilities over plans:** Feature code doesn’t care about “Gold vs Platinum”, it cares about
+  specific abilities like “manage PIN” or “view advanced reports”. If business changes which plan
+  includes which feature, you update one mapping instead of touching many screens.
+- **Single source of truth:** The entitlement service is the only place that knows the current plan
+  and capabilities. Everything else (controllers, widgets, route guards) goes through it.
+- **Multi‑tenant aware:** Since the plan is tied to the selected pesantren, when the user switches
+  school, the entitlement service recomputes entitlements and the UI can respond automatically.
+- **Layered enforcement:**
+  - Menus and screens use capabilities to control visibility and upsell.
+  - Navigation guards use capabilities to prevent unauthorized access.
+  - The backend is still expected to enforce plan rules server‑side, but the client gives
+    immediate, clear feedback to the user.
+
+---
+
+## Data flow summary
+
+1. **Backend → User Service → Entitlement Service:**  
+   Plan data flows from backend through the user snapshot to the entitlement service, which maps it
+   to capabilities.
+2. **Entitlement Service → Controllers:**  
+   Controllers query capabilities (not plans) to make feature decisions.
+3. **Controllers → UI:**  
+   UI binds to capability-based flags and shows / hides features accordingly.
+4. **Entitlement Service → Route Guards:**  
+   Navigation is protected by capability checks at the routing layer.
+5. **Reactive updates:**  
+   When the plan changes (pesantren switch, upgrade / downgrade), the stream propagates updates
+   throughout the app.

@@ -1,7 +1,8 @@
 import Image from "next/image";
-import type { ImgHTMLAttributes } from "react";
 
 import { Mermaid } from "./Mermaid";
+
+import type { ImgHTMLAttributes } from "react";
 
 function isExternal(src?: string) {
   if (!src) return false;

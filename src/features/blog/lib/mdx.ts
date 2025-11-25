@@ -6,7 +6,6 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
-import rehypeSanitize from "rehype-sanitize";
 
 import { remarkMermaid } from "@/features/mdx/remark-mermaid";
 import mdxComponents from "@/features/mdx/components";
@@ -38,7 +37,6 @@ export async function compileSource(source: string): Promise<{ content: ReactEle
               theme: "github-dark",
             },
           ],
-          rehypeSanitize,
         ],
       },
     },
