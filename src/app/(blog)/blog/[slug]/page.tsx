@@ -112,6 +112,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           {frontmatter.coverImage && (
             <div className="w-full mb-10 rounded-2xl overflow-hidden border border-slate-900/40 bg-black/20">
               {/* Use native img for natural aspect ratio; next/image was forcing 16:9 */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={frontmatter.coverImage}
                 alt={frontmatter.title}
