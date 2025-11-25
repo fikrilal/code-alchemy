@@ -1,0 +1,71 @@
+---
+title: "Mobile ERP — Workforce Management"
+slug: "mobile-erp"
+shortDescription: "A mobile ERP solution for employee attendance, shift management, and payroll access with geofencing-based check-ins."
+timeframe: "Q3 2024 - Q4 2024"
+thumbnail: "/images/mobile-erp-app-thumbnail.png"
+techStack:
+  [
+    "Flutter (Dart)",
+    "GetX (State Management)",
+    "OpenStreetMap + Leaflet",
+    "Geolocator & Geofence Service",
+    "Device Info Plus (Mock Location Detection)",
+    "Dio (API Requests)",
+    "Shared Preferences & Get Storage",
+    "File Picker & Open File",
+  ]
+---
+
+# Mobile ERP — Workforce Management
+
+## Overview
+
+Managing employee attendance accurately is a challenge for many companies, especially with remote or multiple‑location teams. Mobile ERP enables secure geofenced check‑ins, shift tracking, leave requests, and payroll access. It prevents spoofing and unauthorized check‑ins while keeping the UX simple for employees.
+
+## Objectives
+
+- Implement secure geofencing‑based attendance tracking with OpenStreetMap.
+- Build a robust authentication system with session management.
+- Enable real‑time shift management for dynamic assignments.
+- Protect against GPS spoofing and mock locations.
+
+## Features
+
+- 📍 Geofencing Attendance — Check in within a 100‑meter radius of the workplace.
+- 📸 Selfie Verification — Capture real‑time photos as proof of attendance.
+- 🚫 Mock Location Prevention — Detect spoof apps via Device Info Plus + backend validation.
+- 🔑 Secure Authentication — Access & refresh tokens with Flutter Secure Storage.
+- 📆 Shift Management — View and request shift changes.
+- 📝 Leave Request System — Digital leave applications with document uploads.
+- 💰 Payslip Access — View/download salary breakdowns in PDF.
+
+## Tech Stack
+
+_See stack summary below._
+
+## Target Users
+
+- Employees — Check in for work, view shifts, request leave, and access payroll.
+- HR & Admins — Monitor attendance logs, approve leave, and manage workforce schedules.
+
+## Challenges & Solutions
+
+- Ensuring precise, location‑based check‑ins  
+  Solution: Geofencing with OpenStreetMap + server‑side GPS validation.
+- Preventing mock location & GPS spoofing  
+  Solution: Device Info Plus checks + backend validation.
+- Managing authentication securely  
+  Solution: Access/refresh tokens with auto‑renewal stored in secure storage.
+
+## Results
+
+- 85% — Increased attendance accuracy with geofencing.
+- 100m — Strict geofencing validation for check‑ins.
+- 40% — Reduced administrative workload via automation.
+
+## Learnings
+
+Reinforced secure geofencing, session management, and reliable mobile UX patterns at scale. Future scope: attendance insights and performance tracking.
+
+{/* Image Gallery is rendered by WorkGallery component based on filesystem/frontmatter. */}

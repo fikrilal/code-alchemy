@@ -1,0 +1,517 @@
+---
+title: "Biometric Enrollment & Verification Case Study"
+date: "2025-11-25"
+description: "Hardware-backed biometric enrollment with canonical JSON signatures, challenge-response, and safe device binding."
+coverImage: "/images/blog/biometric.png"
+tags: ["Security", "Biometrics", "Architecture"]
+readTime: "10 min read"
+author: "Ahmad Fikril"
+authorImage: "/images/avatar.png"
+featured: false
+---
+
+## Context
+
+The app lets users optionally enable biometric authentication (fingerprint / Face ID) for faster and
+more secure access.  
+Because one guardian can have accounts on multiple devices (and multiple schools), the system must:
+
+- Use the platform keystore (hardware-backed keys).
+- Prove to the backend that **this device** signed a challenge for **this account**.
+- Cleanly bind and unbind devices without confusing users.
+
+---
+
+## Problem
+
+Simply toggling "use biometrics" in the UI is not enough:
+
+- The device must generate and keep a **hardware-backed keypair**, with the private key never
+  leaving the OS keystore.
+- The backend must verify that a challenge is signed using a **known public key** for that
+  user/device.
+- A single device's biometrics must **not** be silently reused across multiple accounts.
+- Platform-specific issues (no hardware, not enrolled, lockout, permissions) must translate into
+  **clear messages**, not raw error codes.
+
+We needed an end-to-end flow that is secure, verifiable, and user-friendly.
+
+---
+
+## Goals
+
+- Use **hardware-backed keys** via the platform keystore (Android/iOS), with the private key never
+  exposed to the app.
+- Implement a **challenge-response** protocol the backend can verify using a stored public key.
+- Safely **bind** a device's biometric keys to a single account, with protection against
+  cross-account reuse.
+- Provide **good UX** around availability issues, permission problems, and error states.
+
+---
+
+## 1️⃣ System Architecture Overview
+
+**Overview:** This diagram shows the main components involved in biometric enrollment and
+verification. The app uses a dedicated biometric service abstraction, a secure enrollment store, and
+domain use cases that talk to backend biometric endpoints.
+
+```mermaid
+flowchart LR
+    subgraph Device
+        UI["Biometric Settings UI"]
+        RC["Registration Controller"]
+        URC["Unregistration Controller"]
+        BS["Biometric Signature Service"]
+        ES["Enrollment Store (secure)"]
+        CU["Current User Service"]
+        OS["OS biometric hardware + keystore"]
+    end
+
+    subgraph Backend
+        API["Account / Biometric API"]
+    end
+
+    UI --> RC
+    UI --> URC
+
+    RC --> BS
+    RC --> ES
+    RC --> CU
+    RC --> API
+
+    URC --> BS
+    URC --> ES
+    URC --> CU
+    URC --> API
+    BS <--> OS
+```
+
+---
+
+## 2️⃣ Enrollment Flow (Enable Biometric)
+
+**Scenario:** The user taps "Enable biometric" in the security settings. The app must generate a
+keypair, register it with the backend, prove possession by signing a challenge, and store a safe
+local binding.
+
+```mermaid
+sequenceDiagram
+  actor U as User
+  participant UI as Biometric UI
+  participant C as Registration Controller
+  participant CU as Current User
+  participant ES as Enrollment Store
+  participant BS as Biometric Service
+  participant API as Backend API
+
+  U->>UI: Tap "Enable biometric"
+  UI->>C: startRegistration() / registerAndVerify()
+
+  Note over C,ES: Ownership check (is this device already bound?)
+  C->>ES: getPhone() / hasBinding()
+  ES-->>C: stored phone (if any)
+  C->>CU: get current user phone
+  CU-->>C: current phone
+  alt bound to other account
+    C-->>UI: show message "Biometric bound to another account"
+  end
+
+  Note over C,BS: Check biometric availability
+  C->>BS: biometricAvailability()
+  BS-->>C: availability status
+  alt not supported / locked / not enrolled
+    C-->>UI: show availability explanation
+  end
+
+  Note over C,BS: Create hardware-backed keypair
+  C->>BS: createKeys(format = PEM, platform configs)
+  BS-->>C: public key (PEM)
+
+  Note over C,API: Ask backend for registration challenge
+  C->>API: POST /biometric/register_challenge(public_key)
+  API-->>C: challenge_id
+
+  alt preview mode only
+    C-->>UI: show "challenge ready" preview
+  end
+
+  Note over C,BS: Sign canonical JSON payload
+  C->>C: payloadJson = canonicalize({"challenge_id": id})
+  C->>BS: createSignature(payloadJson)
+  BS-->>C: signature (e.g. PEM/base64)
+
+  Note over C,API: Verify challenge with backend
+  C->>API: POST /biometric/register_verify (body: {challenge_id}, header: X-AUTH-SIGN: signature)
+  API-->>C: success / failure
+
+  alt failure
+    C-->>UI: show domain error message
+  else success
+    Note over C,ES: Persist binding & refresh user
+    C->>CU: refresh snapshot
+    CU-->>C: updated user
+    C->>ES: save(phone, deviceId, publicKey fingerprint)
+    ES-->>C: stored
+    C-->>UI: show "Biometric enabled" success
+  end
+```
+
+### How the enrollment flow works
+
+#### 1. Ownership & binding checks
+
+- Before touching biometrics, the registration controller checks whether this device is already
+  bound:
+  - Reads stored phone (if any) from the secure enrollment store.
+  - Reads the currently logged-in user's phone from the current user service.
+- If the stored phone and current phone refer to **different accounts**, the flow stops and shows a
+  message like:
+  - "Biometrik pada perangkat ini masih terhubung ke akun \*\*\*\*1234. Nonaktifkan biometrik dari
+    akun tersebut sebelum mengaktifkannya untuk akun ini."
+- This prevents a single device's biometrics from silently being reused across multiple accounts.
+
+#### 2. Biometric availability & user messaging
+
+- The controller calls the biometric service abstraction, which wraps the `biometric_signature`
+  plugin, to ask for availability.
+- The service normalizes platform-specific results into high-level statuses:
+  - `supported`, `notEnrolled`, `noHardware`, `temporarilyUnavailable`, `lockedOut`,
+    `noPermission`, `unknown`.
+- A shared message helper then turns these statuses into localized, user-friendly explanations
+  (e.g., "Belum ada sidik jari terdaftar...").
+- If biometrics cannot be used (no sensor, no enrollment, lockout, missing permission), the
+  controller surfaces the right message and stops the flow.
+
+#### 3. Keypair creation (hardware-backed)
+
+- When biometrics are available, the controller asks the biometric service to create a new keypair:
+  - The OS keystore stores the private key, protected by biometrics / device credentials.
+  - The app only receives the public key string (PEM/base64) and optionally raw bytes.
+- This public key is what the backend will use later to verify signatures.
+
+#### 4. Challenge-response registration
+
+- The controller calls a domain use case that hits `/biometric/register_challenge`, passing a
+  base64-encoded version of the public key.
+- The backend:
+  - Stores the public key against the user.
+  - Returns a `challenge_id` representing a one-time challenge.
+- For "preview only" flows, this challenge ID is enough to show that biometrics can be set up
+  successfully.
+
+#### 5. Canonical JSON + signing
+
+- For full enrollment, the controller builds a tiny JSON object containing the `challenge_id`.
+- Instead of signing an arbitrary map, it passes this through a JSON canonicalizer:
+  - Keys are sorted.
+  - Whitespace is normalized.
+  - The resulting string is deterministic.
+- This canonical JSON string is given to the biometric service, which:
+  - Prompts the user with the system biometric dialog (fingerprint / Face ID).
+  - Produces a signature using the hardware-backed private key.
+
+#### 6. Backend verification & local binding
+
+- The app sends the canonical payload and signature to `/biometric/register_verify`:
+  - Body: the canonical JSON (`{"challenge_id": ...}`).
+  - Header: `X-AUTH-SIGN` containing a normalized base64 signature.
+- The backend reconstructs the same canonical JSON and verifies the signature using the stored
+  public key.
+- On success:
+  - The controller refreshes the current user snapshot so the UI learns that biometrics are
+    active.
+  - The controller computes a fingerprint of the public key (e.g. SHA-256 over the PEM) and
+    stores, in secure storage:
+    - The user's phone.
+    - The device ID (when available).
+    - The public key fingerprint (not the key itself).
+  - The user sees a clear success message.
+
+If any step fails, errors are mapped to user-friendly messages and the controller attempts to clean
+up local keys when appropriate.
+
+---
+
+## 3️⃣ Unregistration Flow (Disable Biometric)
+
+**Scenario:** The user taps "Disable biometric". The app must prove possession of the key again,
+notify the backend, and then safely delete keys and bindings.
+
+```mermaid
+sequenceDiagram
+  actor U as User
+  participant UI as Biometric UI
+  participant C as Unregistration Controller
+  participant CU as Current User
+  participant ES as Enrollment Store
+  participant BS as Biometric Service
+  participant API as Backend API
+
+  U->>UI: Tap "Disable biometric"
+  UI->>C: unregisterAndVerify()
+
+  Note over C,BS: Check biometric availability
+  C->>BS: biometricAvailability()
+  BS-->>C: availability status
+  alt not supported
+    C-->>UI: show availability explanation
+  end
+
+  Note over C,BS: Ensure key exists
+  C->>BS: keyExists(checkValidity = true)
+  BS-->>C: hasKey?
+  alt no key
+    C-->>UI: show "no biometric key" message
+  end
+
+  Note over C,API: Ask backend for unregister challenge
+  C->>API: POST /biometric/unregister_challenge()
+  API-->>C: challenge_id
+
+  Note over C,BS: Sign canonical JSON payload
+  C->>C: payloadJson = canonicalize({"challenge_id": id})
+  C->>BS: createSignature(payloadJson)
+  BS-->>C: signature
+
+  Note over C,API: Verify unregister with backend
+  C->>API: POST /biometric/unregister_verify (body: {challenge_id}, header: X-AUTH-SIGN: signature)
+  API-->>C: success / failure
+
+  alt failure
+    C-->>UI: show domain error message
+  else success
+    Note over C,ES: Cleanup local keys and binding
+    C->>BS: deleteKeys()
+    BS-->>C: keys deleted
+    C->>ES: clear()
+    ES-->>C: binding cleared
+    C->>CU: refresh snapshot
+    CU-->>C: updated user
+    C-->>UI: show "Biometric disabled" success
+  end
+```
+
+### How the unregistration flow works
+
+#### 1. Availability & key existence
+
+- As with enrollment, the unregistration controller first checks biometric availability.
+- It then calls `keyExists(checkValidity: true)` to ensure a valid keypair actually exists for this
+  app on this device.
+- If there is no key to remove, the user gets a specific message like:
+  - "Kunci biometrik tidak ditemukan di perangkat ini."
+
+#### 2. Unregister challenge + signing
+
+- The controller asks the backend for an **unregister challenge**:
+  - A new `challenge_id` dedicated to turning off biometrics.
+- It builds the same canonical JSON payload with this ID and asks the biometric service to sign it,
+  prompting the user to confirm via fingerprint / Face ID.
+
+#### 3. Backend verification & cleanup
+
+- The app calls `/biometric/unregister_verify` with:
+  - Body: canonical JSON with `challenge_id`.
+  - Header: `X-AUTH-SIGN` carrying the normalized signature.
+- Once the backend confirms the signature and removes its registration:
+  - The controller asks the biometric service to delete the keys from the OS keystore.
+  - The enrollment store is cleared (phone, device ID, public key fingerprint).
+  - The current user snapshot is refreshed so the UI knows biometrics are turned off.
+  - A success message is shown.
+
+If a domain or network error occurs, the controller maps it to a clear message and logs details for
+debugging.
+
+---
+
+## What this system does
+
+- Uses **hardware-backed keypairs** via the platform keystore, with private keys never leaving the
+  device.
+- Implements a **challenge-response** protocol for both enrollment and unregistration, using
+  canonical JSON payloads and a dedicated `X-AUTH-SIGN` header.
+- Maintains a **secure local binding** between device biometrics and a specific account (phone +
+  device ID + public key fingerprint), with checks to prevent cross-account reuse.
+- Surfaces **user-friendly messages** for availability issues, lockouts, missing keys, and backend
+  errors.
+
+---
+
+## Core concepts in the flow
+
+### Biometric availability
+
+- High-level statuses (`supported`, `notEnrolled`, `noHardware`, `temporarilyUnavailable`,
+  `lockedOut`, `noPermission`, `unknown`) abstract away platform-specific strings.
+- A single helper maps statuses to localized, actionable messages that controllers and widgets
+  reuse.
+
+### Biometric signature service
+
+- An abstraction over the `biometric_signature` plugin that:
+  - Checks availability.
+  - Creates hardware-backed keypairs.
+  - Signs arbitrary payloads (like canonical JSON) with the private key.
+  - Deletes keys when unbinding biometrics.
+
+```dart
+// Biometric service abstraction
+// (lib/core/services/biometric/biometric_signature_service.dart)
+
+abstract class IBiometricSignatureService {
+  Future<BiometricAvailabilityInfo> biometricAvailability();
+
+  Future<bool> keyExists({bool checkValidity = false});
+
+  Future<BiometricKeyCreation> createKeys({
+    BiometricKeyFormat format = BiometricKeyFormat.base64,
+    bool androidUseDeviceCredentials = false,
+    AndroidKeyAlgorithm androidAlgorithm = AndroidKeyAlgorithm.rsa,
+    bool iosUseDeviceCredentials = false,
+    IOSKeyAlgorithm iosAlgorithm = IOSKeyAlgorithm.rsa,
+  });
+
+  Future<BiometricSignatureData> createSignature({
+    required String payload,
+    BiometricKeyFormat format = BiometricKeyFormat.base64,
+    bool androidAllowDeviceCredentials = false,
+    String? androidCancelButtonText,
+    bool iosShouldMigrate = false,
+    String promptMessage = 'Authenticate',
+  });
+
+  Future<bool> deleteKeys();
+}
+```
+
+### Enrollment store (secure binding)
+
+- A small secure store (`FlutterSecureStorage`) that holds:
+  - The phone tied to the biometric binding.
+  - The device ID (if available).
+  - A fingerprint of the public key (not the key itself).
+- Used to:
+  - Check whether this device is already bound to some account.
+  - Log safe diagnostics (e.g. masked phone).
+
+```dart
+// Secure binding store
+// (lib/core/storage/biometric_enrollment_store.dart)
+
+abstract class IBiometricEnrollmentStore {
+  Future<void> save({
+    required String phone,
+    String? deviceId,
+    String? publicKeyFingerprint,
+  });
+  Future<String?> getPhone();
+  Future<String?> getDeviceId();
+  Future<String?> getPublicKeyFingerprint();
+  Future<bool> hasBinding();
+  Future<void> clear();
+}
+```
+
+### Canonical JSON
+
+- Ensures the exact string signed by the device is the same string reconstructed by the backend:
+  - Keys sorted, whitespace normalized, deterministic encoding.
+- Avoids subtle signature verification failures caused by different JSON serializers.
+
+---
+
+## Why this design is useful
+
+- **Security first:** The design uses the OS keystore and challenge-response signatures instead of
+  storing secrets or raw tokens in the app.
+- **Backend-verifiable:** The server can prove that a specific device (public key) signed a specific
+  challenge (canonical JSON), which is critical for sensitive operations like biometric login.
+- **Safe multi-account behavior:** Local binding and ownership checks prevent one device's
+  biometrics from silently being reused for multiple accounts.
+- **Good UX under failure:** Users see clear messages about why biometrics can't be used (no
+  hardware, no enrollment, lockouts, permission issues) instead of generic "something went wrong"
+  errors.
+
+---
+
+## Data flow summary
+
+1. **Device & user state -> enrollment controller:**  
+   Current user snapshot + secure enrollment store determine whether the device can be bound for
+   this account.
+2. **Enrollment controller -> biometric service -> backend:**  
+   Enrollment uses keypair creation, register challenge, canonical JSON signing, and register
+   verify.
+3. **Enrollment controller -> enrollment store -> current user:**  
+   On success, the binding is persisted securely and the user snapshot is refreshed.
+4. **Unregistration controller -> biometric service -> backend:**  
+   Unregistration repeats the challenge-response pattern to safely disable biometrics server-side.
+5. **Unregistration controller -> biometric service -> enrollment store:**  
+   Keys are deleted and the local binding is cleared, leaving the device in a clean state.
+
+```dart
+// Example enrollment controller entry point
+// (lib/features/biometric/presentation/controllers/biometric_registration_controller.dart)
+
+class BiometricRegistrationController extends GetxController {
+  final IBiometricSignatureService _bio;
+  final RegisterBiometricChallengeUseCase _registerChallenge;
+  final RegisterBiometricVerifyUseCase _registerVerify;
+
+  // ...
+
+  Future<void> registerAndVerify() => _runRegistration(previewOnly: false);
+
+  Future<void> _runRegistration({required bool previewOnly}) async {
+    state.value = const BiometricRegistrationLoading();
+
+    // 1) Ownership check (is this device already bound?)
+    final bindingOk = await _ensureBindingOwnership();
+    if (!bindingOk) return;
+
+    // 2) Availability check
+    final availability = await _bio.biometricAvailability();
+    if (!availability.isSupported) {
+      _emitNoSupport(availability.status);
+      return;
+    }
+
+    // 3) Create keypair and request challenge
+    final key = await _bio.createKeys(format: BiometricKeyFormat.pem);
+    final challengeResult = await _registerChallenge(publicKey: key.value);
+
+    // 4) Canonical JSON + signature + verify (see full code for details)
+    // ...
+  }
+}
+
+// Example unregistration controller entry point
+// (lib/features/biometric/presentation/controllers/biometric_unregistration_controller.dart)
+
+class BiometricUnregistrationController extends GetxController {
+  final IBiometricSignatureService _biometricService;
+  final UnregisterBiometricChallengeUseCase _unregisterChallenge;
+  final UnregisterBiometricVerifyUseCase _unregisterVerify;
+
+  // ...
+
+  Future<void> unregisterAndVerify() async {
+    state.value = const BiometricUnregistrationLoading();
+
+    final availability = await _biometricService.biometricAvailability();
+    if (!availability.isSupported) {
+      // show no-support message
+      return;
+    }
+
+    final hasKey = await _biometricService.keyExists(checkValidity: true);
+    if (!hasKey) {
+      // show "no biometric key" message
+      return;
+    }
+
+    final challengeResult = await _unregisterChallenge();
+    // canonical JSON + signature + verify + cleanup happen next
+  }
+}
+```

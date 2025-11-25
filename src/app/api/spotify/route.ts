@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { getCurrentOrLastPlayed } from "@/lib/spotify";
 
 export async function GET() {
@@ -12,4 +13,3 @@ export async function GET() {
     );
   }
 }
-

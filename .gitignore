@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Windows batch helpers
 *.bat
+
+# Local commit message scratch file
+commitmsg.txt

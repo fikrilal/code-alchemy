@@ -37,7 +37,7 @@ const eslintConfig = [
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       "@typescript-eslint/consistent-type-imports": "error",
       "import/order": [
-        "warn",
+        "error",
         {
           groups: [
             "builtin",
@@ -58,6 +58,34 @@ const eslintConfig = [
       // a11y (subset)
       "jsx-a11y/alt-text": "warn",
       "jsx-a11y/anchor-is-valid": "warn",
+    },
+  },
+  {
+    files: [
+      "src/components/Footer.tsx",
+      "src/components/Navbar.tsx",
+      "src/components/IconCards.tsx",
+      "src/components/SpotifyNowPlaying.tsx",
+      "src/components/Carousel.tsx",
+      "src/components/TechStack.tsx",
+    ],
+    rules: {
+      "import/order": [
+        "error",
+        {
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+            "object",
+            "type",
+          ],
+          "newlines-between": "always",
+        },
+      ],
     },
   },
 ];
