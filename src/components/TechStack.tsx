@@ -24,7 +24,7 @@ const childVariants = {
 export default function TechStack() {
   return (
     <motion.div
-      className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 flex flex-col h-full"
+      className="bg-slate-1100 p-6 rounded-2xl border border-slate-600 flex flex-col h-full"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -50,7 +50,7 @@ export default function TechStack() {
         <div className="grid grid-cols-3 gap-4 h-full">
           {/* Flutter */}
           <motion.div
-            className="bg-slate-1000 rounded-lg flex flex-col items-center justify-center p-4"
+            className="bg-slate-900 rounded-lg flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
             <Image
@@ -65,7 +65,7 @@ export default function TechStack() {
 
           {/* Kotlin */}
           <motion.div
-            className="bg-slate-1000 rounded-lg rounded flex flex-col items-center justify-center p-4"
+            className="bg-slate-900 rounded-lg rounded flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
             <Image
@@ -80,7 +80,7 @@ export default function TechStack() {
 
           {/* Compose */}
           <motion.div
-            className="bg-slate-1000 rounded-lg rounded flex flex-col items-center justify-center p-4"
+            className="bg-slate-900 rounded-lg rounded flex flex-col items-center justify-center p-4"
             variants={childVariants}
           >
             <Image
@@ -103,7 +103,7 @@ export default function TechStack() {
       <div className="grid grid-cols-3 gap-4 mt-4">
         {/* GetX */}
         <motion.div
-          className="bg-slate-1000 rounded-lg flex items-center justify-center p-4 relative group"
+          className="bg-slate-900 rounded-lg flex items-center justify-center p-4 relative group"
           variants={childVariants}
         >
           <Image
@@ -121,7 +121,7 @@ export default function TechStack() {
 
         {/* BLOC */}
         <motion.div
-          className="bg-slate-1000 rounded-lg flex items-center justify-center p-2 relative group"
+          className="bg-slate-900 rounded-lg flex items-center justify-center p-2 relative group"
           variants={childVariants}
         >
           <Image
@@ -138,7 +138,7 @@ export default function TechStack() {
 
         {/* Riverpod */}
         <motion.div
-          className="bg-slate-1000 rounded-lg flex items-center justify-center p-4 relative group"
+          className="bg-slate-900 rounded-lg flex items-center justify-center p-4 relative group"
           variants={childVariants}
         >
           <Image

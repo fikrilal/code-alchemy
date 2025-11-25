@@ -37,7 +37,7 @@ export default function PortfolioSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
           <MotionElement
             as="div"
-            className="bg-slate-1000 p-6 rounded-2xl border border-slate-800"
+            className="bg-slate-1000 p-6 rounded-2xl border border-slate-600"
             variants={childVariants}
           >
             <p className="text-xs font-mono text-slate-500 tracking-widest mb-2 uppercase">

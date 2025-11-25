@@ -121,7 +121,7 @@ export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
                 <h3 className="text-xl font-semibold text-slate-200 mt-4">
                   {blog.title}
                 </h3>
-                <p className="mt-2 text-slate-400">{blog.description}</p>
+                <p className="mt-2 text-slate-300">{blog.description}</p>
               </div>
               <Link
                 href={`/blog/${blog.slug}`}

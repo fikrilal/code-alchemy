@@ -123,7 +123,7 @@ export default function BlogMainSection({
                         {post.title}
                       </h2>
                     </Link>
-                    <p className="mt-2 text-slate-400">{post.description}</p>
+                    <p className="mt-2 text-slate-300">{post.description}</p>
                   </div>
                   <Link
                     href={`/blog/${post.slug}`}

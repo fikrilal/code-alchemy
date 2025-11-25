@@ -49,7 +49,7 @@ export default function GithubActivity() {
 
   return (
     <motion.div
-      className="bg-slate-1100 p-6 rounded-2xl border border-slate-900 shadow-lg flex flex-col h-full"
+      className="bg-slate-1100 p-6 rounded-2xl border border-slate-600 shadow-lg flex flex-col h-full"
       variants={childVariants}
     >
       {/* Header row */}
@@ -84,19 +84,19 @@ export default function GithubActivity() {
 
       {/* Additional Stats Section */}
       <div className="mt-6 lg:mt-4 grid grid-cols-3 gap-4">
-        <div className="bg-slate-1000 border border-slate-800 rounded-lg p-4 rounded text-center">
+        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
           <p className="text-xs text-slate-400 font-mono">Last Commit</p>
           <p className="text-lg text-slate-200 mt-2">
             {stats?.lastCommitDate ?? "Loading..."}
           </p>
         </div>
-        <div className="bg-slate-1000 border border-slate-800 rounded-lg p-4 rounded text-center">
+        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
           <p className="text-xs text-slate-400 font-mono">Longest Streak</p>
           <p className="text-lg  text-slate-200 mt-2">
             {stats ? `${stats.longestStreak} days` : "Loading..."}
           </p>
         </div>
-        <div className="bg-slate-1000 border border-slate-800 rounded-lg p-4 rounded text-center">
+        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
           <p className="text-xs text-slate-400 break-words font-mono">
             Contributions
           </p>

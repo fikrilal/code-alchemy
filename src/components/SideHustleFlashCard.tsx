@@ -114,7 +114,7 @@ export default function SideHustleFlashCard() {
   return (
     <div className="relative group">
       <div className="opacity-0 pointer-events-none" aria-hidden="true">
-        <div className="bg-slate-1000 p-6 rounded-2xl border border-slate-800">
+        <div className="bg-slate-1000 p-6 rounded-2xl border border-slate-600">
           <div className="mb-2 flex items-baseline justify-between">
             <p className="text-xs font-mono text-slate-500 tracking-widest uppercase">
               SIDE HUSTLE
@@ -203,8 +203,8 @@ export default function SideHustleFlashCard() {
             <div
               className={
                 isFront
-                  ? "relative z-10 bg-slate-1000 p-6 rounded-2xl border border-slate-800 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-[0_20px_45px_rgba(3,5,14,0.65)]"
-                  : "relative z-10 bg-slate-1000 p-6 rounded-2xl border border-slate-800 shadow-[0_18px_40px_rgba(3,5,14,0.6)]"
+                  ? "relative z-10 bg-slate-1000 p-6 rounded-2xl border border-slate-600 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-[0_20px_45px_rgba(3,5,14,0.65)]"
+                  : "relative z-10 bg-slate-1000 p-6 rounded-2xl border border-slate-600 shadow-[0_18px_40px_rgba(3,5,14,0.6)]"
               }
             >
               <div className="mb-2 flex items-baseline justify-between">
