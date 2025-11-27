@@ -14,7 +14,7 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
   const contentDir = path.join(process.cwd(), "src/content/work");
 
   const summaryResults = await Promise.allSettled(
-    slugs.map<Promise<WorkSummary>>(async (slug) => {
+    slugs.map<Promise<WorkSummary & { hidden?: boolean }>>(async (slug) => {
       const mdxPath = path.join(contentDir, `${slug}.mdx`);
       const mdPath = path.join(contentDir, `${slug}.md`);
       const filePath = fs.existsSync(mdxPath) ? mdxPath : fs.existsSync(mdPath) ? mdPath : null;
@@ -31,13 +31,19 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
         shortDescription: fm.shortDescription ?? "",
         thumbnail: fm.thumbnail ?? "/images/og-image.png",
         category: deriveCategory(fm as WorkFrontmatter),
-      } satisfies WorkSummary;
+        hidden: fm.hidden === true,
+      } satisfies WorkSummary & { hidden?: boolean };
     })
   );
 
   return summaryResults
-    .filter((r): r is PromiseFulfilledResult<WorkSummary> => r.status === "fulfilled")
-    .map((r) => r.value);
+    .filter(
+      (r): r is PromiseFulfilledResult<WorkSummary & { hidden?: boolean }> =>
+        r.status === "fulfilled"
+    )
+    .map((r) => r.value)
+    .filter((summary) => !(summary as { hidden?: boolean }).hidden)
+    .map(({ hidden, ...rest }) => rest);
 }
 
 function deriveCategory(fm: WorkFrontmatter): string {

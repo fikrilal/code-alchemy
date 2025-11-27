@@ -12,6 +12,7 @@ export type WorkFrontmatter = {
   techStack?: string[];
   images?: WorkImages;
   category?: string;
+  hidden?: boolean;
 };
 
 export type WorkSummary = {
