@@ -12,10 +12,6 @@ featured: false
 
 # Capability-Based Entitlement System
 
-A scalable way to manage plan-based features in a multi-tenant Flutter application.
-
----
-
 ## TL;DR
 
 In PesantrenQu I needed to support multiple plans (Basic/Gold/Platinum) per school, with parents
@@ -201,32 +197,32 @@ sequenceDiagram
 
 - The backend associates each school with a plan (e.g. via a plan code or package string).
 - The app fetches the current user snapshot, which contains:
-    - User information.
-    - The currently selected school.
-    - That school’s plan indicator (e.g. `basic`, `gold`, `platinum`).
+  - User information.
+  - The currently selected school.
+  - That school’s plan indicator (e.g. `basic`, `gold`, `platinum`).
 - Whenever the snapshot changes (login, logout, switch school), the entitlement service:
-    - Reads the plan indicator.
-    - Maps it to a plan variant.
-    - Looks up the corresponding capability set from a central mapping.
-    - Stores this as the **current plan + capabilities** and emits an update.
+  - Reads the plan indicator.
+  - Maps it to a plan variant.
+  - Looks up the corresponding capability set from a central mapping.
+  - Stores this as the **current plan + capabilities** and emits an update.
 
 #### 2. Controllers and UI using capabilities (not plans)
 
 - Feature controllers never ask “is this Gold or Platinum?” directly.
 - Instead they ask the entitlement service: **“Do we have capability X?”**
-    - Example: the account security controller asks for `security.manage_pin` to decide whether to
-      show the “Create PIN” action.
+  - Example: the account security controller asks for `security.manage_pin` to decide whether to
+    show the “Create PIN” action.
 - On initialization:
-    - Controllers call `hasCapability(...)` once to seed booleans like `canManagePin`,
-      `canSeeFinancialOverview`, `canUseMarketplace`.
-    - When features must react to plan changes at runtime (for example when the user switches
-      school),
-      controllers subscribe to the entitlements stream and update those booleans whenever a new
-      plan / capability set arrives.
+  - Controllers call `hasCapability(...)` once to seed booleans like `canManagePin`,
+    `canSeeFinancialOverview`, `canUseMarketplace`.
+  - When features must react to plan changes at runtime (for example when the user switches
+    school),
+    controllers subscribe to the entitlements stream and update those booleans whenever a new
+    plan / capability set arrives.
 - Widgets then bind to those booleans and:
-    - Show or hide actions.
-    - Show a “locked” state with an upsell message.
-    - Or route the user to an upgrade flow.
+  - Show or hide actions.
+  - Show a “locked” state with an upsell message.
+  - Or route the user to an upgrade flow.
 
 ---
 
@@ -262,15 +258,15 @@ sequenceDiagram
 #### Routing and deep-link protection
 
 - Some screens are premium and should never be accessible without the right plan, even if:
-    - A developer calls the route directly by mistake.
-    - A deep link or push notification points to the premium route.
+  - A developer calls the route directly by mistake.
+  - A deep link or push notification points to the premium route.
 - For these routes, the navigation layer can attach a **capability guard**:
-    - Before navigation completes, the guard calls `hasCapability(...)`.
-    - If the capability is present, navigation proceeds.
-    - If not, navigation is blocked or redirected (e.g. back to home, or to an upgrade screen).
+  - Before navigation completes, the guard calls `hasCapability(...)`.
+  - If the capability is present, navigation proceeds.
+  - If not, navigation is blocked or redirected (e.g. back to home, or to an upgrade screen).
 - This acts as a safety net on top of the UI gating:
-    - UI **tries** not to show buttons and links the user shouldn’t see.
-    - Route guards **ensure** the user cannot reach protected screens without entitlements.
+  - UI **tries** not to show buttons and links the user shouldn’t see.
+  - Route guards **ensure** the user cannot reach protected screens without entitlements.
 
 ---
 
@@ -280,13 +276,13 @@ sequenceDiagram
   set of **capabilities** (features the user is allowed to use, like “manage PIN”, “guardian
   financial overview”, “advanced reports”).
 - Provides a single **entitlement service** that answers:
-    - “What plan is active for the currently selected school?”
-    - “Does the current user have capability X right now?”
-    - “Notify me when plan / capabilities change.”
+  - “What plan is active for the currently selected school?”
+  - “Does the current user have capability X right now?”
+  - “Notify me when plan / capabilities change.”
 - Uses those answers in:
-    - Controllers & UI to show / hide or lock specific actions and menu items.
-    - Route guards to prevent navigation to premium screens without the right capabilities, even via
-      deep links.
+  - Controllers & UI to show / hide or lock specific actions and menu items.
+  - Route guards to prevent navigation to premium screens without the right capabilities, even via
+    deep links.
 
 ---
 
@@ -376,11 +372,11 @@ The entitlement service ties everything together. It:
 
 - Listens to changes in the current user snapshot (including selected school and its plan).
 - Converts backend / plan data into:
-    - The effective plan variant.
-    - The full set of capabilities for that plan.
+  - The effective plan variant.
+  - The full set of capabilities for that plan.
 - Exposes:
-    - A quick `hasCapability(...)` check.
-    - A stream of updates so the UI can react to plan / school changes.
+  - A quick `hasCapability(...)` check.
+  - A stream of updates so the UI can react to plan / school changes.
 
 ```dart
 // Interface and implementation (lib/core/services/entitlements/feature_entitlement_service.dart,
@@ -440,10 +436,10 @@ class FeatureEntitlementServiceImpl implements IFeatureEntitlementService {
 - **Multi‑tenant aware:** Since the plan is tied to the selected school, when the user switches
   school, the entitlement service recomputes entitlements and the UI can respond automatically.
 - **Layered enforcement:**
-    - Menus and screens use capabilities to control visibility and upsell.
-    - Navigation guards use capabilities to prevent unauthorized access.
-    - The backend is still expected to enforce plan rules server‑side, but the client gives
-      immediate, clear feedback to the user.
+  - Menus and screens use capabilities to control visibility and upsell.
+  - Navigation guards use capabilities to prevent unauthorized access.
+  - The backend is still expected to enforce plan rules server‑side, but the client gives
+    immediate, clear feedback to the user.
 
 ---
 
