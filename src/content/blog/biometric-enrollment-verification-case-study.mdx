@@ -10,11 +10,25 @@ authorImage: "/images/avatar.png"
 featured: false
 ---
 
+# Biometric Enrollment & Verification in PesantrenQu
+
+## TL;DR
+
+In PesantrenQu the product required biometric authentication (fingerprint / Face ID) as an optional,
+secure shortcut for parents to access their accounts. A simple "remember me" toggle was not enough,
+because the app is multi-tenant and runs on shared family devices. Instead, I designed an
+end-to-end flow where the device creates a hardware-backed keypair, proves possession to the backend
+via challenge-response on canonical JSON, and binds that keypair to a single account and device.
+This lets the server verify every biometric action while still giving users a smooth experience and
+clear error messages.
+
+---
+
 ## Context
 
-The app lets users optionally enable biometric authentication (fingerprint / Face ID) for faster and
-more secure access.  
-Because one guardian can have accounts on multiple devices (and multiple schools), the system must:
+In this app users can optionally enable biometric authentication (fingerprint / Face ID) for faster
+and more secure access. Because one parent can have accounts on multiple devices (and multiple
+schools), the system must:
 
 - Use the platform keystore (hardware-backed keys).
 - Prove to the backend that **this device** signed a challenge for **this account**.
@@ -22,9 +36,10 @@ Because one guardian can have accounts on multiple devices (and multiple schools
 
 ---
 
-## Problem
+## Problem & constraints
 
-Simply toggling "use biometrics" in the UI is not enough:
+Simply toggling "use biometrics" in the UI is not enough. I needed something that worked for real
+families sharing devices, not just a fake lock screen:
 
 - The device must generate and keep a **hardware-backed keypair**, with the private key never
   leaving the OS keystore.
@@ -32,9 +47,17 @@ Simply toggling "use biometrics" in the UI is not enough:
   user/device.
 - A single device's biometrics must **not** be silently reused across multiple accounts.
 - Platform-specific issues (no hardware, not enrolled, lockout, permissions) must translate into
-  **clear messages**, not raw error codes.
+  clear messages, not raw error codes.
 
-We needed an end-to-end flow that is secure, verifiable, and user-friendly.
+On top of that, PesantrenQu:
+
+- Runs on a wide range of Android devices with different biometric hardware quality.
+- Needs to support multiple accounts per device over time (parents switching accounts, children
+  using the same phone, etc.).
+- Cannot rely on "security by obscurity" in the client; the backend must be able to verify every
+  biometric action.
+
+I needed an end-to-end flow that is secure, verifiable, and user-friendly.
 
 ---
 
@@ -49,11 +72,39 @@ We needed an end-to-end flow that is secure, verifiable, and user-friendly.
 
 ---
 
-## 1️⃣ System Architecture Overview
+## Options considered
 
-**Overview:** This diagram shows the main components involved in biometric enrollment and
-verification. The app uses a dedicated biometric service abstraction, a secure enrollment store, and
-domain use cases that talk to backend biometric endpoints.
+Before settling on the current design, I considered a few simpler approaches:
+
+- **Local "remember me" toggle with stored tokens**  
+  This would have been easy to implement, but keeping long-lived tokens on device and trusting the
+  app alone to protect them did not meet our security expectations.
+- **Using platform biometrics only as a UI lock**  
+  Some apps just show a biometric gate over a local session. That pattern does not let the backend
+  verify which device or key signed a request, which I needed for sensitive flows.
+- **One-size-fits-all PIN without device binding**  
+  A single PIN shared across devices would not prevent silent reuse or account confusion when
+  multiple parents share phones.
+
+All of these options either pushed too much trust onto the client or made it hard for the server to
+reason about which device and keypair were involved. I decided to design a dedicated biometric
+signature service and secure enrollment store, and build a canonical JSON challenge-response flow
+around them.
+
+---
+
+## Chosen solution: biometric enrollment and verification
+
+Once I committed to challenge-response with hardware-backed keys, I designed a small set of
+device-side services and controllers that work together with dedicated backend endpoints. The core
+idea is that the app never handles private keys directly and the server can always verify which key
+and device signed a given payload.
+
+### System architecture overview
+
+This diagram shows the main components involved in biometric enrollment and verification. The app
+uses a dedicated biometric service abstraction, a secure enrollment store, and domain use cases that
+talk to backend biometric endpoints.
 
 ```mermaid
 flowchart LR
@@ -88,7 +139,7 @@ flowchart LR
 
 ---
 
-## 2️⃣ Enrollment Flow (Enable Biometric)
+### Enrollment flow (enable biometric)
 
 **Scenario:** The user taps "Enable biometric" in the security settings. The app must generate a
 keypair, register it with the backend, prove possession by signing a challenge, and store a safe
@@ -158,7 +209,7 @@ sequenceDiagram
 
 ### How the enrollment flow works
 
-#### 1. Ownership & binding checks
+#### 1. Ownership and binding checks
 
 - Before touching biometrics, the registration controller checks whether this device is already
   bound:
@@ -170,7 +221,7 @@ sequenceDiagram
     akun tersebut sebelum mengaktifkannya untuk akun ini."
 - This prevents a single device's biometrics from silently being reused across multiple accounts.
 
-#### 2. Biometric availability & user messaging
+#### 2. Biometric availability and user messaging
 
 - The controller calls the biometric service abstraction, which wraps the `biometric_signature`
   plugin, to ask for availability.
@@ -178,14 +229,14 @@ sequenceDiagram
   - `supported`, `notEnrolled`, `noHardware`, `temporarilyUnavailable`, `lockedOut`,
     `noPermission`, `unknown`.
 - A shared message helper then turns these statuses into localized, user-friendly explanations
-  (e.g., "Belum ada sidik jari terdaftar...").
+  (for example, "Belum ada sidik jari terdaftar...").
 - If biometrics cannot be used (no sensor, no enrollment, lockout, missing permission), the
   controller surfaces the right message and stops the flow.
 
 #### 3. Keypair creation (hardware-backed)
 
 - When biometrics are available, the controller asks the biometric service to create a new keypair:
-  - The OS keystore stores the private key, protected by biometrics / device credentials.
+  - The OS keystore stores the private key, protected by biometrics or device credentials.
   - The app only receives the public key string (PEM/base64) and optionally raw bytes.
 - This public key is what the backend will use later to verify signatures.
 
@@ -199,7 +250,7 @@ sequenceDiagram
 - For "preview only" flows, this challenge ID is enough to show that biometrics can be set up
   successfully.
 
-#### 5. Canonical JSON + signing
+#### 5. Canonical JSON plus signing
 
 - For full enrollment, the controller builds a tiny JSON object containing the `challenge_id`.
 - Instead of signing an arbitrary map, it passes this through a JSON canonicalizer:
@@ -210,7 +261,7 @@ sequenceDiagram
   - Prompts the user with the system biometric dialog (fingerprint / Face ID).
   - Produces a signature using the hardware-backed private key.
 
-#### 6. Backend verification & local binding
+#### 6. Backend verification and local binding
 
 - The app sends the canonical payload and signature to `/biometric/register_verify`:
   - Body: the canonical JSON (`{"challenge_id": ...}`).
@@ -220,8 +271,8 @@ sequenceDiagram
 - On success:
   - The controller refreshes the current user snapshot so the UI learns that biometrics are
     active.
-  - The controller computes a fingerprint of the public key (e.g. SHA-256 over the PEM) and
-    stores, in secure storage:
+  - The controller computes a fingerprint of the public key (for example SHA-256 over the PEM)
+    and stores, in secure storage:
     - The user's phone.
     - The device ID (when available).
     - The public key fingerprint (not the key itself).
@@ -232,7 +283,7 @@ up local keys when appropriate.
 
 ---
 
-## 3️⃣ Unregistration Flow (Disable Biometric)
+### Unregistration flow (disable biometric)
 
 **Scenario:** The user taps "Disable biometric". The app must prove possession of the key again,
 notify the backend, and then safely delete keys and bindings.
@@ -293,7 +344,7 @@ sequenceDiagram
 
 ### How the unregistration flow works
 
-#### 1. Availability & key existence
+#### 1. Availability and key existence
 
 - As with enrollment, the unregistration controller first checks biometric availability.
 - It then calls `keyExists(checkValidity: true)` to ensure a valid keypair actually exists for this
@@ -301,14 +352,14 @@ sequenceDiagram
 - If there is no key to remove, the user gets a specific message like:
   - "Kunci biometrik tidak ditemukan di perangkat ini."
 
-#### 2. Unregister challenge + signing
+#### 2. Unregister challenge plus signing
 
 - The controller asks the backend for an **unregister challenge**:
   - A new `challenge_id` dedicated to turning off biometrics.
 - It builds the same canonical JSON payload with this ID and asks the biometric service to sign it,
-  prompting the user to confirm via fingerprint / Face ID.
+  prompting the user to confirm via fingerprint or Face ID.
 
-#### 3. Backend verification & cleanup
+#### 3. Backend verification and cleanup
 
 - The app calls `/biometric/unregister_verify` with:
   - Body: canonical JSON with `challenge_id`.
@@ -321,19 +372,6 @@ sequenceDiagram
 
 If a domain or network error occurs, the controller maps it to a clear message and logs details for
 debugging.
-
----
-
-## What this system does
-
-- Uses **hardware-backed keypairs** via the platform keystore, with private keys never leaving the
-  device.
-- Implements a **challenge-response** protocol for both enrollment and unregistration, using
-  canonical JSON payloads and a dedicated `X-AUTH-SIGN` header.
-- Maintains a **secure local binding** between device biometrics and a specific account (phone +
-  device ID + public key fingerprint), with checks to prevent cross-account reuse.
-- Surfaces **user-friendly messages** for availability issues, lockouts, missing keys, and backend
-  errors.
 
 ---
 
@@ -392,7 +430,7 @@ abstract class IBiometricSignatureService {
   - A fingerprint of the public key (not the key itself).
 - Used to:
   - Check whether this device is already bound to some account.
-  - Log safe diagnostics (e.g. masked phone).
+  - Log safe diagnostics (for example masked phone).
 
 ```dart
 // Secure binding store
@@ -428,7 +466,7 @@ abstract class IBiometricEnrollmentStore {
   challenge (canonical JSON), which is critical for sensitive operations like biometric login.
 - **Safe multi-account behavior:** Local binding and ownership checks prevent one device's
   biometrics from silently being reused for multiple accounts.
-- **Good UX under failure:** Users see clear messages about why biometrics can't be used (no
+- **Good UX under failure:** Users see clear messages about why biometrics cannot be used (no
   hardware, no enrollment, lockouts, permission issues) instead of generic "something went wrong"
   errors.
 
@@ -436,9 +474,9 @@ abstract class IBiometricEnrollmentStore {
 
 ## Data flow summary
 
-1. **Device & user state -> enrollment controller:**  
-   Current user snapshot + secure enrollment store determine whether the device can be bound for
-   this account.
+1. **Device and user state -> enrollment controller:**  
+   Current user snapshot plus the secure enrollment store determine whether the device can be bound
+   for this account.
 2. **Enrollment controller -> biometric service -> backend:**  
    Enrollment uses keypair creation, register challenge, canonical JSON signing, and register
    verify.
@@ -515,3 +553,32 @@ class BiometricUnregistrationController extends GetxController {
   }
 }
 ```
+
+---
+
+## Impact
+
+This biometric design changed how secure login and account binding work in PesantrenQu:
+
+- Biometric login became a first-class, optional shortcut that the backend can still verify, instead
+  of just a local UI lock.
+- Devices are safely bound to a single account at a time, which avoids confusing situations where a
+  shared phone suddenly opens the wrong parent's data.
+- When biometric hardware is missing, locked, or misconfigured, users see clear explanations tied
+  to the real cause, not generic "failed" errors.
+- From a debugging and maintenance perspective, the separation between the biometric service,
+  enrollment store, and domain use cases makes it easier to reason about failures and extend the
+  flow later.
+
+## What I learned
+
+Working on this biometric flow taught me a few things:
+
+- Treating biometrics as **cryptographic keys plus challenges**, not just a prettier password
+  prompt, leads to designs the backend can trust and reason about.
+- Having a dedicated biometric signature service abstraction instead of calling plugins directly
+  keeps the rest of the app testable and platform-agnostic.
+- Modelling a **secure local binding** (phone, device ID, key fingerprint) is crucial when devices
+  and accounts mix over time, especially in family scenarios.
+- Good UX around failure cases (no hardware, lockouts, missing keys) matters as much as the happy
+  path, because that is where users decide whether to keep biometrics on or turn them off.
