@@ -164,7 +164,7 @@ export default function WorkCaseStudyClient({ project }: { project: Project | nu
           </motion.div>
 
           <div className="space-y-4">
-            <motion.h1 className="text-4xl md:text-5xl font-bold text-slate-100" variants={childVariants}>{project.title}</motion.h1>
+            <motion.h1 className="text-4xl md:text-5xl font-bold text-slate-50" variants={childVariants}>{project.title}</motion.h1>
             <motion.p className="text-lg text-slate-400 max-w-2xl" variants={childVariants}>{project.shortDescription}</motion.p>
           </div>
 

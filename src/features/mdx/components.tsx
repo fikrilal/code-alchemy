@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { Mermaid } from "./Mermaid";
 
-import type { ImgHTMLAttributes } from "react";
+import type { AnchorHTMLAttributes, ImgHTMLAttributes } from "react";
 
 function isExternal(src?: string) {
   if (!src) return false;
@@ -28,8 +28,23 @@ export function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
   );
 }
 
+function MdxLink(props: AnchorHTMLAttributes<HTMLAnchorElement>) {
+  const { href, className = "", target, rel, children, ...rest } = props;
+  const external = isExternal(href);
+  const effectiveTarget = target ?? (external ? "_blank" : undefined);
+  const effectiveRel = rel ?? (external ? "noreferrer" : undefined);
+  const linkClass = `${className} text-blue-500 underline`.trim();
+
+  return (
+    <a href={href} target={effectiveTarget} rel={effectiveRel} className={linkClass} {...rest}>
+      {children}
+    </a>
+  );
+}
+
 export const mdxComponents = {
   img: MdxImage,
+  a: MdxLink,
   Mermaid,
 };
 

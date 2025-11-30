@@ -32,7 +32,6 @@ const hustles: SideHustle[] = [
   //   image: "/images/image2.png",
   // },
 ];
-
 const previewOffsets = [
   { x: -18, y: 22, rotate: -6, scale: 0.96 },
   { x: 18, y: 34, rotate: 5, scale: 0.94 },
