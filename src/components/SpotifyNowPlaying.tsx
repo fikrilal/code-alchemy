@@ -28,17 +28,13 @@ export default function SpotifyNowPlaying() {
         }
 
         if (data && data.item) {
-          // console.log("✅ Track Found:", data.item);
-
+          // API returns a simplified shape from lib/spotify.ts
           setTrack({
             name: data.item.name as string,
-            artist: (data.item.artists as Array<{ name: string }>)
-              .map((artist: { name: string }) => artist.name)
-              .join(", "),
-            albumImage: (data.item.album.images[0].url as string) ?? "",
-            spotifyUrl: data.item.external_urls.spotify as string,
+            artist: data.item.artist as string,
+            albumImage: data.item.albumImage as string,
+            spotifyUrl: data.item.spotifyUrl as string,
           });
-          // Check if the flag exists and update the state accordingly.
           setIsLastPlayed(data.last_played === true);
         } else {
           // console.log("🎵 No track data available.");
@@ -87,7 +83,7 @@ export default function SpotifyNowPlaying() {
                   src={track.albumImage}
                   alt="Album Cover"
                   fill
-                  unoptimized
+                  quality={100}
                   className="object-cover rounded-full animate-spin"
                   style={{ animationDuration: "10s" }}
                 />

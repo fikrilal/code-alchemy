@@ -1,6 +1,6 @@
 const csp = [
   "default-src 'self'",
-  "img-src 'self' data: blob:",
+  "img-src 'self' data: blob: https://*.scdn.co https://*.spotifycdn.com",
   "media-src 'self'",
   "style-src 'self' 'unsafe-inline'",
   "script-src 'self' 'unsafe-inline'",
@@ -10,6 +10,12 @@ const csp = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "*.scdn.co" },
+      { protocol: "https", hostname: "*.spotifycdn.com" },
+    ],
+  },
   async headers() {
     return [
       {
