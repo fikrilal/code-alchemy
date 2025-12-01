@@ -110,15 +110,13 @@ class CreateSomethingController extends GetxController {
 }
 ```
 
-On real screens this became much bigger, with many more fields and rules. The
-`CreateMustahikIndividualController` from one of my previous projects is a good example. It
-contains:
+On real screens this pattern grew much bigger, with many more fields and rules:
 
-- Dozens of fields and options.
+- Dozens of inputs and UI flags.
 - A long `toEntity()` method that converts internal state to a request.
 - A set of `validateXxx` functions plus a `validationErrors` list that stitches them together.
 
-It works, but everything lives in one class.
+It worked, but everything still lived in a single controller class.
 
 ### 4.2 Why this became a problem
 

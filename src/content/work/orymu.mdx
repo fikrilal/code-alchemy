@@ -1,0 +1,510 @@
+---
+title: "Orymu — A Memory-First Reading Companion"
+slug: "orymu-memory-first-reading-companion"
+shortDescription: "Founding engineer shaping Orymu's mobile app and architecture so a small team can ship real reading, focus, and flashcard features that scale beyond a demo."
+timeframe: "2025 - present"
+thumbnail: "/images/work/orymu.png"
+date: "2025-12-01"
+techStack:
+  [
+    "Flutter (Dart)",
+    "Clean Architecture",
+    "GetIt",
+    "GoRouter",
+    "Bloc/Cubit",
+    "Dio",
+    "SQLite/DB",
+  ]
+---
+
+# Orymu — A Memory-First Reading Companion
+
+Designing Orymu's mobile app and architecture with a small cross-functional team so the product can
+grow from first release to a real userbase, not just a demo.
+
+---
+
+## 1. TL;DR
+
+Orymu is a "memory-first" reading companion. It helps readers track their books, run focused
+reading sessions, create and review flashcards, and see their progress over time. I initiated the
+project and led the mobile architecture as a founding engineer, working with one other mobile
+engineer, one frontend engineer, and one UI/UX designer. I also designed and built the backend APIs
+the app depends on.
+
+From the start I chose a feature-first Clean Architecture with GetIt DI and GoRouter, a dedicated
+session layer for auth, value-object-based validation, and feature-owned data layers for discover,
+library, focus mode, flashcards, reviews, and profile. The goal was to ship real, connected
+features quickly while keeping the codebase honest and ready for future AI and highlight features
+without a re-write.
+
+---
+
+## 2. Context & Product
+
+Orymu's product vision is to be a learning-first reading companion. Instead of just tracking pages,
+it aims to make it easier to stay with a book, remember what you read, and see your progress in a
+way that feels rewarding. In the long term that includes highlight capture, AI help, and community
+features, but the first versions focus on solid reading and study flows:
+
+- Getting users into the app with a clean auth and onboarding experience.
+- Helping them discover books and maintain a personal library.
+- Supporting deep reading with a focus mode.
+- Turning reading into practice through flashcards and review.
+- Reflecting reading behavior through profile, achievements, and goals.
+
+I did not build this alone. The team is four people:
+
+- Me — mobile engineer (Flutter) and backend engineer.
+- One more mobile engineer.
+- One frontend engineer for web.
+- One UI/UX designer.
+
+I initiated the project, defined the initial product scope, and pushed us toward a clear goal:
+**build a product that can sustain a real userbase**, not a portfolio app. That meant spending some
+time on architecture and patterns up front, so that new features (especially AI and highlights
+later) would plug in instead of forcing a rewrite.
+
+On the backend side, I also designed and implemented the services and APIs for auth, discover,
+library, focus sessions, flashcards, reviews, and profile. That work deserves its own deep-dive case
+study; here I focus on the mobile architecture and how it ties everything together.
+
+---
+
+## 3. My Role & Responsibilities
+
+In Orymu I wear several hats, but a few stand out for this case study:
+
+- **Initiator and founding engineer**  
+  I proposed Orymu, shaped the early product vision, and set the expectation that we were building
+  something users could rely on long term. I then turned that vision into a concrete plan for the
+  mobile app and the backend it talks to.
+
+- **Architecture and mobile lead**  
+  I designed the mobile architecture around feature-first Clean Architecture. That included:
+  - Core vs feature boundaries.
+  - Dependency injection via GetIt modules.
+  - Routing with GoRouter and a main shell layout.
+  - Session/auth management, validation, and local persistence patterns. I also set code standards
+    and reviewed work from the other mobile engineer so that new features fit into the same
+    structure instead of growing ad hoc.
+
+- **Backend owner**  
+  Because we did not have a dedicated backend engineer, I took on API design and implementation as
+  well. I defined the contracts for auth, discover, library, focus sessions, flashcards, reviews,
+  and profile, and kept the mobile and backend aligned. This forced me to think end-to-end: how does
+  a focus session move from user tap, through the app and APIs, into stored data and back into UI?
+
+- **Product and collaboration**  
+  I worked with our UI/UX designer to shape flows like sign up, onboarding, focus mode, flashcard
+  creation, and share templates. With the web engineer I aligned on shared concepts (books,
+  editions, sessions, stats) so that web and mobile were building the same product, not just
+  separate frontends.
+
+---
+
+## 4. Solution Overview
+
+### 4.1 Architecture at a Glance
+
+I structured the mobile app around a feature-first Clean Architecture:
+
+- `lib/core/` contains cross-cutting infrastructure:
+  - `configs/` for environment-driven configuration.
+  - `network/` for the API client and helpers.
+  - `databases/` for DB bootstrap.
+  - `services/` for session, navigation, notifications, OCR, device services, and experiments.
+  - `theme/` and `widgets/` for the design system and shared UI components.
+- `lib/features/<feature>/` encapsulates each product slice (auth, discover, library, flashcard,
+  onboarding, profile, preferences, review, experiments), each with:
+  - `data/` — DTOs, mappers, repository implementations, and datasources.
+  - `domain/` — entities, value objects, failures, repositories (interfaces), and use cases.
+  - `presentation/` — blocs/cubits, pages, and widgets.
+  - `di/` — a module to register dependencies into the service locator.
+- `lib/navigation/` contains the router composition:
+  - An `app_router.dart` that wires feature route lists into a single `GoRouter`.
+  - A main shell route that hosts the bottom navigation and passes the active tab content.
+
+Dependency injection uses a modular GetIt setup:
+
+- `AuthModule.register` runs first because `SessionManager` depends on auth's `RefreshTokenUsecase`.
+- `CoreModule.register` wires core services: network, DB, storage, `SessionManager`, navigation,
+  etc.
+- Other feature modules (`Onboarding`, `Discover`, `Review`, `Flashcard`, `Library`, `Profile`,
+  `Preferences`, experiments) register after core.
+
+Routing is powered by GoRouter:
+
+- The `MyApp` widget uses `MaterialApp.router` with a `GoRouter` from `createRouter()`.
+- `NavigationService` exposes a root navigator key and a `scaffoldMessengerKey`, so I can navigate
+  and show snacks from outside widgets when needed.
+- The router's `refreshListenable` is `SessionManager.userNotifier`, and the `redirect` callback
+  enforces:
+  - Unauthenticated users stay within the auth and onboarding routes.
+  - Authenticated users finish username/onboarding if needed.
+  - Authenticated users get redirected to main routes instead of auth.
+
+### 4.2 Main Flows Implemented
+
+Within that structure, I shipped several connected features myself, and other features were built by
+the second mobile engineer following the same patterns.
+
+- **Auth**
+  - Email/password registration and login with VO-based validation for email, password, username,
+    display name, and confirm password.
+  - Google sign-in support.
+  - Username setup, email verification, and forgot/reset password flows.
+
+- **Onboarding and Discover**  
+  Implemented by the other mobile engineer in the team, using the same architecture:
+  - Splash, intro, and multi-step onboarding that captures genres and reading habits.
+  - Discover feature with a "Trending Books" flow implemented using clean pagination and explicit
+    error handling.
+
+- **Library**
+  - Library feature with a three-tab layout:
+    - On-going reads.
+    - Finished books.
+    - Saved items.
+  - Library search field with debounced filtering.
+
+- **Focus Mode**
+  - Focus reading sessions per book edition:
+    - Preset and custom durations.
+    - Start, pause, resume, finish, and amend session actions.
+  - Dedicated focus session entities and use cases.
+  - Integration with brightness and wakelock services so the screen stays readable and awake during
+    sessions.
+  - A circular timer UI, notes sheet, and finished screen.
+
+- **Flashcards**
+  - Creation:
+    - Manual flashcard creation forms.
+    - AI-assisted creation that takes OCR text from book pages or notes and generates flashcards.
+  - Overview:
+    - Lists of flashcards by edition.
+    - Edition-level stats and detail views.
+  - Playing:
+    - A flashcard play session flow with a deck controller, flip animations, answer bar, and
+      session complete screens.
+    - A rewards policy that assigns XP and streaks based on answers.
+
+- **Profile, Achievements, Reviews, Preferences**
+  - Profile overview with reading recap and activity.
+  - Achievements feature:
+    - Reading streaks, charts, contributions, and milestones.
+  - Goals and history features to show how reading accumulates over time.
+  - Edit profile flow with value objects for avatar URL, bio, country, timezone, and profile
+    visibility.
+  - Preferences feature for daily reading intention and notification channel preferences.
+  - Review feature that lets users create, update, delete, and list book reviews, with clean domain
+    modeling for ratings and text.
+
+- **Experiments / Reminder**
+  - A reminder experiment module with a reminder service, scheduler, and settings sheet, wired
+    through `BuildConfig.reminderExperiment` so I can enable it per build.
+
+---
+
+## 5. Key Architectural Decisions
+
+### 5.1 Feature-First Clean Architecture
+
+I knew from previous experience that large controllers and shared "god services" do not scale well.
+For Orymu I committed to feature-first Clean Architecture from day one:
+
+- Each feature has clear boundaries and owns its own domain types, repositories, DTOs, and UI.
+- Cross-cutting logic (session, navigation, theme, DB, network) lives in `core/`, but does not know
+  about feature internals.
+- Repositories are the only layer allowed to see both sides: domain types on one side and DTOs/HTTP
+  on the other.
+
+This made it much easier to reason about flows like trending books, focus sessions, flashcards, and
+reviews as independent slices, even though they share infrastructure.
+
+### 5.2 Dependency Injection & Modules
+
+GetIt is the backbone for dependency injection. Instead of a single large registration function, I
+kept it modular:
+
+- `CoreModule.register` configures infrastructure services.
+- Each feature exposes a `<Feature>Module.register` function to register repositories, use cases,
+  blocs, and other services.
+
+The one ordering constraint I had to respect is that the auth module must register before core,
+because `SessionManager` depends on a `RefreshTokenUsecase` from the auth domain. I encoded that
+rule in `setupLocator()` so it is hard to accidentally break it.
+
+### 5.3 Session & Routing
+
+Authentication is managed centrally by `SessionManager`:
+
+- It loads a saved session on startup, exposes `user`, `isAuthenticated`, and `accessToken`, and
+  keeps `_currentUser` in sync with persistent storage.
+- It owns the login, logout, and token refresh flows and publishes events when sessions change or
+  expire.
+- It wires into notification registration so that push notifications are tied to the current
+  session.
+
+The router uses `SessionManager.userNotifier` as a `refreshListenable` and a `redirect` callback
+that:
+
+- Sends unauthenticated users into the auth/onboarding flows.
+- Allows authenticated users to finish profile setup (username, onboarding).
+- Redirects authenticated users away from the main auth page to the main shell.
+
+This keeps navigation behavior predictable: I do not sprinkle `if (loggedIn)` checks throughout the
+UI; the router and session state own that concern.
+
+### 5.4 Validation with Value Objects
+
+Validation used to be one of the biggest sources of complexity for me in previous projects. For
+Orymu I moved the rules into domain-level value objects and adopted a two-layer validation model:
+
+- Value objects (VOs) such as `EmailAddress`, `Password`, `Username`, `DisplayName`, and various
+  review and profile VOs encapsulate rules and return `Either<ValueFailure, VO>` from their `create`
+  methods.
+- `ValueFailure` encodes specific reasons (invalid email, short password, passwords do not match,
+  etc.) and maps to user-facing messages via a `userMessage` extension.
+- Blocs use VOs for real-time field-level validation and store plain `errorText` in state for UI.
+- Use cases re-validate inputs as a final gate before calling repositories and convert failures into
+  `AuthFailure.validation` or other domain failures.
+
+I wrote a separate deep-dive case study on this pattern:  
+`docs/studies/orymu_validation_value_objects_case_study.md`
+
+### 5.5 Feature-Owned Data & Persistence
+
+For data access and local persistence I followed a consistent pattern:
+
+- Each feature owns its repository interface and implementation, its DTOs, and its remote and local
+  datasources.
+- The core networking layer provides `ApiClient` and `ApiHelper` with typed `ApiResponse` wrappers
+  and shared pagination types (`Paginated<T>`, `PaginationInfo`).
+- Local storage is coordinated by an `AppDatabase` in `core/databases`, but features register their
+  own tables and migrations where it makes sense.
+
+Discover's trending books flow, library focus sessions, flashcard overview, and reviews all follow
+this pattern. It keeps HTTP and JSON details out of the domain, but also avoids a single, monolithic
+"data service" that everyone depends on.
+
+---
+
+## 6. Feature Walk-throughs
+
+### 6.1 Auth & Onboarding
+
+For authentication I wanted something that felt solid and forgiving to users and safe for the rest
+of the system:
+
+- Registration and login use value objects for email, password, and display name:
+  - Real-time field-level validation in Blocs.
+  - Final gate validation in `RegisterUserUseCase` and `LoginUserUseCase`.
+- OAuth login is supported via a `GoogleAuthService` and a dedicated use case.
+- Username setup and email verification run as separate flows that only unlock once the main account
+  exists.
+
+Onboarding is a multi-step experience:
+
+- Splash and intro pages bring users into the app.
+- Genre and habit selection blocs capture reading preferences and habits.
+- The onboarding result feeds later features like home, library, and reminders.
+
+By putting both auth and onboarding on top of VOs and a consistent Bloc pattern, I avoided the
+large, mixed controllers I had in previous projects and made it easier to test each piece.
+
+### 6.2 Discover & Library
+
+Discover is built around a "Trending Books" flow:
+
+- A domain query object (`TrendingBooksQuery`) describes the request.
+- The repository implementation turns it into HTTP parameters, calls a remote datasource, and maps
+  the JSON payload into a `Paginated<WorkEntity>` result.
+- Errors are mapped into domain failures, not leaked as raw HTTP details.
+
+The library is where a lot of the reading experience lives:
+
+- The main `LibraryPage` uses a tabbed layout:
+  - "On Going" for active reading.
+  - "Done" for completed books.
+  - "Saved" for things the user wants to come back to.
+- The search field uses a debounced `ValueNotifier` to filter entries without spamming the backend
+  or bloc.
+
+#### Focus Mode
+
+The focus mode is a dedicated flow inside the library feature that lets users run timed reading
+sessions on a specific edition:
+
+- Domain:
+  - `ReadingSessionEntity` tracks durations and stats.
+  - Use cases handle `start`, `pause`, `resume`, `finish`, `update`, and `get_active` focus sessions.
+- Data:
+  - A remote datasource and repository talk to backend focus APIs.
+- Presentation:
+  - `FocusModePage` lets users pick from presets or custom durations and manages the timer.
+  - Multiple blocs handle start/pause/resume/finish/update in a focused way.
+  - A circular timer widget (`FocusCircleTimer`) shows remaining time with smooth progress
+    animations.
+  - Notes and tips sheets help the session feel deliberate, not just a raw stopwatch.
+
+This flow is a good example of how a feature-slice architecture and small, focused blocs help build
+something non-trivial without centralizing all logic into a single controller.
+
+### 6.3 Flashcard System
+
+Flashcards are a core part of Orymu's "learn from reading" story. I implemented three subfeatures:
+creation, overview, and playing.
+
+#### Creation
+
+Users can create flashcards in two main ways:
+
+- **Manual creation** via a form that lets them enter questions and answers.
+- **AI-assisted creation** that accepts source text and uses the backend to generate flashcards.
+
+The AI source flow uses:
+
+- `FlashcardAISourcePage`, which allows users to select or capture photos of book pages or notes.
+- `DocumentScanService` and `TextRecognitionService` to scan documents and run OCR locally.
+- Once text is extracted, the page navigates to the flashcard creation form with the source text
+  passed along.
+
+The domain layer uses value objects for flashcard types, difficulty, source text, and configuration
+(temperature, type selection). A dedicated validator makes sure AI requests are well-formed before
+they hit the repository.
+
+#### Overview
+
+The overview subfeature lets users see their flashcards per edition:
+
+- Entities like `FlashcardEditionStatsEntity` and `FlashcardItemEntity` represent the domain view of
+  cards and stats.
+- Use cases fetch lists of cards and edition statistics.
+- UI pages present folders, detail cards, and buttons for adding new cards.
+
+#### Playing
+
+The play subfeature turns flashcards into a study session:
+
+- `FlashcardPlayBloc` manages the session, current index, and status.
+- Policies like `RewardsPolicy` and `ContextVisibility` describe how XP and streaks work and when to
+  show additional context.
+- UI:
+  - `FlashcardPlayPage` uses a deck controller and custom widgets to show stacked cards with flip
+    animations.
+  - An answer bar at the bottom captures user responses and feeds the bloc.
+  - Session complete screens summarize performance and encourage the next session.
+
+This system gives Orymu a real learning loop, not just static cards.
+
+### 6.4 Profile, Achievements, Reviews, Preferences
+
+The profile and review features connect reading and flashcards back into a bigger picture:
+
+- **Profile Overview & Achievements**
+  - Entities for reading streaks, charts, next milestones, and contributions.
+  - Use cases to fetch cached and live reading streaks and charts.
+  - UI pages that show weekly recaps, streak levels, and achievements.
+
+- **Goals and History**
+  - A goals subfeature where users can set intentions and see progress.
+  - History and stats views inside the profile and library features.
+
+- **Reviews**
+  - Domain models for review comments, rating, and summary.
+  - Use cases to create, update, delete, and list reviews per book.
+  - Blocs and cubits for review lists and forms.
+
+- **Preferences**
+  - A preferences feature that manages daily reading intention and notification channel preferences
+    via value objects and a dedicated update use case.
+
+All of these share the same architectural patterns: clean domain models, repositories, and Blocs or
+Cubits for presentation.
+
+---
+
+## 7. Key Challenges & Deep Dives
+
+This main case study focuses on the big picture. Some parts were deep enough that I broke them out
+into their own case studies.
+
+- **Validation Architecture with Value Objects**  
+  Moving from controller-centric validation to domain-level value objects and a two-layer validation
+  model was a big shift for me. I describe that journey and its impact in:  
+  `docs/studies/orymu_validation_value_objects_case_study.md`
+
+- **Session & Router Integration** *(planned deep dive)*  
+  Designing `SessionManager` as a single source of truth and wiring it into GoRouter's
+  `refreshListenable` and `redirect` logic was crucial for making auth and navigation feel reliable.
+  A separate deep-dive case study will cover:
+  - How login, refresh, and logout flows are orchestrated.
+  - How session events propagate to other features (notifications, profile, library).
+  - How I balanced strictness (never leak invalid sessions) with a forgiving UX.
+
+- **Focus Mode & Library Share as Image** *(planned deep dive)*  
+  Building focus mode and turning reading sessions into shareable images required careful
+  coordination between domain logic, timers, rendering, and the platform share sheet. Another case
+  study will explore:
+  - Designing focus sessions and their state transitions.
+  - The rendering pipeline that uses a transparent route and `RepaintBoundary` to produce PNGs
+    without polluting the main UI.
+  - How templates like `FocusShareStoryTemplate` and `ReadingProgressShareStoryTemplate` stay in
+    sync with the rest of the design system.
+
+- **Backend Architecture** *(planned separate case study)*  
+  Finally, the backend that powers Orymu (auth, discover, library, focus sessions, flashcards,
+  reviews, profile) involves its own set of challenges: API design, token strategy, data modeling,
+  and coordination with the mobile architecture. I plan to cover that in a standalone backend case
+  study.
+
+---
+
+## 8. Impact
+
+Even in its current form, Orymu's mobile app is more than a prototype:
+
+- **For readers**
+  - They can sign up, set up their preferences, discover books, manage a library, run focus
+    sessions, create and review flashcards, and see their progress and achievements.
+  - The app feels coherent: focus mode, flashcards, reviews, and profile flows all share the same
+    visual language and patterns.
+
+- **For the team**
+  - New features can follow existing patterns instead of inventing new ones. A new slice—say, a
+    different kind of review or a new stats view—gets its own feature with
+    data/domain/presentation and a DI module.
+  - Debugging is simpler. When something goes wrong, we can usually identify whether it is in the
+    UI (Bloc/state), domain (use case), data (repository/datasource), or backend.
+
+- **For the future roadmap**
+  - The architecture leaves room for the bigger vision: highlight capture, AI assistants, and
+    community features. These can plug in as new features and services, not major rewrites. For
+    example:
+    - AI helpers can call into the same network and session infrastructure.
+    - Highlight capture can feed the existing flashcard and library systems.
+
+---
+
+## 9. What I Learned
+
+Architecting Orymu from scratch, as both mobile and backend engineer, changed how I think about
+product and code:
+
+- I now treat concepts like validation, session, and reading sessions as **domain concerns first**,
+  not UI details. The UI is a client of the domain, not the place where rules are invented.
+- Feature-first Clean Architecture, backed by clear DI and routing, made it easier to evolve the app
+  without fear. I would reuse this structure for other complex Flutter apps.
+- Investing in a few fundamental patterns early—value objects, a real session manager, clean
+  repository boundaries—paid off quickly. It reduced friction when I added focus mode, flashcards,
+  and share flows.
+- The project pushed me hard as an engineer and as a person. I spent many hours outside a normal
+  9-to-5 thinking through backend design, tuning flashcard animations, and wiring AI flows in a way
+  that still felt maintainable.
+- Working as a founding engineer with a small team also forced me to balance ideal architecture with
+  shipping. I learned when to introduce new abstractions and when to reuse patterns we already had.
+
+This project is still evolving, but the early architecture work already makes a difference. It lets
+us focus on improving the reading and learning experience instead of constantly fighting the
+codebase.
