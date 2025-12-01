@@ -126,7 +126,8 @@ export default function SelectedWork({
                 src={project.thumbnail}
                 alt={`${project.title} screenshot`}
                 fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 900px"
+                quality={100}
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                 priority={false}
               />
