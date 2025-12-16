@@ -1,7 +1,7 @@
 ---
-title: "GetX in Cubit Style for a Cooperative Finance App"
+title: "GetX in Cubit Style: Single State + Explicit Effects"
 date: "2025-11-28"
-description: "How I brought a cubit like mental model, single state and explicit effects, into our GetX codebase to make UI predictable, composable, and testable."
+description: "How I brought a Cubit-style mental model (single state + explicit effects) into our GetX codebase to make UI predictable, composable, and testable."
 coverImage: "/images/blog/getx-in-cubit.png"
 tags: ["Flutter", "GetX", "Architecture"]
 readTime: "15 min read"
@@ -10,7 +10,7 @@ authorImage: "/images/avatar.png"
 featured: false
 ---
 
-# GetX in Cubit Style for a Cooperative Finance App
+# GetX in Cubit Style: Single State + Explicit Effects
 
 ## TL;DR
 
@@ -19,7 +19,7 @@ and snackbars directly from controllers, and let presentation logic leak everywh
 I kept hitting rebuild errors, subtle race conditions, and controllers that knew too much about the
 UI.  
 In my Orymu side project I used Bloc and Cubit more deliberately and I liked how it forced me into a
-single state per screen and explicit transitions. On the next cooperative finance app I decided to
+single state per screen and explicit transitions. On the next finance app I decided to
 keep GetX for routing and dependency injection, but reshape the presentation layer around that
 Cubit mental model: one state stream per screen, a separate effect channel for one shots, and clear
 rules for when to use sealed state or composite form state.
@@ -28,7 +28,7 @@ rules for when to use sealed state or composite form state.
 
 ## Context: where I started with GetX
 
-KoperasiQu is a cooperative finance app for auth, balances, savings and loans, and transactions.
+This app was a finance product for auth, balances, savings, loans, and transactions.
 Before this project I had shipped a production app using GetX in a much less disciplined way.
 Controllers were the place where everything went. I stored loading flags, errors, lists, filters,
 pagination and even dialog state as separate `Rx` fields, and I also put navigation and snackbars
@@ -299,7 +299,7 @@ flowchart LR
 ## Solution overview
 
 From these decisions the concrete shape of the presentation layer I use now looks like this. I first
-applied it on this cooperative finance app and then carried the same pattern into newer projects:
+applied it on this finance app and then carried the same pattern into newer projects:
 
 - One reactive state per screen.
   - Sealed state for fetch and display flows, including pagination.
@@ -332,7 +332,7 @@ class SignUpFormView {
   final String? passwordError;
   final String? confirmPasswordError;
   final String? formMessage;
-  final String? coopError;
+  final String? organizationError;
   final bool requireConfirmPassword;
 
   const SignUpFormView({
@@ -341,7 +341,7 @@ class SignUpFormView {
     this.passwordError,
     this.confirmPasswordError,
     this.formMessage,
-    this.coopError,
+    this.organizationError,
     this.requireConfirmPassword = true,
   });
 
@@ -351,7 +351,7 @@ class SignUpFormView {
     String? passwordError,
     String? confirmPasswordError,
     String? formMessage,
-    String? coopError,
+    String? organizationError,
     bool? requireConfirmPassword,
   }) {
     return SignUpFormView(
@@ -360,7 +360,7 @@ class SignUpFormView {
       passwordError: passwordError ?? this.passwordError,
       confirmPasswordError: confirmPasswordError ?? this.confirmPasswordError,
       formMessage: formMessage ?? this.formMessage,
-      coopError: coopError ?? this.coopError,
+      organizationError: organizationError ?? this.organizationError,
       requireConfirmPassword:
           requireConfirmPassword ?? this.requireConfirmPassword,
     );
