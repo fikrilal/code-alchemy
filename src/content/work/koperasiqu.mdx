@@ -150,7 +150,7 @@ At a high level I approached this app as a set of vertical slices on top of a sh
   - Views use a single `Obx` to render based on state and a single `ever` listener to react to
     effects, instead of many small `Obx` widgets tied to separate flags.
   - I documented this pattern in a UI state architecture guide and a separate sub case study
-    ([GetX in Cubit Style for a Cooperative Finance App](/blog/getx-in-cubit-style-cooperative-finance-app)).
+    ([GetX in Cubit Style: Single State + Explicit Effects](/blog/getx-in-cubit-style-single-state-effects)).
 
 - **Validation and value objects**
 
@@ -201,7 +201,7 @@ that turned into:
     unit tests straightforward.
 
 This pattern is described in detail in my separate sub case study,
-[GetX in Cubit Style for a Cooperative Finance App](/blog/getx-in-cubit-style-cooperative-finance-app).
+[GetX in Cubit Style: Single State + Explicit Effects](/blog/getx-in-cubit-style-single-state-effects).
 Here, the important part is that it gave me a predictable foundation for the cooperative features:
 screens have one source of truth, one place to emit one-shot events, and clear rules for when to use
 sealed vs composite state.
