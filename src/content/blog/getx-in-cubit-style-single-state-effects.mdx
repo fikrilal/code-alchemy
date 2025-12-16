@@ -98,7 +98,7 @@ I can represent that messy flow conceptually like this:
 
 ```mermaid
 flowchart LR
-    UI["Widgets\n(many Obx)"] -->|reads many Rx| C["GetX Controller\n(many Rx fields)"]
+    UI["Widgets (many Obx)"] -->|reads many Rx| C["GetX Controller (many Rx fields)"]
     C -->|updates| Rx1["isLoading"]
     C -->|updates| Rx2["items"]
     C -->|updates| Rx3["errorMessage"]
@@ -250,9 +250,9 @@ I can summarise that cleaner flow like this.
 
 ```mermaid
 flowchart LR
-    UI["Page\n(BlocBuilder + BlocListener)"] -->|events| B["Bloc / Cubit"]
-    B -->|emit| State["State\n(single stream)"]
-    B -->|emit| Eff["Effect\n(one shot)"]
+    UI["Page (BlocBuilder + BlocListener)"] -->|events| B["Bloc / Cubit"]
+    B -->|emit| State["State (single stream)"]
+    B -->|emit| Eff["Effect (one shot)"]
     State -->|builder| UI
     Eff -->|listener| UI
 ```
@@ -287,9 +287,9 @@ At a high level the new flow for a screen looks like this.
 
 ```mermaid
 flowchart LR
-    UI["Page\n(Obx + ever)"] -->|user intent| C["GetX Controller\n(cubit style)"]
-    C -->|updates| St["Rx<State>\n(single snapshot)"]
-    C -->|emits| Eff["Rxn<Effect>\n(one shot)"]
+    UI["Page (Obx + ever)"] -->|user intent| C["GetX Controller (cubit style)"]
+    C -->|updates| St["Rx<State> (single snapshot)"]
+    C -->|emits| Eff["Rxn<Effect> (one shot)"]
     St -->|Obx| UI
     Eff -->|ever listener| UI
 ```
