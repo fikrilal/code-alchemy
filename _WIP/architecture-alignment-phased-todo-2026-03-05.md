@@ -125,13 +125,13 @@ Reduce unnecessary client surface area and standardize image handling.
 Eliminate misleading auth paths and ensure backend behavior is intentional.
 
 ### Tasks
-- [ ] Decide canonical Spotify refresh token source (env-only vs cookie/session-based flow).
-- [ ] Align `/api/spotify/login` + `/api/spotify/callback` behavior with runtime token strategy.
-- [ ] Remove unused OAuth artifacts if env-only token refresh remains the approach.
-- [ ] Document final Spotify auth architecture in `docs/ENVIRONMENT.md`.
+- [x] Decide canonical Spotify refresh token source (env-only vs cookie/session-based flow).
+- [x] Align `/api/spotify/login` + `/api/spotify/callback` behavior with runtime token strategy.
+- [x] Remove unused OAuth artifacts if env-only token refresh remains the approach.
+- [x] Document final Spotify auth architecture in `docs/ENVIRONMENT.md`.
 
 ### Done Criteria
-- [ ] Spotify auth flow has one coherent model and no dead branches.
+- [x] Spotify auth flow has one coherent model and no dead branches.
 
 ---
 

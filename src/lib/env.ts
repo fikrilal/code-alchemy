@@ -4,7 +4,6 @@ const SpotifyEnvSchema = z.object({
   SPOTIFY_CLIENT_ID: z.string().min(1, "Missing SPOTIFY_CLIENT_ID"),
   SPOTIFY_CLIENT_SECRET: z.string().min(1, "Missing SPOTIFY_CLIENT_SECRET"),
   SPOTIFY_REFRESH_TOKEN: z.string().min(1, "Missing SPOTIFY_REFRESH_TOKEN"),
-  SPOTIFY_REDIRECT_URI: z.string().url("Invalid SPOTIFY_REDIRECT_URI"),
 });
 
 const GithubEnvSchema = z.object({

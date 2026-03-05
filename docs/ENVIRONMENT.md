@@ -1,6 +1,6 @@
 # Environment & Configuration
 
-This project validates environment variables at startup via `src/lib/env.ts` (Zod). Missing or invalid values fail fast during build or boot.
+This project validates environment variables with `src/lib/env.ts` (Zod). Validation is performed lazily by feature scope at runtime.
 
 ## Runtime Baseline
 - Node.js: **22 LTS** (`22.x`) for local development, CI, and deployment.
@@ -11,13 +11,22 @@ This project validates environment variables at startup via `src/lib/env.ts` (Zo
   - GitHub routes/libs validate `GITHUB_TOKEN` when invoked.
 - Build can complete without secrets, but API endpoints that require missing variables will return runtime errors until configured.
 
+## Spotify Auth Architecture
+- Canonical model: **env-only refresh token flow**.
+- Runtime route: `/api/spotify` only.
+- `/api/spotify` uses:
+  - `SPOTIFY_CLIENT_ID`
+  - `SPOTIFY_CLIENT_SECRET`
+  - `SPOTIFY_REFRESH_TOKEN`
+- OAuth callback/login routes are intentionally not part of runtime architecture.
+- Refresh tokens must be provisioned out-of-band and stored as server secrets.
+
 ## Required Variables (.env.local)
 ```env
-# Spotify OAuth
+# Spotify (server-only refresh flow)
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
 SPOTIFY_REFRESH_TOKEN=
-SPOTIFY_REDIRECT_URI=http://localhost:3000/api/spotify/callback
 
 # GitHub API (GraphQL)
 GITHUB_TOKEN=
@@ -26,9 +35,9 @@ GITHUB_TOKEN=
 ## How to Obtain Credentials
 - Spotify
   1) Create an app at https://developer.spotify.com/dashboard
-  2) Add Redirect URI: `http://localhost:3000/api/spotify/callback` (and your prod URL)
-  3) Get `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`
-  4) Acquire `SPOTIFY_REFRESH_TOKEN` by completing the OAuth flow once, then persist the refresh token server‑side
+  2) Get `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`
+  3) Acquire a `SPOTIFY_REFRESH_TOKEN` once (for example via Spotify's OAuth tooling or a one-time local script)
+  4) Store the refresh token in environment secrets; do not store it in cookies/session for this app
 - GitHub
   - Create a Personal Access Token (classic); for public contribution stats, no special scopes are required. To be safe, grant `read:user`.
 

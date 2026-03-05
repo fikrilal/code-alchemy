@@ -48,7 +48,6 @@ Configure the following variables in `.env.local` (or your production environmen
 
 - `SPOTIFY_CLIENT_ID` – Spotify application client ID used for authentication.
 - `SPOTIFY_CLIENT_SECRET` – Spotify application client secret.
-- `SPOTIFY_REDIRECT_URI` – OAuth redirect URI configured in your Spotify dashboard.
 - `SPOTIFY_REFRESH_TOKEN` – Refresh token used to fetch currently playing tracks.
 - `GITHUB_TOKEN` – GitHub Personal Access Token for the `/api/githubStats` endpoint.
 
