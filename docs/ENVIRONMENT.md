@@ -2,6 +2,9 @@
 
 This project validates environment variables at startup via `src/lib/env.ts` (Zod). Missing or invalid values fail fast during build or boot.
 
+## Runtime Baseline
+- Node.js: **22 LTS** (`22.x`) for local development, CI, and deployment.
+
 ## Required Variables (.env.local)
 ```env
 # Spotify OAuth

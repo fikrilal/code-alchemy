@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Local Setup
 
-1. Install **Node.js 24 LTS** and clone this repository.
+1. Install **Node.js 22 LTS** and clone this repository.
 2. Install dependencies:
 
 ```bash
@@ -19,6 +19,8 @@ npm run dev
 The app will be available at [http://localhost:3000](http://localhost:3000).
 
 Run `npm run lint` to execute ESLint checks during development.
+Run `npm run typecheck` to validate TypeScript types.
+Run `npm run test` to execute the current test script (placeholder until suite is added).
 
 ## Building
 

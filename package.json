@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No automated tests yet (placeholder script).\""
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
