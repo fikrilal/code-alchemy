@@ -87,16 +87,16 @@ Align MDX and CSP implementation with ADR/security targets.
 Make architecture boundaries explicit and remove stale code paths.
 
 ### Tasks
-- [ ] Remove unused `WorkCaseStudyClient` import/path or re-activate intentionally.
-- [ ] Move route composition closer to feature modules where practical.
-- [ ] Stop importing feature types from `src/lib/*` where feature types exist.
-- [ ] Update `SelectedWork` to use feature-owned work types directly.
-- [ ] Audit `src/data/*` for legacy/unused modules and delete or migrate.
-- [ ] Ensure canonical data source for blog/work remains MDX content folders.
+- [x] Remove unused `WorkCaseStudyClient` import/path or re-activate intentionally.
+- [x] Move route composition closer to feature modules where practical.
+- [x] Stop importing feature types from `src/lib/*` where feature types exist.
+- [x] Update `SelectedWork` to use feature-owned work types directly.
+- [x] Audit `src/data/*` for legacy/unused modules and delete or migrate.
+- [x] Ensure canonical data source for blog/work remains MDX content folders.
 
 ### Done Criteria
-- [ ] No dead architecture paths in active routes.
-- [ ] Feature types and feature logic are consistently colocated.
+- [x] No dead architecture paths in active routes.
+- [x] Feature types and feature logic are consistently colocated.
 
 ---
 

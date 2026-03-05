@@ -2,8 +2,6 @@
 
 import { motion } from "framer-motion";
 
-import skills from "@/data/skill";
-
 import ExperienceSection from "./ExperienceSection";
 import AchievementsSection from "./AchievementsSection";
 import QuoteSection from "./QuoteSection";

@@ -1,7 +1,4 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import SelectedWork from "@/components/SelectedWork";
-import { getWorkSummaries } from "@/lib/work";
+import WorkIndexPage from "@/features/work/components/WorkIndexPage";
 
 import type { Metadata } from "next";
 
@@ -10,22 +7,6 @@ export const metadata: Metadata = {
   description: "Case studies and shipped projects across mobile engineering and product design.",
 };
 
-export default async function WorkIndexPage() {
-  const workItems = await getWorkSummaries();
-
-  return (
-    <>
-      <Navbar />
-      <main className="bg-neutral-950">
-        <SelectedWork
-          workItems={workItems}
-          heading="All Work & Case Studies"
-          description="A deeper look at the products and case studies I’ve delivered—from mobile apps to full-stack builds."
-          ctaHref=""
-          ctaLabel=""
-        />
-      </main>
-      <Footer />
-    </>
-  );
+export default async function WorkPage() {
+  return <WorkIndexPage />;
 }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import MotionElement from "@/components/animations/Motion";
 import Button from "@/components/ui/Button";
 
-import type { WorkSummary } from "@/lib/work";
+import type { WorkSummary } from "@/features/work/types";
 
 type SelectedWorkProps = {
   workItems: WorkSummary[];

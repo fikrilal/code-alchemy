@@ -5,10 +5,7 @@ import WorkGallery from "@/features/work/components/WorkGallery";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-import WorkCaseStudyClient from "./components/WorkCaseStudyClient";
-
 import type { Metadata } from "next";
-import type { WorkFrontmatter } from "@/features/work/types";
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   const mdxSlugs = getWorkSlugs();
