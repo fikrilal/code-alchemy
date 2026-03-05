@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { format, parseISO } from "date-fns";
 
-import { env } from "@/lib/env";
+import { getGithubEnv } from "@/lib/env";
 
 const ContributionDay = z.object({
   date: z.string(),
@@ -51,6 +51,7 @@ function setGithubStatsCache(entry: StatsCache) {
 }
 
 async function fetchContributionRange(username: string, from: Date, to: Date, revalidateSec: number) {
+  const { GITHUB_TOKEN } = getGithubEnv();
   const query = `
     query ($username: String!, $from: DateTime!, $to: DateTime!) {
       user(login: $username) {
@@ -68,7 +69,7 @@ async function fetchContributionRange(username: string, from: Date, to: Date, re
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      Authorization: `Bearer ${GITHUB_TOKEN}`,
     },
     body: JSON.stringify({
       query,

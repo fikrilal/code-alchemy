@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-import { env } from "@/lib/env";
+import { getSpotifyEnv } from "@/lib/env";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -12,7 +12,10 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "No authorization code" }, { status: 400 });
   }
 
-  const authString = Buffer.from(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`).toString("base64");
+  const spotifyEnv = getSpotifyEnv();
+  const authString = Buffer.from(
+    `${spotifyEnv.SPOTIFY_CLIENT_ID}:${spotifyEnv.SPOTIFY_CLIENT_SECRET}`
+  ).toString("base64");
 
   const tokenResponse = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
@@ -23,7 +26,7 @@ export async function GET(req: Request) {
     body: new URLSearchParams({
       grant_type: "authorization_code",
       code,
-      redirect_uri: env.SPOTIFY_REDIRECT_URI,
+      redirect_uri: spotifyEnv.SPOTIFY_REDIRECT_URI,
     }),
   });
 

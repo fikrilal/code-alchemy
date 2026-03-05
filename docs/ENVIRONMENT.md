@@ -5,6 +5,12 @@ This project validates environment variables at startup via `src/lib/env.ts` (Zo
 ## Runtime Baseline
 - Node.js: **22 LTS** (`22.x`) for local development, CI, and deployment.
 
+## Validation Strategy
+- Environment variables are validated lazily at runtime per feature scope:
+  - Spotify routes/libs validate Spotify-specific variables when invoked.
+  - GitHub routes/libs validate `GITHUB_TOKEN` when invoked.
+- Build can complete without secrets, but API endpoints that require missing variables will return runtime errors until configured.
+
 ## Required Variables (.env.local)
 ```env
 # Spotify OAuth

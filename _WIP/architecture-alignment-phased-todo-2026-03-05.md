@@ -47,16 +47,16 @@ Remove environment/tooling drift so local, CI, and deployment run the same contr
 Stop build brittleness caused by strict env parsing during route collection.
 
 ### Tasks
-- [ ] Decide env policy:
+- [x] Decide env policy.
 - [ ] Option A: strict CI/preview secrets provisioning for all required env vars.
-- [ ] Option B: lazy env parsing per API execution path to avoid unrelated build failures.
-- [ ] Implement selected policy in `src/lib/env.ts` and API routes.
-- [ ] Ensure `/api/spotify/*` and `/api/githubStats` routes do not break unrelated build outputs.
-- [ ] Document required env behavior for local, preview, and prod.
+- [x] Option B: lazy env parsing per API execution path to avoid unrelated build failures.
+- [x] Implement selected policy in `src/lib/env.ts` and API routes.
+- [x] Ensure `/api/spotify/*` and `/api/githubStats` routes do not break unrelated build outputs.
+- [x] Document required env behavior for local, preview, and prod.
 
 ### Done Criteria
-- [ ] `npm run build` succeeds in CI under documented env policy.
-- [ ] Env behavior is explicit and reproducible.
+- [x] `npm run build` succeeds in CI under documented env policy.
+- [x] Env behavior is explicit and reproducible.
 
 ---
 

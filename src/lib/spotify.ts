@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { env } from "@/lib/env";
+import { getSpotifyEnv } from "@/lib/env";
 
 const SpotifyImage = z.object({ url: z.string().url() });
 const SpotifyExternalUrls = z.object({ spotify: z.string().url() });
@@ -32,12 +32,15 @@ function setSpotifyTokenCache(entry: TokenCache) {
 }
 
 async function refreshAccessToken(): Promise<string> {
+  const spotifyEnv = getSpotifyEnv();
   const now = Date.now();
   if (spotifyTokenCache.accessToken && spotifyTokenCache.expiresAt > now) {
     return spotifyTokenCache.accessToken;
   }
 
-  const authString = Buffer.from(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`).toString("base64");
+  const authString = Buffer.from(
+    `${spotifyEnv.SPOTIFY_CLIENT_ID}:${spotifyEnv.SPOTIFY_CLIENT_SECRET}`
+  ).toString("base64");
   const res = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
     headers: {
@@ -46,7 +49,7 @@ async function refreshAccessToken(): Promise<string> {
     },
     body: new URLSearchParams({
       grant_type: "refresh_token",
-      refresh_token: env.SPOTIFY_REFRESH_TOKEN,
+      refresh_token: spotifyEnv.SPOTIFY_REFRESH_TOKEN,
     }),
     cache: "no-store",
   });
