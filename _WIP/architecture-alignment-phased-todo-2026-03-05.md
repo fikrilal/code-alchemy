@@ -66,18 +66,18 @@ Stop build brittleness caused by strict env parsing during route collection.
 Align MDX and CSP implementation with ADR/security targets.
 
 ### Tasks
-- [ ] Add `rehype-sanitize` to blog/work MDX compile pipeline.
-- [ ] Define sanitize schema compatible with `rehype-pretty-code`, heading anchors, and Mermaid rendering.
-- [ ] Review Mermaid rendering strategy:
-- [ ] Remove or strictly constrain `innerHTML` usage.
-- [ ] Replace `securityLevel: "loose"` unless fully justified and documented.
-- [ ] Tighten CSP from permissive `unsafe-inline` to nonce/hash-based policy.
-- [ ] Implement `next-safe` (or equivalent strict CSP mechanism) per ADR direction.
-- [ ] Validate Vercel Analytics / Speed Insights / fonts against tightened CSP.
+- [x] Add `rehype-sanitize` to blog/work MDX compile pipeline.
+- [x] Define sanitize schema compatible with `rehype-pretty-code`, heading anchors, and Mermaid rendering.
+- [x] Review Mermaid rendering strategy.
+- [x] Remove or strictly constrain `innerHTML` usage.
+- [x] Replace `securityLevel: "loose"` unless fully justified and documented.
+- [x] Tighten CSP from permissive `unsafe-inline` to nonce/hash-based policy.
+- [x] Implement `next-safe` (or equivalent strict CSP mechanism) per ADR direction.
+- [x] Validate Vercel Analytics / Speed Insights / fonts against tightened CSP.
 
 ### Done Criteria
-- [ ] MDX output is sanitized with tested allowlist.
-- [ ] CSP no longer relies on broad `unsafe-inline` defaults (except justified exceptions).
+- [x] MDX output is sanitized with tested allowlist.
+- [x] CSP no longer relies on broad `unsafe-inline` defaults (except justified exceptions).
 
 ---
 

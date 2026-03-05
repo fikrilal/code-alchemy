@@ -6,9 +6,11 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSanitize from "rehype-sanitize";
 
 import { remarkMermaid } from "@/features/mdx/remark-mermaid";
 import mdxComponents from "@/features/mdx/components";
+import { mdxSanitizeSchema } from "@/features/mdx/sanitize-schema";
 
 import type { WorkFrontmatter } from "@/features/work/types";
 import type { ReactElement } from "react";
@@ -35,6 +37,7 @@ export async function compileWork(source: string): Promise<{ content: ReactEleme
           rehypeSlug,
           [rehypeAutolinkHeadings, { properties: { className: ["anchor"] } }],
           [rehypePrettyCode, { theme: "github-dark" }],
+          [rehypeSanitize, mdxSanitizeSchema],
         ],
       },
     },

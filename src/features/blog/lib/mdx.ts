@@ -6,9 +6,11 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSanitize from "rehype-sanitize";
 
 import { remarkMermaid } from "@/features/mdx/remark-mermaid";
 import mdxComponents from "@/features/mdx/components";
+import { mdxSanitizeSchema } from "@/features/mdx/sanitize-schema";
 
 import type { BlogFrontmatter } from "@/features/blog/types";
 import type { ReactElement } from "react";
@@ -37,6 +39,7 @@ export async function compileSource(source: string): Promise<{ content: ReactEle
               theme: "github-dark",
             },
           ],
+          [rehypeSanitize, mdxSanitizeSchema],
         ],
       },
     },
