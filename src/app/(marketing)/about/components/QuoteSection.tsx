@@ -1,28 +1,8 @@
-"use client";
-
-import { motion } from "framer-motion";
-
-import type { Variants } from "framer-motion";
-
-export default function QuoteSection({
-  containerVariants,
-  childVariants,
-}: {
-  containerVariants?: Variants;
-  childVariants?: Variants;
-}) {
-  const v = (containerVariants ?? {}) as Variants;
-  const c = (childVariants ?? {}) as Variants;
+export default function QuoteSection() {
   return (
-    <motion.section
-      className="container mx-auto px-6 lg:px-12 py-12 lg:py-20"
-      variants={v}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-    >
-      <motion.div className="relative max-w-3xl mx-auto group" variants={c}>
-        <div className="absolute -left-6 top-0 h-full w-1 bg-green-400 rounded-full opacity-20 transition-opacity group-hover:opacity-40"></div>
+    <section className="container mx-auto px-6 lg:px-12 py-12 lg:py-20">
+      <div className="relative max-w-3xl mx-auto group">
+        <div className="absolute -left-6 top-0 h-full w-1 bg-green-400 rounded-full opacity-20 transition-opacity group-hover:opacity-40" />
 
         <div className="pl-8">
           <blockquote className="text-2xl md:text-3xl leading-[1.6] md:leading-[1.5] font-medium text-slate-200 italic relative">
@@ -39,8 +19,8 @@ export default function QuoteSection({
           </blockquote>
         </div>
 
-        <div className="mt-6 h-px bg-gradient-to-r from-green-500/20 via-green-400/40 to-green-500/20 transition-all group-hover:via-green-500/60"></div>
-      </motion.div>
-    </motion.section>
+        <div className="mt-6 h-px bg-gradient-to-r from-green-500/20 via-green-400/40 to-green-500/20 transition-all group-hover:via-green-500/60" />
+      </div>
+    </section>
   );
 }

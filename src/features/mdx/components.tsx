@@ -23,6 +23,7 @@ export function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
       alt={alt}
       width={1200}
       height={675}
+      sizes="(max-width: 768px) 100vw, 768px"
       className={className}
     />
   );

@@ -1,77 +1,40 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
 
-import type { Variants } from "framer-motion";
+const cardClassName =
+  "bg-slate-1000 p-6 rounded-2xl border border-slate-600 flex items-center justify-center aspect-square transition-transform duration-200 hover:scale-[1.04]";
 
-type Props = { childVariants?: Variants };
-
-const IconCards = ({ childVariants }: Props) => {
-  const v: Variants = childVariants ?? {};
+export default function IconCards() {
   return (
     <div className="grid grid-cols-3 gap-4">
-      {/* X Icon */}
-      <motion.a
+      <a
         href="https://x.com/fikrilal"
         target="_blank"
         rel="noreferrer"
         aria-label="X"
-        className="bg-slate-1000 p-6 rounded-2xl border border-slate-600 flex items-center justify-center aspect-square"
-        variants={v}
-        whileHover={{ scale: 1.04 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className={cardClassName}
       >
-        <Image
-          src="/icons/icons8-x.svg"
-          alt="X"
-          width={40}
-          height={40}
-          className="w-10 h-10"
-        />
-      </motion.a>
+        <Image src="/icons/icons8-x.svg" alt="X" width={40} height={40} sizes="40px" className="w-10 h-10" />
+      </a>
 
-      {/* GitHub Icon */}
-      <motion.a
+      <a
         href="https://github.com/fikrilal"
         target="_blank"
         rel="noreferrer"
         aria-label="GitHub"
-        className="bg-slate-1000 p-6 rounded-2xl border border-slate-600 flex items-center justify-center aspect-square"
-        variants={v}
-        whileHover={{ scale: 1.04 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className={cardClassName}
       >
-        <Image
-          src="/icons/github.svg"
-          alt="GitHub"
-          width={40}
-          height={40}
-          className="w-10 h-10"
-        />
-      </motion.a>
+        <Image src="/icons/github.svg" alt="GitHub" width={40} height={40} sizes="40px" className="w-10 h-10" />
+      </a>
 
-      {/* LinkedIn Icon */}
-      <motion.a
+      <a
         href="https://www.linkedin.com/in/fikrilal/"
         target="_blank"
         rel="noreferrer"
         aria-label="LinkedIn"
-        className="bg-slate-1000 p-6 rounded-2xl border border-slate-600 flex items-center justify-center aspect-square"
-        variants={v}
-        whileHover={{ scale: 1.04 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className={cardClassName}
       >
-        <Image
-          src="/icons/linkedin.svg"
-          alt="LinkedIn"
-          width={40}
-          height={40}
-          className="w-10 h-10"
-        />
-      </motion.a>
+        <Image src="/icons/linkedin.svg" alt="LinkedIn" width={40} height={40} sizes="40px" className="w-10 h-10" />
+      </a>
     </div>
   );
-};
-
-export default IconCards;
+}

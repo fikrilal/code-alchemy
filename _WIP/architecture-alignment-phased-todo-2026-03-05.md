@@ -106,16 +106,16 @@ Make architecture boundaries explicit and remove stale code paths.
 Reduce unnecessary client surface area and standardize image handling.
 
 ### Tasks
-- [ ] Audit `"use client"` files and classify by required interactivity.
-- [ ] Convert static/presentational sections to server components where possible.
-- [ ] Keep only small client islands for true interactivity/animation.
-- [ ] Replace raw `<img>` usage with `next/image` where feasible.
-- [ ] Add proper `sizes` to all relevant `next/image` components.
-- [ ] Remove redundant Google font `@import` from global CSS (use `next/font` only).
+- [x] Audit `"use client"` files and classify by required interactivity.
+- [x] Convert static/presentational sections to server components where possible.
+- [x] Keep only small client islands for true interactivity/animation.
+- [x] Replace raw `<img>` usage with `next/image` where feasible.
+- [x] Add proper `sizes` to all relevant `next/image` components.
+- [x] Remove redundant Google font `@import` from global CSS (use `next/font` only).
 
 ### Done Criteria
-- [ ] Client bundle surface is reduced for marketing/blog/work routes.
-- [ ] Image strategy is consistent with engineering rules.
+- [x] Client bundle surface is reduced for marketing/blog/work routes.
+- [x] Image strategy is consistent with engineering rules.
 
 ---
 

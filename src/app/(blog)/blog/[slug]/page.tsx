@@ -107,6 +107,7 @@ export default async function BlogPost({
                       alt={frontmatter.author}
                       width={48}
                       height={48}
+                      sizes="48px"
                       className="object-cover"
                     />
                   </div>
@@ -123,13 +124,13 @@ export default async function BlogPost({
 
           {frontmatter.coverImage && (
             <div className="w-full mb-10 rounded-2xl overflow-hidden border border-slate-900/40 bg-black/20">
-              {/* Use native img for natural aspect ratio; next/image was forcing 16:9 */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={frontmatter.coverImage}
                 alt={frontmatter.title}
+                width={1600}
+                height={900}
+                sizes="(max-width: 768px) 100vw, 768px"
                 className="w-full h-auto object-contain"
-                loading="lazy"
               />
             </div>
           )}

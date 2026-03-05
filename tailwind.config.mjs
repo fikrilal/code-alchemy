@@ -229,8 +229,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['"Inter Tight"', "sans-serif"],
-        mono: ['"Fragment Mono"', "monospace"],
+        sans: ["var(--font-inter-tight)", "sans-serif"],
+        mono: ["var(--font-fragment-mono)", "monospace"],
       },
     },
   },

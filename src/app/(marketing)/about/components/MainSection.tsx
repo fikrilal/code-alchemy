@@ -1,93 +1,39 @@
-"use client";
-
-import { motion } from "framer-motion";
+import Image from "next/image";
 
 import ExperienceSection from "./ExperienceSection";
 import AchievementsSection from "./AchievementsSection";
 import QuoteSection from "./QuoteSection";
 import ChainOfThought from "./ChainOfThought";
 
-import type { Variants } from "framer-motion";
-
 export default function MainSection() {
-  // Container variants: controls stagger and a parent fade-in if desired
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        // Stagger each child (p, heading, etc.) by 0.15s
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  // Child variants: each element fades in from below
-  const childVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut",
-      },
-    },
-  };
-
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-0">
-      {/* Top Section */}
-      <motion.section
-        className="text-left mb-8 container mx-auto pt-28 sm:pt-28 lg:pt-40"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <motion.h1
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-50 mt-2 lg:mt-4"
-          variants={childVariants}
-        >
+      <section className="text-left mb-8 container mx-auto pt-28 sm:pt-28 lg:pt-40">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-50 mt-2 lg:mt-4">
           About Me
-        </motion.h1>
-      </motion.section>
+        </h1>
+      </section>
 
-      {/* Main Section (About) */}
-      <motion.section
-        className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between container mx-auto py-8 lg:py-20 lg:space-x-8"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        {/* Left Section */}
-        <motion.div
-          className="w-full lg:w-1/2 mb-8 lg:mb-0 flex flex-col lg:flex-row items-center lg:items-start text-center lg:text-left"
-          variants={childVariants}
-        >
-          {/* Avatar */}
-          <motion.img
-            src="/images/avatar.png"
-            alt="Ahmad Fikril Al Muzakki"
-            className="w-32 h-32 rounded-full mb-4 lg:mb-0 lg:mr-6"
-            variants={childVariants}
-          />
+      <section className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-between container mx-auto py-8 lg:py-20 lg:space-x-8">
+        <div className="w-full lg:w-1/2 mb-8 lg:mb-0 flex flex-col lg:flex-row items-center lg:items-start text-center lg:text-left">
+          <div className="w-32 h-32 rounded-full mb-4 lg:mb-0 lg:mr-6 overflow-hidden">
+            <Image
+              src="/images/avatar.png"
+              alt="Ahmad Fikril Al Muzakki"
+              width={128}
+              height={128}
+              sizes="128px"
+              className="w-full h-full object-cover"
+              priority
+            />
+          </div>
 
-          {/* Info Section */}
-          <motion.div
-            className="flex flex-col items-center lg:items-start"
-            variants={childVariants}
-          >
+          <div className="flex flex-col items-center lg:items-start">
             <ChainOfThought />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        {/* Right Section */}
-        <motion.div
-          className="w-full lg:w-1/2 text-left lg:text-left"
-          variants={childVariants}
-        >
+        <div className="w-full lg:w-1/2 text-left lg:text-left">
           <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:!leading-[1.8]">
             Hi, I’m Fikril — a mobile engineer based in Bandung, Indonesia.
           </p>
@@ -122,26 +68,12 @@ export default function MainSection() {
             Still figuring things out, still learning — but moving with
             intention.
           </p>
-        </motion.div>
-      </motion.section>
+        </div>
+      </section>
 
-      {/* Experience Section */}
-      <ExperienceSection
-        containerVariants={containerVariants}
-        childVariants={childVariants}
-      />
-
-      {/* Achievements Section */}
-      <AchievementsSection
-        containerVariants={containerVariants}
-        childVariants={childVariants}
-      />
-
-      {/* Quote Section */}
-      <QuoteSection
-        containerVariants={containerVariants}
-        childVariants={childVariants}
-      />
+      <ExperienceSection />
+      <AchievementsSection />
+      <QuoteSection />
     </div>
   );
 }

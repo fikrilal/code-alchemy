@@ -68,6 +68,7 @@ export default function SpotifyNowPlaying() {
             alt="Spotify Icon"
             width={16}
             height={16}
+            sizes="16px"
             className="w-4 h-4"
           />
         </div>
@@ -84,6 +85,7 @@ export default function SpotifyNowPlaying() {
                   alt="Album Cover"
                   fill
                   quality={100}
+                  sizes="80px"
                   className="object-cover rounded-full animate-spin"
                   style={{ animationDuration: "10s" }}
                 />

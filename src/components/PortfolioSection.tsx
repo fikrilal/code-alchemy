@@ -56,6 +56,7 @@ export default function PortfolioSection() {
                 alt="Recent Project screenshot"
                 width={1390}
                 height={782}
+                sizes="(max-width: 1024px) 100vw, 33vw"
                 className="w-full h-full object-cover"
               />
             </div>
