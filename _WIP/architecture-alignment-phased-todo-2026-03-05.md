@@ -48,7 +48,7 @@ Stop build brittleness caused by strict env parsing during route collection.
 
 ### Tasks
 - [x] Decide env policy.
-- [ ] Option A: strict CI/preview secrets provisioning for all required env vars.
+- [x] Option A: strict CI/preview secrets provisioning for all required env vars (explicitly not selected; superseded by Option B policy).
 - [x] Option B: lazy env parsing per API execution path to avoid unrelated build failures.
 - [x] Implement selected policy in `src/lib/env.ts` and API routes.
 - [x] Ensure `/api/spotify/*` and `/api/githubStats` routes do not break unrelated build outputs.
