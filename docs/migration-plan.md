@@ -4,6 +4,10 @@ This document breaks the re‑architecture and TypeScript migration into small, 
 
 Scope: Next.js (App Router) • TypeScript • MDX • Tailwind • Zod‑validated env • Typed external API libs.
 
+## Active Alignment Tracking
+- Phase TODO: `_WIP/architecture-alignment-phased-todo-2026-03-05.md`
+- Phase tracker/board cards: `_WIP/architecture-alignment-phase-tracker-2026-03-05.md`
+
 ## Guiding Principles
 - Server‑first rendering; client islands only for true interactivity (motion, widgets).
 - TypeScript everywhere; Zod for env and external data validation.

@@ -20,7 +20,7 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 
 Run `npm run lint` to execute ESLint checks during development.
 Run `npm run typecheck` to validate TypeScript types.
-Run `npm run test` to execute the current test script (placeholder until suite is added).
+Run `npm run test` to execute the automated test suite.
 
 ## Building
 

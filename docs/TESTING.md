@@ -5,11 +5,12 @@
 - Target coverage: 70%+ on libs; snapshot tests for a few representative MDX posts.
 
 ## Framework & Files
-- Use Vitest or Jest (team preference). Filenames: `*.test.ts` or `*.spec.ts`.
+- Use **Vitest**. Filenames: `*.test.ts` or `*.spec.ts`.
 - For MDX snapshots, compile with the same remark/rehype pipeline used in app code.
 
 ## Commands
 - Unit tests: `npm run test`
+- Watch mode: `npm run test:watch`
 - Type check: `npm run typecheck` (tsc --noEmit)
 - Lint: `npm run lint`
 

@@ -16,12 +16,14 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   {
-    files: ["**/*.{ts,tsx,js,jsx,mjs}"],
+    files: ["**/*.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
+        project: "./tsconfig.json",
+        tsconfigRootDir: __dirname,
       },
     },
     plugins: {
@@ -31,9 +33,8 @@ const eslintConfig = [
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
-      // Enable typed rules after parserOptions.project is configured
-      // "@typescript-eslint/no-floating-promises": "error",
-      // "@typescript-eslint/no-misused-promises": "error",
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-misused-promises": "error",
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       "@typescript-eslint/consistent-type-imports": "error",
       "import/order": [

@@ -47,10 +47,12 @@ export default function SpotifyNowPlaying() {
     }
 
     // Initial fetch
-    fetchSpotify();
+    void fetchSpotify();
 
     // Refresh every 60 seconds
-    const interval = setInterval(fetchSpotify, 60000);
+    const interval = setInterval(() => {
+      void fetchSpotify();
+    }, 60000);
 
     return () => clearInterval(interval);
   }, []);

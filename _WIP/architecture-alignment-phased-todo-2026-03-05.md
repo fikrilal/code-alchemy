@@ -12,12 +12,12 @@ Bring the codebase to high-standard, staff-level architecture quality by fully a
 Establish execution structure before making changes.
 
 ### Tasks
-- [ ] Create one tracking issue/board card per phase.
-- [ ] Add this TODO file link to project planning docs.
-- [ ] Decide target branch strategy (single epic branch vs incremental PRs per phase).
+- [x] Create one tracking issue/board card per phase.
+- [x] Add this TODO file link to project planning docs.
+- [x] Decide target branch strategy (single epic branch vs incremental PRs per phase).
 
 ### Done Criteria
-- [ ] Phases are tracked with owners and statuses.
+- [x] Phases are tracked with owners and statuses.
 
 ---
 
@@ -141,28 +141,28 @@ Eliminate misleading auth paths and ensure backend behavior is intentional.
 Add confidence and prevent regression to architecture drift.
 
 ### Tasks
-- [ ] Add unit tests for env parsing (`src/lib/env.ts`).
-- [ ] Add API contract tests for GitHub/Spotify libs (mock external responses).
-- [ ] Add MDX compile/sanitization snapshot tests for representative blog/work posts.
-- [ ] Enable stricter typed ESLint rules once parser project config is wired:
-- [ ] `@typescript-eslint/no-floating-promises`
-- [ ] `@typescript-eslint/no-misused-promises`
-- [ ] Add lint/type/build/test commands to CI as required gates.
+- [x] Add unit tests for env parsing (`src/lib/env.ts`).
+- [x] Add API contract tests for GitHub/Spotify libs (mock external responses).
+- [x] Add MDX compile/sanitization snapshot tests for representative blog/work posts.
+- [x] Enable stricter typed ESLint rules once parser project config is wired:
+- [x] `@typescript-eslint/no-floating-promises`
+- [x] `@typescript-eslint/no-misused-promises`
+- [x] Add lint/type/build/test commands to CI as required gates.
 
 ### Done Criteria
-- [ ] Test suite exists and runs in CI.
-- [ ] ESLint guardrails match engineering-rules intent.
+- [x] Test suite exists and runs in CI.
+- [x] ESLint guardrails match engineering-rules intent.
 
 ---
 
 ## Cross-Phase Acceptance Criteria
 
-- [ ] Local and CI runtime/tool versions are aligned.
-- [ ] Build is stable under documented env strategy.
-- [ ] Security posture matches ADR intent (sanitized content + strict CSP).
-- [ ] Route and feature boundaries are clean and intentional.
-- [ ] Client/server split follows server-first discipline.
-- [ ] Tests and CI gates prevent reintroduction of current drift.
+- [x] Local and CI runtime/tool versions are aligned.
+- [x] Build is stable under documented env strategy.
+- [x] Security posture matches ADR intent (sanitized content + strict CSP).
+- [x] Route and feature boundaries are clean and intentional.
+- [x] Client/server split follows server-first discipline.
+- [x] Tests and CI gates prevent reintroduction of current drift.
 
 ---
 
