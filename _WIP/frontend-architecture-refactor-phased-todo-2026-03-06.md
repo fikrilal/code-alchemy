@@ -155,14 +155,14 @@ Tighten the runtime boundary to match server-first Next.js practice.
 
 ### Tasks
 
-- [ ] Audit `"use client"` files again after folder cleanup.
-- [ ] Mark server-only modules with `import "server-only"` where appropriate.
-- [ ] Ensure content parsing, env access, and API integrations stay server-side.
-- [ ] Keep client components focused on interactivity, effects, or browser APIs only.
+- [x] Audit `"use client"` files again after folder cleanup.
+- [x] Mark server-only modules with `import "server-only"` where appropriate.
+- [x] Ensure content parsing, env access, and API integrations stay server-side.
+- [x] Keep client components focused on interactivity, effects, or browser APIs only.
 
 ### Done Criteria
 
-- [ ] The server/client boundary is intentional and obvious from file placement and imports.
+- [x] The server/client boundary is intentional and obvious from file placement and imports.
 
 ---
 
