@@ -1,4 +1,4 @@
-import { getSortedPostsData } from "@/lib/blog";
+import { getSortedPostsData } from "@/features/blog/lib/posts";
 
 import BlogMainSection from "./BlogMainSection";
 

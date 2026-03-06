@@ -1,5 +1,5 @@
-import { getWorkSummaries } from "@/lib/work";
 import SelectedWorkSection from "@/features/work/components/SelectedWorkSection";
+import { getWorkSummaries } from "@/features/work/lib/summaries";
 
 export default async function WorkIndexPage() {
   const workItems = await getWorkSummaries();

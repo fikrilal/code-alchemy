@@ -117,15 +117,15 @@ Make feature boundaries explicit by moving domain/content logic out of `src/lib`
 
 ### Tasks
 
-- [ ] Move blog aggregation logic from `src/lib/blog.ts` to `src/features/blog/lib/*`.
-- [ ] Move work summary/content orchestration from `src/lib/work.ts` to `src/features/work/lib/*`.
-- [ ] Update imports so feature modules own their own types and content helpers.
-- [ ] Keep `src/lib` only for infra-level concerns like env, API integrations, and generic utilities.
+- [x] Move blog aggregation logic from `src/lib/blog.ts` to `src/features/blog/lib/*`.
+- [x] Move work summary/content orchestration from `src/lib/work.ts` to `src/features/work/lib/*`.
+- [x] Update imports so feature modules own their own types and content helpers.
+- [x] Keep `src/lib` only for infra-level concerns like env, API integrations, and generic utilities.
 
 ### Done Criteria
 
-- [ ] `src/lib` does not import from feature folders.
-- [ ] Feature content orchestration is owned by the relevant feature slice.
+- [x] `src/lib` does not import from feature folders.
+- [x] Feature content orchestration is owned by the relevant feature slice.
 
 ---
 

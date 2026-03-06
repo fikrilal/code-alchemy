@@ -6,8 +6,6 @@ import { z } from "zod";
 
 import type { BlogSummary } from "@/features/blog/types";
 
-export type { BlogSummary };
-
 const postsDirectory = path.join(process.cwd(), "src/content/blog");
 
 const BlogSummarySchema = z.object({
@@ -20,9 +18,10 @@ const BlogSummarySchema = z.object({
 
 export function getSortedPostsData(): BlogSummary[] {
   if (!fs.existsSync(postsDirectory)) return [];
+
   const fileNames = fs
     .readdirSync(postsDirectory)
-    .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
+    .filter((fileName) => fileName.endsWith(".md") || fileName.endsWith(".mdx"));
 
   const allPostsData: BlogSummary[] = fileNames.map((fileName) => {
     const slug = fileName.replace(/\.(md|mdx)$/i, "");
@@ -31,9 +30,11 @@ export function getSortedPostsData(): BlogSummary[] {
 
     const gm = matter(fileContents);
     const parsed = BlogSummarySchema.safeParse(gm.data);
+
     if (!parsed.success) {
       throw new Error(`Invalid frontmatter for blog post: ${slug}`);
     }
+
     const data = parsed.data;
 
     return {
@@ -53,5 +54,3 @@ export function getSortedPostsData(): BlogSummary[] {
 
   return allPostsData.sort((a, b) => toMillis(b) - toMillis(a));
 }
-
-// Note: Content is rendered via MDX. `getPostData` is intentionally removed.
