@@ -70,23 +70,24 @@ Remove page-specific sections from `src/components`.
 
 ### Tasks
 
-- [ ] Move home-specific sections from `src/components/*` into `src/features/home/components/*`.
-- [ ] Move any blog-specific or work-specific sections out of `src/components` unless they are truly cross-feature shared.
-- [ ] Create `src/components/layout/*` for shared site chrome such as `Navbar` and `Footer`.
-- [ ] Keep `src/components/ui/*` limited to reusable primitives.
+- [x] Move home-specific sections from `src/components/*` into `src/features/home/components/*`.
+- [x] Move any blog-specific or work-specific sections out of `src/components` unless they are truly cross-feature shared.
+- [x] Create `src/components/layout/*` for shared site chrome such as `Navbar` and `Footer`.
+- [x] Keep `src/components/ui/*` limited to reusable primitives.
 
 ### Candidate Moves
 
-- [ ] `src/components/HeroSection.tsx` -> `src/features/home/components/HeroSection.tsx`
-- [ ] `src/components/PortfolioSection.tsx` -> `src/features/home/components/PortfolioSection.tsx`
-- [ ] `src/components/BlogSection.tsx` -> `src/features/home/components/BlogSection.tsx`
-- [ ] `src/components/SelectedWork.tsx` -> `src/features/work/components/SelectedWorkSection.tsx` or shared feature-owned location
-- [ ] `src/components/Navbar.tsx` -> `src/components/layout/Navbar.tsx`
-- [ ] `src/components/Footer.tsx` -> `src/components/layout/Footer.tsx`
+- [x] `src/components/HeroSection.tsx` -> `src/features/home/components/HeroSection.tsx`
+- [x] `src/components/PortfolioSection.tsx` -> `src/features/home/components/PortfolioSection.tsx`
+- [x] `src/components/BlogSection.tsx` -> `src/features/home/components/BlogSection.tsx`
+- [x] `src/components/SelectedWork.tsx` -> `src/features/work/components/SelectedWorkSection.tsx`
+- [x] `src/components/Navbar.tsx` -> `src/components/layout/Navbar.tsx`
+- [x] `src/components/Footer.tsx` -> `src/components/layout/Footer.tsx`
+- [x] Supporting home-only widgets moved under `src/features/home/components/*` (`GithubActivity`, `SpotifyNowPlaying`, `TechStack`, `IconCards`, `SideHustleFlashCard`, `Carousel`, `TextCursor`)
 
 ### Done Criteria
 
-- [ ] `src/components` no longer contains feature/page sections masquerading as shared components.
+- [x] `src/components` no longer contains feature/page sections masquerading as shared components.
 
 ---
 

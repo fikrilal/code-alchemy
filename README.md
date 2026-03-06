@@ -29,7 +29,7 @@ This project uses a server-first Next.js App Router architecture with feature-ba
 - `src/app` contains routes, layouts, metadata, and route handlers.
 - `src/features` contains page/domain-specific components and logic for home, about, blog, work, and MDX support.
 - `src/components/ui` contains reusable UI primitives.
-- `src/components/layout` is the target home for shared site chrome such as navbar/footer during the ongoing refactor.
+- `src/components/layout` contains shared site chrome such as navbar/footer.
 - `src/lib` is reserved for infrastructure and cross-cutting utilities such as env parsing and external API integrations.
 - `src/content` contains MDX content for blog posts and work case studies.
 

@@ -1,7 +1,7 @@
-import BlogSection from "@/components/BlogSection";
-import HeroSection from "@/components/HeroSection";
-import PortfolioSection from "@/components/PortfolioSection";
-import SelectedWork from "@/components/SelectedWork";
+import BlogSection from "@/features/home/components/BlogSection";
+import HeroSection from "@/features/home/components/HeroSection";
+import PortfolioSection from "@/features/home/components/PortfolioSection";
+import SelectedWorkSection from "@/features/work/components/SelectedWorkSection";
 import { getSortedPostsData } from "@/lib/blog";
 import { getWorkSummaries } from "@/lib/work";
 
@@ -18,7 +18,7 @@ export default async function HomePage() {
     <main className="overflow-hidden">
       <HeroSection />
       <PortfolioSection />
-      <SelectedWork workItems={featuredWork} />
+      <SelectedWorkSection workItems={featuredWork} />
       <BlogSection blogPosts={blogPosts} />
     </main>
   );

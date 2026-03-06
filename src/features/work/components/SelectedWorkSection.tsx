@@ -38,7 +38,7 @@ const cardHover = {
   transition: { duration: 0.25, ease: "easeOut" as const },
 };
 
-export default function SelectedWork({
+export default function SelectedWorkSection({
   workItems,
   heading = "Selected Work",
   description = "A look at the products I’ve helped ship — real users, real constraints, and the kind of mobile work I like to take end to end.",
