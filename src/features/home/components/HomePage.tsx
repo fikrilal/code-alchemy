@@ -1,7 +1,5 @@
 import BlogSection from "@/components/BlogSection";
-import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
-import Navbar from "@/components/Navbar";
 import PortfolioSection from "@/components/PortfolioSection";
 import SelectedWork from "@/components/SelectedWork";
 import { getSortedPostsData } from "@/lib/blog";
@@ -17,15 +15,11 @@ export default async function HomePage() {
   const featuredWork = workItems.slice(0, 4);
 
   return (
-    <>
-      <Navbar />
-      <main className="overflow-hidden">
-        <HeroSection />
-        <PortfolioSection />
-        <SelectedWork workItems={featuredWork} />
-        <BlogSection blogPosts={blogPosts} />
-      </main>
-      <Footer />
-    </>
+    <main className="overflow-hidden">
+      <HeroSection />
+      <PortfolioSection />
+      <SelectedWork workItems={featuredWork} />
+      <BlogSection blogPosts={blogPosts} />
+    </main>
   );
 }

@@ -50,15 +50,15 @@ Use nested layouts for section-level shared UI instead of repeating page chrome.
 
 ### Tasks
 
-- [ ] Add `layout.tsx` under `src/app/(marketing)`, `src/app/(blog)`, and `src/app/(work)` where it improves clarity.
-- [ ] Move shared route chrome like `Navbar` and `Footer` into those layouts where appropriate.
-- [ ] Remove duplicated `Navbar` and `Footer` composition from page files that no longer need it.
-- [ ] Keep root-level concerns in `src/app/layout.tsx` only.
+- [x] Add `layout.tsx` under `src/app/(marketing)`, `src/app/(blog)`, and `src/app/(work)` where it improves clarity.
+- [x] Move shared route chrome like `Navbar` and `Footer` into those layouts where appropriate.
+- [x] Remove duplicated `Navbar` and `Footer` composition from page files that no longer need it.
+- [x] Keep root-level concerns in `src/app/layout.tsx` only.
 
 ### Done Criteria
 
-- [ ] Page files focus on page-specific content.
-- [ ] Shared route UI is defined through layouts, not repeated page composition.
+- [x] Page files focus on page-specific content.
+- [x] Shared route UI is defined through layouts, not repeated page composition.
 
 ---
 

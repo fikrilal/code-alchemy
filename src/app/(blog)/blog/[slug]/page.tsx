@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import { loadPostBySlug } from "@/features/blog/lib/mdx";
 import { getSortedPostsData } from "@/lib/blog";
 
@@ -79,85 +77,81 @@ export default async function BlogPost({
   const formattedDate = formatDate(frontmatter.date);
 
   return (
-    <>
-      <Navbar />
-      <main className="bg-neutral-950 min-h-screen pt-10">
-        <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-16 sm:pt-24">
-          {/* Header */}
-          <header className="mb-8">
-            <div className="text-xs sm:text-sm text-slate-300 flex flex-wrap items-center gap-x-3 gap-y-1 mb-3">
-              <span>{formattedDate}</span>
-              <span className="opacity-50">•</span>
-              <span>{frontmatter.readTime || "5 min read"}</span>
-            </div>
-            <h1 className="text-3xl md:text-[40px] font-semibold tracking-tight text-slate-100 leading-tight">
-              {frontmatter.title}
-            </h1>
-            {frontmatter.description && (
-              <p className="text-base md:text-lg text-slate-300 leading-relaxed mt-3">
-                {frontmatter.description}
-              </p>
-            )}
-            {frontmatter.author && (
-              <div className="flex items-center mt-6 gap-3">
-                {frontmatter.authorImage && (
-                  <div className="w-12 h-12 rounded-full overflow-hidden border border-slate-800">
-                    <Image
-                      src={frontmatter.authorImage}
-                      alt={frontmatter.author}
-                      width={48}
-                      height={48}
-                      sizes="48px"
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-                <div className="text-sm text-slate-200">
-                  <p className="font-medium tracking-tight">
-                    {frontmatter.author}
-                  </p>
-                  <p className="text-slate-300">{formattedDate}</p>
-                </div>
-              </div>
-            )}
-          </header>
-
-          {frontmatter.coverImage && (
-            <div className="w-full mb-10 rounded-2xl overflow-hidden border border-slate-900/40 bg-black/20">
-              <Image
-                src={frontmatter.coverImage}
-                alt={frontmatter.title}
-                width={1600}
-                height={900}
-                sizes="(max-width: 768px) 100vw, 768px"
-                className="w-full h-auto object-contain"
-              />
-            </div>
-          )}
-
-          {/* Content */}
-          <div className="prose prose-invert prose-headings:text-slate-100 prose-headings:tracking-tight prose-headings:font-semibold prose-p:text-slate-200 prose-li:text-slate-200 prose-p:leading-relaxed prose-strong:text-slate-100 prose-em:text-slate-200 prose-blockquote:border-l-slate-700 prose-blockquote:text-slate-300 prose-code:text-cyan-300 prose-pre:bg-slate-900/70 prose-pre:border prose-pre:border-slate-800 prose-pre:p-4 prose-pre:rounded-xl prose-code:before:content-none prose-code:after:content-none max-w-none [&>h1:first-of-type]:hidden">
-            {content}
+    <main className="bg-neutral-950 min-h-screen pt-10">
+      <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-16 sm:pt-24">
+        {/* Header */}
+        <header className="mb-8">
+          <div className="text-xs sm:text-sm text-slate-300 flex flex-wrap items-center gap-x-3 gap-y-1 mb-3">
+            <span>{formattedDate}</span>
+            <span className="opacity-50">•</span>
+            <span>{frontmatter.readTime || "5 min read"}</span>
           </div>
-
-          {/* Tags */}
-          {frontmatter.tags && frontmatter.tags.length > 0 && (
-            <div className="mt-10 pt-6 border-t border-slate-800">
-              <div className="flex flex-wrap gap-2">
-                {frontmatter.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
+          <h1 className="text-3xl md:text-[40px] font-semibold tracking-tight text-slate-100 leading-tight">
+            {frontmatter.title}
+          </h1>
+          {frontmatter.description && (
+            <p className="text-base md:text-lg text-slate-300 leading-relaxed mt-3">
+              {frontmatter.description}
+            </p>
+          )}
+          {frontmatter.author && (
+            <div className="flex items-center mt-6 gap-3">
+              {frontmatter.authorImage && (
+                <div className="w-12 h-12 rounded-full overflow-hidden border border-slate-800">
+                  <Image
+                    src={frontmatter.authorImage}
+                    alt={frontmatter.author}
+                    width={48}
+                    height={48}
+                    sizes="48px"
+                    className="object-cover"
+                  />
+                </div>
+              )}
+              <div className="text-sm text-slate-200">
+                <p className="font-medium tracking-tight">
+                  {frontmatter.author}
+                </p>
+                <p className="text-slate-300">{formattedDate}</p>
               </div>
             </div>
           )}
-        </article>
-      </main>
-      <Footer />
-    </>
+        </header>
+
+        {frontmatter.coverImage && (
+          <div className="w-full mb-10 rounded-2xl overflow-hidden border border-slate-900/40 bg-black/20">
+            <Image
+              src={frontmatter.coverImage}
+              alt={frontmatter.title}
+              width={1600}
+              height={900}
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="w-full h-auto object-contain"
+            />
+          </div>
+        )}
+
+        {/* Content */}
+        <div className="prose prose-invert prose-headings:text-slate-100 prose-headings:tracking-tight prose-headings:font-semibold prose-p:text-slate-200 prose-li:text-slate-200 prose-p:leading-relaxed prose-strong:text-slate-100 prose-em:text-slate-200 prose-blockquote:border-l-slate-700 prose-blockquote:text-slate-300 prose-code:text-cyan-300 prose-pre:bg-slate-900/70 prose-pre:border prose-pre:border-slate-800 prose-pre:p-4 prose-pre:rounded-xl prose-code:before:content-none prose-code:after:content-none max-w-none [&>h1:first-of-type]:hidden">
+          {content}
+        </div>
+
+        {/* Tags */}
+        {frontmatter.tags && frontmatter.tags.length > 0 && (
+          <div className="mt-10 pt-6 border-t border-slate-800">
+            <div className="flex flex-wrap gap-2">
+              {frontmatter.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </article>
+    </main>
   );
 }
