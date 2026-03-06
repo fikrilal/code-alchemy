@@ -28,14 +28,14 @@ const childVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6, ease: "easeOut" as const },
   },
 };
 
 const cardHover = {
   scale: 1.01,
   translateY: -2,
-  transition: { duration: 0.25, ease: "easeOut" },
+  transition: { duration: 0.25, ease: "easeOut" as const },
 };
 
 export default function SelectedWork({

@@ -197,7 +197,7 @@ export default function SideHustleFlashCard() {
                 goToNext();
               }
             }}
-            transition={{ duration: 0.35, ease: "easeInOut" }}
+            transition={{ duration: 0.35, ease: "easeInOut" as const }}
           >
             <div
               className={
