@@ -86,18 +86,14 @@ export const metadata: Metadata = {
       follow: true,
     },
   },
+  verification: {
+    google: "zUCZgB63GISFL-K7CBVwrLJGN1VLnGn-p1lzrwnbqVU",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-          name="google-site-verification"
-          content="zUCZgB63GISFL-K7CBVwrLJGN1VLnGn-p1lzrwnbqVU"
-        />
-      </head>
       <body
         className={`${interTight.variable} ${fragmentMono.variable} font-sans antialiased dark:bg-darkbg dark:text-white`}
       >

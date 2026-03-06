@@ -1,10 +1,9 @@
+import typography from "@tailwindcss/typography";
+import tailwindHamburgers from "tailwind-hamburgers";
+
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+const config = {
+  content: ["./src/**/*.{js,ts,jsx,tsx,md,mdx}"],
   darkMode: "class",
   theme: {
     extend: {
@@ -234,5 +233,7 @@ export default {
       },
     },
   },
-  plugins: [require("tailwind-hamburgers"), require("@tailwindcss/typography")],
+  plugins: [tailwindHamburgers, typography],
 };
+
+export default config;

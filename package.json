@@ -9,7 +9,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -50,6 +50,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
+    "autoprefixer": "^10.4.27",
     "eslint": "^9",
     "eslint-config-next": "15.5.12",
     "eslint-plugin-import": "^2",

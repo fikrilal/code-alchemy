@@ -14,6 +14,14 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: [
+      "**/.next/**",
+      "**/node_modules/**",
+      "**/coverage/**",
+      "**/dist/**",
+    ],
+  },
   ...compat.extends("next/core-web-vitals"),
   {
     files: ["**/*.{ts,tsx}"],
