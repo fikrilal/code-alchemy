@@ -5,9 +5,10 @@ This project targets a modern, maintainable structure: Next.js App Router + Type
 ## Structure
 - Route groups: `src/app/(marketing|blog|work)` with server components by default.
 - APIs: thin route handlers in `src/app/api/*` delegating to typed libs.
-- Features: `src/features/{blog,work}/(components|lib|types.ts)`.
+- Features: `src/features/{about,blog,home,work}/(components|data|lib|types.ts)`.
 - Shared libs: `src/lib/{env.ts,github.ts,spotify.ts,markdown.ts,fetch.ts}`.
 - UI primitives: `src/components/ui/*`.
+- Shared layout: `src/components/layout/*`.
 - Content: `src/content/{blog,work}/*.mdx`.
 
 ## Principles
@@ -15,6 +16,8 @@ This project targets a modern, maintainable structure: Next.js App Router + Type
 - Typed boundaries: TypeScript strict; Zod for env and external data.
 - Content safety: MDX compiled via `next-mdx-remote/rsc` with sanitize and pretty code.
 - Caching: `fetch` with `next: { revalidate }` and/or `cache()` for stable data.
+- Route ownership: `src/app` owns routing, layouts, metadata, and route handlers. Domain-specific implementation belongs in `src/features`.
+- Route-local colocation: only use private folders such as `_components`, `_lib`, or `_data` for files that are truly private to one route segment. Avoid public `components` or `lib` folders inside `src/app`.
 
 ## External APIs
 - GitHub and Spotify logic live in `src/lib/{github,spotify}.ts` with Zod response schemas and unified error shapes.

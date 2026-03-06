@@ -137,13 +137,13 @@ Make route-local internals predictable where colocation is useful.
 
 ### Tasks
 
-- [ ] Decide whether route-local implementation folders should use private folders such as `_components` and `_lib`.
-- [ ] If using route-local colocation, apply it consistently for route-specific utilities only.
-- [ ] Avoid mixing route-local feature code with top-level shared feature code unless the ownership rule is clear.
+- [x] Decide whether route-local implementation folders should use private folders such as `_components` and `_lib`.
+- [x] If using route-local colocation, apply it consistently for route-specific utilities only.
+- [x] Avoid mixing route-local feature code with top-level shared feature code unless the ownership rule is clear.
 
 ### Done Criteria
 
-- [ ] Contributors can tell whether a file belongs in `app`, `features`, or a route-local private folder.
+- [x] Contributors can tell whether a file belongs in `app`, `features`, or a route-local private folder.
 
 ---
 
