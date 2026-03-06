@@ -35,7 +35,17 @@ This project uses a server-first Next.js App Router architecture with feature-ba
 
 Guiding rule: route-specific or domain-specific code should live in the owning feature folder, while only truly shared primitives and layout components belong in top-level shared component folders.
 
-Route-local colocation is a fallback, not the default. If a helper is truly private to a single route segment, keep it under a private folder inside `src/app`, such as `_components`, `_lib`, or `_data`. Do not create public `components` or `lib` folders under `src/app`.
+Route-local colocation is a fallback, not the default. If a helper is truly private to a single route segment or the app shell, keep it under a private folder inside `src/app`, such as `_components`, `_lib`, `_data`, or `_providers`. Do not create public `components` or `lib` folders under `src/app`.
+
+## Where New Code Goes
+
+- New route files, metadata, layouts, and route handlers go in `src/app`.
+- Page- or domain-specific UI and content logic go in the owning feature slice under `src/features`.
+- Reusable primitives and low-level shared wrappers go in `src/components/ui`.
+- Cross-site chrome like navbar and footer goes in `src/components/layout`.
+- Environment parsing, external API integrations, and filesystem/image utilities go in `src/lib`.
+- Route-private helpers are allowed only as a fallback, and they must live in a private `src/app/**/_*` folder.
+- Blog posts and case studies belong in `src/content`.
 
 ## Building
 

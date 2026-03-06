@@ -2,7 +2,7 @@
 
 Date: 2026-03-06
 Source: `_WIP/frontend-architecture-refactor-proposal-2026-03-06.md`
-Status: In Progress
+Status: Completed
 
 ## Goal
 
@@ -174,27 +174,27 @@ Make the repo understandable to strangers without oral context.
 
 ### Tasks
 
-- [ ] Add a concise architecture section to `README.md`.
-- [ ] Document folder ownership with examples.
-- [ ] Add a short "where new code goes" section for contributors.
-- [ ] Ensure file names communicate ownership clearly.
-- [ ] Remove any stale docs that describe a structure different from the real repo.
+- [x] Add a concise architecture section to `README.md`.
+- [x] Document folder ownership with examples.
+- [x] Add a short "where new code goes" section for contributors.
+- [x] Ensure file names communicate ownership clearly.
+- [x] Remove any stale docs that describe a structure different from the real repo.
 
 ### Done Criteria
 
-- [ ] A contributor can clone the repo and understand the folder strategy in a few minutes.
+- [x] A contributor can clone the repo and understand the folder strategy in a few minutes.
 
 ---
 
 ## Cross-Phase Acceptance Criteria
 
-- [ ] `app` owns routing and layouts, not feature logic.
-- [ ] `features` owns page/domain-specific code.
-- [ ] `components/ui` and `components/layout` are the only shared component buckets.
-- [ ] `src/lib` is infrastructure-only.
-- [ ] Blog/work/about/home use one consistent organizational strategy.
-- [ ] Shared chrome uses layouts where appropriate.
-- [ ] The structure is simple enough for public cloning and contribution.
+- [x] `app` owns routing and layouts, not feature logic.
+- [x] `features` owns page/domain-specific code.
+- [x] `components/ui` and `components/layout` are the only shared component buckets.
+- [x] `src/lib` is infrastructure-only.
+- [x] Blog/work/about/home use one consistent organizational strategy.
+- [x] Shared chrome uses layouts where appropriate.
+- [x] The structure is simple enough for public cloning and contribution.
 
 ---
 

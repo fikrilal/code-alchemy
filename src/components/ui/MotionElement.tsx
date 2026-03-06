@@ -4,7 +4,16 @@ import { motion, type HTMLMotionProps } from "framer-motion";
 
 import type { ComponentType } from "react";
 
-type MotionTag = "div" | "section" | "p" | "h1" | "h2" | "h3" | "span" | "ul" | "li";
+type MotionTag =
+  | "div"
+  | "section"
+  | "p"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "span"
+  | "ul"
+  | "li";
 
 const motionMap: Record<MotionTag, ComponentType<HTMLMotionProps<"div">>> = {
   div: motion.div,
@@ -24,6 +33,7 @@ export type MotionElementProps = HTMLMotionProps<"div"> & {
 
 export function MotionElement({ as = "div", ...rest }: MotionElementProps) {
   const Component = motionMap[as] ?? motion.div;
+
   return <Component {...rest} />;
 }
 

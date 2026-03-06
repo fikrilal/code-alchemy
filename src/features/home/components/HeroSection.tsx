@@ -1,4 +1,4 @@
-import MotionElement from "@/components/animations/Motion";
+import MotionElement from "@/components/ui/MotionElement";
 import Button from "@/components/ui/Button";
 
 const containerVariants = {

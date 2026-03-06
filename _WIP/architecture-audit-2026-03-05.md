@@ -1,5 +1,7 @@
 # Code Alchemy Architecture Audit
 
+Historical note: this audit captures the pre-refactor state from 2026-03-05. Some file paths and findings were resolved during the 2026-03-06 architecture normalization work.
+
 Date: 2026-03-05  
 Scope: repository-level architecture review (App Router boundaries, feature structure, content pipeline, API design, security posture, CI/quality gates).
 
@@ -195,4 +197,3 @@ Build failure reason:
 
 You already have many pieces of a high-standard personal-site architecture, but standards enforcement is currently inconsistent.  
 If Phase 1 + 2 are completed, this repo becomes significantly more defensible as a “staff-level quality” codebase, not just a visually strong portfolio site.
-

@@ -1,5 +1,7 @@
 # Client Island Audit — Phase 5
 
+Historical note: this audit captures the pre-refactor state from 2026-03-05. Some file paths moved during the 2026-03-06 architecture normalization work.
+
 Date: 2026-03-05
 
 ## Scope
