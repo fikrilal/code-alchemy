@@ -22,6 +22,19 @@ Run `npm run lint` to execute ESLint checks during development.
 Run `npm run typecheck` to validate TypeScript types.
 Run `npm run test` to execute the automated test suite.
 
+## Architecture
+
+This project uses a server-first Next.js App Router architecture with feature-based organization.
+
+- `src/app` contains routes, layouts, metadata, and route handlers.
+- `src/features` contains page/domain-specific components and logic for home, about, blog, work, and MDX support.
+- `src/components/ui` contains reusable UI primitives.
+- `src/components/layout` is the target home for shared site chrome such as navbar/footer during the ongoing refactor.
+- `src/lib` is reserved for infrastructure and cross-cutting utilities such as env parsing and external API integrations.
+- `src/content` contains MDX content for blog posts and work case studies.
+
+Guiding rule: route-specific or domain-specific code should live in the owning feature folder, while only truly shared primitives and layout components belong in top-level shared component folders.
+
 ## Building
 
 Create an optimized production build with:
