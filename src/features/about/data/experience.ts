@@ -46,4 +46,3 @@ const experiences: Experience[] = [
 ];
 
 export default experiences;
-

@@ -99,13 +99,13 @@ Stop using a separate structural style for the about page.
 
 ### Tasks
 
-- [ ] Move `src/app/(marketing)/about/components/*` into `src/features/about/components/*`.
-- [ ] Move page-specific static data for about into `src/features/about/data/*` if it is only used there.
-- [ ] Keep `src/app/(marketing)/about/page.tsx` thin and feature-composed.
+- [x] Move `src/app/(marketing)/about/components/*` into `src/features/about/components/*`.
+- [x] Move page-specific static data for about into `src/features/about/data/*` if it is only used there.
+- [x] Keep `src/app/(marketing)/about/page.tsx` thin and feature-composed.
 
 ### Done Criteria
 
-- [ ] About uses the same organizational model as home/blog/work.
+- [x] About uses the same organizational model as home/blog/work.
 
 ---
 

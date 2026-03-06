@@ -43,4 +43,3 @@ const achievements: Achievement[] = [
 ];
 
 export default achievements;
-
