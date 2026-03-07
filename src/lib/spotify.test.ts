@@ -122,6 +122,26 @@ describe("spotify lib", () => {
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
 
+  it("returns an error response when recently played is empty", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({ access_token: "access-token", expires_in: 3600 })
+      )
+      .mockResolvedValueOnce(new Response(null, { status: 204 }))
+      .mockResolvedValueOnce(jsonResponse({ items: [] }));
+    vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
+
+    const { getSpotifyPlaybackResponse } = await import("./spotify");
+    const result = await getSpotifyPlaybackResponse(0);
+
+    expect(result).toEqual({
+      status: "error",
+      message: "Failed to fetch Spotify track",
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
   it("falls back to recently played when nothing is currently playing", async () => {
     const fetchMock = vi
       .fn()

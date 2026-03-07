@@ -184,4 +184,71 @@ describe("github lib", () => {
     expect(second).toEqual(first);
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
+
+  it("falls back to stale stats when refresh fails for the same cache key", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-03-05T00:00:00.000Z"));
+
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({
+          data: {
+            user: {
+              contributionsCollection: {
+                contributionYears: [2026],
+              },
+            },
+          },
+        })
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          data: {
+            user: {
+              contributionsCollection: {
+                contributionCalendar: {
+                  totalContributions: 12,
+                  weeks: [
+                    {
+                      contributionDays: [
+                        { date: "2026-03-01", contributionCount: 1 },
+                        { date: "2026-03-02", contributionCount: 2 },
+                        { date: "2026-03-03", contributionCount: 0 },
+                        { date: "2026-03-04", contributionCount: 3 },
+                      ],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        })
+      )
+      .mockRejectedValueOnce(new Error("GitHub unavailable"));
+    vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
+
+    try {
+      const { getGithubStats } = await import("./github");
+
+      const fresh = await getGithubStats({
+        username: "fikrilal",
+        startYear: 2026,
+        revalidateSec: 1,
+      });
+
+      vi.setSystemTime(new Date("2026-03-05T00:00:02.000Z"));
+
+      const stale = await getGithubStats({
+        username: "fikrilal",
+        startYear: 2026,
+        revalidateSec: 1,
+      });
+
+      expect(stale).toEqual(fresh);
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });
