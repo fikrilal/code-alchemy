@@ -49,9 +49,21 @@ type StatsCache = {
   key: string;
 };
 
+type GithubStatsAggregate = {
+  lifetimeContributions: number;
+  lastContributionDate: string | null;
+  longestStreak: number;
+};
+
+const EMPTY_GITHUB_STATS: GithubStats = {
+  lifetimeContributions: 0,
+  lastContributionDate: null,
+  longestStreak: 0,
+};
+
 const githubStatsCache: StatsCache =
   (globalThis as unknown as { __githubStatsCache?: StatsCache }).__githubStatsCache ?? {
-    value: { lifetimeContributions: 0, lastContributionDate: null, longestStreak: 0 },
+    value: EMPTY_GITHUB_STATS,
     expiresAt: 0,
     key: "",
   };
@@ -62,6 +74,33 @@ const githubStatsCache: StatsCache =
 
 function setGithubStatsCache(entry: StatsCache) {
   Object.assign(githubStatsCache, entry);
+}
+
+function getGithubCacheKey(username: string, startYear?: number): string {
+  return `${username}:${startYear ?? "all"}`;
+}
+
+function getFreshGithubStatsFromCache(cacheKey: string): GithubStats | null {
+  const isFresh =
+    githubStatsCache.expiresAt > Date.now() && githubStatsCache.key === cacheKey;
+
+  return isFresh ? githubStatsCache.value : null;
+}
+
+function getStaleGithubStatsFromCache(cacheKey: string): GithubStats | null {
+  return githubStatsCache.key === cacheKey ? githubStatsCache.value : null;
+}
+
+function rememberGithubStats(
+  cacheKey: string,
+  stats: GithubStats,
+  revalidateSec: number
+) {
+  setGithubStatsCache({
+    value: stats,
+    expiresAt: Date.now() + revalidateSec * 1000,
+    key: cacheKey,
+  });
 }
 
 async function postGithubQuery(
@@ -160,95 +199,42 @@ function getYearRange(year: number, now: Date) {
   };
 }
 
-export async function getGithubStats(opts?: {
-  username?: string;
-  startYear?: number;
-  revalidateSec?: number;
-}): Promise<GithubStats> {
-  const username = opts?.username ?? "fikrilal";
-  const revalidateSec = opts?.revalidateSec ?? 60 * 60; // 1 hour
-  const cacheKey = `${username}:${opts?.startYear ?? "all"}`;
-  const cacheValid = githubStatsCache.expiresAt > Date.now() && githubStatsCache.key === cacheKey;
-
-  if (cacheValid) {
-    return githubStatsCache.value;
-  }
-
-  let years: number[];
-  try {
-    years = await fetchContributionYears(username, revalidateSec);
-  } catch (error) {
-    // Fallback to stale cache if available to avoid hard failures
-    if (githubStatsCache.key === cacheKey) {
-      return githubStatsCache.value;
-    }
-    throw error;
-  }
-
-  const yearsToQuery = years
-    .filter((year) =>
-      typeof opts?.startYear === "number" ? year >= opts.startYear : true
-    )
+function getRequestedContributionYears(years: number[], startYear?: number): number[] {
+  return years
+    .filter((year) => (typeof startYear === "number" ? year >= startYear : true))
     .sort((a, b) => a - b);
+}
 
-  if (yearsToQuery.length === 0) {
-    const emptyStats = {
-      lifetimeContributions: 0,
-      lastContributionDate: null,
-      longestStreak: 0,
-    };
-
-    setGithubStatsCache({
-      value: emptyStats,
-      expiresAt: Date.now() + revalidateSec * 1000,
-      key: cacheKey,
-    });
-
-    return emptyStats;
-  }
-
+async function fetchContributionCalendars(
+  username: string,
+  years: number[],
+  revalidateSec: number
+): Promise<ContributionCalendarData[]> {
   const now = new Date();
 
-  let calendars: ContributionCalendarData[];
-  try {
-    calendars = await Promise.all(
-      yearsToQuery.map((year) => {
-        const { from, to } = getYearRange(year, now);
-        return fetchContributionRange(username, from, to, revalidateSec);
-      })
-    );
-  } catch (error) {
-    if (githubStatsCache.key === cacheKey) {
-      return githubStatsCache.value;
-    }
-    throw error;
-  }
+  return Promise.all(
+    years.map((year) => {
+      const { from, to } = getYearRange(year, now);
+      return fetchContributionRange(username, from, to, revalidateSec);
+    })
+  );
+}
 
-  let lifetimeContributions = 0;
-  let lastContributionDate: string | null = null;
-  const allDays: Array<{ date: string; contributionCount: number }> = [];
+function getLastContributionDate(
+  days: Array<{ date: string; contributionCount: number }>
+): string | null {
+  return [...days].reverse().find((day) => day.contributionCount > 0)?.date ?? null;
+}
 
-  for (const calendar of calendars) {
-    lifetimeContributions += calendar.totalContributions;
-    const days = calendar.weeks.flatMap((week) => week.contributionDays);
-    allDays.push(...days);
-
-    const rangeLast = [...days]
-      .reverse()
-      .find((day) => day.contributionCount > 0)?.date;
-    if (rangeLast) {
-      if (!lastContributionDate || rangeLast > lastContributionDate) {
-        lastContributionDate = rangeLast;
-      }
-    }
-  }
-
-  allDays.sort((a, b) => a.date.localeCompare(b.date));
+function calculateLongestStreak(
+  allDays: Array<{ date: string; contributionCount: number }>
+): number {
+  const orderedDays = [...allDays].sort((a, b) => a.date.localeCompare(b.date));
   let longestStreak = 0;
   let currentStreak = 0;
   let previousDate: Date | null = null;
 
-  for (const day of allDays) {
+  for (const day of orderedDays) {
     const currentDate = parseISO(day.date);
 
     if (
@@ -268,23 +254,98 @@ export async function getGithubStats(opts?: {
 
     previousDate = currentDate;
   }
-  longestStreak = Math.max(longestStreak, currentStreak);
 
-  const formattedLastContributionDate = lastContributionDate
-    ? format(parseISO(lastContributionDate), "MMMM do")
-    : null;
+  return Math.max(longestStreak, currentStreak);
+}
 
-  const stats = {
+function aggregateGithubStats(
+  calendars: ContributionCalendarData[]
+): GithubStatsAggregate {
+  let lifetimeContributions = 0;
+  let lastContributionDate: string | null = null;
+  const allDays: Array<{ date: string; contributionCount: number }> = [];
+
+  for (const calendar of calendars) {
+    lifetimeContributions += calendar.totalContributions;
+    const days = calendar.weeks.flatMap((week) => week.contributionDays);
+    allDays.push(...days);
+
+    const rangeLastContributionDate = getLastContributionDate(days);
+    if (
+      rangeLastContributionDate &&
+      (!lastContributionDate || rangeLastContributionDate > lastContributionDate)
+    ) {
+      lastContributionDate = rangeLastContributionDate;
+    }
+  }
+
+  return {
     lifetimeContributions,
-    lastContributionDate: formattedLastContributionDate,
-    longestStreak,
+    lastContributionDate,
+    longestStreak: calculateLongestStreak(allDays),
   };
+}
 
-  setGithubStatsCache({
-    value: stats,
-    expiresAt: Date.now() + revalidateSec * 1000,
-    key: cacheKey,
-  });
+function formatGithubStats(stats: GithubStatsAggregate): GithubStats {
+  return {
+    lifetimeContributions: stats.lifetimeContributions,
+    lastContributionDate: stats.lastContributionDate
+      ? format(parseISO(stats.lastContributionDate), "MMMM do")
+      : null,
+    longestStreak: stats.longestStreak,
+  };
+}
+
+export async function getGithubStats(opts?: {
+  username?: string;
+  startYear?: number;
+  revalidateSec?: number;
+}): Promise<GithubStats> {
+  const username = opts?.username ?? "fikrilal";
+  const revalidateSec = opts?.revalidateSec ?? 60 * 60; // 1 hour
+  const cacheKey = getGithubCacheKey(username, opts?.startYear);
+  const freshCache = getFreshGithubStatsFromCache(cacheKey);
+
+  if (freshCache) {
+    return freshCache;
+  }
+
+  let years: number[];
+  try {
+    years = await fetchContributionYears(username, revalidateSec);
+  } catch (error) {
+    const staleCache = getStaleGithubStatsFromCache(cacheKey);
+    if (staleCache) {
+      return staleCache;
+    }
+    throw error;
+  }
+
+  const yearsToQuery = getRequestedContributionYears(years, opts?.startYear);
+
+  if (yearsToQuery.length === 0) {
+    rememberGithubStats(cacheKey, EMPTY_GITHUB_STATS, revalidateSec);
+    return EMPTY_GITHUB_STATS;
+  }
+
+  let calendars: ContributionCalendarData[];
+  try {
+    calendars = await fetchContributionCalendars(
+      username,
+      yearsToQuery,
+      revalidateSec
+    );
+  } catch (error) {
+    const staleCache = getStaleGithubStatsFromCache(cacheKey);
+    if (staleCache) {
+      return staleCache;
+    }
+    throw error;
+  }
+
+  const stats = formatGithubStats(aggregateGithubStats(calendars));
+
+  rememberGithubStats(cacheKey, stats, revalidateSec);
 
   return stats;
 }
