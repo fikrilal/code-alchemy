@@ -1,81 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Code Alchemy
 
-## Local Setup
+Personal site and content hub built with Next.js App Router, React 19, Tailwind CSS 4, MDX, and Zod-validated server integrations.
 
-1. Install **Node.js 22 LTS** and clone this repository.
-2. Install dependencies:
+## Stack
+
+- Next.js 16
+- React 19
+- TypeScript 5 (strict)
+- Tailwind CSS 4
+- MDX via `next-mdx-remote/rsc`
+- Zod for env and external data validation
+- Vitest for targeted unit tests
+
+## Quick Start
+
+Requirements:
+
+- Node.js 22
+- npm
+
+Install and run:
 
 ```bash
 npm install
-```
-
-3. Create a `.env.local` file and populate it with the environment variables shown below.
-4. Start the development server:
-
-```bash
 npm run dev
 ```
 
-The app will be available at [http://localhost:3000](http://localhost:3000).
-
-Run `npm run lint` to execute ESLint checks during development.
-Run `npm run typecheck` to validate TypeScript types.
-Run `npm run test` to execute the automated test suite.
-
-## Architecture
-
-This project uses a server-first Next.js App Router architecture with feature-based organization.
-
-- `src/app` contains routes, layouts, metadata, and route handlers.
-- `src/features` contains page/domain-specific components and logic for home, about, blog, work, and MDX support.
-- `src/components/ui` contains reusable UI primitives.
-- `src/components/layout` contains shared site chrome such as navbar/footer.
-- `src/lib` is reserved for infrastructure and cross-cutting utilities such as env parsing and external API integrations.
-- `src/content` contains MDX content for blog posts and work case studies.
-
-Guiding rule: route-specific or domain-specific code should live in the owning feature folder, while only truly shared primitives and layout components belong in top-level shared component folders.
-
-Route-local colocation is a fallback, not the default. If a helper is truly private to a single route segment or the app shell, keep it under a private folder inside `src/app`, such as `_components`, `_lib`, `_data`, or `_providers`. Do not create public `components` or `lib` folders under `src/app`.
-
-## Where New Code Goes
-
-- New route files, metadata, layouts, and route handlers go in `src/app`.
-- Page- or domain-specific UI and content logic go in the owning feature slice under `src/features`.
-- Reusable primitives and low-level shared wrappers go in `src/components/ui`.
-- Cross-site chrome like navbar and footer goes in `src/components/layout`.
-- Environment parsing, external API integrations, and filesystem/image utilities go in `src/lib`.
-- Route-private helpers are allowed only as a fallback, and they must live in a private `src/app/**/_*` folder.
-- Blog posts and case studies belong in `src/content`.
-
-## Building
-
-Create an optimized production build with:
-
-```bash
-npm run build
-```
-
-The generated output can be served locally using `npm start` or deployed to your preferred hosting provider.
-
-## Running in Production
-
-After building, start the Next.js server:
-
-```bash
-npm start
-```
-
-Ensure all required environment variables are available in the environment where the server runs.
+The app runs at `http://localhost:3000`.
 
 ## Environment Variables
 
-Configure the following variables in `.env.local` (or your production environment):
+The site can run without external API credentials. If the GitHub or Spotify secrets are missing, the related API routes return `204` and the widgets fail soft instead of crashing the app.
 
-- `SPOTIFY_CLIENT_ID` – Spotify application client ID used for authentication.
-- `SPOTIFY_CLIENT_SECRET` – Spotify application client secret.
-- `SPOTIFY_REFRESH_TOKEN` – Refresh token used to fetch currently playing tracks.
-- `GITHUB_TOKEN` – GitHub Personal Access Token for the `/api/githubStats` endpoint.
+Add a `.env.local` file only if you want live widget data:
 
-## Deployment Notes
+```bash
+GITHUB_TOKEN=...
+SPOTIFY_CLIENT_ID=...
+SPOTIFY_CLIENT_SECRET=...
+SPOTIFY_REFRESH_TOKEN=...
+```
 
-This project works out of the box on platforms like **Vercel** or any Node.js host. On Vercel, set the environment variables in the dashboard and the platform will run the build and start commands automatically. When self‑hosting, run `npm run build` followed by `npm start` and ensure the environment variables are available.
+## Available Commands
+
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+npm run typecheck
+npm run test
+npm run test:watch
+```
+
+Recommended validation before commit:
+
+```bash
+npm run lint
+npm run typecheck
+npm run test
+npm run build
+```
+
+## Architecture
+
+The codebase uses a server-first, feature-sliced Next.js App Router structure.
+
+- `src/app` owns routes, layouts, metadata, and route handlers.
+- `src/features` owns domain/page-specific UI and logic.
+- `src/components/ui` contains reusable primitives.
+- `src/components/layout` contains shared site chrome.
+- `src/lib` contains infrastructure concerns such as env parsing, API clients, and filesystem helpers.
+- `src/content` contains MDX source for blog posts and work case studies.
+
+Current route groups:
+
+- `(marketing)` for the home page and static marketing pages
+- `(blog)` for blog index and post routes
+- `(work)` for work index and case study routes
+
+## Content Model
+
+Blog posts live in `src/content/blog` as `.md` or `.mdx` files.
+
+Minimal blog frontmatter:
+
+```yaml
+---
+title: "Post title"
+date: "2026-01-01"
+description: "Short summary"
+coverImage: "/images/blog/example.jpg"
+readTime: "8 min read"
+---
+```
+
+Work case studies live in `src/content/work` as `.md` or `.mdx` files.
+
+Minimal work frontmatter:
+
+```yaml
+---
+title: "Project title"
+slug: "project-slug"
+shortDescription: "What this project is"
+thumbnail: "/images/project-thumb.png"
+date: "2026-01-01"
+techStack:
+  - "Flutter"
+  - "Firebase"
+---
+```
+
+Notes:
+
+- Blog routes are derived from the filename.
+- Work routes are generated from the filename/slug pipeline used by `src/features/work/lib/mdx.ts`.
+- Image paths should be absolute site paths such as `/images/blog/example.jpg`.
+
+## Project Layout
+
+```text
+src/
+  app/
+  components/
+    layout/
+    ui/
+  content/
+    blog/
+    work/
+  features/
+    about/
+    blog/
+    home/
+    mdx/
+    work/
+  lib/
+```
+
+## Operational Notes
+
+- `npm run dev` uses Turbopack. If you see a `.next/dev/lock` error, another `next dev` process is still running for this repo.
+- Production mode is the real acceptance check for rendering issues. Use `npm run build && npm run start` when validating framework or styling changes.
+- GitHub and Spotify integrations are server-only and should never expose secrets to client code.
+
+## Deployment
+
+The app is deployable to Vercel or any Node.js host that can run:
+
+```bash
+npm run build
+npm run start
+```
+
+If you want live GitHub/Spotify widgets in production, provide the same environment variables there.

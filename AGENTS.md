@@ -1,80 +1,59 @@
-# Repository Guidelines
+# Agent Instructions
 
-## Active Re-Architecture & Migration
-- We are actively re-architecting and migrating to a server-first Next.js stack with TypeScript (strict), MDX, Zod, and typed API libs.
-- Before making changes, read these docs for context and requirements:
-  - `docs/engineering-rules.md`
-  - `docs/re-architecture-typescript-migration.md`
-  - `docs/migration-plan.md`
-  - `docs/ARCHITECTURE.md`
-  - `docs/CONTENT_AUTHORING.md`
-  - `docs/ENVIRONMENT.md`
-- Keep PRs aligned with the migration phases and acceptance criteria. Avoid ad-hoc features or refactors that conflict with the rules above.
+This file is for coding agents working in this repository. Keep it short, durable, and action-oriented.
 
-## Internet Access & External References
-- Always consult authoritative sources when needed (package docs, release notes, API refs, Node LTS table).
-- Prefer official sites (npmjs.com, nodejs.org, framework docs) over third-party summaries.
-- If internet access is unavailable in the environment, pause and ask the user to provide the needed info or enable access (e.g., exact package versions, links, or excerpts).
+Project facts, setup steps, and command details belong in `README.md` and `package.json`. Do not turn this file into a second README.
 
-## Windows CMD & Git (from this environment)
-- Access Windows CMD from bash using `cmd.exe /c "<command>"`.
-- Run multiple commands by chaining with `&&` and using `/d` to switch drives:
-  - Example: `cmd.exe /c "cd /d C:\\Development\\Web-Project\\code-alchemy && git status"`
-- Commit flow via CMD (uses the host Git):
-  - Stage: `cmd.exe /c "cd /d C:\\Development\\Web-Project\\code-alchemy && git add -A"`
-  - Commit: `cmd.exe /c "cd /d C:\\Development\\Web-Project\\code-alchemy && git commit -m \"feat: message\""`
-  - Push: `cmd.exe /c "cd /d C:\\Development\\Web-Project\\code-alchemy && git push origin main"`
-- If quoting becomes tricky, write a temporary `.bat` and execute it.
-- Line endings: Windows may warn about CRLF; this is expected. Configure as needed: `git config core.autocrlf true`.
-- If CMD/Git access is unavailable, pause and ask the user to run the git commands or provide access.
+## Core Engineering Principles
 
-## Project Structure & Module Organization
-- App Router with route groups: `src/app/(marketing|blog|work)`; pages are server by default (`page.tsx`, `layout.tsx`).
-- APIs are thin handlers: `src/app/api/{github-stats,spotify}/route.ts` calling typed libs.
-- Feature-first folders: `src/features/{blog,work}/(components|lib|types.ts)`.
-- Shared libs: `src/lib/{env.ts,github.ts,spotify.ts,markdown.ts,fetch.ts}`.
-- UI primitives: `src/components/ui/*` (Button, Card, Badge, etc.).
-- Content: `src/content/{blog,work}/*.mdx`. Assets in `public/`.
+- KISS: prefer the smallest correct solution.
+- YAGNI: do not add abstractions, dependencies, or configuration for hypothetical future needs.
+- DRY: remove duplication when it creates real maintenance cost; do not force premature abstraction.
+- SOLID: keep responsibilities narrow, depend on stable boundaries, and separate UI, domain, and infrastructure concerns.
+- Explicitness over magic: prefer obvious control flow, readable data flow, and clear ownership.
+- Reversible changes: default to small diffs that are easy to review, test, and revert.
 
-## Build, Test, and Development Commands
-- `npm install` — install dependencies.
-- `npm run dev` — start Next.js dev server.
-- `npm run build` — type-check and build for production.
-- `npm start` — run the production build.
-- `npm run lint` — ESLint (Next + TS + a11y + import/order).
-- `npm run typecheck` — `tsc --noEmit` (add if missing).
-- `npm run test` — unit tests (Vitest or Jest) (add if missing).
+## Project Architecture Constraints
 
-## Validate Changes Before Commit
-- Always validate locally and iterate until clean:
-  - `npm run lint`
-  - `npm run typecheck`
-  - `npm run build`
-- For content/MDX or visual changes, verify a local or Vercel Preview render.
-- If validation needs internet or env secrets, fetch docs/versions or ask the user to provide access/variables.
+- Preserve the server-first Next.js App Router design.
+- `src/app` owns routes, layouts, metadata, and route handlers.
+- `src/features` owns domain- and page-specific logic and components.
+- `src/components/ui` is for reusable primitives; `src/components/layout` is for shared site chrome.
+- `src/lib` is for infrastructure and server-side integrations such as env parsing, filesystem access, and external API clients.
+- `src/content` is the source of truth for blog and work MDX content.
+- Keep public-facing content free of internal repo paths like `docs/...`, local filesystem paths, or source-file references.
 
-## Coding Style & Naming Conventions
-- TypeScript strict; no `any`. Prefer `type` aliases; use `satisfies` and `as const` on configs.
-- Validate env and external data with Zod (`src/lib/env.ts`, typed API libs).
-- Server-first; client islands only for interactivity (framer-motion, widgets).
-- MDX via `next-mdx-remote/rsc` with `remark-gfm`, `rehype-slug`, `rehype-autolink-headings`, `rehype-pretty-code`, and `rehype-sanitize`.
-- Use `next/image` with proper `sizes`; Tailwind + `@tailwindcss/typography` for posts.
-- Naming: PascalCase components/files in `components/`, camelCase for functions/vars, kebab-case route segments.
+## Coding Standards
 
-## Testing Guidelines
-- Unit tests for libs (env, markdown, github/spotify) using Vitest/Jest.
-- Snapshot a few MDX posts to catch rendering regressions.
-- Optional E2E (Playwright) for blog routing and critical widgets.
-- Filenames: `*.test.ts` or `*.spec.ts`. Run with `npm run test`.
+- TypeScript strict. Avoid `any`; use proper types, narrowing, generics, or runtime validation.
+- Validate environment variables and external data at the boundary with Zod or equivalent runtime checks.
+- Default to server components. Add `"use client"` only for real interactivity or browser-only APIs.
+- Use `next/image` with correct `sizes`; avoid raw `<img>` unless there is a concrete reason.
+- Do not use `dangerouslySetInnerHTML` for authored content.
+- Prefer existing repo patterns over introducing parallel architectural styles.
 
-## Commit & Pull Request Guidelines
-- Conventional Commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`.
-- Small, reversible PRs aligned to migration phases; include acceptance criteria.
-- Link issues, describe changes, add screenshots for visual diffs.
-- Before submitting: run `npm run lint`, `npm run typecheck`, and build locally.
+## Workflow
 
-## Security & Configuration Tips
-- Never log secrets. Read env via `src/lib/env.ts` only.
-- Keep tokens/cookies server-only; no client exposure beyond `NEXT_PUBLIC_*`.
-- Enforce CSP and security headers (e.g., `next-safe`).
-- Do not use `dangerouslySetInnerHTML`; MDX is sanitized and component-mapped.
+- Read `README.md`, `package.json`, and the touched code before making changes.
+- Prefer small, focused, reversible changes. Do not mix speculative refactors into the requested task.
+- Check whether a utility, component, or pattern already exists before adding a new one.
+- When touching routing, build config, environment handling, external APIs, or public content, call out risk explicitly.
+- If a rule becomes long, task-specific, or fast-moving, move it out of `AGENTS.md` rather than bloating this file.
+
+## Validation
+
+- For code changes, run the relevant checks from `package.json`.
+- Default full gate: `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`.
+- For docs-only or content-only changes, skip heavy checks only when they add no signal; state what was skipped.
+- Never claim validation passed unless it was actually run.
+
+## Source Quality
+
+- For version-sensitive or current facts, prefer official docs, release notes, and primary sources over third-party summaries.
+- Keep `AGENTS.md` focused on durable agent behavior. Operational detail belongs in `README.md`; one-off plans do not belong here.
+
+## SCM
+
+- Use Conventional Commits when committing.
+- Do not commit unless the user asks.
+- Never use destructive git operations without explicit permission.
