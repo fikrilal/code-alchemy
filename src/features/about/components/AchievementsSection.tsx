@@ -1,5 +1,4 @@
 import achievements from "@/features/about/data/achievements";
-
 import type { Achievement } from "@/features/about/data/achievements";
 
 export default function AchievementsSection() {

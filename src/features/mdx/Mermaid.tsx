@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import mermaid from "mermaid";
+import { useEffect, useRef } from "react";
 
 type MermaidProps = {
   code: string;

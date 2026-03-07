@@ -1,9 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import MotionElement from "@/components/ui/MotionElement";
 import Button from "@/components/ui/Button";
-
+import MotionElement from "@/components/ui/MotionElement";
 import type { WorkSummary } from "@/features/work/types";
 
 type SelectedWorkProps = {

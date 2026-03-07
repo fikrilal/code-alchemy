@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { getSortedPostsData } from "@/features/blog/lib/posts";
 import { loadPostBySlug } from "@/features/blog/lib/mdx";
+import { getSortedPostsData } from "@/features/blog/lib/posts";
 
 import type { Metadata } from "next";
 

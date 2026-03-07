@@ -6,7 +6,6 @@ import path from "path";
 import matter from "gray-matter";
 
 import { getWorkSlugs } from "@/features/work/lib/mdx";
-
 import type { WorkFrontmatter, WorkSummary } from "@/features/work/types";
 
 type SummaryInternal = WorkSummary & {

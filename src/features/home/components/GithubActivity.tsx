@@ -1,8 +1,8 @@
 "use client";
 
+import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useSyncExternalStore } from "react";
-import { motion } from "framer-motion";
 import useSWR from "swr";
 
 import type { Variants } from "framer-motion";

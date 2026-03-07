@@ -1,11 +1,11 @@
 import Image from "next/image";
 
 import MotionElement from "@/components/ui/MotionElement";
-import SpotifyNowPlaying from "@/features/home/components/SpotifyNowPlaying";
 import GithubActivity from "@/features/home/components/GithubActivity";
-import TechStack from "@/features/home/components/TechStack";
 import IconCards from "@/features/home/components/IconCards";
 import SideHustleFlashCard from "@/features/home/components/SideHustleFlashCard";
+import SpotifyNowPlaying from "@/features/home/components/SpotifyNowPlaying";
+import TechStack from "@/features/home/components/TechStack";
 
 const containerVariants = {
   hidden: { opacity: 0 },

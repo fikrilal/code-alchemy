@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
 import WorkGallery from "@/features/work/components/WorkGallery";
+import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
 
 import type { Metadata } from "next";
 

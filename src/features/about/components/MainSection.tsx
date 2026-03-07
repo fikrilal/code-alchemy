@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-import ExperienceSection from "./ExperienceSection";
 import AchievementsSection from "./AchievementsSection";
-import QuoteSection from "./QuoteSection";
 import ChainOfThought from "./ChainOfThought";
+import ExperienceSection from "./ExperienceSection";
+import QuoteSection from "./QuoteSection";
 
 export default function MainSection() {
   return (

@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import MotionElement from "@/components/ui/MotionElement";
-
 import type { BlogSummary } from "@/features/blog/types";
 
 const containerVariants = {

@@ -1,5 +1,4 @@
 import experiences from "@/features/about/data/experience";
-
 import type { Experience } from "@/features/about/data/experience";
 
 export default function ExperienceSection() {
