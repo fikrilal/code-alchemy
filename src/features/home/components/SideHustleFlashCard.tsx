@@ -51,7 +51,6 @@ export default function SideHustleFlashCard() {
   const [order, setOrder] = useState<number[]>(() =>
     hustles.map((_, index) => index)
   );
-  const [isStackVisible, setIsStackVisible] = useState(false);
 
   const totalItems = hustles.length;
   if (totalItems === 0) {
@@ -74,40 +73,8 @@ export default function SideHustleFlashCard() {
     return [...rest, first];
   };
 
-  const rotatePrevious = (current: number[]): number[] => {
-    if (current.length <= 1) return current;
-    const lastIndex = current.length - 1;
-    const last = current[lastIndex];
-    if (last === undefined) return current;
-    return [last, ...current.slice(0, lastIndex)];
-  };
-
-  const goToPrevious = () => {
-    setOrder((prev) => rotatePrevious(prev));
-  };
-
   const goToNext = () => {
     setOrder((prev) => rotateNext(prev));
-  };
-
-  const setActiveByIndex = (targetIndex: number) => {
-    setOrder((prev) => {
-      if (!prev.length) return prev;
-      if (prev[0] === targetIndex) return prev;
-
-      const position = prev.indexOf(targetIndex);
-      if (position === -1) {
-        const baseOrder = hustles.map((_, index) => index);
-        const targetPosition = baseOrder.indexOf(targetIndex);
-        if (targetPosition <= 0) return baseOrder;
-        return [
-          ...baseOrder.slice(targetPosition),
-          ...baseOrder.slice(0, targetPosition),
-        ];
-      }
-
-      return [...prev.slice(position), ...prev.slice(0, position)];
-    });
   };
 
   return (
@@ -129,7 +96,7 @@ export default function SideHustleFlashCard() {
           <p className="text-sm sm:text-base md:text-base text-slate-300">
             {activeItem.description}
           </p>
-          <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl relative">
+          <div className="mt-4 w-full aspect-14/9 overflow-hidden rounded-xl relative">
             <Image
               src={activeItem.image}
               alt={`${activeItem.title} screenshot`}
@@ -172,7 +139,7 @@ export default function SideHustleFlashCard() {
             y: offset.y,
             rotate: offset.rotate,
             scale: offset.scale,
-            opacity: isStackVisible ? 1 : 1,
+            opacity: 1,
           };
         }
 
@@ -221,7 +188,7 @@ export default function SideHustleFlashCard() {
               <p className="text-sm sm:text-base md:text-base text-slate-300">
                 {item.description}
               </p>
-              <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl relative">
+              <div className="mt-4 w-full aspect-14/9 overflow-hidden rounded-xl relative">
                 <Image
                   src={item.image}
                   alt={`${item.title} screenshot`}

@@ -3,7 +3,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Fragment_Mono, Inter_Tight } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
-import DarkModeProvider from "@/app/_providers/DarkModeProvider";
 import "./globals.css";
 
 import type { Metadata } from "next";
@@ -91,14 +90,20 @@ export const metadata: Metadata = {
   },
 };
 
+const isVercelDeployment = process.env.VERCEL === "1";
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark scheme-dark">
       <body
-        className={`${interTight.variable} ${fragmentMono.variable} font-sans antialiased dark:bg-darkbg dark:text-white`}
+        className={`${interTight.variable} ${fragmentMono.variable} bg-darkbg font-sans text-white antialiased`}
       >
-        <SpeedInsights />
-        <Analytics />
+        {isVercelDeployment ? (
+          <>
+            <SpeedInsights />
+            <Analytics />
+          </>
+        ) : null}
         <NextTopLoader
           color="#6A42C2"
           crawlSpeed={150}
@@ -107,7 +112,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           easing="ease"
           crawl
         />
-        <DarkModeProvider>{children}</DarkModeProvider>
+        {children}
       </body>
     </html>
   );

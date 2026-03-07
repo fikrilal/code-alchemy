@@ -2,21 +2,22 @@ import "server-only";
 
 import { z } from "zod";
 
+const requiredString = (name: string) =>
+  z.string(`Missing ${name}`).min(1, `Missing ${name}`);
+
 const SpotifyEnvSchema = z.object({
-  SPOTIFY_CLIENT_ID: z.string().min(1, "Missing SPOTIFY_CLIENT_ID"),
-  SPOTIFY_CLIENT_SECRET: z.string().min(1, "Missing SPOTIFY_CLIENT_SECRET"),
-  SPOTIFY_REFRESH_TOKEN: z.string().min(1, "Missing SPOTIFY_REFRESH_TOKEN"),
+  SPOTIFY_CLIENT_ID: requiredString("SPOTIFY_CLIENT_ID"),
+  SPOTIFY_CLIENT_SECRET: requiredString("SPOTIFY_CLIENT_SECRET"),
+  SPOTIFY_REFRESH_TOKEN: requiredString("SPOTIFY_REFRESH_TOKEN"),
 });
 
 const GithubEnvSchema = z.object({
-  GITHUB_TOKEN: z.string().min(1, "Missing GITHUB_TOKEN"),
+  GITHUB_TOKEN: requiredString("GITHUB_TOKEN"),
 });
 
-const EnvSchema = SpotifyEnvSchema.merge(GithubEnvSchema);
-
-export type Env = z.infer<typeof EnvSchema>;
 export type SpotifyEnv = z.infer<typeof SpotifyEnvSchema>;
 export type GithubEnv = z.infer<typeof GithubEnvSchema>;
+export type Env = SpotifyEnv & GithubEnv;
 
 function parseEnv<T extends z.ZodTypeAny>(schema: T, scope: string): z.infer<T> {
   const parsed = schema.safeParse(process.env);

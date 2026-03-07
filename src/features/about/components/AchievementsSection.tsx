@@ -15,7 +15,7 @@ export default function AchievementsSection() {
             className={`pt-8 border-t border-slate-900 ${index === 0 ? "border-t-0 pt-0" : ""}`}
           >
             <div className="mb-2">
-              <h3 className="text-xl font-medium text-slate-100 mb-2 leading-[1.5]">{achievement.title}</h3>
+              <h3 className="text-xl font-medium text-slate-100 mb-2 leading-normal">{achievement.title}</h3>
               <div className="flex flex-row justify-between items-center text-sm gap-4">
                 <p className="text-base text-slate-200">{achievement.organization}</p>
                 <p className="text-slate-200 whitespace-nowrap">{achievement.date}</p>

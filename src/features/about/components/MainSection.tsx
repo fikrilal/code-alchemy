@@ -34,37 +34,37 @@ export default function MainSection() {
         </div>
 
         <div className="w-full lg:w-1/2 text-left lg:text-left">
-          <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:!leading-[1.8]">
+          <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:leading-[1.8]!">
             Hi, I’m Fikril — a mobile engineer based in Bandung, Indonesia.
           </p>
-          <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:!leading-[1.8]">
+          <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:leading-[1.8]!">
             Most of my work sits in the mobile space, especially Flutter. I’m
             usually involved early: taking a rough idea like “we need an app”
             and turning it into something concrete — project structure,
             architecture, patterns, and eventually a build people can actually
             download and use.
           </p>
-          <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:!leading-[1.8]">
+          <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:leading-[1.8]!">
             I’m comfortable owning the end-to-end 0 → 1 phase: defining how a
             Flutter app is structured, how data flows, how state is managed, how
             we ship, and then driving the first release into production. Over
             time, I like turning those decisions into standards the rest of the
             team can follow.
           </p>
-          <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:!leading-[1.8]">
+          <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:leading-[1.8]!">
             I care a lot about code that’s easy to change later, not just code
             that works today. Clean boundaries, predictable behavior, and a sane
             developer experience matter to me as much as UI polish. I’m not
             trying to be a full-time designer, but I do think good engineering
             and good UX are tightly connected.
           </p>
-          <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:!leading-[1.8]">
+          <p className="text-base md:text-lg text-slate-200 font-normal mb-4 leading-[1.6] sm:leading-[1.8]!">
             When I’m not in an editor, you’ll probably find me somewhere inside
             the grimdark universe of Warhammer 40K, looping Starset or Linkin
             Park, or staring at a notebook and coffee cup trying to untangle the
             next idea.
           </p>
-          <p className="text-base md:text-lg text-slate-200 font-semibold mb-4 leading-[1.6] sm:!leading-[1.8]">
+          <p className="text-base md:text-lg text-slate-200 font-semibold mb-4 leading-[1.6] sm:leading-[1.8]!">
             Still figuring things out, still learning — but moving with
             intention.
           </p>

@@ -38,7 +38,7 @@ export default function HeroSection() {
 
         <MotionElement
           as="h1"
-          className="text-4xl md:text-6xl font-semibold text-slate-50 leading-[1.2] sm:!leading-tight max-w-4xl"
+          className="text-4xl md:text-6xl font-semibold text-slate-50 leading-[1.2] sm:leading-tight! max-w-4xl"
           variants={childVariants}
         >
           Hi, I’m Fikril—a Mobile Engineer based in Bandung, Indonesia
@@ -46,7 +46,7 @@ export default function HeroSection() {
 
         <MotionElement
           as="p"
-          className="mt-3 sm:mt-4 lg:mt-5 text-base sm:text-base md:text-xl font-light text-slate-200 max-w-4xl leading-[1.6] sm:!leading-[1.8]"
+          className="mt-3 sm:mt-4 lg:mt-5 text-base sm:text-base md:text-xl font-light text-slate-200 max-w-4xl leading-[1.6] sm:leading-[1.8]!"
           variants={childVariants}
         >
           I typically take end-to-end ownership across the 0 → 1 phase: defining

@@ -1,28 +1,51 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
-import GitHubCalendar from "react-github-calendar";
 import useSWR from "swr";
 
 import type { Variants } from "framer-motion";
 
-// Custom hook to detect mobile screens
-function useIsMobile(): boolean {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+const MOBILE_MEDIA_QUERY = "(max-width: 768px)";
 
-  useEffect(() => {
-    // Adjust the breakpoint as needed (here it's 768px)
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
-    setIsMobile(mediaQuery.matches);
+function subscribeToMobileChanges(callback: () => void): () => void {
+  if (typeof window === "undefined") {
+    return () => undefined;
+  }
 
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
+  const mediaQuery = window.matchMedia(MOBILE_MEDIA_QUERY);
+  mediaQuery.addEventListener("change", callback);
 
-  return isMobile;
+  return () => mediaQuery.removeEventListener("change", callback);
 }
+
+function getMobileSnapshot(): boolean {
+  return typeof window !== "undefined"
+    ? window.matchMedia(MOBILE_MEDIA_QUERY).matches
+    : false;
+}
+
+function useIsMobile(): boolean {
+  return useSyncExternalStore(
+    subscribeToMobileChanges,
+    getMobileSnapshot,
+    () => false
+  );
+}
+
+const GitHubCalendar = dynamic(
+  () => import("react-github-calendar").then((mod) => mod.GitHubCalendar),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        aria-hidden="true"
+        className="h-[132px] min-w-[720px] rounded-xl border border-slate-700/60 bg-slate-900/60"
+      />
+    ),
+  }
+);
 
 const childVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -39,13 +62,33 @@ type Stats = {
   totalContributions: number;
 };
 
-const fetcher = (url: string): Promise<Stats> =>
-  fetch(url).then((res) => res.json());
+const fetcher = async (url: string): Promise<Stats | null> => {
+  const res = await fetch(url);
+
+  if (res.status === 204) {
+    return null;
+  }
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch GitHub stats");
+  }
+
+  return (await res.json()) as Stats;
+};
 
 export default function GithubActivity() {
   const isMobile = useIsMobile();
-  // Fetch real GitHub stats from our API route
-  const { data: stats } = useSWR<Stats>("/api/githubStats", fetcher);
+  const { data: stats } = useSWR<Stats | null>("/api/githubStats", fetcher);
+  const lastCommitLabel =
+    stats === null ? "Unavailable" : stats?.lastCommitDate ?? "Loading...";
+  const longestStreakLabel =
+    stats === null
+      ? "Unavailable"
+      : stats
+        ? `${stats.longestStreak} days`
+        : "Loading...";
+  const contributionsLabel =
+    stats === null ? "Unavailable" : stats?.totalContributions ?? "Loading...";
 
   return (
     <motion.div
@@ -74,8 +117,8 @@ export default function GithubActivity() {
           blockSize={12}
           blockMargin={4}
           fontSize={14}
-          hideTotalCount={isMobile}
-          hideColorLegend={false}
+          showTotalCount={!isMobile}
+          showColorLegend
           theme={{
             dark: ["#1f2937", "#374151", "#4b5563", "#6b7280", "#9ca3af"],
           }}
@@ -86,23 +129,17 @@ export default function GithubActivity() {
       <div className="mt-6 lg:mt-4 grid grid-cols-3 gap-4">
         <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
           <p className="text-xs text-slate-400 font-mono">Last Commit</p>
-          <p className="text-lg text-slate-200 mt-2">
-            {stats?.lastCommitDate ?? "Loading..."}
-          </p>
+          <p className="text-lg text-slate-200 mt-2">{lastCommitLabel}</p>
         </div>
         <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
           <p className="text-xs text-slate-400 font-mono">Longest Streak</p>
-          <p className="text-lg  text-slate-200 mt-2">
-            {stats ? `${stats.longestStreak} days` : "Loading..."}
-          </p>
+          <p className="text-lg  text-slate-200 mt-2">{longestStreakLabel}</p>
         </div>
         <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-slate-400 break-words font-mono">
+          <p className="text-xs text-slate-400 wrap-break-word font-mono">
             Contributions
           </p>
-          <p className="text-lg text-slate-200 mt-2">
-            {stats?.totalContributions ?? "Loading..."}
-          </p>
+          <p className="text-lg text-slate-200 mt-2">{contributionsLabel}</p>
         </div>
       </div>
 

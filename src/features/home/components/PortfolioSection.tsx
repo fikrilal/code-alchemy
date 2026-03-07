@@ -50,7 +50,7 @@ export default function PortfolioSection() {
               A fast-paced mobile game combining math puzzles with Tetris
               mechanics.
             </p>
-            <div className="mt-4 w-full aspect-[14/9] overflow-hidden rounded-xl">
+            <div className="mt-4 w-full aspect-14/9 overflow-hidden rounded-xl">
               <Image
                 src="/images/recent-project-thumbnail.png"
                 alt="Recent Project screenshot"
@@ -76,7 +76,7 @@ export default function PortfolioSection() {
           </MotionElement>
         </div>
 
-        <div className="relative w-full overflow-hidden rounded-lg xl:aspect-[15/5]">
+        <div className="relative w-full overflow-hidden rounded-lg xl:aspect-15/5">
           <div className="grid grid-cols-1 xl:absolute xl:inset-0 xl:grid-cols-2 gap-4">
             <TechStack />
             <GithubActivity />

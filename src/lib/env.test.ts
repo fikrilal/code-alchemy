@@ -30,12 +30,14 @@ describe("env parsing", () => {
     process.env.SPOTIFY_CLIENT_SECRET = "client-secret";
     process.env.SPOTIFY_REFRESH_TOKEN = "refresh-token";
 
-    expect(() => getSpotifyEnv()).toThrow(/SPOTIFY_CLIENT_ID: Required/);
+    expect(() => getSpotifyEnv()).toThrow(
+      /SPOTIFY_CLIENT_ID: Missing SPOTIFY_CLIENT_ID/
+    );
   });
 
   it("throws when github token is missing", () => {
     delete process.env.GITHUB_TOKEN;
 
-    expect(() => getGithubEnv()).toThrow(/GITHUB_TOKEN: Required/);
+    expect(() => getGithubEnv()).toThrow(/GITHUB_TOKEN: Missing GITHUB_TOKEN/);
   });
 });

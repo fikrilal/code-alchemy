@@ -5,7 +5,7 @@ export default function QuoteSection() {
         <div className="absolute -left-6 top-0 h-full w-1 bg-green-400 rounded-full opacity-20 transition-opacity group-hover:opacity-40" />
 
         <div className="pl-8">
-          <blockquote className="text-2xl md:text-3xl leading-[1.6] md:leading-[1.5] font-medium text-slate-200 italic relative">
+          <blockquote className="text-2xl md:text-3xl leading-[1.6] md:leading-normal font-medium text-slate-200 italic relative">
             <span className="absolute -left-8 -top-4 text-7xl text-green-400 opacity-25 select-none">
               “
             </span>
@@ -19,7 +19,7 @@ export default function QuoteSection() {
           </blockquote>
         </div>
 
-        <div className="mt-6 h-px bg-gradient-to-r from-green-500/20 via-green-400/40 to-green-500/20 transition-all group-hover:via-green-500/60" />
+        <div className="mt-6 h-px bg-linear-to-r from-green-500/20 via-green-400/40 to-green-500/20 transition-all group-hover:via-green-500/60" />
       </div>
     </section>
   );

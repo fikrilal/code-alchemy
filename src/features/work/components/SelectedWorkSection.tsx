@@ -69,7 +69,7 @@ export default function SelectedWorkSection({
         <div className="flex justify-between items-center">
           <MotionElement
             as="h2"
-            className="text-3xl md:text-5xl font-semibold text-slate-100 leading-[1.2] sm:!leading-tight max-w-4xl"
+            className="text-3xl md:text-5xl font-semibold text-slate-100 leading-[1.2] sm:leading-tight! max-w-4xl"
             variants={childVariants}
           >
             {heading}
@@ -88,7 +88,7 @@ export default function SelectedWorkSection({
         </div>
         <MotionElement
           as="p"
-          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-200 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
+          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-200 max-w-2xl leading-[1.6] sm:leading-[1.8]!"
           variants={childVariants}
         >
           {description}
@@ -121,7 +121,7 @@ export default function SelectedWorkSection({
             >
               <span className="sr-only">View {project.title} details</span>
             </Link>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-900 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+            <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-slate-900 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
               <Image
                 src={project.thumbnail}
                 alt={`${project.title} screenshot`}

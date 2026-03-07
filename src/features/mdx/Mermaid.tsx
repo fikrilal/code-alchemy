@@ -30,7 +30,7 @@ export function Mermaid({ code, className }: MermaidProps) {
           containerRef.current.textContent = code;
           await mermaid.run({ nodes: [containerRef.current] });
         }
-      } catch (error) {
+      } catch {
         // Fail silently in production; optionally log in development if needed.
       }
     };

@@ -239,20 +239,23 @@ function ScrambleParsedText({
 }
 
 export default function ChainOfThought() {
-  const [displayIndex, setDisplayIndex] = useState<number>(0);
   const [reasoningIndex, setReasoningIndex] = useState<number>(1);
-
   const safeReasoningIndex = reasoningIndex % thoughts.length;
+  const completedReasoningIndex =
+    (reasoningIndex + thoughts.length - 1) % thoughts.length;
   const chainMessages = getChainMessages(thoughts[safeReasoningIndex]!);
   const finalChainMessage = "🤖 Reasoned for 8 seconds.";
   const [chainStepIndex, setChainStepIndex] = useState<number>(0);
+  const displayIndex =
+    chainStepIndex === chainMessages.length
+      ? safeReasoningIndex
+      : completedReasoningIndex;
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
     if (chainStepIndex < chainMessages.length) {
       timer = setTimeout(() => setChainStepIndex((prev) => prev + 1), 2000);
     } else if (chainStepIndex === chainMessages.length) {
-      setDisplayIndex(reasoningIndex);
       timer = setTimeout(() => {
         setReasoningIndex((prev) => (prev + 1) % thoughts.length);
         setChainStepIndex(0);
@@ -297,7 +300,7 @@ export default function ChainOfThought() {
       )}
 
       <div className="mb-4">
-        <p className="text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-medium text-slate-200 max-w-sm overflow-hidden break-words">
+        <p className="text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-medium text-slate-200 max-w-sm overflow-hidden wrap-break-word">
           <ScrambleParsedText
             text={thoughts[displayIndex % thoughts.length]!.title}
             className=""
@@ -305,7 +308,7 @@ export default function ChainOfThought() {
             interval={50}
           />
         </p>
-        <p className="mt-2 sm:mt-2 lg:mt-3 text-base md:text-lg text-slate-300 max-w-sm overflow-hidden break-words leading-[1.6]">
+        <p className="mt-2 sm:mt-2 lg:mt-3 text-base md:text-lg text-slate-300 max-w-sm overflow-hidden wrap-break-word leading-[1.6]">
           <ScrambleParsedText
             text={thoughts[displayIndex % thoughts.length]!.content}
             className=""

@@ -1,17 +1,10 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-import tsPlugin from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
-import jsxA11y from "eslint-plugin-jsx-a11y";
-import importPlugin from "eslint-plugin-import";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypeScript from "eslint-config-next/typescript";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
 
 const eslintConfig = [
   {
@@ -22,22 +15,17 @@ const eslintConfig = [
       "**/dist/**",
     ],
   },
-  ...compat.extends("next/core-web-vitals"),
+  ...nextCoreWebVitals,
+  ...nextTypeScript,
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
-      parser: tsParser,
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
         project: "./tsconfig.json",
         tsconfigRootDir: __dirname,
       },
-    },
-    plugins: {
-      "@typescript-eslint": tsPlugin,
-      "jsx-a11y": jsxA11y,
-      import: importPlugin,
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
@@ -67,34 +55,6 @@ const eslintConfig = [
       // a11y (subset)
       "jsx-a11y/alt-text": "warn",
       "jsx-a11y/anchor-is-valid": "warn",
-    },
-  },
-  {
-    files: [
-      "src/components/Footer.tsx",
-      "src/components/Navbar.tsx",
-      "src/components/IconCards.tsx",
-      "src/components/SpotifyNowPlaying.tsx",
-      "src/components/Carousel.tsx",
-      "src/components/TechStack.tsx",
-    ],
-    rules: {
-      "import/order": [
-        "error",
-        {
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            "parent",
-            "sibling",
-            "index",
-            "object",
-            "type",
-          ],
-          "newlines-between": "always",
-        },
-      ],
     },
   },
 ];

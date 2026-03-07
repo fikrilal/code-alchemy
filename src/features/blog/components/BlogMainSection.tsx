@@ -63,14 +63,14 @@ export default function BlogMainSection({
       >
         <MotionElement
           as="h1"
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-100 leading-[1.2] sm:!leading-tight max-w-2xl"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-slate-100 leading-[1.2] sm:leading-tight! max-w-2xl"
           variants={childVariants}
         >
           Blog Stuff
         </MotionElement>
         <MotionElement
           as="p"
-          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-200 max-w-2xl leading-[1.6] sm:!leading-[1.8]"
+          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-200 max-w-2xl leading-[1.6] sm:leading-[1.8]!"
           variants={childVariants}
         >
           A place to dump notes from the journey — what worked, what broke, and

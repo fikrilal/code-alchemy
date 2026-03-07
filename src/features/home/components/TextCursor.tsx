@@ -3,10 +3,38 @@
 import { useEffect, useRef, useState } from "react";
 
 type Point = { x: number; y: number };
-type Cell = { x: number; y: number; char: string; opacity: number; lastUpdated: number };
+type Cell = {
+  x: number;
+  y: number;
+  char: string;
+  opacity: number;
+  lastUpdated: number;
+};
+
+const CELL_SIZE = 20;
+const ILLUMINATION_RADIUS = 180;
+
+function createGrid(matrixChars: string): Cell[] {
+  const cols = Math.ceil(window.innerWidth / CELL_SIZE);
+  const rows = Math.ceil(window.innerHeight / CELL_SIZE);
+  const nextGrid: Cell[] = [];
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      nextGrid.push({
+        x: col * CELL_SIZE,
+        y: row * CELL_SIZE,
+        char: matrixChars.charAt(Math.floor(Math.random() * matrixChars.length)),
+        opacity: 0,
+        lastUpdated: 0,
+      });
+    }
+  }
+
+  return nextGrid;
+}
 
 export default function TextCursor() {
-  const [position, setPosition] = useState<Point>({ x: 0, y: 0 });
   const [grid, setGrid] = useState<Cell[]>([]);
   const gridRef = useRef<Cell[]>([]);
   const requestRef = useRef<number | null>(null);
@@ -15,36 +43,16 @@ export default function TextCursor() {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>?/;:[]{}!@#$%^&*()_+";
 
   useEffect(() => {
-    // Initialize grid
-    const cols = Math.ceil(window.innerWidth / 20);
-    const rows = Math.ceil(window.innerHeight / 20);
-
-    const newGrid = [];
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        newGrid.push({
-          x: j * 20,
-          y: i * 20,
-          char: matrixChars.charAt(
-            Math.floor(Math.random() * matrixChars.length)
-          ),
-          opacity: 0,
-          lastUpdated: 0,
-        });
-      }
-    }
-    gridRef.current = newGrid;
-    setGrid(newGrid);
-
-    // Track mouse movement
-    const handleMouseMove = (e: MouseEvent) => {
-      positionRef.current = { x: e.clientX, y: e.clientY };
-      setPosition({ x: e.clientX, y: e.clientY });
+    const syncGrid = () => {
+      const nextGrid = createGrid(matrixChars);
+      gridRef.current = nextGrid;
+      setGrid(nextGrid);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    const handleMouseMove = (e: MouseEvent) => {
+      positionRef.current = { x: e.clientX, y: e.clientY };
+    };
 
-    // Update function for animation
     const updateMatrix = (time: number) => {
       const updatedGrid = [...gridRef.current];
       let hasChanges = false;
@@ -56,16 +64,10 @@ export default function TextCursor() {
         const dy = currentPosition.y - cell.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // The illumination radius - increased for larger effect area
-        const radius = 180;
-
-        // The further from the cursor, the lower the opacity
         let targetOpacity = 0;
-        if (distance < radius) {
-          // Make opacity fade more quickly with distance
-          targetOpacity = (1 - distance / radius) ** 1.5;
+        if (distance < ILLUMINATION_RADIUS) {
+          targetOpacity = (1 - distance / ILLUMINATION_RADIUS) ** 1.5;
 
-          // Change character more frequently - reduced time between updates
           if (time - cell.lastUpdated > 30 + Math.random() * 100) {
             updatedGrid[i] = {
               ...cell,
@@ -78,10 +80,8 @@ export default function TextCursor() {
           }
         }
 
-        // Speed up opacity transition - increase the weight of target opacity
         const newOpacity = cell.opacity * 0.7 + targetOpacity * 0.3;
 
-        // Reduce threshold for updates to make more responsive
         if (Math.abs(newOpacity - cell.opacity) > 0.005) {
           updatedGrid[i] = {
             ...cell,
@@ -99,36 +99,22 @@ export default function TextCursor() {
       requestRef.current = requestAnimationFrame(updateMatrix);
     };
 
-    requestRef.current = requestAnimationFrame(updateMatrix);
-
-    // Handle window resize
     const handleResize = () => {
-      const cols = Math.ceil(window.innerWidth / 20);
-      const rows = Math.ceil(window.innerHeight / 20);
-
-      const newGrid = [];
-      for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
-          newGrid.push({
-            x: j * 20,
-            y: i * 20,
-            char: matrixChars.charAt(
-              Math.floor(Math.random() * matrixChars.length)
-            ),
-            opacity: 0,
-            lastUpdated: 0,
-          });
-        }
-      }
-      gridRef.current = newGrid;
-      setGrid(newGrid);
+      syncGrid();
     };
 
+    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("resize", handleResize);
+
+    const initialFrame = requestAnimationFrame(() => {
+      syncGrid();
+      requestRef.current = requestAnimationFrame(updateMatrix);
+    });
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(initialFrame);
       if (requestRef.current !== null) cancelAnimationFrame(requestRef.current);
     };
   }, []);

@@ -5,7 +5,7 @@
       "ES2022",
       "DOM"
     ],
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
@@ -38,10 +38,11 @@
   "include": [
     "./src",
     "./test",
-    "middleware.ts",
+    "proxy.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts",
-    "vitest.config.ts"
+    "vitest.config.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

@@ -12,7 +12,7 @@ import type { WorkFrontmatter, WorkSummary } from "@/features/work/types";
 type SummaryInternal = WorkSummary & {
   hidden?: boolean;
   sortDate?: number;
-  index: number;
+  sortOrder: number;
 };
 
 export async function getWorkSummaries(): Promise<WorkSummary[]> {
@@ -54,22 +54,31 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
         category: deriveCategory(fm as WorkFrontmatter),
         hidden: fm.hidden === true,
         ...(typeof parsedDate === "number" ? { sortDate: parsedDate } : {}),
-        index,
+        sortOrder: index,
       };
     })
   );
 
   return summaryResults
-    .filter((result): result is PromiseFulfilledResult<SummaryInternal> => result.status === "fulfilled")
+    .filter(
+      (result): result is PromiseFulfilledResult<SummaryInternal> =>
+        result.status === "fulfilled"
+    )
     .map((result) => result.value)
     .sort((a, b) => {
       if (a.sortDate && b.sortDate) return b.sortDate - a.sortDate;
       if (a.sortDate && !b.sortDate) return -1;
       if (!a.sortDate && b.sortDate) return 1;
-      return a.index - b.index;
+      return a.sortOrder - b.sortOrder;
     })
     .filter((summary) => !summary.hidden)
-    .map(({ hidden, sortDate, index, ...rest }) => rest);
+    .map((summary) => ({
+      slug: summary.slug,
+      title: summary.title,
+      shortDescription: summary.shortDescription,
+      thumbnail: summary.thumbnail,
+      category: summary.category ?? "Case Study",
+    }));
 }
 
 function deriveCategory(fm: WorkFrontmatter): string {

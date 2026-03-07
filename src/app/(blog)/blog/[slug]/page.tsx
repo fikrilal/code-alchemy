@@ -53,7 +53,7 @@ export async function generateMetadata({
         images: [frontmatter.coverImage || "/images/blog-default.jpg"],
       },
     } satisfies Metadata;
-  } catch (error) {
+  } catch {
     return {
       title: "Blog Post Not Found | Code Alchemy Blog",
       description: "The requested blog post could not be found",
@@ -70,7 +70,7 @@ export default async function BlogPost({
   let compiled;
   try {
     compiled = await loadPostBySlug(slug);
-  } catch (error) {
+  } catch {
     return notFound();
   }
   const { content, frontmatter } = compiled;

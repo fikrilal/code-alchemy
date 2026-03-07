@@ -8,7 +8,7 @@ export default function Footer() {
           Ahmad Fikril Al Muzakki
         </h2>
 
-        <p className="mt-2 sm:mt-2 lg:mt-4 text-sm md:text-base max-w-2xl text-slate-400 mx-auto !leading-relaxed">
+        <p className="mt-2 sm:mt-2 lg:mt-4 text-sm md:text-base max-w-2xl text-slate-400 mx-auto leading-relaxed!">
           Thanks for stopping by! Let’s connect and create something amazing
           together! Feel free to reach out about coding, design, or just say hi.
         </p>

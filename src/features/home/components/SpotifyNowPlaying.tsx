@@ -20,6 +20,13 @@ export default function SpotifyNowPlaying() {
 
       try {
         const res = await fetch("/api/spotify");
+
+        if (res.status === 204) {
+          setTrack(null);
+          setIsLastPlayed(false);
+          return;
+        }
+
         const data = await res.json();
 
         if (!res.ok) {
@@ -41,7 +48,7 @@ export default function SpotifyNowPlaying() {
           setTrack(null);
           setIsLastPlayed(false);
         }
-      } catch (error) {
+      } catch {
         // console.error("❌ Error fetching Spotify data:", error);
       }
     }
@@ -77,7 +84,7 @@ export default function SpotifyNowPlaying() {
       </div>
 
       {/* Main content area with song info */}
-      <div className="flex-grow flex items-center">
+      <div className="grow flex items-center">
         {track ? (
           <div className="flex items-center gap-4">
             <div className="relative w-20 h-20 flex-none rounded-full border border-slate-800 p-2">
