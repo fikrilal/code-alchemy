@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useSyncExternalStore } from "react";
 import useSWR from "swr";
 
+import { fetchInternalApiData } from "@/features/home/lib/fetchInternalApiData";
 import {
   GithubStatsApiResponseSchema,
   type GithubStats,
@@ -62,18 +63,7 @@ const childVariants: Variants = {
 };
 
 const fetcher = async (url: string): Promise<GithubStats | null> => {
-  const res = await fetch(url);
-  const payload = GithubStatsApiResponseSchema.parse(await res.json());
-
-  if (payload.status === "ok") {
-    return payload.data;
-  }
-
-  if (payload.status === "unavailable") {
-    return null;
-  }
-
-  throw new Error(payload.message);
+  return fetchInternalApiData(url, GithubStatsApiResponseSchema);
 };
 
 export default function GithubActivity() {
@@ -82,21 +72,28 @@ export default function GithubActivity() {
     "/api/githubStats",
     fetcher
   );
+  const isLoading = typeof stats === "undefined" && !error;
   const isUnavailable = stats === null || Boolean(error);
   const lastContributionLabel =
-    isUnavailable
+    isLoading
+      ? "Loading..."
+      : isUnavailable
       ? "Unavailable"
-      : stats?.lastContributionDate ?? "Loading...";
+      : stats?.lastContributionDate ?? "Unavailable";
   const longestStreakLabel =
-    isUnavailable
+    isLoading
+      ? "Loading..."
+      : isUnavailable
       ? "Unavailable"
       : stats
         ? `${stats.longestStreak} days`
-        : "Loading...";
+        : "Unavailable";
   const contributionsLabel =
-    isUnavailable
+    isLoading
+      ? "Loading..."
+      : isUnavailable
       ? "Unavailable"
-      : stats?.lifetimeContributions ?? "Loading...";
+      : stats?.lifetimeContributions ?? "Unavailable";
 
   return (
     <motion.div

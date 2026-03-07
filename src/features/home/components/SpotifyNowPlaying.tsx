@@ -1,55 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import useSWR from "swr";
 
+import { fetchInternalApiData } from "@/features/home/lib/fetchInternalApiData";
 import {
   SpotifyPlaybackApiResponseSchema,
-  type SpotifyTrack,
+  type SpotifyPlayback,
 } from "@/lib/spotify-contract";
 
+const fetcher = async (url: string): Promise<SpotifyPlayback | null> => {
+  return fetchInternalApiData(url, SpotifyPlaybackApiResponseSchema);
+};
+
 export default function SpotifyNowPlaying() {
-  const [track, setTrack] = useState<SpotifyTrack | null>(null);
-  const [isLastPlayed, setIsLastPlayed] = useState<boolean>(false);
-
-  useEffect(() => {
-    function resetPlayback() {
-      setTrack(null);
-      setIsLastPlayed(false);
-    }
-
-    async function fetchSpotify() {
-      try {
-        const res = await fetch("/api/spotify");
-        const payload = SpotifyPlaybackApiResponseSchema.parse(await res.json());
-
-        if (payload.status === "ok") {
-          setTrack(payload.data.item);
-          setIsLastPlayed(payload.data.isLastPlayed);
-          return;
-        }
-
-        resetPlayback();
-      } catch {
-        resetPlayback();
-      }
-    }
-
-    void fetchSpotify();
-
-    const interval = setInterval(() => {
-      void fetchSpotify();
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const { data: playback, error } = useSWR<SpotifyPlayback | null>(
+    "/api/spotify",
+    fetcher,
+    { refreshInterval: 60000 }
+  );
+  const isLoading = typeof playback === "undefined" && !error;
+  const isUnavailable = playback === null || Boolean(error);
+  const headerLabel = isLoading
+    ? "SPOTIFY"
+    : isUnavailable
+      ? "SPOTIFY"
+      : playback?.isLastPlayed
+        ? "LAST PLAYED"
+        : "CURRENTLY PLAYING";
+  const track = playback?.item ?? null;
 
   return (
     <div className="bg-slate-1000 p-6 rounded-2xl border border-slate-600 h-full flex flex-col">
       {/* Header row with label and icon */}
       <div className="flex justify-between items-center mb-2">
         <p className="text-xs font-mono text-slate-400 tracking-widest uppercase">
-          {isLastPlayed ? "LAST PLAYED" : "CURRENTLY PLAYING"}
+          {headerLabel}
         </p>
         <div className="bg-slate-1000 border border-slate-800 rounded-full flex items-center justify-center w-8 h-8">
           <Image
@@ -86,8 +72,10 @@ export default function SpotifyNowPlaying() {
               <p className="pt-1 text-sm text-slate-300">{track.artist}</p>
             </div>
           </div>
+        ) : isLoading ? (
+          <p className="text-sm text-slate-300">Loading...</p>
         ) : (
-          <p className="text-sm text-slate-300">Nothing playing right now</p>
+          <p className="text-sm text-slate-300">Unavailable</p>
         )}
       </div>
 
