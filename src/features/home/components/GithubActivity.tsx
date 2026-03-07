@@ -5,6 +5,11 @@ import dynamic from "next/dynamic";
 import { useSyncExternalStore } from "react";
 import useSWR from "swr";
 
+import {
+  GithubStatsApiResponseSchema,
+  type GithubStats,
+} from "@/lib/github-contract";
+
 import type { Variants } from "framer-motion";
 
 const MOBILE_MEDIA_QUERY = "(max-width: 768px)";
@@ -56,39 +61,42 @@ const childVariants: Variants = {
   },
 };
 
-type Stats = {
-  lastCommitDate: string;
-  longestStreak: number;
-  totalContributions: number;
-};
-
-const fetcher = async (url: string): Promise<Stats | null> => {
+const fetcher = async (url: string): Promise<GithubStats | null> => {
   const res = await fetch(url);
+  const payload = GithubStatsApiResponseSchema.parse(await res.json());
 
-  if (res.status === 204) {
+  if (payload.status === "ok") {
+    return payload.data;
+  }
+
+  if (payload.status === "unavailable") {
     return null;
   }
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch GitHub stats");
-  }
-
-  return (await res.json()) as Stats;
+  throw new Error(payload.message);
 };
 
 export default function GithubActivity() {
   const isMobile = useIsMobile();
-  const { data: stats } = useSWR<Stats | null>("/api/githubStats", fetcher);
-  const lastCommitLabel =
-    stats === null ? "Unavailable" : stats?.lastCommitDate ?? "Loading...";
+  const { data: stats, error } = useSWR<GithubStats | null>(
+    "/api/githubStats",
+    fetcher
+  );
+  const isUnavailable = stats === null || Boolean(error);
+  const lastContributionLabel =
+    isUnavailable
+      ? "Unavailable"
+      : stats?.lastContributionDate ?? "Loading...";
   const longestStreakLabel =
-    stats === null
+    isUnavailable
       ? "Unavailable"
       : stats
         ? `${stats.longestStreak} days`
         : "Loading...";
   const contributionsLabel =
-    stats === null ? "Unavailable" : stats?.totalContributions ?? "Loading...";
+    isUnavailable
+      ? "Unavailable"
+      : stats?.lifetimeContributions ?? "Loading...";
 
   return (
     <motion.div
@@ -128,8 +136,8 @@ export default function GithubActivity() {
       {/* Additional Stats Section */}
       <div className="mt-6 lg:mt-4 grid grid-cols-3 gap-4">
         <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-slate-400 font-mono">Last Commit</p>
-          <p className="text-lg text-slate-200 mt-2">{lastCommitLabel}</p>
+          <p className="text-xs text-slate-400 font-mono">Latest Contribution</p>
+          <p className="text-lg text-slate-200 mt-2">{lastContributionLabel}</p>
         </div>
         <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
           <p className="text-xs text-slate-400 font-mono">Longest Streak</p>
@@ -137,7 +145,7 @@ export default function GithubActivity() {
         </div>
         <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
           <p className="text-xs text-slate-400 wrap-break-word font-mono">
-            Contributions
+            Lifetime Contributions
           </p>
           <p className="text-lg text-slate-200 mt-2">{contributionsLabel}</p>
         </div>

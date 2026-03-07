@@ -2,7 +2,12 @@ import "server-only";
 
 import { z } from "zod";
 
-import { getSpotifyEnv } from "@/lib/env";
+import { hasSpotifyEnv, getSpotifyEnv } from "@/lib/env";
+import type {
+  SpotifyPlayback,
+  SpotifyPlaybackApiResponse,
+} from "@/lib/spotify-contract";
+export type { SpotifyPlayback, SpotifyTrack } from "@/lib/spotify-contract";
 
 const SpotifyImage = z.object({ url: z.string().url() });
 const SpotifyExternalUrls = z.object({ spotify: z.string().url() });
@@ -14,13 +19,6 @@ const SpotifyTrack = z.object({
   external_urls: SpotifyExternalUrls,
 });
 
-export type SimplifiedTrack = {
-  name: string;
-  artist: string;
-  albumImage: string;
-  spotifyUrl: string;
-};
-
 type TokenCache = { accessToken: string; expiresAt: number };
 
 const spotifyTokenCache: TokenCache =
@@ -29,8 +27,12 @@ const spotifyTokenCache: TokenCache =
     expiresAt: 0,
   };
 
+(
+  globalThis as unknown as { __spotifyTokenCache?: TokenCache }
+).__spotifyTokenCache = spotifyTokenCache;
+
 function setSpotifyTokenCache(entry: TokenCache) {
-  (globalThis as unknown as { __spotifyTokenCache?: TokenCache }).__spotifyTokenCache = entry;
+  Object.assign(spotifyTokenCache, entry);
 }
 
 async function refreshAccessToken(): Promise<string> {
@@ -67,7 +69,7 @@ async function refreshAccessToken(): Promise<string> {
   return access;
 }
 
-function simplify(tr: z.infer<typeof SpotifyTrack>): SimplifiedTrack {
+function simplify(tr: z.infer<typeof SpotifyTrack>) {
   return {
     name: tr.name,
     artist: tr.artists.map((a) => a.name).join(", "),
@@ -76,19 +78,25 @@ function simplify(tr: z.infer<typeof SpotifyTrack>): SimplifiedTrack {
   };
 }
 
-export async function getCurrentOrLastPlayed(revalidateSec = 60): Promise<
-  | { item: SimplifiedTrack; last_played?: false }
-  | { item: SimplifiedTrack; last_played: true }
-> {
-  type TrackCache = {
-    value:
-      | { item: SimplifiedTrack; last_played?: false }
-      | { item: SimplifiedTrack; last_played: true };
-    expiresAt: number;
-  };
+type PlaybackCache = {
+  value: SpotifyPlayback;
+  expiresAt: number;
+};
 
-  const trackCache: TrackCache | undefined = (globalThis as unknown as { __spotifyTrackCache?: TrackCache })
+function getSpotifyPlaybackCache(): PlaybackCache | undefined {
+  return (globalThis as unknown as { __spotifyTrackCache?: PlaybackCache })
     .__spotifyTrackCache;
+}
+
+function setSpotifyPlaybackCache(entry: PlaybackCache) {
+  (globalThis as unknown as { __spotifyTrackCache?: PlaybackCache })
+    .__spotifyTrackCache = entry;
+}
+
+export async function getCurrentOrLastPlayed(
+  revalidateSec = 60
+): Promise<SpotifyPlayback> {
+  const trackCache = getSpotifyPlaybackCache();
   const now = Date.now();
   if (trackCache && trackCache.expiresAt > now && revalidateSec > 0) {
     return trackCache.value;
@@ -109,12 +117,15 @@ export async function getCurrentOrLastPlayed(revalidateSec = 60): Promise<
     if (!recentRes.ok) throw new Error(`Spotify recently played failed (${recentRes.status})`);
     const recentJson = await recentRes.json();
     const track = SpotifyTrack.parse(recentJson?.items?.[0]?.track);
-    const result = { item: simplify(track), last_played: true } as const;
+    const result = {
+      item: simplify(track),
+      isLastPlayed: true,
+    } satisfies SpotifyPlayback;
     if (revalidateSec > 0) {
-      (globalThis as unknown as { __spotifyTrackCache?: TrackCache }).__spotifyTrackCache = {
+      setSpotifyPlaybackCache({
         value: result,
         expiresAt: Date.now() + revalidateSec * 1000,
-      };
+      });
     }
     return result;
   }
@@ -125,14 +136,35 @@ export async function getCurrentOrLastPlayed(revalidateSec = 60): Promise<
   }
   const currentJson = await currentRes.json();
   const track = SpotifyTrack.parse(currentJson?.item);
-  const result = { item: simplify(track) } as const;
+  const result = {
+    item: simplify(track),
+    isLastPlayed: false,
+  } satisfies SpotifyPlayback;
 
   if (revalidateSec > 0) {
-    (globalThis as unknown as { __spotifyTrackCache?: TrackCache }).__spotifyTrackCache = {
+    setSpotifyPlaybackCache({
       value: result,
       expiresAt: Date.now() + revalidateSec * 1000,
-    };
+    });
   }
 
   return result;
+}
+
+export async function getSpotifyPlaybackResponse(
+  revalidateSec = 60
+): Promise<SpotifyPlaybackApiResponse> {
+  if (!hasSpotifyEnv()) {
+    return { status: "unavailable" };
+  }
+
+  try {
+    const playback = await getCurrentOrLastPlayed(revalidateSec);
+    return { status: "ok", data: playback };
+  } catch {
+    return {
+      status: "error",
+      message: "Failed to fetch Spotify track",
+    };
+  }
 }

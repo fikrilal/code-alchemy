@@ -30,7 +30,7 @@ The app runs at `http://localhost:3000`.
 
 ## Environment Variables
 
-The site can run without external API credentials. If the GitHub or Spotify secrets are missing, the related API routes return `204` and the widgets fail soft instead of crashing the app.
+The site can run without external API credentials. If the GitHub or Spotify secrets are missing, the related API routes return an explicit `unavailable` response and the widgets fail soft instead of crashing the app.
 
 Add a `.env.local` file only if you want live widget data:
 

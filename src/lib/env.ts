@@ -30,10 +30,22 @@ function parseEnv<T extends z.ZodTypeAny>(schema: T, scope: string): z.infer<T> 
   return parsed.data;
 }
 
+function hasEnv<T extends z.ZodTypeAny>(schema: T): boolean {
+  return schema.safeParse(process.env).success;
+}
+
 export function getSpotifyEnv(): SpotifyEnv {
   return parseEnv(SpotifyEnvSchema, "Spotify");
 }
 
 export function getGithubEnv(): GithubEnv {
   return parseEnv(GithubEnvSchema, "GitHub");
+}
+
+export function hasSpotifyEnv(): boolean {
+  return hasEnv(SpotifyEnvSchema);
+}
+
+export function hasGithubEnv(): boolean {
+  return hasEnv(GithubEnvSchema);
 }

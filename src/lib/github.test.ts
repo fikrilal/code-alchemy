@@ -26,46 +26,95 @@ afterAll(() => {
 });
 
 describe("github lib", () => {
-  it("maps GraphQL contribution response into stats", async () => {
-    const fetchMock = vi.fn().mockResolvedValueOnce(
-      jsonResponse({
-        data: {
-          user: {
-            contributionsCollection: {
-              contributionCalendar: {
-                totalContributions: 12,
-                weeks: [
-                  {
-                    contributionDays: [
-                      { date: "2026-03-01", contributionCount: 1 },
-                      { date: "2026-03-02", contributionCount: 2 },
-                      { date: "2026-03-03", contributionCount: 0 },
-                      { date: "2026-03-04", contributionCount: 3 },
-                    ],
-                  },
-                ],
+  it("returns unavailable without calling GitHub when env is missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      GITHUB_TOKEN: "",
+    };
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
+
+    const { getGithubStatsResponse } = await import("./github");
+    const result = await getGithubStatsResponse();
+
+    expect(result).toEqual({ status: "unavailable" });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("aggregates lifetime contribution history across contribution years", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({
+          data: {
+            user: {
+              contributionsCollection: {
+                contributionYears: [2026, 2025],
               },
             },
           },
-        },
-      })
-    );
+        })
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          data: {
+            user: {
+              contributionsCollection: {
+                contributionCalendar: {
+                  totalContributions: 7,
+                  weeks: [
+                    {
+                      contributionDays: [
+                        { date: "2026-01-01", contributionCount: 1 },
+                        { date: "2026-01-02", contributionCount: 2 },
+                        { date: "2026-01-03", contributionCount: 0 },
+                        { date: "2026-03-04", contributionCount: 3 },
+                      ],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        })
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          data: {
+            user: {
+              contributionsCollection: {
+                contributionCalendar: {
+                  totalContributions: 10,
+                  weeks: [
+                    {
+                      contributionDays: [
+                        { date: "2025-12-30", contributionCount: 0 },
+                        { date: "2025-12-31", contributionCount: 4 },
+                      ],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        })
+      );
     vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
 
     const { getGithubStats } = await import("./github");
     const stats = await getGithubStats({
       username: "fikrilal",
-      startYear: 2026,
-      revalidateSec: 0,
+      revalidateSec: 60,
     });
 
     expect(stats).toEqual({
-      totalContributions: 12,
-      lastCommitDate: "March 4th",
-      longestStreak: 2,
+      lifetimeContributions: 17,
+      lastContributionDate: "March 4th",
+      longestStreak: 3,
     });
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      1,
       "https://api.github.com/graphql",
       expect.objectContaining({
         method: "POST",
@@ -74,5 +123,65 @@ describe("github lib", () => {
         }),
       })
     );
+  });
+
+  it("reuses the in-memory cache for identical requests", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({
+          data: {
+            user: {
+              contributionsCollection: {
+                contributionYears: [2026],
+              },
+            },
+          },
+        })
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          data: {
+            user: {
+              contributionsCollection: {
+                contributionCalendar: {
+                  totalContributions: 12,
+                  weeks: [
+                    {
+                      contributionDays: [
+                        { date: "2026-03-01", contributionCount: 1 },
+                        { date: "2026-03-02", contributionCount: 2 },
+                        { date: "2026-03-03", contributionCount: 0 },
+                        { date: "2026-03-04", contributionCount: 3 },
+                      ],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        })
+      );
+    vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
+
+    const { getGithubStats } = await import("./github");
+    const first = await getGithubStats({
+      username: "fikrilal",
+      startYear: 2026,
+      revalidateSec: 60,
+    });
+    const second = await getGithubStats({
+      username: "fikrilal",
+      startYear: 2026,
+      revalidateSec: 60,
+    });
+
+    expect(first).toEqual({
+      lifetimeContributions: 12,
+      lastContributionDate: "March 4th",
+      longestStreak: 2,
+    });
+    expect(second).toEqual(first);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 });

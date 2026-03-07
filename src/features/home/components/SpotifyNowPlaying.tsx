@@ -3,60 +3,40 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-type Track = {
-  name: string;
-  artist: string;
-  albumImage: string;
-  spotifyUrl: string;
-};
+import {
+  SpotifyPlaybackApiResponseSchema,
+  type SpotifyTrack,
+} from "@/lib/spotify-contract";
 
 export default function SpotifyNowPlaying() {
-  const [track, setTrack] = useState<Track | null>(null);
+  const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [isLastPlayed, setIsLastPlayed] = useState<boolean>(false);
 
   useEffect(() => {
-    async function fetchSpotify() {
-      // console.log("🔄 Fetching currently playing track from API...");
+    function resetPlayback() {
+      setTrack(null);
+      setIsLastPlayed(false);
+    }
 
+    async function fetchSpotify() {
       try {
         const res = await fetch("/api/spotify");
+        const payload = SpotifyPlaybackApiResponseSchema.parse(await res.json());
 
-        if (res.status === 204) {
-          setTrack(null);
-          setIsLastPlayed(false);
+        if (payload.status === "ok") {
+          setTrack(payload.data.item);
+          setIsLastPlayed(payload.data.isLastPlayed);
           return;
         }
 
-        const data = await res.json();
-
-        if (!res.ok) {
-          // console.error("❌ API Error:", data);
-          return;
-        }
-
-        if (data && data.item) {
-          // API returns a simplified shape from lib/spotify.ts
-          setTrack({
-            name: data.item.name as string,
-            artist: data.item.artist as string,
-            albumImage: data.item.albumImage as string,
-            spotifyUrl: data.item.spotifyUrl as string,
-          });
-          setIsLastPlayed(data.last_played === true);
-        } else {
-          // console.log("🎵 No track data available.");
-          setTrack(null);
-          setIsLastPlayed(false);
-        }
+        resetPlayback();
       } catch {
-        // console.error("❌ Error fetching Spotify data:", error);
+        resetPlayback();
       }
     }
 
-    // Initial fetch
     void fetchSpotify();
 
-    // Refresh every 60 seconds
     const interval = setInterval(() => {
       void fetchSpotify();
     }, 60000);
