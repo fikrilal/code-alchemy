@@ -31,7 +31,7 @@ export type MotionElementProps = HTMLMotionProps<"div"> & {
   as?: MotionTag;
 };
 
-export function MotionElement({ as = "div", ...rest }: MotionElementProps) {
+function MotionElement({ as = "div", ...rest }: MotionElementProps) {
   const Component = motionMap[as] ?? motion.div;
 
   return <Component {...rest} />;

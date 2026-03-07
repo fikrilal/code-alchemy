@@ -5,11 +5,9 @@ import { getSortedPostsData } from "@/features/blog/lib/posts";
 import SelectedWorkSection from "@/features/work/components/SelectedWorkSection";
 import { getWorkSummaries } from "@/features/work/lib/summaries";
 
-import type { BlogSummary } from "@/features/blog/types";
-
 export default async function HomePage() {
   const [blogPosts, workItems] = await Promise.all([
-    Promise.resolve(getSortedPostsData() as BlogSummary[]),
+    getSortedPostsData(),
     getWorkSummaries(),
   ]);
   const featuredWork = workItems.slice(0, 4);

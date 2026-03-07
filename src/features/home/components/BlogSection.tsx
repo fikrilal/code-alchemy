@@ -6,6 +6,10 @@ import Button from "@/components/ui/Button";
 
 import type { BlogSummary } from "@/features/blog/types";
 
+type BlogSectionProps = {
+  blogPosts?: BlogSummary[];
+};
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -45,7 +49,7 @@ function formatDate(dateString: string) {
   return `${month}, ${day} ${year}`;
 }
 
-export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
+export default function BlogSection({ blogPosts = [] }: BlogSectionProps) {
   const sortedBlogPosts = [...blogPosts].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
@@ -73,9 +77,9 @@ export default function BlogSection({ blogPosts = [] as BlogSummary[] }) {
             variants={childVariants}
             className="hidden md:block"
           >
-            <Link href="/blog">
-              <Button>View all posts</Button>
-            </Link>
+            <Button as="a" href="/blog">
+              View all posts
+            </Button>
           </MotionElement>
         </div>
         <MotionElement

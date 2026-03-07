@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { getSortedPostsData } from "@/features/blog/lib/posts";
 import { loadPostBySlug } from "@/features/blog/lib/mdx";
 
-import type { BlogSummary } from "@/features/blog/types";
 import type { Metadata } from "next";
 
 function getOrdinal(n: number) {
@@ -31,7 +30,7 @@ function formatDate(dateString: string) {
 
 // Generate static params for all blog posts
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const posts = getSortedPostsData() as BlogSummary[];
+  const posts = getSortedPostsData();
   return posts.map((post) => ({ slug: post.slug }));
 }
 

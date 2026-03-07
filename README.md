@@ -102,7 +102,6 @@ Minimal work frontmatter:
 ```yaml
 ---
 title: "Project title"
-slug: "project-slug"
 shortDescription: "What this project is"
 thumbnail: "/images/project-thumb.png"
 date: "2026-01-01"
@@ -115,7 +114,7 @@ techStack:
 Notes:
 
 - Blog routes are derived from the filename.
-- Work routes are generated from the filename/slug pipeline used by `src/features/work/lib/mdx.ts`.
+- Work routes are derived from the content filename.
 - Image paths should be absolute site paths such as `/images/blog/example.jpg`.
 
 ## Project Layout
