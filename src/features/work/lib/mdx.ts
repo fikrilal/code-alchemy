@@ -1,16 +1,20 @@
+import "server-only";
+
 import fs from "fs";
 import path from "path";
 
 import { compileMDX } from "next-mdx-remote/rsc";
-import remarkGfm from "remark-gfm";
-import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSanitize from "rehype-sanitize";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 
-import { remarkMermaid } from "@/features/mdx/remark-mermaid";
 import mdxComponents from "@/features/mdx/components";
-
+import { remarkMermaid } from "@/features/mdx/remark-mermaid";
+import { mdxSanitizeSchema } from "@/features/mdx/sanitize-schema";
 import type { WorkFrontmatter } from "@/features/work/types";
+
 import type { ReactElement } from "react";
 
 const WORK_DIR = path.join(process.cwd(), "src/content/work");
@@ -35,6 +39,7 @@ export async function compileWork(source: string): Promise<{ content: ReactEleme
           rehypeSlug,
           [rehypeAutolinkHeadings, { properties: { className: ["anchor"] } }],
           [rehypePrettyCode, { theme: "github-dark" }],
+          [rehypeSanitize, mdxSanitizeSchema],
         ],
       },
     },

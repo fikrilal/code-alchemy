@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import mermaid from "mermaid";
+import { useEffect, useRef } from "react";
 
 type MermaidProps = {
   code: string;
@@ -9,14 +9,14 @@ type MermaidProps = {
 };
 
 export function Mermaid({ code, className }: MermaidProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLPreElement | null>(null);
 
   useEffect(() => {
     mermaid.initialize({
       startOnLoad: false,
       theme: "dark",
-      // Allow client-side rendering without DOMPurify hooks failing in SSR/test.
-      securityLevel: "loose",
+      // Keep Mermaid in strict mode to avoid rendering unsanitized HTML labels.
+      securityLevel: "strict",
       flowchart: {
         htmlLabels: false,
       },
@@ -24,14 +24,13 @@ export function Mermaid({ code, className }: MermaidProps) {
 
     const renderDiagram = async () => {
       try {
-        const { svg } = await mermaid.render(
-          `mermaid-${Math.random().toString(36).slice(2)}`,
-          code
-        );
         if (containerRef.current) {
-          containerRef.current.innerHTML = svg;
+          // Reset mermaid processing markers before re-running.
+          containerRef.current.removeAttribute("data-processed");
+          containerRef.current.textContent = code;
+          await mermaid.run({ nodes: [containerRef.current] });
         }
-      } catch (error) {
+      } catch {
         // Fail silently in production; optionally log in development if needed.
       }
     };
@@ -42,8 +41,8 @@ export function Mermaid({ code, className }: MermaidProps) {
   }, [code]);
 
   return (
-    <div ref={containerRef} className={className}>
-      <pre className="text-sm text-slate-500">Mermaid diagram loading…</pre>
-    </div>
+    <pre ref={containerRef} className={`mermaid ${className ?? ""}`}>
+      {code}
+    </pre>
   );
 }

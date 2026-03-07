@@ -1,19 +1,5 @@
-import { getSortedPostsData } from "@/lib/blog";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-
-import BlogMainSection from "./components/BlogMainSection";
-
-import type { BlogSummary } from "@/features/blog/types";
+import BlogIndexPage from "@/features/blog/components/BlogIndexPage";
 
 export default function BlogPage() {
-  const blogPosts = getSortedPostsData() as BlogSummary[];
-
-  return (
-    <>
-      <Navbar />
-      <BlogMainSection blogPosts={blogPosts} />
-      <Footer />
-    </>
-  );
+  return <BlogIndexPage />;
 }

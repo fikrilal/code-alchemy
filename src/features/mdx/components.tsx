@@ -9,7 +9,7 @@ function isExternal(src?: string) {
   return /^https?:\/\//i.test(src);
 }
 
-export function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
+function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
   const { src: rawSrc, alt = "", className = "", ...rest } = props;
   const src = typeof rawSrc === "string" ? rawSrc : undefined;
   if (!src) return null;
@@ -23,6 +23,7 @@ export function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
       alt={alt}
       width={1200}
       height={675}
+      sizes="(max-width: 768px) 100vw, 768px"
       className={className}
     />
   );
@@ -42,7 +43,7 @@ function MdxLink(props: AnchorHTMLAttributes<HTMLAnchorElement>) {
   );
 }
 
-export const mdxComponents = {
+const mdxComponents = {
   img: MdxImage,
   a: MdxLink,
   Mermaid,

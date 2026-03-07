@@ -1,14 +1,5 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-
-import MainSection from "./components/MainSection";
+import MainSection from "@/features/about/components/MainSection";
 
 export default function AboutPage() {
-  return (
-    <>
-      <Navbar />
-      <MainSection />
-      <Footer />
-    </>
-  );
+  return <MainSection />;
 }

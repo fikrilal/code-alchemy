@@ -1,0 +1,88 @@
+import Image from "next/image";
+
+import MotionElement from "@/components/ui/MotionElement";
+import GithubActivity from "@/features/home/components/GithubActivity";
+import IconCards from "@/features/home/components/IconCards";
+import SideHustleFlashCard from "@/features/home/components/SideHustleFlashCard";
+import SpotifyNowPlaying from "@/features/home/components/SpotifyNowPlaying";
+import TechStack from "@/features/home/components/TechStack";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 },
+  },
+};
+
+const childVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" as const },
+  },
+};
+
+export default function PortfolioSection() {
+  return (
+    <MotionElement
+      as="section"
+      className="w-full px-4 sm:px-6 lg:px-8 pt-20 text-slate-100"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+          <MotionElement
+            as="div"
+            className="bg-slate-1000 p-6 rounded-2xl border border-slate-600"
+            variants={childVariants}
+          >
+            <p className="text-xs font-mono text-slate-400 tracking-widest mb-2 uppercase">
+              RECENT PROJECT
+            </p>
+            <h3 className="text-xl text-slate-100 font-semibold mb-2">
+              Math Tetris Game
+            </h3>
+            <p className="text-sm sm:text-base md:text-base text-slate-300">
+              A fast-paced mobile game combining math puzzles with Tetris
+              mechanics.
+            </p>
+            <div className="mt-4 w-full aspect-14/9 overflow-hidden rounded-xl">
+              <Image
+                src="/images/recent-project-thumbnail.png"
+                alt="Recent Project screenshot"
+                width={1390}
+                height={782}
+                sizes="(max-width: 1024px) 100vw, 33vw"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </MotionElement>
+
+          <MotionElement as="div" variants={childVariants}>
+            <SideHustleFlashCard />
+          </MotionElement>
+
+          <MotionElement
+            as="div"
+            className="flex flex-col gap-4 h-full"
+            variants={childVariants}
+          >
+            <SpotifyNowPlaying />
+            <IconCards />
+          </MotionElement>
+        </div>
+
+        <div className="relative w-full overflow-hidden rounded-lg xl:aspect-15/5">
+          <div className="grid grid-cols-1 xl:absolute xl:inset-0 xl:grid-cols-2 gap-4">
+            <TechStack />
+            <GithubActivity />
+          </div>
+        </div>
+      </div>
+    </MotionElement>
+  );
+}

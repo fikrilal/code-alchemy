@@ -1,41 +1,55 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-import tsPlugin from "@typescript-eslint/eslint-plugin";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { defineConfig, globalIgnores } from "eslint/config";
+import tsEslintPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
-import jsxA11y from "eslint-plugin-jsx-a11y";
 import importPlugin from "eslint-plugin-import";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypeScript from "eslint-config-next/typescript";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+const typedFiles = ["**/*.{ts,tsx}"];
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals"),
+export default defineConfig([
+  ...nextCoreWebVitals,
+  ...nextTypeScript,
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "dist/**",
+    "coverage/**",
+    "next-env.d.ts",
+  ]),
   {
-    files: ["**/*.{ts,tsx,js,jsx,mjs}"],
+    linterOptions: {
+      reportUnusedDisableDirectives: "error",
+    },
+  },
+  {
+    files: typedFiles,
+    plugins: {
+      "@typescript-eslint": tsEslintPlugin,
+      import: importPlugin,
+    },
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
+        projectService: true,
+        tsconfigRootDir: __dirname,
       },
     },
-    plugins: {
-      "@typescript-eslint": tsPlugin,
-      "jsx-a11y": jsxA11y,
-      import: importPlugin,
-    },
     rules: {
-      "@typescript-eslint/no-explicit-any": "error",
-      // Enable typed rules after parserOptions.project is configured
-      // "@typescript-eslint/no-floating-promises": "error",
-      // "@typescript-eslint/no-misused-promises": "error",
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
-      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports" },
+      ],
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-misused-promises": "error",
       "import/order": [
         "error",
         {
@@ -49,45 +63,22 @@ const eslintConfig = [
             "object",
             "type",
           ],
+          pathGroups: [
+            {
+              pattern: "@/**",
+              group: "internal",
+              position: "before",
+            },
+          ],
+          pathGroupsExcludedImportTypes: ["builtin"],
           "newlines-between": "always",
+          alphabetize: {
+            order: "asc",
+            caseInsensitive: true,
+          },
         },
       ],
-      "react-hooks/rules-of-hooks": "warn",
-      "react-hooks/exhaustive-deps": "warn",
       "react/no-unescaped-entities": "off",
-      // a11y (subset)
-      "jsx-a11y/alt-text": "warn",
-      "jsx-a11y/anchor-is-valid": "warn",
     },
   },
-  {
-    files: [
-      "src/components/Footer.tsx",
-      "src/components/Navbar.tsx",
-      "src/components/IconCards.tsx",
-      "src/components/SpotifyNowPlaying.tsx",
-      "src/components/Carousel.tsx",
-      "src/components/TechStack.tsx",
-    ],
-    rules: {
-      "import/order": [
-        "error",
-        {
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            "parent",
-            "sibling",
-            "index",
-            "object",
-            "type",
-          ],
-          "newlines-between": "always",
-        },
-      ],
-    },
-  },
-];
-
-export default eslintConfig;
+]);

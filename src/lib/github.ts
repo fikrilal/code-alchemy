@@ -1,7 +1,11 @@
-import { z } from "zod";
-import { format, parseISO } from "date-fns";
+import "server-only";
 
-import { env } from "@/lib/env";
+import { differenceInCalendarDays, format, parseISO } from "date-fns";
+import { z } from "zod";
+
+import { hasGithubEnv, getGithubEnv } from "@/lib/env";
+import type { GithubStats, GithubStatsApiResponse } from "@/lib/github-contract";
+export type { GithubStats } from "@/lib/github-contract";
 
 const ContributionDay = z.object({
   date: z.string(),
@@ -17,7 +21,19 @@ const ContributionCalendar = z.object({
   weeks: z.array(ContributionWeek),
 });
 
-const ContributionsResponse = z.object({
+type ContributionCalendarData = z.infer<typeof ContributionCalendar>;
+
+const ContributionYearsResponse = z.object({
+  data: z.object({
+    user: z.object({
+      contributionsCollection: z.object({
+        contributionYears: z.array(z.number()),
+      }),
+    }),
+  }),
+});
+
+const ContributionCalendarResponse = z.object({
   data: z.object({
     user: z.object({
       contributionsCollection: z.object({
@@ -27,57 +43,80 @@ const ContributionsResponse = z.object({
   }),
 });
 
-type ContributionsResponse = z.infer<typeof ContributionsResponse>;
-
 type StatsCache = {
   value: GithubStats;
   expiresAt: number;
-  username: string;
-  fromISO: string;
-  toISO: string;
+  key: string;
+};
+
+type GithubStatsAggregate = {
+  lifetimeContributions: number;
+  lastContributionDate: string | null;
+  longestStreak: number;
+};
+
+const EMPTY_GITHUB_STATS: GithubStats = {
+  lifetimeContributions: 0,
+  lastContributionDate: null,
+  longestStreak: 0,
 };
 
 const githubStatsCache: StatsCache =
   (globalThis as unknown as { __githubStatsCache?: StatsCache }).__githubStatsCache ?? {
-    value: { totalContributions: 0, lastCommitDate: null, longestStreak: 0 },
+    value: EMPTY_GITHUB_STATS,
     expiresAt: 0,
-    username: "",
-    fromISO: "",
-    toISO: "",
+    key: "",
   };
 
+(
+  globalThis as unknown as { __githubStatsCache?: StatsCache }
+).__githubStatsCache = githubStatsCache;
+
 function setGithubStatsCache(entry: StatsCache) {
-  (globalThis as unknown as { __githubStatsCache?: StatsCache }).__githubStatsCache = entry;
+  Object.assign(githubStatsCache, entry);
 }
 
-async function fetchContributionRange(username: string, from: Date, to: Date, revalidateSec: number) {
-  const query = `
-    query ($username: String!, $from: DateTime!, $to: DateTime!) {
-      user(login: $username) {
-        contributionsCollection(from: $from, to: $to) {
-          contributionCalendar {
-            totalContributions
-            weeks { contributionDays { date contributionCount } }
-          }
-        }
-      }
-    }
-  `;
+function getGithubCacheKey(username: string, startYear?: number): string {
+  return `${username}:${startYear ?? "all"}`;
+}
+
+function getFreshGithubStatsFromCache(cacheKey: string): GithubStats | null {
+  const isFresh =
+    githubStatsCache.expiresAt > Date.now() && githubStatsCache.key === cacheKey;
+
+  return isFresh ? githubStatsCache.value : null;
+}
+
+function getStaleGithubStatsFromCache(cacheKey: string): GithubStats | null {
+  return githubStatsCache.key === cacheKey ? githubStatsCache.value : null;
+}
+
+function rememberGithubStats(
+  cacheKey: string,
+  stats: GithubStats,
+  revalidateSec: number
+) {
+  setGithubStatsCache({
+    value: stats,
+    expiresAt: Date.now() + revalidateSec * 1000,
+    key: cacheKey,
+  });
+}
+
+async function postGithubQuery(
+  query: string,
+  variables: Record<string, string>,
+  revalidateSec: number
+) {
+  const { GITHUB_TOKEN } = getGithubEnv();
 
   const res = await fetch("https://api.github.com/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      Authorization: `Bearer ${GITHUB_TOKEN}`,
     },
-    body: JSON.stringify({
-      query,
-      variables: {
-        username,
-        from: from.toISOString(),
-        to: to.toISOString(),
-      },
-    }),
+    body: JSON.stringify({ query, variables }),
     next: { revalidate: revalidateSec },
   });
 
@@ -91,18 +130,171 @@ async function fetchContributionRange(username: string, from: Date, to: Date, re
     throw new Error(`GitHub API error (${res.status}): ${errorMessages ?? "request failed"}`);
   }
 
-  const parsed = ContributionsResponse.safeParse(json);
+  return json;
+}
+
+async function fetchContributionYears(username: string, revalidateSec: number): Promise<number[]> {
+  const query = `
+    query ($username: String!) {
+      user(login: $username) {
+        contributionsCollection {
+          contributionYears
+        }
+      }
+    }
+  `;
+
+  const json = await postGithubQuery(query, { username }, revalidateSec);
+  const parsed = ContributionYearsResponse.safeParse(json);
+
+  if (!parsed.success) {
+    throw new Error("Invalid GitHub contribution years response shape");
+  }
+
+  return parsed.data.data.user.contributionsCollection.contributionYears;
+}
+
+async function fetchContributionRange(
+  username: string,
+  from: Date,
+  to: Date,
+  revalidateSec: number
+): Promise<ContributionCalendarData> {
+  const query = `
+    query ($username: String!, $from: DateTime!, $to: DateTime!) {
+      user(login: $username) {
+        contributionsCollection(from: $from, to: $to) {
+          contributionCalendar {
+            totalContributions
+            weeks { contributionDays { date contributionCount } }
+          }
+        }
+      }
+    }
+  `;
+
+  const json = await postGithubQuery(
+    query,
+    {
+      username,
+      from: from.toISOString(),
+      to: to.toISOString(),
+    },
+    revalidateSec
+  );
+  const parsed = ContributionCalendarResponse.safeParse(json);
   if (!parsed.success) {
     throw new Error("Invalid GitHub response shape");
   }
   return parsed.data.data.user.contributionsCollection.contributionCalendar;
 }
 
-export type GithubStats = {
-  totalContributions: number;
-  lastCommitDate: string | null; // e.g., "February 8th"
-  longestStreak: number;
-};
+function getYearRange(year: number, now: Date) {
+  return {
+    from: new Date(Date.UTC(year, 0, 1, 0, 0, 0)),
+    to:
+      year === now.getUTCFullYear()
+        ? now
+        : new Date(Date.UTC(year, 11, 31, 23, 59, 59, 999)),
+  };
+}
+
+function getRequestedContributionYears(years: number[], startYear?: number): number[] {
+  return years
+    .filter((year) => (typeof startYear === "number" ? year >= startYear : true))
+    .sort((a, b) => a - b);
+}
+
+async function fetchContributionCalendars(
+  username: string,
+  years: number[],
+  revalidateSec: number
+): Promise<ContributionCalendarData[]> {
+  const now = new Date();
+
+  return Promise.all(
+    years.map((year) => {
+      const { from, to } = getYearRange(year, now);
+      return fetchContributionRange(username, from, to, revalidateSec);
+    })
+  );
+}
+
+function getLastContributionDate(
+  days: Array<{ date: string; contributionCount: number }>
+): string | null {
+  return [...days].reverse().find((day) => day.contributionCount > 0)?.date ?? null;
+}
+
+function calculateLongestStreak(
+  allDays: Array<{ date: string; contributionCount: number }>
+): number {
+  const orderedDays = [...allDays].sort((a, b) => a.date.localeCompare(b.date));
+  let longestStreak = 0;
+  let currentStreak = 0;
+  let previousDate: Date | null = null;
+
+  for (const day of orderedDays) {
+    const currentDate = parseISO(day.date);
+
+    if (
+      previousDate &&
+      differenceInCalendarDays(currentDate, previousDate) > 1
+    ) {
+      longestStreak = Math.max(longestStreak, currentStreak);
+      currentStreak = 0;
+    }
+
+    if (day.contributionCount > 0) {
+      currentStreak++;
+    } else {
+      longestStreak = Math.max(longestStreak, currentStreak);
+      currentStreak = 0;
+    }
+
+    previousDate = currentDate;
+  }
+
+  return Math.max(longestStreak, currentStreak);
+}
+
+function aggregateGithubStats(
+  calendars: ContributionCalendarData[]
+): GithubStatsAggregate {
+  let lifetimeContributions = 0;
+  let lastContributionDate: string | null = null;
+  const allDays: Array<{ date: string; contributionCount: number }> = [];
+
+  for (const calendar of calendars) {
+    lifetimeContributions += calendar.totalContributions;
+    const days = calendar.weeks.flatMap((week) => week.contributionDays);
+    allDays.push(...days);
+
+    const rangeLastContributionDate = getLastContributionDate(days);
+    if (
+      rangeLastContributionDate &&
+      (!lastContributionDate || rangeLastContributionDate > lastContributionDate)
+    ) {
+      lastContributionDate = rangeLastContributionDate;
+    }
+  }
+
+  return {
+    lifetimeContributions,
+    lastContributionDate,
+    longestStreak: calculateLongestStreak(allDays),
+  };
+}
+
+function formatGithubStats(stats: GithubStatsAggregate): GithubStats {
+  return {
+    lifetimeContributions: stats.lifetimeContributions,
+    lastContributionDate: stats.lastContributionDate
+      ? format(parseISO(stats.lastContributionDate), "MMMM do")
+      : null,
+    longestStreak: stats.longestStreak,
+  };
+}
 
 export async function getGithubStats(opts?: {
   username?: string;
@@ -111,80 +303,69 @@ export async function getGithubStats(opts?: {
 }): Promise<GithubStats> {
   const username = opts?.username ?? "fikrilal";
   const revalidateSec = opts?.revalidateSec ?? 60 * 60; // 1 hour
-  const toDate = new Date();
-  const fromDate = (() => {
-    if (typeof opts?.startYear === "number") {
-      return new Date(Date.UTC(opts.startYear, 0, 1, 0, 0, 0));
-    }
-    const fallback = new Date(toDate);
-    fallback.setFullYear(toDate.getFullYear() - 1); // default: trailing 12 months
-    return fallback;
-  })();
+  const cacheKey = getGithubCacheKey(username, opts?.startYear);
+  const freshCache = getFreshGithubStatsFromCache(cacheKey);
 
-  const cacheExpiresAt = githubStatsCache.expiresAt;
-  const cacheValid =
-    cacheExpiresAt > Date.now() &&
-    githubStatsCache.username === username &&
-    githubStatsCache.fromISO === fromDate.toISOString() &&
-    githubStatsCache.toISO === toDate.toISOString();
-
-  if (cacheValid) {
-    return githubStatsCache.value;
+  if (freshCache) {
+    return freshCache;
   }
 
-  let calendar;
+  let years: number[];
   try {
-    calendar = await fetchContributionRange(username, fromDate, toDate, revalidateSec);
+    years = await fetchContributionYears(username, revalidateSec);
   } catch (error) {
-    // Fallback to stale cache if available to avoid hard failures
-    if (githubStatsCache.value.totalContributions > 0) {
-      return githubStatsCache.value;
+    const staleCache = getStaleGithubStatsFromCache(cacheKey);
+    if (staleCache) {
+      return staleCache;
     }
     throw error;
   }
 
-  let totalContributionsAllTime = 0;
-  let lastCommitDate: string | null = null;
-  const allDays: Array<{ date: string; contributionCount: number }> = [];
+  const yearsToQuery = getRequestedContributionYears(years, opts?.startYear);
 
-  totalContributionsAllTime += calendar.totalContributions;
-  const days = calendar.weeks.flatMap((w) => w.contributionDays);
-  allDays.push(...days);
-
-  const rangeLast = [...days].reverse().find((d) => d.contributionCount > 0)?.date;
-  if (rangeLast) {
-    if (!lastCommitDate || new Date(rangeLast) > new Date(lastCommitDate)) {
-      lastCommitDate = rangeLast;
-    }
+  if (yearsToQuery.length === 0) {
+    rememberGithubStats(cacheKey, EMPTY_GITHUB_STATS, revalidateSec);
+    return EMPTY_GITHUB_STATS;
   }
 
-  allDays.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  let longestStreak = 0;
-  let currentStreak = 0;
-  for (const day of allDays) {
-    if (day.contributionCount > 0) currentStreak++;
-    else {
-      longestStreak = Math.max(longestStreak, currentStreak);
-      currentStreak = 0;
+  let calendars: ContributionCalendarData[];
+  try {
+    calendars = await fetchContributionCalendars(
+      username,
+      yearsToQuery,
+      revalidateSec
+    );
+  } catch (error) {
+    const staleCache = getStaleGithubStatsFromCache(cacheKey);
+    if (staleCache) {
+      return staleCache;
     }
+    throw error;
   }
-  longestStreak = Math.max(longestStreak, currentStreak);
 
-  const formattedLastCommitDate = lastCommitDate ? format(parseISO(lastCommitDate), "MMMM do") : null;
+  const stats = formatGithubStats(aggregateGithubStats(calendars));
 
-  const stats: GithubStats = {
-    totalContributions: totalContributionsAllTime,
-    lastCommitDate: formattedLastCommitDate,
-    longestStreak,
-  };
-
-  setGithubStatsCache({
-    value: stats,
-    expiresAt: Date.now() + revalidateSec * 1000,
-    username,
-    fromISO: fromDate.toISOString(),
-    toISO: toDate.toISOString(),
-  });
+  rememberGithubStats(cacheKey, stats, revalidateSec);
 
   return stats;
+}
+
+export async function getGithubStatsResponse(opts?: {
+  username?: string;
+  startYear?: number;
+  revalidateSec?: number;
+}): Promise<GithubStatsApiResponse> {
+  if (!hasGithubEnv()) {
+    return { status: "unavailable" };
+  }
+
+  try {
+    const stats = await getGithubStats(opts);
+    return { status: "ok", data: stats };
+  } catch {
+    return {
+      status: "error",
+      message: "Failed to fetch GitHub stats",
+    };
+  }
 }

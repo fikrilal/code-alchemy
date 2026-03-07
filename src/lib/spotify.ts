@@ -1,6 +1,13 @@
+import "server-only";
+
 import { z } from "zod";
 
-import { env } from "@/lib/env";
+import { hasSpotifyEnv, getSpotifyEnv } from "@/lib/env";
+import type {
+  SpotifyPlayback,
+  SpotifyPlaybackApiResponse,
+} from "@/lib/spotify-contract";
+export type { SpotifyPlayback, SpotifyTrack } from "@/lib/spotify-contract";
 
 const SpotifyImage = z.object({ url: z.string().url() });
 const SpotifyExternalUrls = z.object({ spotify: z.string().url() });
@@ -12,12 +19,18 @@ const SpotifyTrack = z.object({
   external_urls: SpotifyExternalUrls,
 });
 
-export type SimplifiedTrack = {
-  name: string;
-  artist: string;
-  albumImage: string;
-  spotifyUrl: string;
-};
+const SpotifyTokenResponse = z.object({
+  access_token: z.string().min(1),
+  expires_in: z.number().int().positive().optional(),
+});
+
+const SpotifyRecentTrackResponse = z.object({
+  items: z.array(
+    z.object({
+      track: SpotifyTrack,
+    })
+  ),
+});
 
 type TokenCache = { accessToken: string; expiresAt: number };
 
@@ -27,17 +40,40 @@ const spotifyTokenCache: TokenCache =
     expiresAt: 0,
   };
 
+(
+  globalThis as unknown as { __spotifyTokenCache?: TokenCache }
+).__spotifyTokenCache = spotifyTokenCache;
+
 function setSpotifyTokenCache(entry: TokenCache) {
-  (globalThis as unknown as { __spotifyTokenCache?: TokenCache }).__spotifyTokenCache = entry;
+  Object.assign(spotifyTokenCache, entry);
+}
+
+function getFreshSpotifyTokenFromCache(): string | null {
+  const now = Date.now();
+
+  return spotifyTokenCache.accessToken && spotifyTokenCache.expiresAt > now
+    ? spotifyTokenCache.accessToken
+    : null;
+}
+
+function rememberSpotifyToken(accessToken: string, expiresInSec: number) {
+  setSpotifyTokenCache({
+    accessToken,
+    expiresAt: Date.now() + Math.max(expiresInSec - 60, 60) * 1000,
+  });
 }
 
 async function refreshAccessToken(): Promise<string> {
-  const now = Date.now();
-  if (spotifyTokenCache.accessToken && spotifyTokenCache.expiresAt > now) {
-    return spotifyTokenCache.accessToken;
+  const spotifyEnv = getSpotifyEnv();
+  const cachedToken = getFreshSpotifyTokenFromCache();
+
+  if (cachedToken) {
+    return cachedToken;
   }
 
-  const authString = Buffer.from(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`).toString("base64");
+  const authString = Buffer.from(
+    `${spotifyEnv.SPOTIFY_CLIENT_ID}:${spotifyEnv.SPOTIFY_CLIENT_SECRET}`
+  ).toString("base64");
   const res = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
     headers: {
@@ -46,23 +82,20 @@ async function refreshAccessToken(): Promise<string> {
     },
     body: new URLSearchParams({
       grant_type: "refresh_token",
-      refresh_token: env.SPOTIFY_REFRESH_TOKEN,
+      refresh_token: spotifyEnv.SPOTIFY_REFRESH_TOKEN,
     }),
     cache: "no-store",
   });
   if (!res.ok) throw new Error(`Spotify token refresh failed (${res.status})`);
-  const json = await res.json();
-  const access = json?.access_token as string | undefined;
-  const expiresIn = typeof json?.expires_in === "number" ? json.expires_in : 3600;
-  if (!access) throw new Error("Spotify access token missing in response");
-  setSpotifyTokenCache({
-    accessToken: access,
-    expiresAt: Date.now() + Math.max(expiresIn - 60, 60) * 1000, // refresh a minute before expiry
-  });
-  return access;
+  const payload = SpotifyTokenResponse.parse(await res.json());
+  const expiresIn = payload.expires_in ?? 3600;
+
+  rememberSpotifyToken(payload.access_token, expiresIn);
+
+  return payload.access_token;
 }
 
-function simplify(tr: z.infer<typeof SpotifyTrack>): SimplifiedTrack {
+function simplify(tr: z.infer<typeof SpotifyTrack>) {
   return {
     name: tr.name,
     artist: tr.artists.map((a) => a.name).join(", "),
@@ -71,63 +104,147 @@ function simplify(tr: z.infer<typeof SpotifyTrack>): SimplifiedTrack {
   };
 }
 
-export async function getCurrentOrLastPlayed(revalidateSec = 60): Promise<
-  | { item: SimplifiedTrack; last_played?: false }
-  | { item: SimplifiedTrack; last_played: true }
-> {
-  type TrackCache = {
-    value:
-      | { item: SimplifiedTrack; last_played?: false }
-      | { item: SimplifiedTrack; last_played: true };
-    expiresAt: number;
-  };
+type PlaybackCache = {
+  value: SpotifyPlayback;
+  expiresAt: number;
+};
 
-  const trackCache: TrackCache | undefined = (globalThis as unknown as { __spotifyTrackCache?: TrackCache })
+function getSpotifyPlaybackCache(): PlaybackCache | undefined {
+  return (globalThis as unknown as { __spotifyTrackCache?: PlaybackCache })
     .__spotifyTrackCache;
+}
+
+function setSpotifyPlaybackCache(entry: PlaybackCache) {
+  (globalThis as unknown as { __spotifyTrackCache?: PlaybackCache })
+    .__spotifyTrackCache = entry;
+}
+
+function getFreshSpotifyPlaybackFromCache(
+  revalidateSec: number
+): SpotifyPlayback | null {
+  const trackCache = getSpotifyPlaybackCache();
   const now = Date.now();
-  if (trackCache && trackCache.expiresAt > now && revalidateSec > 0) {
-    return trackCache.value;
+  const isFresh = Boolean(
+    trackCache && trackCache.expiresAt > now && revalidateSec > 0
+  );
+
+  return isFresh && trackCache ? trackCache.value : null;
+}
+
+function rememberSpotifyPlayback(playback: SpotifyPlayback, revalidateSec: number) {
+  if (revalidateSec <= 0) {
+    return;
   }
 
-  const accessToken = await refreshAccessToken();
-
-  const currentRes = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
-    headers: { Authorization: `Bearer ${accessToken}` },
-    next: { revalidate: revalidateSec },
+  setSpotifyPlaybackCache({
+    value: playback,
+    expiresAt: Date.now() + revalidateSec * 1000,
   });
+}
 
-  if (currentRes.status === 204) {
-    const recentRes = await fetch("https://api.spotify.com/v1/me/player/recently-played?limit=1", {
+async function fetchCurrentlyPlayingTrack(
+  accessToken: string,
+  revalidateSec: number
+): Promise<z.infer<typeof SpotifyTrack> | null> {
+  const currentRes = await fetch(
+    "https://api.spotify.com/v1/me/player/currently-playing",
+    {
       headers: { Authorization: `Bearer ${accessToken}` },
       next: { revalidate: revalidateSec },
-    });
-    if (!recentRes.ok) throw new Error(`Spotify recently played failed (${recentRes.status})`);
-    const recentJson = await recentRes.json();
-    const track = SpotifyTrack.parse(recentJson?.items?.[0]?.track);
-    const result = { item: simplify(track), last_played: true } as const;
-    if (revalidateSec > 0) {
-      (globalThis as unknown as { __spotifyTrackCache?: TrackCache }).__spotifyTrackCache = {
-        value: result,
-        expiresAt: Date.now() + revalidateSec * 1000,
-      };
     }
-    return result;
+  );
+
+  if (currentRes.status === 204) {
+    return null;
   }
 
   if (!currentRes.ok) {
     const text = await currentRes.text();
     throw new Error(`Spotify current failed (${currentRes.status}): ${text}`);
   }
-  const currentJson = await currentRes.json();
-  const track = SpotifyTrack.parse(currentJson?.item);
-  const result = { item: simplify(track) } as const;
 
-  if (revalidateSec > 0) {
-    (globalThis as unknown as { __spotifyTrackCache?: TrackCache }).__spotifyTrackCache = {
-      value: result,
-      expiresAt: Date.now() + revalidateSec * 1000,
+  const currentJson = await currentRes.json();
+  return SpotifyTrack.parse(currentJson?.item);
+}
+
+async function fetchRecentlyPlayedTrack(
+  accessToken: string,
+  revalidateSec: number
+): Promise<z.infer<typeof SpotifyTrack>> {
+  const recentRes = await fetch(
+    "https://api.spotify.com/v1/me/player/recently-played?limit=1",
+    {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      next: { revalidate: revalidateSec },
+    }
+  );
+
+  if (!recentRes.ok) {
+    throw new Error(`Spotify recently played failed (${recentRes.status})`);
+  }
+
+  const recentJson = SpotifyRecentTrackResponse.parse(await recentRes.json());
+  const recentTrack = recentJson.items[0]?.track;
+
+  if (!recentTrack) {
+    throw new Error("Spotify recently played returned no tracks");
+  }
+
+  return recentTrack;
+}
+
+async function resolveSpotifyPlayback(
+  accessToken: string,
+  revalidateSec: number
+): Promise<SpotifyPlayback> {
+  const currentTrack = await fetchCurrentlyPlayingTrack(accessToken, revalidateSec);
+
+  if (currentTrack) {
+    return {
+      item: simplify(currentTrack),
+      isLastPlayed: false,
     };
   }
 
-  return result;
+  const recentTrack = await fetchRecentlyPlayedTrack(accessToken, revalidateSec);
+
+  return {
+    item: simplify(recentTrack),
+    isLastPlayed: true,
+  };
+}
+
+export async function getCurrentOrLastPlayed(
+  revalidateSec = 60
+): Promise<SpotifyPlayback> {
+  const cachedPlayback = getFreshSpotifyPlaybackFromCache(revalidateSec);
+  if (cachedPlayback) {
+    return cachedPlayback;
+  }
+
+  const accessToken = await refreshAccessToken();
+  const playback = await resolveSpotifyPlayback(accessToken, revalidateSec);
+
+  // Do not fall back to stale playback after cache expiry: recency matters more than availability here.
+  rememberSpotifyPlayback(playback, revalidateSec);
+
+  return playback;
+}
+
+export async function getSpotifyPlaybackResponse(
+  revalidateSec = 60
+): Promise<SpotifyPlaybackApiResponse> {
+  if (!hasSpotifyEnv()) {
+    return { status: "unavailable" };
+  }
+
+  try {
+    const playback = await getCurrentOrLastPlayed(revalidateSec);
+    return { status: "ok", data: playback };
+  } catch {
+    return {
+      status: "error",
+      message: "Failed to fetch Spotify track",
+    };
+  }
 }

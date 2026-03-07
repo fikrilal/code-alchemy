@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
+import * as React from "react";
 
 type ButtonBaseProps = {
   children: React.ReactNode;
@@ -23,7 +23,11 @@ type ButtonProps = ButtonBaseProps &
 const baseClasses =
   "relative overflow-hidden inline-flex items-center group text-slate-50 hover:text-slate-900 border border-slate-50 dark:border-slate-500 rounded-full bg-transparent px-6 py-3 sm:px-8 sm:py-4 transform-gpu transition duration-500 ease-out hover:scale-[1.02] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600 active:scale-95";
 
-export function Button({
+function isInternalHref(href: string) {
+  return href.startsWith("/") || href.startsWith("#");
+}
+
+function Button({
   as = "button",
   children,
   className = "",
@@ -59,8 +63,25 @@ export function Button({
   if (as === "a") {
     const { href, onClick, onMouseEnter, onTouchStart, ...anchorProps } =
       rest as React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string };
+
+    if (isInternalHref(href)) {
+      return (
+        <Link
+          href={href}
+          className={`${baseClasses} ${className}`}
+          {...anchorProps}
+          {...(onClick ? { onClick } : {})}
+          {...(onMouseEnter ? { onMouseEnter } : {})}
+          {...(onTouchStart ? { onTouchStart } : {})}
+        >
+          {overlay}
+          {content}
+        </Link>
+      );
+    }
+
     return (
-      <Link
+      <a
         href={href}
         className={`${baseClasses} ${className}`}
         {...anchorProps}
@@ -70,7 +91,7 @@ export function Button({
       >
         {overlay}
         {content}
-      </Link>
+      </a>
     );
   }
 

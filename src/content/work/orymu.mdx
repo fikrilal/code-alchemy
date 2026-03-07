@@ -1,8 +1,6 @@
 ---
 title: "Orymu — A Memory-First Reading Companion"
-slug: "orymu-memory-first-reading-companion"
 shortDescription: "Founding engineer shaping Orymu's mobile app and architecture so a small team can ship real reading, focus, and flashcard features that scale beyond a demo."
-timeframe: "2025 - present"
 thumbnail: "/images/work/orymu.png"
 date: "2025-12-01"
 techStack:
@@ -270,8 +268,8 @@ Orymu I moved the rules into domain-level value objects and adopted a two-layer 
 - Use cases re-validate inputs as a final gate before calling repositories and convert failures into
   `AuthFailure.validation` or other domain failures.
 
-I wrote a separate deep-dive case study on this pattern:  
-`docs/studies/orymu_validation_value_objects_case_study.md`
+I wrote a separate deep-dive case study on this pattern:
+[Designing Validation Architecture with Value Objects in Orymu](/blog/designing-validation-architecture-value-objects-orymu)
 
 ### 5.5 Feature-Owned Data & Persistence
 
@@ -432,8 +430,8 @@ into their own case studies.
 
 - **Validation Architecture with Value Objects**  
   Moving from controller-centric validation to domain-level value objects and a two-layer validation
-  model was a big shift for me. I describe that journey and its impact in:  
-  `docs/studies/orymu_validation_value_objects_case_study.md`
+  model was a big shift for me. I documented that journey and its impact here:
+  [Designing Validation Architecture with Value Objects in Orymu](/blog/designing-validation-architecture-value-objects-orymu)
 
 - **Session & Router Integration** *(planned deep dive)*  
   Designing `SessionManager` as a single source of truth and wiring it into GoRouter's

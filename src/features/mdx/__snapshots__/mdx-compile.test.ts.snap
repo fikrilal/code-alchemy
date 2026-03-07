@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mdx compile pipeline > produces stable sanitized output for a representative blog post 1`] = `
+{
+  "hasAnchorLinks": false,
+  "hasCodeBlock": true,
+  "hasMermaidBlock": false,
+  "hasScriptTag": false,
+  "title": "GetX in Cubit Style: Single State + Explicit Effects",
+}
+`;
+
+exports[`mdx compile pipeline > produces stable sanitized output for a representative work post 1`] = `
+{
+  "hasAnchorLinks": false,
+  "hasCodeBlock": false,
+  "hasScriptTag": false,
+  "title": "Orymu — A Memory-First Reading Companion",
+}
+`;
