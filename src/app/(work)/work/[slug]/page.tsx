@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import Button from "@/components/ui/Button";
 import WorkGallery from "@/features/work/components/WorkGallery";
 import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
 
@@ -60,6 +61,18 @@ export default async function WorkCaseStudyPage({
           </h1>
           {frontmatter.shortDescription && (
             <p className="text-slate-300 mt-3">{frontmatter.shortDescription}</p>
+          )}
+          {frontmatter.playStoreUrl && (
+            <div className="mt-6">
+              <Button
+                as="a"
+                href={frontmatter.playStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View on Play Store
+              </Button>
+            </div>
           )}
         </header>
         <WorkGallery
