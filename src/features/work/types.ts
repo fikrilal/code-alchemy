@@ -7,6 +7,7 @@ export type WorkFrontmatter = {
   title: string;
   shortDescription?: string;
   thumbnail?: string;
+  playStoreUrl?: string;
   techStack?: string[];
   images?: WorkImages;
   category?: string;
