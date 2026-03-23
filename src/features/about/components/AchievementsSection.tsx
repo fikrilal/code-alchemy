@@ -1,5 +1,4 @@
 import achievements from "@/features/about/data/achievements";
-import type { Achievement } from "@/features/about/data/achievements";
 
 export default function AchievementsSection() {
   return (
@@ -8,7 +7,7 @@ export default function AchievementsSection() {
         Achievements
       </h2>
       <div className="space-y-8">
-        {(achievements as Achievement[]).map((achievement: Achievement, index: number) => (
+        {achievements.map((achievement, index) => (
           <div
             key={`${achievement.title}-${achievement.date}`}
             className={`pt-8 border-t border-slate-900 ${index === 0 ? "border-t-0 pt-0" : ""}`}

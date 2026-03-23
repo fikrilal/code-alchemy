@@ -1,5 +1,4 @@
 import experiences from "@/features/about/data/experience";
-import type { Experience } from "@/features/about/data/experience";
 
 export default function ExperienceSection() {
   return (
@@ -8,7 +7,7 @@ export default function ExperienceSection() {
         Experience
       </h2>
       <div className="space-y-8">
-        {(experiences as Experience[]).map((experience: Experience, index: number) => (
+        {experiences.map((experience, index) => (
           <div
             key={`${experience.title}-${experience.organization}`}
             className={`pt-8 border-t border-slate-900 ${index === 0 ? "border-t-0 pt-0" : ""}`}

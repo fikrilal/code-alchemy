@@ -18,6 +18,13 @@ import {
 
 beforeEach(() => {
   appMock.mockReset();
+  vi.restoreAllMocks();
+  vi.useRealTimers();
+  (
+    globalThis as unknown as {
+      __playStoreAppInfoCache?: Map<string, unknown>;
+    }
+  ).__playStoreAppInfoCache?.clear();
 });
 
 describe("play store utilities", () => {
@@ -134,6 +141,7 @@ describe("play store utilities", () => {
   });
 
   it("returns null when the scraper throws", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     appMock.mockRejectedValue(new Error("play unavailable"));
 
     await expect(
@@ -141,5 +149,72 @@ describe("play store utilities", () => {
         playStoreAppId: "com.orymu.app",
       })
     ).resolves.toBeNull();
+  });
+
+  it("reuses a fresh cached result for identical requests", async () => {
+    appMock.mockResolvedValue({
+      appId: "com.orymu.app",
+      title: "Orymu",
+      summary: "Memory-first reading companion",
+      installs: "10K+",
+      minInstalls: 10000,
+      maxInstalls: 19999,
+      score: 4.8,
+      ratings: 1234,
+      reviews: 456,
+      developer: "Orymu Labs",
+      icon: "https://example.com/icon.png",
+      url: "https://play.google.com/store/apps/details?id=com.orymu.app&hl=en&gl=us",
+    });
+
+    const first = await getPlayStoreAppPublicInfo({
+      playStoreAppId: "com.orymu.app",
+      revalidateSec: 60,
+    });
+    const second = await getPlayStoreAppPublicInfo({
+      playStoreAppId: "com.orymu.app",
+      revalidateSec: 60,
+    });
+
+    expect(first).toEqual(second);
+    expect(appMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("falls back to stale cache when refresh fails for the same key", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-03-24T00:00:00.000Z"));
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    appMock
+      .mockResolvedValueOnce({
+        appId: "com.orymu.app",
+        title: "Orymu",
+        summary: "Memory-first reading companion",
+        installs: "10K+",
+        minInstalls: 10000,
+        maxInstalls: 19999,
+        score: 4.8,
+        ratings: 1234,
+        reviews: 456,
+        developer: "Orymu Labs",
+        icon: "https://example.com/icon.png",
+        url: "https://play.google.com/store/apps/details?id=com.orymu.app&hl=en&gl=us",
+      })
+      .mockRejectedValueOnce(new Error("play unavailable"));
+
+    const fresh = await getPlayStoreAppPublicInfo({
+      playStoreAppId: "com.orymu.app",
+      revalidateSec: 1,
+    });
+
+    vi.setSystemTime(new Date("2026-03-24T00:00:02.000Z"));
+
+    const stale = await getPlayStoreAppPublicInfo({
+      playStoreAppId: "com.orymu.app",
+      revalidateSec: 1,
+    });
+
+    expect(stale).toEqual(fresh);
+    expect(appMock).toHaveBeenCalledTimes(2);
   });
 });

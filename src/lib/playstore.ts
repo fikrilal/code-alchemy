@@ -7,6 +7,25 @@ const PLAY_STORE_DETAILS_PATH = "/store/apps/details";
 const APP_ID_PATTERN = /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)+$/;
 const DEFAULT_PLAY_STORE_LANG = "en";
 const DEFAULT_PLAY_STORE_COUNTRY = "us";
+const DEFAULT_PLAY_STORE_REVALIDATE_SEC = 60 * 60 * 12;
+
+type PlayStoreCacheEntry = {
+  value: PlayStoreAppPublicInfo;
+  expiresAt: number;
+};
+
+const playStoreAppInfoCache =
+  (
+    globalThis as unknown as {
+      __playStoreAppInfoCache?: Map<string, PlayStoreCacheEntry>;
+    }
+  ).__playStoreAppInfoCache ?? new Map<string, PlayStoreCacheEntry>();
+
+(
+  globalThis as unknown as {
+    __playStoreAppInfoCache?: Map<string, PlayStoreCacheEntry>;
+  }
+).__playStoreAppInfoCache = playStoreAppInfoCache;
 
 export type PlayStoreAppPublicInfo = {
   appId: string;
@@ -28,12 +47,20 @@ export async function getPlayStoreAppPublicInfo(input: {
   playStoreUrl?: string;
   lang?: string;
   country?: string;
+  revalidateSec?: number;
 }): Promise<PlayStoreAppPublicInfo | null> {
   const appId = resolvePlayStoreAppId(input);
   if (!appId) return null;
 
   const lang = input.lang ?? DEFAULT_PLAY_STORE_LANG;
   const country = input.country ?? DEFAULT_PLAY_STORE_COUNTRY;
+  const revalidateSec = input.revalidateSec ?? DEFAULT_PLAY_STORE_REVALIDATE_SEC;
+  const cacheKey = getPlayStoreCacheKey(appId, lang, country);
+  const freshCache = getFreshPlayStoreAppInfoFromCache(cacheKey, revalidateSec);
+
+  if (freshCache) {
+    return freshCache;
+  }
 
   try {
     const detail = await gplay.app({
@@ -42,12 +69,23 @@ export async function getPlayStoreAppPublicInfo(input: {
       country,
     });
 
-    return normalizePlayStoreAppPublicInfo(detail, {
+    const result = normalizePlayStoreAppPublicInfo(detail, {
       fallbackAppId: appId,
       lang,
       country,
     });
+
+    rememberPlayStoreAppInfo(cacheKey, result, revalidateSec);
+
+    return result;
   } catch {
+    logPlayStoreWarning(`Failed to fetch Play Store metadata for "${appId}"`);
+
+    const staleCache = getStalePlayStoreAppInfoFromCache(cacheKey);
+    if (staleCache) {
+      return staleCache;
+    }
+
     return null;
   }
 }
@@ -87,6 +125,41 @@ function normalizePlayStoreAppId(appId?: string | null): string | null {
   if (!APP_ID_PATTERN.test(normalized)) return null;
 
   return normalized;
+}
+
+function getPlayStoreCacheKey(appId: string, lang: string, country: string): string {
+  return `${appId}:${lang}:${country}`;
+}
+
+function getFreshPlayStoreAppInfoFromCache(
+  cacheKey: string,
+  revalidateSec: number
+): PlayStoreAppPublicInfo | null {
+  if (revalidateSec <= 0) return null;
+
+  const entry = playStoreAppInfoCache.get(cacheKey);
+  if (!entry) return null;
+
+  return entry.expiresAt > Date.now() ? entry.value : null;
+}
+
+function getStalePlayStoreAppInfoFromCache(
+  cacheKey: string
+): PlayStoreAppPublicInfo | null {
+  return playStoreAppInfoCache.get(cacheKey)?.value ?? null;
+}
+
+function rememberPlayStoreAppInfo(
+  cacheKey: string,
+  value: PlayStoreAppPublicInfo,
+  revalidateSec: number
+) {
+  if (revalidateSec <= 0) return;
+
+  playStoreAppInfoCache.set(cacheKey, {
+    value,
+    expiresAt: Date.now() + revalidateSec * 1000,
+  });
 }
 
 function normalizePlayStoreAppPublicInfo(
@@ -152,4 +225,8 @@ function toOptionalString(value?: string | null): string | undefined {
 function toOptionalNumber(value?: number | null): number | undefined {
   if (typeof value !== "number") return undefined;
   return Number.isFinite(value) ? value : undefined;
+}
+
+function logPlayStoreWarning(message: string) {
+  console.warn(`[playstore] ${message}`);
 }

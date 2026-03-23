@@ -12,8 +12,10 @@
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
+    "deps:check": "depcruise --config .dependency-cruiser.cjs --output-type err --validate .dependency-cruiser.cjs src",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify": "npm run lint && npm run typecheck && npm run deps:check && npm run test && npm run build"
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",
@@ -49,6 +51,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
+    "dependency-cruiser": "^17.3.9",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.1.6",
     "eslint-plugin-import": "^2.32.0",
