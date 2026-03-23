@@ -1,6 +1,12 @@
+import "server-only";
+
+import gplay, { type IAppItemFullDetail } from "google-play-scraper";
+
 const PLAY_STORE_HOST = "play.google.com";
 const PLAY_STORE_DETAILS_PATH = "/store/apps/details";
 const APP_ID_PATTERN = /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)+$/;
+const DEFAULT_PLAY_STORE_LANG = "en";
+const DEFAULT_PLAY_STORE_COUNTRY = "us";
 
 export type PlayStoreAppPublicInfo = {
   appId: string;
@@ -16,6 +22,35 @@ export type PlayStoreAppPublicInfo = {
   developer?: string;
   storeUrl: string;
 };
+
+export async function getPlayStoreAppPublicInfo(input: {
+  playStoreAppId?: string;
+  playStoreUrl?: string;
+  lang?: string;
+  country?: string;
+}): Promise<PlayStoreAppPublicInfo | null> {
+  const appId = resolvePlayStoreAppId(input);
+  if (!appId) return null;
+
+  const lang = input.lang ?? DEFAULT_PLAY_STORE_LANG;
+  const country = input.country ?? DEFAULT_PLAY_STORE_COUNTRY;
+
+  try {
+    const detail = await gplay.app({
+      appId,
+      lang,
+      country,
+    });
+
+    return normalizePlayStoreAppPublicInfo(detail, {
+      fallbackAppId: appId,
+      lang,
+      country,
+    });
+  } catch {
+    return null;
+  }
+}
 
 export function parsePlayStoreAppIdFromUrl(url: string): string | null {
   if (url.trim().length === 0) return null;
@@ -52,4 +87,69 @@ function normalizePlayStoreAppId(appId?: string | null): string | null {
   if (!APP_ID_PATTERN.test(normalized)) return null;
 
   return normalized;
+}
+
+function normalizePlayStoreAppPublicInfo(
+  detail: IAppItemFullDetail,
+  context: {
+    fallbackAppId: string;
+    lang: string;
+    country: string;
+  }
+): PlayStoreAppPublicInfo {
+  const normalizedAppId =
+    normalizePlayStoreAppId(detail.appId) ?? context.fallbackAppId;
+  const title = toOptionalString(detail.title) ?? normalizedAppId;
+  const summary = toOptionalString(detail.summary);
+  const icon = toOptionalString(detail.icon);
+  const installsLabel = toOptionalString(detail.installs);
+  const minInstalls = toOptionalNumber(detail.minInstalls);
+  const maxInstalls = toOptionalNumber(detail.maxInstalls);
+  const rating = toOptionalNumber(detail.score);
+  const ratingsCount = toOptionalNumber(detail.ratings);
+  const reviewsCount = toOptionalNumber(detail.reviews);
+  const developer = toOptionalString(detail.developer);
+  const storeUrl =
+    toOptionalString(detail.url) ??
+    buildPlayStoreUrl(normalizedAppId, context.lang, context.country);
+
+  const result: PlayStoreAppPublicInfo = {
+    appId: normalizedAppId,
+    title,
+    storeUrl,
+  };
+
+  if (summary !== undefined) result.summary = summary;
+  if (icon !== undefined) result.icon = icon;
+  if (installsLabel !== undefined) result.installsLabel = installsLabel;
+  if (minInstalls !== undefined) result.minInstalls = minInstalls;
+  if (maxInstalls !== undefined) result.maxInstalls = maxInstalls;
+  if (rating !== undefined) result.rating = rating;
+  if (ratingsCount !== undefined) result.ratingsCount = ratingsCount;
+  if (reviewsCount !== undefined) result.reviewsCount = reviewsCount;
+  if (developer !== undefined) result.developer = developer;
+
+  return result;
+}
+
+function buildPlayStoreUrl(appId: string, lang: string, country: string): string {
+  const query = new URLSearchParams({
+    id: appId,
+    hl: lang,
+    gl: country,
+  });
+
+  return `https://${PLAY_STORE_HOST}${PLAY_STORE_DETAILS_PATH}?${query.toString()}`;
+}
+
+function toOptionalString(value?: string | null): string | undefined {
+  if (!value) return undefined;
+
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : undefined;
+}
+
+function toOptionalNumber(value?: number | null): number | undefined {
+  if (typeof value !== "number") return undefined;
+  return Number.isFinite(value) ? value : undefined;
 }
