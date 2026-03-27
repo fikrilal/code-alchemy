@@ -6,8 +6,9 @@ const RUNNER_LABEL = "MOBILE ENGINEER • FOUNDING ENGINEER";
 const RUNNER_SEQUENCE = Array.from({ length: 6 }, () => RUNNER_LABEL);
 const RUNNER_DURATION_MS = 24_000;
 const GAP_LEAD_MS = 450;
-const JUMP_TO_FALL_MS = 270;
-const FALL_TO_RUN_MS = 260;
+const JUMP_TO_FALL_MS = 360;
+const FALL_TO_ROLL_MS = 245;
+const ROLL_TO_RUN_MS = 420;
 const JUMP_ARC_HEIGHT_PX = 20;
 const JUMP_ARC_PEAK_OFFSET = 0.34;
 
@@ -42,7 +43,7 @@ function buildJumpArcKeyframes() {
   });
 }
 
-function getSpriteModeProps(mode: "run" | "jump" | "fall") {
+function getSpriteModeProps(mode: "run" | "jump" | "fall" | "roll") {
   switch (mode) {
     case "jump":
       return {
@@ -53,6 +54,11 @@ function getSpriteModeProps(mode: "run" | "jump" | "fall") {
       return {
         className: "hero-runner-sheet hero-runner-sheet--fall",
         image: "/hero/free-knight-jump-fall-sheet.png",
+      };
+    case "roll":
+      return {
+        className: "hero-runner-sheet hero-runner-sheet--roll",
+        image: "/hero/free-knight-roll-sheet.png",
       };
     default:
       return {
@@ -85,7 +91,7 @@ export default function HeroRunner() {
   const nextEventIndexRef = useRef(0);
   const lastTimeRef = useRef(0);
   const isJumpingRef = useRef(false);
-  const [spriteMode, setSpriteMode] = useState<"run" | "jump" | "fall">("run");
+  const [spriteMode, setSpriteMode] = useState<"run" | "jump" | "fall" | "roll">("run");
 
   useEffect(() => {
     let frameId = 0;
@@ -103,7 +109,7 @@ export default function HeroRunner() {
       motionRef.current = sprite.animate(
         buildJumpArcKeyframes(),
         {
-          duration: JUMP_TO_FALL_MS + FALL_TO_RUN_MS,
+          duration: JUMP_TO_FALL_MS + FALL_TO_ROLL_MS,
           easing: "linear",
           fill: "none",
         },
@@ -113,12 +119,16 @@ export default function HeroRunner() {
         setSpriteMode("fall");
       }, JUMP_TO_FALL_MS);
 
+      const rollTimer = window.setTimeout(() => {
+        setSpriteMode("roll");
+      }, JUMP_TO_FALL_MS + FALL_TO_ROLL_MS);
+
       const runTimer = window.setTimeout(() => {
         setSpriteMode("run");
         isJumpingRef.current = false;
-      }, JUMP_TO_FALL_MS + FALL_TO_RUN_MS);
+      }, JUMP_TO_FALL_MS + FALL_TO_ROLL_MS + ROLL_TO_RUN_MS);
 
-      timeoutIds.push(fallTimer, runTimer);
+      timeoutIds.push(fallTimer, rollTimer, runTimer);
     };
 
     const measure = () => {
@@ -320,7 +330,11 @@ export default function HeroRunner() {
         }
 
         .hero-runner-sheet--fall {
-          animation: heroRunnerSheetFall ${FALL_TO_RUN_MS}ms steps(2) 1 both;
+          animation: heroRunnerSheetFall ${FALL_TO_ROLL_MS}ms steps(2) 1 both;
+        }
+
+        .hero-runner-sheet--roll {
+          animation: heroRunnerSheetRoll ${ROLL_TO_RUN_MS}ms steps(12) 1 both;
         }
 
         @keyframes heroRunnerMarquee {
@@ -356,6 +370,15 @@ export default function HeroRunner() {
           }
           to {
             background-position-x: -11rem;
+          }
+        }
+
+        @keyframes heroRunnerSheetRoll {
+          from {
+            background-position-x: 0;
+          }
+          to {
+            background-position-x: -66rem;
           }
         }
       `}</style>
