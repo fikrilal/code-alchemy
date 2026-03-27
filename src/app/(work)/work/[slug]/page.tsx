@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 
-import Button from "@/components/ui/Button";
+import PlayStoreCard from "@/features/work/components/PlayStoreCard";
 import WorkGallery from "@/features/work/components/WorkGallery";
 import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
+import { getPlayStoreAppPublicInfo } from "@/lib/playstore";
 
 import type { Metadata } from "next";
 
@@ -51,6 +52,14 @@ export default async function WorkCaseStudyPage({
   }
 
   const { content, frontmatter } = workEntry;
+  const playStoreAppInfo = frontmatter.playStoreUrl
+    ? await getPlayStoreAppPublicInfo({
+        playStoreUrl: frontmatter.playStoreUrl,
+        ...(frontmatter.playStoreAppId
+          ? { playStoreAppId: frontmatter.playStoreAppId }
+          : {}),
+      })
+    : null;
 
   return (
     <main className="bg-neutral-950 min-h-screen pt-10">
@@ -62,24 +71,15 @@ export default async function WorkCaseStudyPage({
           {frontmatter.shortDescription && (
             <p className="text-slate-300 mt-3">{frontmatter.shortDescription}</p>
           )}
-          {frontmatter.playStoreUrl && (
-            <div className="mt-6">
-              <Button
-                as="a"
-                href={frontmatter.playStoreUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View on Play Store
-              </Button>
-            </div>
-          )}
         </header>
-        <WorkGallery
-          slug={slug}
-          title={frontmatter.title}
-          thumbnail={frontmatter.thumbnail ?? undefined}
-        />
+        <div className="space-y-8">
+          {playStoreAppInfo && <PlayStoreCard app={playStoreAppInfo} />}
+          <WorkGallery
+            slug={slug}
+            title={frontmatter.title}
+            thumbnail={frontmatter.thumbnail ?? undefined}
+          />
+        </div>
         <div className="prose prose-invert max-w-none [&>h1:first-of-type]:hidden">
           {content}
         </div>
