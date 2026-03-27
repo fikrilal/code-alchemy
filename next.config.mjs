@@ -6,6 +6,7 @@ const nextConfig = {
       { protocol: "https", hostname: "*.scdn.co" },
       { protocol: "https", hostname: "*.spotifycdn.com" },
       { protocol: "https", hostname: "*.googleusercontent.com" },
+      { protocol: "https", hostname: "opengraph.githubassets.com" },
     ],
   },
 };
