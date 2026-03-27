@@ -15,6 +15,6 @@ exports[`mdx compile pipeline > produces stable sanitized output for a represent
   "hasAnchorLinks": false,
   "hasCodeBlock": false,
   "hasScriptTag": false,
-  "title": "Orymu — A Memory-First Reading Companion",
+  "title": "Orymu — Building a Reading Product That Sticks",
 }
 `;

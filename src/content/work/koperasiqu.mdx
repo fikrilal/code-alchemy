@@ -1,10 +1,19 @@
 ---
-title: "KoperasiQu - Cooperative Savings & Payments"
-shortDescription: "A cooperative finance app for membership activation, savings, and virtual account payments, built with feature-first Clean Architecture and a Cubit-style GetX presentation layer."
+title: "KoperasiQu - From Cooperative App to Shared Finance Platform"
+shortDescription: "Lead Flutter engineer shipping a cooperative finance app for member savings and payments, then restructuring it into a shared platform that could also support Baitul Maal wat Tamwil (BMT)-specific finance flows."
 thumbnail: "/images/koperasiqu.png"
 date: "2025-07-01"
-playStoreUrl: "https://play.google.com/store/apps/details?id=id.siesta.app.cooperativequ.jabar.bandungkab.mp"
-playStoreAppId: "id.siesta.app.cooperativequ.jabar.bandungkab.mp"
+playStoreApps:
+  [
+    {
+      playStoreUrl: "https://play.google.com/store/apps/details?id=id.siesta.app.cooperativequ.jabar.bandungkab.mp",
+      playStoreAppId: "id.siesta.app.cooperativequ.jabar.bandungkab.mp",
+    },
+    {
+      playStoreUrl: "https://play.google.com/store/apps/details?id=id.siesta.app.cooperativequ.bmt.sanden",
+      playStoreAppId: "id.siesta.app.cooperativequ.bmt.sanden",
+    },
+  ]
 techStack:
   [
     "Flutter (Dart)",
@@ -16,358 +25,157 @@ techStack:
   ]
 ---
 
-# KoperasiQu - Cooperative Savings & Payments
+# KoperasiQu - From Cooperative App to Shared Finance Platform
 
-## Snapshot
+## Overview
 
-- **Role:** Flutter Mobile Engineer (lead on cooperative member flows)
-- **Timeframe:** 2025 - present
-- **Stack:** Flutter (Dart), GetX, Dio, Firebase (Crashlytics/Messaging), secure storage, Fpdart
-- **Platforms:** Android, iOS
-- **Status:** In production, actively developed
+KoperasiQu started as a member-facing finance app for a Bandung implementation of the Koperasi
+Merah Putih program. Members could activate their account, track savings, pay required cooperative
+bills, and top up through virtual accounts. The product moved fast, the timeline was tight, and the
+main pressure was simple: financial flows had to work clearly enough that members could trust them.
 
----
+That first version shipped successfully. But a few months later the problem changed.
 
-## TL;DR
-
-In this project I worked as the primary Flutter engineer on the member side of a cooperative finance
-app. Members sign in, activate their cooperative membership, see their savings wallet, pay primary
-and mandatory savings, and pay via virtual accounts.  
-Coming from a messier GetX codebase, I redesigned the presentation layer around a Cubit-style mental
-model: one state stream per screen, an optional effect channel for one-shot navigation/snackbars,
-and a clear rule for when to use sealed vs composite state. Underneath that, I modelled savings,
-mandatory billing rules, and payment flows with clean domain/use case boundaries and
-value-object-based validation. The result is a UI that behaves predictably and financial flows that
-are easier to reason about and extend.
+A new client arrived from the Baitul Maal wat Tamwil (BMT) space. BMT shared some of the same
+foundations as a cooperative finance app, but it also brought a different product direction: more Islamic-centered behavior,
+syariah-specific expectations, and a much bigger loan flow. At that point the challenge was no
+longer just building features. It was deciding how to keep what was shared without forcing two
+different products into one app shape.
 
 ---
 
-## Context
+## My Role
 
-KoperasiQu is a cooperative finance app that lets members:
+I worked as the lead Flutter engineer across both phases of the product.
 
-- Sign in or sign up and connect their account.
-- Activate their cooperative membership and complete verification steps.
-- See their primary and mandatory savings status in a wallet view.
-- Open savings products, deposit and withdraw.
-- Pay registration bills (primary + mandatory) or top up via virtual accounts.
+My work covered three areas:
 
-Behind that experience there are several backend services for auth, cooperatives, savings and
-payments. The mobile app has to coordinate status from those services in a way that feels coherent
-to members: for example, the home screen should show different cards and actions depending on
-whether primary savings have been paid, whether mandatory arrears exist, and whether the member has
-opened savings products.
+- Building the original member-side app for auth, activation, savings, wallet visibility, and
+  payment flows
+- Owning the mobile architecture behind those finance journeys, especially where cooperative rules
+  affected billing and member status
+- Restructuring the codebase into a multi-app setup so KMP and BMT could share common foundations
+  without collapsing into one tangled product
 
----
-
-## My role
-
-On this project I worked as the main Flutter engineer on the member app. I did not just build
-screens, I helped shape how the app is structured and how cooperative flows are modelled.
-
-On the feature side I owned or heavily contributed to:
-
-- **Auth** - sign in and sign up flows, Google connect, auth check and splash, plus the effect-based
-  navigation around them.
-- **Membership and cooperative status** - member activation and verification flows, and how the home
-  screen reacts when a member is not yet fully active.
-- **Savings** - the savings wallet, user savings products, primary and mandatory savings, mutation
-  views, and the flows for creating, depositing and withdrawing savings.
-- **Payments** - the virtual account payment list and instructions, and the way Registration Bill
-  and other flows reuse VA and PIN prompts.
-
-On the architecture side I:
-
-- Brought a **feature-first Clean Architecture** with clear domain/data/presentation boundaries,
-  aligned with the project architecture guide in this repo.
-- Designed and documented a **UI state architecture** for GetX controllers, based on a Cubit-style
-  pattern (single state and optional effect per screen, sealed vs composite).
-- Applied the existing **validation and value object architecture** consistently in auth and
-  savings, so complex forms rely on domain VOs instead of ad-hoc checks in widgets.
+That meant thinking beyond screen delivery. I had to keep the shipped app stable, model finance
+flows clearly, and make room for a second product with overlapping foundations but different rules.
 
 ---
 
-## Problem and constraints
+## What KoperasiQu Does
 
-There were a few things that made this project more than just a set of CRUD screens.
+At its core, KoperasiQu helps members handle the main finance flows they need from a cooperative
+app.
 
-- **Financial complexity**
+Users can register or sign in, activate their membership, complete verification steps, see their
+savings wallet, understand their primary and mandatory savings status, and make payments through
+virtual accounts when balance is not enough.
 
-  - Membership status depends on whether primary savings have been paid, and mandatory savings may
-    accumulate based on cooperative cycles.
-  - Members can open savings products, deposit or withdraw, and payments must be reflected
-    correctly in the wallet and history.
-  - Registration Bill flows combine primary and mandatory savings and may route to top up if the
-    balance is insufficient.
+The app also has to reflect cooperative rules in a way that feels understandable. A member should
+be able to tell whether they are active, whether there are mandatory dues to settle, and what they
+need to do next without reading the product like an internal finance system.
 
-- **Technical constraints**
-
-  - The team was already using GetX for routing and dependency injection; we did not want to rip it
-    out.
-  - I had seen the downsides of unstructured GetX: scattered `Rx` flags, controller-driven
-    navigation and snackbars, and rebuild races causing duplicate actions.
-  - We needed predictable behaviour around money, so UI bugs like double taps triggering multiple
-    payments were not acceptable.
-
-- **UX constraints**
-  - The app needs to communicate state clearly: "you have not paid primary yet", "this month's
-    mandatory has these rules", "you need to top-up via VA before paying".
-  - PIN prompts must be reusable and consistent across flows, without leaking feature-specific
-    logic into the PIN module itself.
-
-Within those constraints I needed an architecture that kept financial flows correct, UI behaviour
-predictable, and features evolvable as more cooperatives and products are added.
+Later, that base expanded into a broader platform direction. The BMT side reused a lot of the same
+auth, profile, saving, payment, and member foundations, but also needed a more Islamic-centered
+surface and a more specific loan journey that could not be treated as just another cooperative
+feature toggle.
 
 ---
 
-## Solution overview
+## What Changed
 
-At a high level I approached this app as a set of vertical slices on top of a shared architecture:
+The first version of KoperasiQu was built under real delivery pressure. The app worked, the member
+flows shipped, and the product reached end users smoothly. But it was still fundamentally one app
+shaped around one cooperative context.
 
-- **Feature-first Clean Architecture**
+That stopped being enough when BMT entered the picture.
 
-  - Features such as `auth`, `member`, `saving`, `payment` and `cooperative` live under
-    `lib/features/<feature>/` with `domain`, `data` and `presentation` folders.
-  - Subfeatures (for example saving activation vs mutations) own their own controllers, states,
-    effects, pages and bindings, while reusing feature-level domain entities and repositories.
+BMT was not only a new client. It was a related but different product family. It shared the same
+base needs around identity, savings, payments, and member data, but it also introduced a more
+syariah-centered direction and a larger loan flow with different requirements. Forcing that into
+the original KMP app would have turned shared code into product confusion.
 
-- **Domain and data layers**
+So the rewrite was not about chasing cleaner architecture for its own sake. It was about creating a
+structure where:
 
-  - Use cases and repositories model cooperative concepts in domain terms:
-    - Auth: sign in/up, Google connect, session and auth check.
-    - Savings: user savings, saving products, primary and mandatory savings, deposit/withdraw
-      flows.
-    - Payments: fetching virtual account methods and instructions.
-    - Cooperative: loading cooperative information that influences billing and visibility.
-  - DTOs live in `data/model`, repositories adapt them into domain entities and failures, keeping
-    the rest of the app DTO-free.
-
-- **Presentation with GetX in Cubit style**
-
-  - Each screen has a GetX controller that exposes one reactive state (sealed or composite) and an
-    optional effect stream for one-shot navigation/snackbars.
-  - Views use a single `Obx` to render based on state and a single `ever` listener to react to
-    effects, instead of many small `Obx` widgets tied to separate flags.
-  - I documented this pattern in a UI state architecture guide and a separate sub case study
-    ([GetX in Cubit Style: Single State + Explicit Effects](/blog/getx-in-cubit-style-single-state-effects)).
-
-- **Validation and value objects**
-
-  - For auth and savings forms I reused the value object and validation architecture defined in the
-    technical docs.
-  - Controllers use VOs for real-time validation, and use cases perform final validation before
-    calling repositories, which keeps controllers thin and domain rules centralized.
-
-- **Payments and VA flows**
-  - The payment module exposes a virtual account list and detailed instructions, and other flows
-    (like Registration Bill) navigate into that module instead of duplicating VA logic.
-  - A reusable PIN prompt module acts as a "prompt only" UI that returns a PIN; it does not contain
-    business logic and can be reused in multiple savings and payment flows.
-
-In the rest of this case study I focus on two challenges where these decisions mattered most:
-structuring the presentation layer, and modelling savings and mandatory billing.
+- shared finance and platform features could stay shared
+- KMP and BMT could own different home, navigation, and feature direction
+- future client-specific growth would not require copying the whole app again
 
 ---
 
-## Key challenge 1: presentation architecture and UI state
+## Key Decisions
 
-Before this project I had built a GetX app where controllers held many `Rx` fields (`isLoading`,
-`items`, `errorMessage`, pagination flags, filter values) and also handled navigation and snackbars
-directly. That shape led to rebuild races and logic that was hard to test or reason about. For this
-cooperative app I wanted to keep GetX but avoid those traps.
+A few decisions shaped the project.
 
-I borrowed the mental model I liked from using Bloc and Cubit on my Orymu side project: a single
-state per screen, explicit transitions, and a separate channel for one-shot effects. In this app
-that turned into:
+First, I treated the finance rules as product logic, not UI convenience. Savings, activation
+status, billing rules, PIN confirmation, and virtual account payment flows all needed to behave
+predictably because this was a money product, not a demo app.
 
-- **One state stream per screen**
+Second, I avoided forcing BMT into the original KMP codebase. The overlap was real, but so was the
+divergence. BMT loan flows, syariah-driven requirements, and a different app surface would have
+made a single-app conditional approach harder to reason about over time.
 
-  - Fetch and display screens use sealed states (`Initial`, `Loading`, `Empty`, `Data`, `Failure`)
-    with pagination flags kept inside the `Data` variant.
-  - Form heavy screens, such as sign up and savings flows, use a composite state with a persistent
-    form snapshot, a request status enum and request error.
+Third, I restructured the codebase into a multi-app monorepo with shared packages. Shared platform
+infrastructure, design system pieces, and reusable finance features were extracted into common
+packages, while KMP and BMT each kept their own app shell and product-specific features.
 
-- **One optional effect channel per screen**
-
-  - Controllers expose `Rxn<Effect>` for navigation, dialogs and snackbars.
-  - Pages subscribe once using `ever`, perform UI actions (for example navigate to Home, show
-    snackbar), and then clear the effect.
-
-- **Thin controllers and testable flows**
-  - Controller methods represent user intents: they call use cases, map results into state, and emit
-    effects.
-  - Bindings wire use cases and repositories into controllers via constructor injection, which makes
-    unit tests straightforward.
-
-This pattern is described in detail in my separate sub case study,
-[GetX in Cubit Style: Single State + Explicit Effects](/blog/getx-in-cubit-style-single-state-effects).
-Here, the important part is that it gave me a predictable foundation for the cooperative features:
-screens have one source of truth, one place to emit one-shot events, and clear rules for when to use
-sealed vs composite state.
+That made ownership clearer. Shared code could stay genuinely shared, and app-specific behavior no
+longer had to pretend it belonged everywhere.
 
 ---
 
-## Key challenge 2: savings and mandatory billing flows
+## Challenges
 
-One of the more interesting parts of this app is how it handles savings and the Registration Bill,
-which combines primary and mandatory savings in a way that respects cooperative rules.
+The hardest part of this project was carrying two kinds of complexity at the same time.
 
-### 2.1 Primary and mandatory savings
+The first was finance complexity. Cooperative products are full of rules that are easy to describe
+loosely but hard to model well in software. Member activation, savings status, billing, mandatory
+dues, wallet state, and payment routing all need to stay coherent because errors are immediately
+visible to users.
 
-Members need to pay a primary saving and then ongoing mandatory savings. The Registration Bill flow:
+The second was product divergence. Once BMT became part of the story, I had to decide where to draw
+the boundary between "shared platform" and "different product." The challenge was finding the right
+balance: avoiding unnecessary duplication without over-sharing so much that the codebase stopped
+reflecting either product clearly.
 
-- Reads the member's balance from a shared `CurrentUserService`.
-- Computes the total bill (primary + mandatory) based on:
-  - Cooperative configuration (for example a `cycleMonthStart` that defines when billing cycles
-    start).
-  - Data from the `/savings/user/mandatory` endpoint, which returns monthly amounts and a `skip`
-    flag.
-- Decides whether the member can pay directly or needs to top up via a virtual account.
-
-On the domain side I modelled mandatory savings with entities and use cases:
-
-- `MandatorySavingEntity` holds fields like `year`, `period` (month), `amount` and `skip`.
-- `GetUserMandatorySavingsUseCase` fetches these entities for the current user.
-
-The billing rules are encoded in a small helper that:
-
-- Always includes the current month's amount if it exists.
-- Walks back through previous months in the same year down to `cycleMonthStart`.
-- Only includes months where `skip == false`.
-- Treats missing months as zero.
-
-This mirrors the logic described in the mandatory savings billing technical notes and gives a clear,
-testable way to compute what "mandatory arrears" means for a given cooperative configuration.
-
-### 2.2 PIN prompt and Registration Bill flow
-
-Once the bill amount is known, the Registration Bill flow has to:
-
-- Prompt the member for a PIN once.
-- Pay primary savings.
-- Only if primary succeeds, pay mandatory savings.
-- Refresh status so the home screen can reflect the new state.
-
-The high level flow looks like this.
-
-```mermaid
-sequenceDiagram
-    actor U as Member
-    participant Page as Registration Bill Page
-    participant CUS as CurrentUserService
-    participant PG as PinGuard
-    participant C as RegistrationBillController
-    participant PIN as PIN Prompt
-    participant PS as PayPrimarySaving
-    participant MS as PayMandatorySaving
-    participant VA as VA Top-up Page
-
-    U->>Page: Tap "Bayar"
-    Page->>CUS: getSnapshot()
-    CUS-->>Page: balance
-
-    alt balance >= total bill
-        Page->>PG: ensureHasPin()
-        PG-->>Page: hasPin?
-        alt hasPin == false
-            Page-->>U: show "create PIN" info
-        else hasPin
-            Page->>C: pay()
-            C->>PIN: open PIN prompt
-            PIN-->>C: pin / cancel
-            alt pin empty or null
-                C-->>Page: no payment
-            else pin provided
-                C->>PS: pay primary(pin)
-                PS-->>C: success / failure
-                alt primary failure
-                    C-->>Page: emit ShowErrorToast
-                else primary success
-                    C->>MS: pay mandatory(pin)
-                    MS-->>C: success / failure
-                    alt mandatory failure
-                        C-->>Page: emit ShowErrorToast
-                    else mandatory success
-                        C->>CUS: refresh()
-                        C-->>Page: emit ShowSuccessToast\\n+ NavigateToActivationSuccess
-                    end
-                end
-            end
-        end
-    else balance < total bill
-        Page->>VA: navigate to VA top-up
-        VA-->>Page: user returns
-        Page->>CUS: refresh()
-    end
-```
-
-I designed a reusable PIN prompt module as a "prompt only" UI:
-
-- The PIN page accepts a `PinRequest` with title, subtitle and options (for example whether
-  confirmation is required).
-- It returns a 6-digit PIN to the caller via navigation, without containing any feature-specific
-  logic.
-- The Registration Bill controller is responsible for:
-  - Navigating to the PIN prompt.
-  - Using the returned PIN to call the primary and mandatory payment use cases in order.
-  - Emitting effects for success and errors so the view can show banners or navigate back.
-
-This keeps the PIN module thin and reusable, while the savings and payment features own their
-business logic and error handling.
-
-### 2.3 Impact on savings and billing UX
-
-Putting the billing rules and flows into explicit domain entities, use cases and helper functions
-made it much easier to:
-
-- Explain to non-technical stakeholders how the Registration Bill is calculated and why certain
-  months are included or skipped.
-- Adjust behaviour (for example adding cross-year cycles later) without touching widgets.
-- Keep the UI focused on rendering: the page receives a clear bill summary and uses the shared PIN
-  prompt and VA screens, instead of re-implementing payment logic.
+The codebase today reflects that tradeoff directly. The shared packages hold the common foundation,
+while KMP and BMT keep separate shells and product-specific slices where they actually differ.
 
 ---
 
 ## Impact
 
-This combination of architecture and feature work had a few concrete effects.
+KoperasiQu is meaningful because it was not just one shipped app. It became a transition from a
+working finance product into a platform that could support more than one direction.
 
-- **For members**
+The first result was practical: members could sign in, activate, manage savings-related flows, and
+complete payments in a production app that reached end users smoothly.
 
-  - Savings and billing flows feel more predictable: primary and mandatory savings behave according
-    to clear rules, and the app explains when a top up is needed.
-  - Payment interactions are more consistent: PIN prompts and virtual account screens behave the
-    same across flows.
-  - The app is less likely to misbehave when forms, lists and dialogs update at the same time.
+The second result was architectural: when BMT arrived, the team did not have to fork the whole app
+or bury product differences inside endless conditionals. Shared infrastructure and common finance
+features were extracted, and separate app shells made it possible to support both KMP and BMT more
+deliberately.
 
-- **For the team**
-
-  - New screens can reuse a clear pattern: a GetX controller with one state stream and optional
-    effects, wired via bindings to use cases.
-  - Savings and payment rules live in well-named use cases and helpers instead of being duplicated
-    in controllers or widgets.
-  - Technical guides (project architecture, UI state architecture, validation, savings/payment
-    docs) make it easier to onboard new developers.
-
-- **For the business**
-  - Cooperative savings and mandatory billing are easier to reason about and change as rules
-    evolve.
-  - The same architecture can support additional cooperatives, products or payment flows without
-    rebuilding the app from scratch.
+That changed the quality of future work. Bug fixes in shared flows could be applied once. Product
+differences became easier to localize. And the codebase moved closer to something that can support
+future variants without pretending every finance product is the same.
 
 ---
 
-## What I learned
+## What I Learned
 
-Working on this cooperative app reinforced a few ideas for me.
+KoperasiQu changed how I think about product overlap.
 
-- From an engineering perspective, I learned that I do not need to abandon a framework like GetX to
-  get a disciplined architecture. Bringing in Cubit-style state and effect patterns, plus Clean
-  Architecture boundaries, was enough to turn previous pain points into predictable flows.
-- Modelling domain rules such as mandatory savings billing explicitly, and backing them with small
-  technical notes and helpers, makes it much easier to keep financial logic correct and explainable.
-- From a team perspective, documenting patterns in plain language and examples - for UI state,
-  validation and savings/payment flows - matters as much as the patterns themselves. It turns
-  individual preferences into a shared architecture that other engineers can rely on and extend.
+Two products can share a lot of foundations and still need different architecture. The hard part is
+not spotting what is common. The hard part is knowing when not to force different products into the
+same shape just because they started from the same base.
+
+I also learned that platform work becomes much more valuable when it is tied to a real delivery
+problem. The multi-app monorepo was not an abstract improvement. It was a response to a live app, a
+new product direction, and the need to keep moving without duplicating everything.
+
+That made the work more than a mobile rewrite. It became a systems decision about how a finance
+product should keep growing.
 
 {/* Image Gallery is rendered by WorkGallery component based on filesystem/frontmatter. */}

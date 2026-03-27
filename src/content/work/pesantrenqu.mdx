@@ -1,6 +1,6 @@
 ---
-title: "PesantrenQu — Parent–School Super App Case Study"
-shortDescription: "A Flutter super app that connects parents to their children’s Islamic boarding schools for tuition, savings, donations, and daily updates."
+title: "PesantrenQu — Rebuilding a Parent-School Product for Real Clients"
+shortDescription: "Lead mobile engineer rewriting PesantrenQu from React Native to Flutter, turning a broad super app into a more focused, deployable parent platform already used by two schools."
 thumbnail: "/images/work/pesantrenqu.png"
 date: "2025-11-01"
 playStoreUrl: "https://play.google.com/store/apps/details?id=id.siesta.app.pesantrenqu.v2"
@@ -14,277 +14,191 @@ techStack:
     "Secure Storage",
     "Freezed",
     "Fpdart",
+    "White-label Build Tooling",
   ]
 ---
 
-# PesantrenQu — Parent–School Super App Case Study
+# PesantrenQu — Rebuilding a Parent-School Product for Real Clients
 
-A Flutter “super app” that connects parents to their children’s Islamic boarding schools for
-tuition, savings, donations, and daily updates — all in one place.
+PesantrenQu is a parent-school mobile product for Islamic boarding schools. It gives parents one
+place to handle tuition, savings, donations, student updates, and school communication without
+juggling spreadsheets, transfers, and WhatsApp threads.
 
----
-
-## Snapshot
-
-- **Role:** Flutter Mobile Engineer (lead on this app)
-- **Timeframe:** 2025 – present
-- **Stack:** Flutter (Dart), GetX, Dio, Firebase (Crashlytics, Messaging), Secure Storage, Freezed,
-  Fpdart
-- **Platforms:** Android, iOS
-- **Status:** In production, actively developed
+I worked on the newer Flutter version as the lead mobile engineer. This was not just feature work. It
+was a product rewrite from the older React Native app into something easier to maintain, easier to
+configure, and much easier to ship for real school clients.
 
 ---
 
-## Product in one paragraph
+## Overview
 
-This project is a mobile “super app” for parents of boarding‑school students. Parents can sign in,
-link their account to one or more schools, see their children’s balances and bills, pay
-tuition (syahriah) and installments, top up and transfer savings, make donations, and
-consume school‑curated Islamic content. Schools can offer different plan tiers
-(Basic/Gold/Platinum), which unlock more advanced features such as financial overviews, reporting,
-and security options like biometric login and PIN management.
+At the product level, PesantrenQu helps parents stay connected to their children's schools.
 
----
+They can sign in, view their children, check balances and bills, pay syahriah and installments,
+manage savings, make donations, and follow school updates from one app. Some schools also unlock more
+advanced flows depending on their subscription plan.
 
-## Context & problem
+What changed in the newer version is not only the UI stack. The product became more mature
+operationally. The Flutter app is already live on the Play Store and the white-label setup now
+supports two real school clients with different plan tiers:
 
-Many schools still manage parent communication and payments across disconnected channels:
+- A Gold-plan deployment for [Pondok Kwagean](https://play.google.com/store/apps/details?id=id.siesta.app.pesantrenqu.kwagean.kediri)
+- A Platinum-plan deployment for [MQ Mobile](https://play.google.com/store/apps/details?id=id.siesta.app.pesantrenqu.manhajulquran.ploso), the client app for Manhajulquran Ploso
 
-- Tuition and fees are handled manually (spreadsheets, bank transfers, WhatsApp confirmations).
-- Parents lack a single place to see balances, recent transactions, or their children’s status.
-- New features (like digital donations or advanced reporting) are hard to roll out consistently.
-- Different schools need different feature sets depending on their budget and maturity.
-
-When I joined the project, the goal was to give parents **one consistent mobile experience** across
-schools while still letting each school decide how advanced they wanted to be. In practice, that
-meant:
-
-- Offering a mix of core features (auth, balances, tuition, donations, profile, Islamic content).
-- Letting schools enable advanced features based on their subscription plan.
-- Hiding complexity behind a single mobile client that talks to multiple backend services (`core`,
-  `account`, `guardian`, `geolocation`, `billing`, `saving`, `reports`, etc.).
+That matters because it turns the rewrite into a business-ready system, not just a cleaner codebase.
 
 ---
 
-## My role & responsibilities
+## What Changed
 
-On this project I worked as the main mobile engineer and de‑facto technical lead for the Flutter
-app. I didn’t just build screens, but also helped shape how the app is structured, how it talks to
-the backend, and how we keep things maintainable as new schools and features come in.
+The older app was a large React Native super app with a very broad surface area. It tried to cover
+many school roles and modules at once, which made school-specific behavior, branding, and release
+work harder to manage over time.
 
-On the architecture side, I pushed for a **feature‑first Clean Architecture** layout with clear
-domain/data/presentation boundaries and GetX bindings for dependency wiring. I also wrote the core
-technical guides for project architecture, domain/data, validation, and UI state so that other
-developers could plug into the same patterns instead of inventing their own per feature.
+The Flutter rewrite took a more focused approach.
 
-I designed and implemented several **core services** that the rest of the app depends on: a typed
-networking layer (`ApiClient` + interceptors + `ApiHelper`), the current user/session services, and
-an environment‑driven configuration system (`AppConfig`, `Env`, `ApiHost`) that reads from
-`dart-define` files. This gave us a single way to target many backend hosts while keeping logging
-and network behavior configurable per environment.
+Instead of carrying forward the full sprawl, I helped reshape PesantrenQu around the parent and
+guardian experience first: student visibility, school updates, tuition, installments, savings,
+donations, verification, and security. The goal was not just to modernize the stack, but to turn the
+product into something easier to ship, easier to configure per client, and more reliable in
+production.
 
-One of the most important pieces for me was the **plan and entitlements system**. Instead of sprinkling
-`if (plan == "gold")` checks across the UI, I introduced a capability‑based
-`IFeatureEntitlementService`. Plans (Basic/Gold/Platinum) map to capabilities like
-`guardian.financial_overview` or `security.manage_pin`, and controllers or route guards ask for
-capabilities, not raw plan names. This made it much easier to roll out new plans or move features
-between tiers.
+The result is a product that is narrower in the right ways and stronger where it matters most:
 
-I also owned the **biometric and security flows**. I built end‑to‑end biometric enrollment and
-unregistration using hardware‑backed keys and canonical JSON signatures, plus a device–account
-binding model that uses secure storage (phone, device ID, key fingerprint). On top of that, I took
-responsibility for the core parent/guardian financial flows: syahriah (tuition) overview,
-installments, payment history, guardian savings, and donation flows, making sure those features
-reused the shared services (networking, entitlements, session) instead of re‑implementing their own
-logic.
+- The parent-facing journey became more coherent
+- Plan-specific behavior became easier to manage across Gold and Platinum clients
+- School branding became part of a structured system instead of ad hoc app variation
+- Releasing a client build stopped feeling like a custom one-off process
 
 ---
 
-## How we solved it (solution overview)
+## My Role
 
-### Feature‑first Clean Architecture
+On this project I worked as the lead mobile engineer for the Flutter rewrite.
 
-From the beginning I treated this as a feature‑first Clean Architecture app. Instead of a flat
-`screens/` folder, each domain area lives under `lib/features/<feature>` with its own `domain`,
-`data`, and `presentation` layer:
+My work covered four broad areas:
 
-- `lib/core/` handles cross‑cutting concerns:
-  - Networking (`ApiClient`, interceptors, `ApiHelper`, connectivity).
-  - Config (`AppConfig`, `Env`, `ApiHost`).
-  - Storage (preferences, secure storage, session manager).
-  - Entitlements, analytics, device info, shared widgets, geolocation.
-- `lib/features/` is grouped by domain (auth, guardian, home, donation, tuition/syahriah, islami,
-  profile, biometric, pin, verification, geolocation):
-  - Each feature has `domain/` (entities, repositories, use cases),
-    `data/` (datasources, models, repository implementations),
-    `presentation/` (bindings, controllers, states/effects, pages, widgets).
-- GetX bindings wire routes to their controllers and dependencies so widget trees stay focused on
-  UI, not construction logic.
+- Reframing the product from a broad legacy super app into a more focused parent-school experience
+- Designing the Flutter architecture and the cross-cutting services the app depends on
+- Building and refining core product flows such as guardian finance, donations, student views,
+  verification, and security
+- Creating the internal tooling and guardrails that made white-label delivery and day-to-day
+  development faster
 
-This structure keeps business rules in **use cases** and repositories, and keeps presentation thin
-and reactive. When we added new slices (for example, guardian saving, donation, or Islamic content),
-we could follow the same pattern without debating architecture every time.
-
-### Main user flows
-
-At a high level, I designed the client around a few core flows:
-
-- **Authentication & onboarding**
-  - Phone‑based sign‑in with OTP and password, wired into domain use cases and auth repositories.
-  - Optional biometric sign‑in once enrollment is complete.
-  - Account checks and school selection flows so one phone can represent multiple
-    guardians/schools.
-- **Parent home & student overview**
-  - A home dashboard with parent cards, “santri” cards (student status), balances, and quick
-    actions.
-  - Announcements, news, and notifications feeds backed by typed repositories and paged states.
-- **Child activity & academic tracking**
-  - Student‑centric views under the guardian “santri” feature (profile, recitation, achievements,
-    activities, attendance, health, permissions, reports).
-- **Tuition & financial flows**
-  - Syahriah (tuition) overview, regular and installment plans, payment history, and bill
-    details.
-  - Student financial overview (balances, bills, installment summaries, transaction history).
-  - Guardian savings and in‑house transfers between accounts and school products.
-  - Donations and ZISWAF flows integrated with the backend donation services.
-- **Content & communication**
-  - Islamic content (prayer times using geolocation, tausiah, “ask ustadz” widgets, and other
-    curated content).
-- **Profile, security & entitlements**
-  - Profile management and account security (PIN, password, biometric settings).
-  - Plan‑aware UI: certain features are only visible or enabled when the current school plan
-    includes the matching capability.
-
-### High‑level architecture (runtime view)
-
-```mermaid
-flowchart LR
-    subgraph App Shell
-        Main["main_dev / main_prod<br/>(AppConfig, NetworkLogConfig,<br/>ApiClient init)"]
-        Router["GetX Routing<br/>+ Bindings"]
-    end
-
-    subgraph Core
-        ACfg["AppConfig<br/>(ApiHost -> baseUrl,<br/>tokens, env)"]
-        ApiC["ApiClient<br/>(Dio + Interceptors)"]
-        AH["ApiHelper<br/>(ApiResponse<T>)"]
-        Ent["Entitlement Service<br/>(plan + capabilities)"]
-        Sess["Session & Storage"]
-    end
-
-    subgraph Features
-        AuthF["Auth feature<br/>(domain/data/presentation)"]
-        GuardF["Guardian & Tuition<br/>(Santri, Syahriah, Saving)"]
-        HomeF["Home dashboard<br/>(news, announcements)"]
-        BioF["Biometrics & PIN"]
-        MarketF["Marketplace"]
-        IslamiF["Islami content"]
-    end
-
-    Main --> ACfg
-    Main --> ApiC
-    Main --> Router
-
-    ApiC --> AH
-    AH --> AuthF
-    AH --> GuardF
-    AH --> HomeF
-    AH --> MarketF
-    AH --> IslamiF
-    AH --> BioF
-
-    AuthF --> Ent
-    GuardF --> Ent
-    HomeF --> Ent
-    MarketF --> Ent
-    IslamiF --> Ent
-    BioF --> Ent
-
-    AuthF --> Sess
-    GuardF --> Sess
-    HomeF --> Sess
-```
+I was not only responsible for shipping screens. I was responsible for making the app easier to
+evolve, easier to configure per client, and easier for the team to work in.
 
 ---
 
-## Key challenges & deep dives
+## What PesantrenQu Does
 
-Below are some of the challenges that were important enough for me to turn into separate case
-studies.
+PesantrenQu is built around a connected parent loop rather than one isolated feature.
 
-1. **Plan‑based features without `if (plan == "gold")` everywhere**  
-   I needed a way for schools on different subscription plans (Basic/Gold/Platinum) to unlock or
-   hide features without scattering plan checks across the codebase. The solution was a
-   capability‑based entitlement system that:
+Parents can authenticate, connect to the right school context, view their children, follow school
+updates, review financial obligations, pay tuition and installments, manage savings, and make
+donations. The app also includes supporting areas like profile, verification, biometric access, and
+Islamic content.
 
-   - Maps each plan to a set of capabilities (`security.manage_pin`, `guardian.financial_overview`,
-     etc.).
-   - Exposes a single `IFeatureEntitlementService` with `hasCapability(...)` and a reactive stream.
-   - Integrates into controllers and route guards to gate premium routes and menu items.  
-     → See: **[Capability‑Based Entitlement System](/blog/capability-based-entitlement-system)**
+A few parts matter especially much:
 
-2. **Secure biometric enrollment & verification**  
-   Optional biometric login sounds simple, but doing it securely (and per device/account) required a
-   proper design:
-   - Hardware‑backed keypair creation via the platform keystore; private keys never leave the OS.
-   - A challenge–response protocol using canonical JSON payloads and signatures passed via
-     `X-AUTH-SIGN`.
-   - A secure enrollment store that binds phone + device ID + public key fingerprint to avoid
-     silent cross‑account reuse.
-   - Friendly handling of “no hardware”, “not enrolled”, “locked out”, and permission issues in the
-     UI.  
-     → See: **[Biometric Enrollment & Verification](/blog/biometric-enrollment-verification-case-study)**
+- Guardian finance, because parents need a reliable way to see bills, balances, and payment history
+- Student views, because the product is not only about money but about staying connected to the child
+  and school
+- Security and verification, because parent-facing financial products need stronger trust than a
+  simple content app
+- Plan-aware access, because different schools do not buy the same product tier
+
+What mattered most was making these flows feel like parts of one operational product instead of a
+collection of unrelated modules.
 
 ---
 
-## Impact / results
+## The Rebuild
 
-Even without public metrics, from an engineering perspective this work
-changed a few things:
+The main technical shift was moving from a legacy React Native app into a more deliberate Flutter
+architecture.
 
-- **For guardians and parents**
+In the old codebase, school variance was heavily tied to large app-level settings and scattered
+configuration. In the Flutter version, I helped turn that into a clearer model:
 
-  - They have a single app to view multiple children across multiple schools.
-  - They can see balances, upcoming bills, and payment history in one place instead of juggling
-    manual transfers and WhatsApp confirmations.
-  - They can pay tuition and installments, manage guardian savings, and donate from the same app.
+- A feature-first Flutter codebase with cleaner domain, data, and presentation boundaries
+- A dedicated brand configuration layer for school-specific identity and behavior
+- A plan and entitlement layer so features depend on capabilities, not hardcoded plan checks
+- Runtime configuration that separates boot values from public brand and environment assets
 
-- **For schools**
+That structure made the app easier to reason about, but more importantly, it made new client delivery
+less fragile.
 
-  - They can launch with a **Basic** feature set and later unlock **Gold/Platinum** capabilities
-    without changing client code.
-  - They get a consistent client‑side integration to multiple backend services, which makes
-    onboarding new schools or enabling new modules much easier.
+I wrote deeper case studies on two of the most important systems:
 
-- **For the engineering team**
-  - We reuse the same networking and entitlement infrastructure across features, which reduces
-    duplication and bugs.
-  - We have clearer logs and a CLI probe for debugging tricky API issues together with the backend
-    team.
+- [Capability-Based Entitlement System](/blog/capability-based-entitlement-system)
+- [Biometric Enrollment & Verification](/blog/biometric-enrollment-verification-case-study)
 
 ---
 
-## What I learned
+## Multi-Client Delivery
 
-Some personal takeaways from working on this project:
+One of the biggest improvements in the Flutter version is how much faster it is to ship for different
+school clients.
 
-- I learned how to scale a **feature‑first Clean Architecture** in a real, multi‑module Flutter app
-  without slowing the team down.
-- I saw how important it is to keep **cross‑cutting concerns** (networking, entitlements,
-  biometrics) reusable but not over‑engineered.
-- I became more deliberate about API design (both client and server) so that:
-  - Security‑sensitive features like biometric auth stay verifiable and easy to reason about.
-  - Plan‑based access can evolve without destabilizing the rest of the app.
-- I also saw how much developer experience improves when you invest early in **tooling** (CLI
-  probes, logging modes, documentation) and keep them part of the normal workflow.
+The newer app has an explicit white-label setup with brand-specific assets, runtime config, build
+versioning, and release tooling. That means adding or updating a client is no longer a messy process
+of patching app settings and hoping every environment lines up correctly.
+
+This became real in production:
+
+- The base PesantrenQu app remains live on Play Store
+- Pondok Kwagean runs as a Gold-plan client
+- Manhajulquran Ploso runs as a Platinum-plan client
+
+That is the point where the rewrite stopped being an internal improvement and became a delivery
+system.
 
 ---
 
-## Links & visuals
+## Internal Tooling
 
-- **Play Store:** https://play.google.com/store/apps/details?id=id.siesta.app.pesantrenqu.v2
-- **Key screenshots:** Home dashboard, tuition/syahriah flow, donation, biometric enrollment.
+Some of the most valuable work I did on this project was not visible in the UI.
 
-![PesantrenQu mobile screens](/images/work/pesantrenqu.png)
+I built internal tools and guardrails to make the mobile codebase faster to work in and safer to
+scale:
 
-{/* Image Gallery is rendered by WorkGallery component based on filesystem/frontmatter. */}
+- A client build tool that resolves brand, environment, version, icon generation, splash generation,
+  and build entrypoints in one flow
+- Runtime config rules that keep secret boot values separate from public bundled brand config
+- API probe tooling that reuses the app's own config and networking assumptions for backend debugging
+- Verification scripts for brand matrix coverage, asset consistency, and UI guardrails
+- Engineering docs that make architecture and team conventions explicit instead of tribal knowledge
+
+This matters because multi-client products usually slow down as delivery complexity grows. I wanted
+the opposite: as branding and plan variation increased, the process should become more systematic, not
+more fragile.
+
+---
+
+## Impact
+
+The rewrite changed PesantrenQu in two ways.
+
+Externally, it produced a more mature parent-facing product that is already being used beyond a single
+baseline app. The Flutter version is live, supports real financial and school flows, and is already
+deployed across two schools with different plan tiers.
+
+Internally, it changed how the product can be operated. Client-specific branding is more structured.
+Plan behavior is easier to manage. Configuration and release are faster. Debugging is more
+repeatable. The team now has a stronger foundation for adding schools without each new deployment
+feeling like a custom fork.
+
+---
+
+## What I Learned
+
+This project changed how I think about rewrites.
+
+A rewrite is only worth it when it improves more than code quality. It has to improve delivery,
+configuration, reliability, and the team's ability to support real clients without turning every
+release into custom work.
+
+PesantrenQu taught me to treat brand systems, plan entitlements, and release workflows as part of the
+product itself. Once those systems became more deliberate, the app stopped being just a rewrite and
+became a platform the team could actually operate.

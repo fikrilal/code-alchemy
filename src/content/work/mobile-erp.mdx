@@ -1,70 +1,140 @@
 ---
-title: "Mobile ERP — Workforce Management"
-shortDescription: "A mobile ERP solution for employee attendance, shift management, and payroll access with geofencing-based check-ins."
+title: "Mobile ERP — Private Workforce Management App"
+shortDescription: "Flutter mobile engineer building a private ERP app for attendance, geofenced check-ins, leave requests, and payroll access, with a strong focus on location integrity and day-to-day operational reliability."
 thumbnail: "/images/mobile-erp-app-thumbnail.png"
 date: "2024-09-01"
 techStack:
   [
     "Flutter (Dart)",
-    "GetX (State Management)",
+    "GetX",
     "OpenStreetMap + Leaflet",
     "Geolocator & Geofence Service",
-    "Device Info Plus (Mock Location Detection)",
-    "Dio (API Requests)",
+    "Device Info Plus",
+    "Dio",
     "Shared Preferences & Get Storage",
     "File Picker & Open File",
   ]
 ---
 
-# Mobile ERP — Workforce Management
+# Mobile ERP — Private Workforce Management App
 
 ## Overview
 
-Managing employee attendance accurately is a challenge for many companies, especially with remote or multiple‑location teams. Mobile ERP enables secure geofenced check‑ins, shift tracking, leave requests, and payroll access. It prevents spoofing and unauthorized check‑ins while keeping the UX simple for employees.
+Mobile ERP was built for a private client, so I do not publish the full client context or a public
+store link. What I can talk about is the product problem: making attendance, leave, shifts, and
+payroll access work cleanly on mobile without turning location-based check-ins into something easy
+to spoof or abuse.
 
-## Objectives
+The app was designed for day-to-day workforce operations. Employees needed a simple mobile flow to
+check in, view schedules, request leave, and access payroll information. On the other side, the
+business needed stronger trust in attendance records, especially because it operated across multiple
+branch stores. Each branch had its own employees and its own attendance point, so the app needed to
+allow check-ins only when someone was physically within the allowed radius of their assigned branch,
+for example within 50 meters of a store location.
 
-- Implement secure geofencing‑based attendance tracking with OpenStreetMap.
-- Build a robust authentication system with session management.
-- Enable real‑time shift management for dynamic assignments.
-- Protect against GPS spoofing and mock locations.
+---
 
-## Features
+## My Role
 
-- 📍 Geofencing Attendance — Check in within a 100‑meter radius of the workplace.
-- 📸 Selfie Verification — Capture real‑time photos as proof of attendance.
-- 🚫 Mock Location Prevention — Detect spoof apps via Device Info Plus + backend validation.
-- 🔑 Secure Authentication — Access & refresh tokens with Flutter Secure Storage.
-- 📆 Shift Management — View and request shift changes.
-- 📝 Leave Request System — Digital leave applications with document uploads.
-- 💰 Payslip Access — View/download salary breakdowns in PDF.
+I worked on the Flutter mobile app and focused on the parts where workforce operations and mobile
+constraints meet.
 
-## Tech Stack
+My work included:
 
-_See stack summary below._
+- Building the mobile attendance and workforce flows for employees
+- Handling geofenced check-ins, location validation, and proof-of-attendance UX
+- Supporting shift visibility, leave requests, and payroll-related access from the same app
+- Shaping the mobile structure so the operational flows stayed consistent instead of becoming a set
+  of disconnected forms
 
-## Target Users
+This was less about flashy product behavior and more about reliability. The app had to hold up in
+real usage, where bad check-in logic or confusing employee flows would create operational problems
+immediately.
 
-- Employees — Check in for work, view shifts, request leave, and access payroll.
-- HR & Admins — Monitor attendance logs, approve leave, and manage workforce schedules.
+---
 
-## Challenges & Solutions
+## What Mobile ERP Does
 
-- Ensuring precise, location‑based check‑ins  
-  Solution: Geofencing with OpenStreetMap + server‑side GPS validation.
-- Preventing mock location & GPS spoofing  
-  Solution: Device Info Plus checks + backend validation.
-- Managing authentication securely  
-  Solution: Access/refresh tokens with auto‑renewal stored in secure storage.
+The app gives employees mobile access to the main workforce actions they need during regular work
+operations.
 
-## Results
+They can sign in, check in and out, see their assigned shifts, request leave, upload supporting
+documents when needed, and access payroll information from their phone. The goal was to reduce the
+friction around everyday HR operations without making the app feel heavy or difficult to use.
 
-- 85% — Increased attendance accuracy with geofencing.
-- 100m — Strict geofencing validation for check‑ins.
-- 40% — Reduced administrative workload via automation.
+Attendance was the most sensitive part. Check-ins were tied to geofenced locations, and the app
+also needed to support selfie-based proof so presence could be validated more credibly than a simple
+button tap.
 
-## Learnings
+---
 
-Reinforced secure geofencing, session management, and reliable mobile UX patterns at scale. Future scope: attendance insights and performance tracking.
+## Key Decisions
+
+A few decisions shaped the app.
+
+First, I treated attendance integrity as the core product concern. A workforce app can have useful
+secondary features, but if check-ins are unreliable, the whole product loses trust quickly. That is
+why geofencing, location handling, and spoofing resistance mattered more than cosmetic complexity.
+
+Second, I kept the mobile flow straightforward for employees even when the rules underneath were
+stricter. The app needed to enforce location boundaries and proof requirements without making basic
+actions like check-in, leave requests, or shift visibility feel burdensome.
+
+Third, I treated the app as an operational tool rather than a consumer-style experience. The right
+measure of success here was not novelty. It was whether the app reduced confusion, supported
+attendance rules more credibly, and gave employees a clear mobile path for routine administrative
+work.
+
+---
+
+## Challenges
+
+The hardest part of the project was balancing usability with enforcement.
+
+Location-based attendance sounds simple until it becomes real. In this case, the client had many
+branch stores, and attendance had to be blocked outside the allowed radius of each branch. That
+meant the app could not treat location as a soft suggestion. It had to determine whether an
+employee was inside a valid attendance zone, such as within 50 meters of Branch A, and reject the
+action outside that boundary.
+
+Once that becomes the rule, a lot of edge cases appear. GPS can drift, users can arrive near the
+edge of the radius, and the business still wants stronger confidence that a check-in actually
+reflects presence. That meant the app had to combine geofencing, device/location checks, and proof
+flows without making the experience feel brittle.
+
+There was also a broader operational challenge: this was not one isolated attendance screen. Check
+in, shifts, leave, and payroll all had to feel like parts of one employee tool. If the app solved
+only the attendance problem but left the rest of the workforce flow fragmented, it would still feel
+unfinished in practice.
+
+---
+
+## Impact
+
+Mobile ERP is meaningful because it addressed a real business workflow, not a showcase feature set.
+
+The app gave employees a more direct mobile path for attendance, shift visibility, leave requests,
+and payroll access. It also gave the client a stronger structure around mobile check-ins by tying
+them to branch-specific location rules and proof-of-attendance expectations instead of relying on a
+looser manual process.
+
+Because this was a private deployment, I do not frame the result in public growth metrics. The
+stronger claim is simpler: it was a real operational app, built around everyday workforce needs, and
+the engineering work mattered most where trust and routine usage intersected.
+
+---
+
+## What I Learned
+
+This project reinforced that enterprise mobile work often looks simpler than it really is.
+
+On the surface, attendance, leave, and payroll access can sound like standard admin features. In
+practice, the difficulty is in making those flows trustworthy enough for the business while keeping
+them clear enough for employees to use every day without friction.
+
+It also reminded me that private-client products need a different kind of case study. The most
+important part is not public proof or launch optics. It is showing the operational problem clearly,
+explaining the constraints honestly, and being precise about where the mobile app had to carry real
+responsibility.
 
 {/* Image Gallery is rendered by WorkGallery component based on filesystem/frontmatter. */}

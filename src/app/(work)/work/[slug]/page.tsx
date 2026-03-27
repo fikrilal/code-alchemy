@@ -6,6 +6,8 @@ import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
 import { getPlayStoreAppPublicInfo } from "@/lib/playstore";
 
 import type { Metadata } from "next";
+import type { WorkPlayStoreApp } from "@/features/work/types";
+import type { PlayStoreAppPublicInfo } from "@/lib/playstore";
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   const mdxSlugs = getWorkSlugs();
@@ -52,14 +54,17 @@ export default async function WorkCaseStudyPage({
   }
 
   const { content, frontmatter } = workEntry;
-  const playStoreAppInfo = frontmatter.playStoreUrl
-    ? await getPlayStoreAppPublicInfo({
-        playStoreUrl: frontmatter.playStoreUrl,
-        ...(frontmatter.playStoreAppId
-          ? { playStoreAppId: frontmatter.playStoreAppId }
-          : {}),
-      })
-    : null;
+  const playStoreApps = resolvePlayStoreApps(frontmatter);
+  const playStoreAppInfos = (
+    await Promise.all(
+      playStoreApps.map((app) =>
+        getPlayStoreAppPublicInfo({
+          playStoreUrl: app.playStoreUrl,
+          ...(app.playStoreAppId ? { playStoreAppId: app.playStoreAppId } : {}),
+        })
+      )
+    )
+  ).filter((app): app is PlayStoreAppPublicInfo => app !== null);
 
   return (
     <main className="bg-neutral-950 min-h-screen pt-10">
@@ -73,7 +78,20 @@ export default async function WorkCaseStudyPage({
           )}
         </header>
         <div className="space-y-8">
-          {playStoreAppInfo && <PlayStoreCard app={playStoreAppInfo} />}
+          {playStoreAppInfos.length > 0 && (
+            <section className="space-y-4">
+              {playStoreAppInfos.length > 1 && (
+                <h2 className="text-lg font-semibold tracking-tight text-slate-200">
+                  Live Apps
+                </h2>
+              )}
+              <div className="space-y-4">
+                {playStoreAppInfos.map((app) => (
+                  <PlayStoreCard key={app.appId} app={app} />
+                ))}
+              </div>
+            </section>
+          )}
           <WorkGallery
             slug={slug}
             title={frontmatter.title}
@@ -104,4 +122,37 @@ export default async function WorkCaseStudyPage({
       </article>
     </main>
   );
+}
+
+function resolvePlayStoreApps(frontmatter: {
+  playStoreApps?: WorkPlayStoreApp[];
+  playStoreUrl?: string;
+  playStoreAppId?: string;
+}): WorkPlayStoreApp[] {
+  const apps = frontmatter.playStoreApps ?? [];
+
+  if (!frontmatter.playStoreUrl) {
+    return apps;
+  }
+
+  const hasLegacyAppAlreadyListed = apps.some(
+    (app) =>
+      app.playStoreUrl === frontmatter.playStoreUrl ||
+      (frontmatter.playStoreAppId !== undefined &&
+        app.playStoreAppId === frontmatter.playStoreAppId)
+  );
+
+  if (hasLegacyAppAlreadyListed) {
+    return apps;
+  }
+
+  return [
+    {
+      playStoreUrl: frontmatter.playStoreUrl,
+      ...(frontmatter.playStoreAppId
+        ? { playStoreAppId: frontmatter.playStoreAppId }
+        : {}),
+    },
+    ...apps,
+  ];
 }
