@@ -3,11 +3,11 @@ import { notFound } from "next/navigation";
 import PlayStoreCard from "@/features/work/components/PlayStoreCard";
 import WorkGallery from "@/features/work/components/WorkGallery";
 import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
+import type { WorkPlayStoreApp } from "@/features/work/types";
 import { getPlayStoreAppPublicInfo } from "@/lib/playstore";
+import type { PlayStoreAppPublicInfo } from "@/lib/playstore";
 
 import type { Metadata } from "next";
-import type { WorkPlayStoreApp } from "@/features/work/types";
-import type { PlayStoreAppPublicInfo } from "@/lib/playstore";
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   const mdxSlugs = getWorkSlugs();

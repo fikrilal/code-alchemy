@@ -22,15 +22,15 @@ export default function HeroSection() {
   return (
     <MotionElement
       as="section"
-      className="flex flex-col items-start transition-colors duration-300 relative"
+      className="relative flex min-h-[100svh] items-center transition-colors duration-300"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      <div className="max-w-6xl w-full mx-auto pt-20 sm:pt-24 lg:pt-52 sm:pb-24 lg:pb-40 px-4 sm:px-6 lg:px-8 xl:px-0">
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-20 lg:pb-24">
         <MotionElement
           as="p"
-          className="text-sm font-mono text-slate-300 tracking-wide uppercase mb-4 mt-16"
+          className="text-sm font-mono text-slate-300 tracking-wide uppercase mb-4"
           variants={childVariants}
         >
           MOBILE ENGINEER • FOUNDING ENGINEER
@@ -56,7 +56,7 @@ export default function HeroSection() {
 
         <MotionElement
           as="div"
-          className="mt-8 sm:mt-8 lg:mt-10 flex flex-col md:flex-row gap-4 pb-4 w-full justify-start items-start md:items-center"
+          className="mt-8 sm:mt-8 lg:mt-10 flex w-full flex-col items-start justify-start gap-4 pb-4 md:flex-row md:items-center"
           variants={childVariants}
         >
           <Button as="a" href="mailto:fikrildev@gmail.com">
