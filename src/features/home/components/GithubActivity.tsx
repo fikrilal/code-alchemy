@@ -131,20 +131,30 @@ export default function GithubActivity() {
       </div>
 
       {/* Additional Stats Section */}
-      <div className="mt-6 lg:mt-4 grid grid-cols-3 gap-4">
-        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-slate-400 font-mono">Latest Contribution</p>
-          <p className="text-lg text-slate-200 mt-2">{lastContributionLabel}</p>
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 lg:mt-4">
+        <div className="grid min-h-0 grid-rows-[2.4rem_auto] rounded-lg border border-slate-700 bg-slate-900 p-4 text-center sm:grid-rows-[2.6rem_auto]">
+          <p className="font-mono text-[11px] leading-5 text-slate-400 sm:text-xs">
+            Latest Contribution
+          </p>
+          <p className="mt-1 text-base text-slate-200 sm:text-lg">
+            {lastContributionLabel}
+          </p>
         </div>
-        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-slate-400 font-mono">Longest Streak</p>
-          <p className="text-lg  text-slate-200 mt-2">{longestStreakLabel}</p>
+        <div className="grid min-h-0 grid-rows-[2.4rem_auto] rounded-lg border border-slate-700 bg-slate-900 p-4 text-center sm:grid-rows-[2.6rem_auto]">
+          <p className="font-mono text-[11px] leading-5 text-slate-400 sm:text-xs">
+            Longest Streak
+          </p>
+          <p className="mt-1 text-base text-slate-200 sm:text-lg">
+            {longestStreakLabel}
+          </p>
         </div>
-        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 rounded text-center">
-          <p className="text-xs text-slate-400 wrap-break-word font-mono">
+        <div className="grid min-h-0 grid-rows-[2.4rem_auto] rounded-lg border border-slate-700 bg-slate-900 p-4 text-center sm:grid-rows-[2.6rem_auto]">
+          <p className="font-mono text-[11px] leading-5 text-slate-400 sm:text-xs">
             Lifetime Contributions
           </p>
-          <p className="text-lg text-slate-200 mt-2">{contributionsLabel}</p>
+          <p className="mt-1 text-base text-slate-200 sm:text-lg">
+            {contributionsLabel}
+          </p>
         </div>
       </div>
 
