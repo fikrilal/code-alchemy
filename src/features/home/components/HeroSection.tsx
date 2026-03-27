@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button";
 import MotionElement from "@/components/ui/MotionElement";
+import HeroRunner from "@/features/home/components/HeroRunner";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -80,11 +81,11 @@ export default function HeroSection() {
 
           <div className="max-w-4xl">
             <MotionElement
-              as="p"
-              className="mb-4 text-sm font-mono tracking-wide uppercase text-slate-300"
+              as="div"
+              className="mb-6"
               variants={childVariants}
             >
-              MOBILE ENGINEER • FOUNDING ENGINEER
+              <HeroRunner />
             </MotionElement>
 
             <MotionElement
