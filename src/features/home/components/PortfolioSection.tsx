@@ -28,12 +28,12 @@ export default function PortfolioSection() {
   return (
     <MotionElement
       as="section"
-      className="w-full px-4 sm:px-6 lg:px-8 pt-20 text-slate-100"
+      className="w-full px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28 text-slate-100"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto border-t border-slate-900/80 pt-10 sm:pt-12 lg:pt-14">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
           <MotionElement
             as="div"

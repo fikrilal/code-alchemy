@@ -58,13 +58,13 @@ export default function SelectedWorkSection({
   return (
     <MotionElement
       as="section"
-      className="flex flex-col items-start min-h-screen transition-colors duration-300 px-4 sm:px-6 lg:px-8 xl:px-0"
+      className="flex flex-col items-start px-4 pt-24 pb-28 sm:px-6 sm:pt-28 sm:pb-32 lg:px-8 lg:pt-32 lg:pb-40 xl:px-0 transition-colors duration-300"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
     >
-      <div className="max-w-6xl w-full mx-auto pt-24 sm:pt-24 lg:pt-60">
+      <div className="max-w-6xl w-full mx-auto">
         <div className="flex justify-between items-center">
           <MotionElement
             as="h2"
@@ -105,7 +105,7 @@ export default function SelectedWorkSection({
         )}
       </div>
 
-      <div className="max-w-6xl w-full mx-auto mt-8 sm:mt-16 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+      <div className="max-w-6xl w-full mx-auto mt-10 sm:mt-14 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
         {items.map((project) => (
           <MotionElement
             key={project.slug}
