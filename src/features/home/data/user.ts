@@ -9,7 +9,6 @@ export const USER = {
     {
       title: "Mobile Engineer",
       company: "SIESTA",
-      website: "https://siesta.ai",
     },
     {
       title: "Founding Engineer",
@@ -20,15 +19,4 @@ export const USER = {
   about: `I'm Fikril — a Mobile Engineer. I love product engineering when a product is going from 0 → 1, or pushing from 1 → 100 — owning the architecture, the release, and living with the choices.
 
 Day job is mobile products; nights are whatever won't leave me alone — dev tools, Linux desktop, things I wanted to exist.`,
-  aboutExtended: `Hi, I'm Fikril — a mobile engineer based in Bandung, Indonesia.
-
-Most of my work sits in the mobile space. I'm usually involved early: taking a rough idea like "we need an app" and turning it into something concrete — project structure, architecture, patterns, and eventually a build people can actually download and use.
-
-I'm comfortable owning the end-to-end 0 → 1 phase: defining how a mobile app is structured, how data flows, how state is managed, how we ship, and then driving the first release into production. Over time, I like turning those decisions into standards the rest of the team can follow.
-
-I care a lot about code that's easy to change later, not just code that works today. Clean boundaries, predictable behavior, and a sane developer experience matter to me as much as UI polish. I'm not trying to be a full-time designer, but I do think good engineering and good UX are tightly connected.
-
-When I'm not in an editor, you'll probably find me somewhere inside the grimdark universe of Warhammer 40K, looping Starset or Linkin Park, or staring at a notebook and coffee cup trying to untangle the next idea.
-
-Still figuring things out, still learning — but moving with intention.`,
 } as const;

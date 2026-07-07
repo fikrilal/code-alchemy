@@ -129,7 +129,6 @@ src/
     blog/
     work/
   features/
-    about/
     blog/
     home/
     mdx/

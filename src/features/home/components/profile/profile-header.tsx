@@ -7,7 +7,7 @@ export function ProfileHeader() {
   return (
     <div className="screen-line-bottom grid grid-cols-[auto_1fr] grid-rows-[1fr_auto] overflow-y-clip border-x border-line">
       <figure className="relative col-span-2 p-2 sm:col-span-1 sm:col-start-2 sm:p-4">
-        <SiteMark className="mx-auto h-28 sm:h-36" priority />
+        <SiteMark className="mx-auto h-28 sm:h-36" />
         <figcaption className="pointer-events-none absolute right-2 bottom-2 font-mono text-xs leading-none text-muted-foreground select-none sm:right-4">
           FIG_001
         </figcaption>

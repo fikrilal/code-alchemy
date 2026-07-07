@@ -51,6 +51,7 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
         shortDescription: fm.shortDescription ?? "",
         thumbnail: fm.thumbnail ?? "/images/og-image.png",
         category: deriveCategory(fm as WorkFrontmatter),
+        ...(typeof fm.company === "string" ? { company: fm.company } : {}),
         ...(typeof fm.date === "string" ? { date: fm.date } : {}),
         ...(Array.isArray(fm.techStack) ? { techStack: fm.techStack } : {}),
         hidden: fm.hidden === true,
@@ -79,6 +80,7 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
       shortDescription: summary.shortDescription,
       thumbnail: summary.thumbnail,
       category: summary.category ?? "Case Study",
+      ...(summary.company ? { company: summary.company } : {}),
       ...(summary.date ? { date: summary.date } : {}),
       ...(summary.techStack ? { techStack: summary.techStack } : {}),
     }));

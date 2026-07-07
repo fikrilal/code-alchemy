@@ -1,7 +1,9 @@
 import { PageShell } from "@/components/layout/page-shell";
 import { StripeSeparator } from "@/components/layout/stripe-separator";
 import { getSortedPostsData } from "@/features/blog/lib/posts";
+import { AchievementsSection } from "@/features/home/components/AchievementsSection";
 import BlogSection from "@/features/home/components/BlogSection";
+import { ExperienceSection } from "@/features/home/components/ExperienceSection";
 import ProfileHero from "@/features/home/components/ProfileHero";
 import OpenSourceSection from "@/features/open-source/components/OpenSourceSection";
 import { getFeaturedOpenSourceRepos } from "@/features/open-source/lib/repos";
@@ -18,6 +20,8 @@ export default async function HomePage() {
   return (
     <PageShell leadingSeparator={false}>
       <ProfileHero />
+      <ExperienceSection />
+      <StripeSeparator />
       <SelectedWorkSection
         workItems={workItems.slice(0, 4)}
         maxVisible={4}
@@ -25,7 +29,9 @@ export default async function HomePage() {
       <StripeSeparator />
       <OpenSourceSection repos={openSourceRepos} />
       <StripeSeparator />
-      <BlogSection blogPosts={blogPosts} />
+      <AchievementsSection />
+      <StripeSeparator />
+      <BlogSection blogPosts={blogPosts} limit={4} />
     </PageShell>
   );
 }

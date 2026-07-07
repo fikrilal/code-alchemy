@@ -1,5 +1,6 @@
 import { ArrowUpRightIcon } from "lucide-react";
 
+import { Separator } from "@/components/ui/separator";
 import type { FeaturedOpenSourceRepo } from "@/features/open-source/data/featured-repos";
 import { cn } from "@/lib/utils";
 
@@ -39,11 +40,22 @@ export function OpenSourceRepoItem({
           </a>
         </h3>
 
-        <dl>
-          <dt className="sr-only">Details</dt>
-          <dd className="text-sm text-muted-foreground">
-            {repo.language} · {repo.focus}
-          </dd>
+        <dl className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+          <div>
+            <dt className="sr-only">Language</dt>
+            <dd>{repo.language}</dd>
+          </div>
+
+          <Separator
+            className="data-vertical:h-4 data-vertical:self-center"
+            orientation="vertical"
+            aria-hidden
+          />
+
+          <div>
+            <dt className="sr-only">Focus</dt>
+            <dd>{repo.focus}</dd>
+          </div>
         </dl>
       </div>
 

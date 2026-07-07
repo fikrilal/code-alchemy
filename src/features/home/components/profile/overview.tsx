@@ -65,19 +65,23 @@ export function Overview() {
             <IntroItemIcon>{getJobIcon(job.title)}</IntroItemIcon>
             <p className="text-balance text-foreground">
               {job.title} at{" "}
-              {job.website.startsWith("/") ? (
-                <Link href={job.website} className="link-underline text-foreground">
-                  {job.company}
-                </Link>
+              {"website" in job ? (
+                job.website.startsWith("/") ? (
+                  <Link href={job.website} className="link-underline text-foreground">
+                    {job.company}
+                  </Link>
+                ) : (
+                  <a
+                    href={job.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link-underline text-foreground"
+                  >
+                    {job.company}
+                  </a>
+                )
               ) : (
-                <a
-                  href={job.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="link-underline text-foreground"
-                >
-                  {job.company}
-                </a>
+                job.company
               )}
             </p>
           </IntroItem>
@@ -87,16 +91,7 @@ export function Overview() {
           <IntroItemIcon>
             <MapPinIcon aria-hidden />
           </IntroItemIcon>
-          <p className="text-balance text-foreground">
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(USER.address)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-underline"
-            >
-              {USER.address}
-            </a>
-          </p>
+          <p className="text-balance text-foreground">{USER.address}</p>
         </IntroItem>
 
         <CurrentLocalTime timeZone={USER.timeZone} />

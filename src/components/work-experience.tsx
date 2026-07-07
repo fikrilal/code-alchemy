@@ -50,8 +50,6 @@ export type ExperienceItemType = {
   companyName: string
   /** URL or path to the company's logo image */
   companyLogo?: string
-  /** URL to the company's website. */
-  companyWebsite?: string
   /**
    * List of positions held at the company
    * @fumadocsHref #experiencepositionitemtype
@@ -103,18 +101,7 @@ export function ExperienceItem({ experience }: ExperienceItemProps) {
         </div>
 
         <h3 className="text-lg leading-snug font-semibold">
-          {experience.companyWebsite ? (
-            <a
-              className="link"
-              href={experience.companyWebsite}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {experience.companyName}
-            </a>
-          ) : (
-            experience.companyName
-          )}
+          {experience.companyName}
         </h3>
 
         {experience.isCurrentEmployer && (
@@ -122,8 +109,8 @@ export function ExperienceItem({ experience }: ExperienceItemProps) {
             className="relative flex items-center justify-center"
             aria-label="Current Employer"
           >
-            <span className="absolute inline-flex size-3 animate-ping rounded-full bg-sky-500 opacity-50" />
-            <span className="relative inline-flex size-2 rounded-full bg-sky-500" />
+            <span className="absolute inline-flex size-3 animate-ping rounded-full bg-brand-primary opacity-50" />
+            <span className="relative inline-flex size-2 rounded-full bg-brand-primary" />
           </span>
         )}
       </div>
@@ -281,7 +268,7 @@ function Skill({ className, ...props }: ComponentProps<"span">) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-md border bg-muted/50 px-1.5 py-0.5 font-mono text-xs text-muted-foreground",
+        "inline-flex items-center rounded-none border bg-muted/50 px-1.5 py-0.5 font-mono text-xs text-muted-foreground",
         className
       )}
       {...props}

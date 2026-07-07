@@ -9,6 +9,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
@@ -45,9 +46,8 @@ function getSkillLabel(skill: string) {
 export function WorkItem({ work, className }: WorkItemProps) {
   const brandName = getBrandName(work.title);
   const workHref = `/work/${work.slug}`;
-  const metadata = work.date
-    ? formatWorkDate(work.date)
-    : work.category;
+  const formattedDate = work.date ? formatWorkDate(work.date) : undefined;
+  const hasMetadata = Boolean(work.company || formattedDate || work.category);
 
   return (
     <Collapsible className={className}>
@@ -68,10 +68,36 @@ export function WorkItem({ work, className }: WorkItemProps) {
                 {brandName}
               </h3>
 
-              {metadata ? (
-                <dl className="text-sm text-muted-foreground">
-                  <dt className="sr-only">Details</dt>
-                  <dd>{metadata}</dd>
+              {hasMetadata ? (
+                <dl className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+                  {work.company ? (
+                    <div>
+                      <dt className="sr-only">Company</dt>
+                      <dd>{work.company}</dd>
+                    </div>
+                  ) : null}
+
+                  {work.company && formattedDate ? (
+                    <Separator
+                      className="data-vertical:h-4 data-vertical:self-center"
+                      orientation="vertical"
+                      aria-hidden
+                    />
+                  ) : null}
+
+                  {formattedDate ? (
+                    <div>
+                      <dt className="sr-only">Date</dt>
+                      <dd>
+                        <time dateTime={work.date}>{formattedDate}</time>
+                      </dd>
+                    </div>
+                  ) : !work.company && work.category ? (
+                    <div>
+                      <dt className="sr-only">Category</dt>
+                      <dd>{work.category}</dd>
+                    </div>
+                  ) : null}
                 </dl>
               ) : null}
             </div>

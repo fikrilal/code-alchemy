@@ -52,9 +52,9 @@ export function CollapsibleWorkList({
         </ul>
       </CollapsibleContent>
 
-      <div className="screen-line-top -mt-px flex h-12 items-center justify-center">
+      <div className="screen-line-top -mt-px flex justify-center py-2">
         <CollapsibleTrigger asChild>
-          <Button className="gap-2 pr-2.5 pl-3" size="sm" variant="secondary">
+          <Button className="gap-2 pr-2.5 pl-3">
             <span className="group-data-[state=closed]/collapsible:block group-data-[state=open]/collapsible:hidden">
               Show more
             </span>
