@@ -2,6 +2,7 @@ import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { Panel, PanelHeader, PanelTitle } from "@/components/ui/panel";
 import { PostList } from "@/features/blog/components/post-list";
 import type { BlogSummary } from "@/features/blog/types";
 
@@ -32,13 +33,12 @@ export default function BlogSection({
   }
 
   return (
-    <section className="mx-auto max-w-screen overflow-x-clip px-2 md:max-w-3xl">
-      <div className="border-x border-line py-8">
-        <h2 className="screen-line-top screen-line-bottom ml-4 font-medium text-3xl tracking-tight text-balance">
-          {heading}
-        </h2>
+    <Panel>
+        <PanelHeader>
+          <PanelTitle>{heading}</PanelTitle>
+        </PanelHeader>
 
-        <p className="p-4 text-base text-balance text-muted-foreground">
+        <p className="px-4 pb-4 text-base text-balance text-muted-foreground">
           {description}
         </p>
 
@@ -47,7 +47,7 @@ export default function BlogSection({
         </div>
 
         {showCta ? (
-          <div className="screen-line-top screen-line-bottom flex justify-center py-2">
+          <div className="screen-line-top flex justify-center py-2">
             <Button asChild className="gap-2 pr-2.5 pl-3" variant="secondary">
               <Link href={ctaHref}>
                 {ctaLabel}
@@ -56,7 +56,6 @@ export default function BlogSection({
             </Button>
           </div>
         ) : null}
-      </div>
-    </section>
+    </Panel>
   );
 }
