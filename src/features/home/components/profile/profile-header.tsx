@@ -1,14 +1,13 @@
 import Image from "next/image";
 
-import { FlipSentences } from "@/features/home/components/profile/flip-sentences";
-import { SiteMark } from "@/features/home/components/profile/site-mark";
+import { SiteMark } from "@/components/brand/site-mark";
 import { USER } from "@/features/home/data/user";
 
 export function ProfileHeader() {
   return (
     <div className="screen-line-bottom grid grid-cols-[auto_1fr] grid-rows-[1fr_auto] overflow-y-clip border-x border-line">
       <figure className="relative col-span-2 p-2 sm:col-span-1 sm:col-start-2 sm:p-4">
-        <SiteMark className="h-28 w-full text-foreground/90 sm:h-36" />
+        <SiteMark className="mx-auto h-28 sm:h-36" priority />
         <figcaption className="pointer-events-none absolute right-2 bottom-2 font-mono text-xs leading-none text-muted-foreground select-none sm:right-4">
           FIG_001
         </figcaption>
@@ -37,10 +36,9 @@ export function ProfileHeader() {
             </h1>
           </div>
 
-          <FlipSentences
-            sentences={USER.flipSentences}
-            className="h-12.5 border-t border-line py-1 pl-4 sm:h-9"
-          />
+          <p className="border-t border-line py-1 pl-4 font-mono text-sm text-balance text-muted-foreground">
+            {USER.tagline}
+          </p>
         </div>
       </div>
     </div>

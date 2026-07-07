@@ -1,5 +1,13 @@
-import MainSection from "@/features/about/components/MainSection";
+import AboutPage from "@/features/about/components/AboutPage";
 
-export default function AboutPage() {
-  return <MainSection />;
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Mobile engineer based in Bandung, Indonesia. Background, experience, achievements, and ways to get in touch.",
+};
+
+export default function AboutRoute() {
+  return <AboutPage />;
 }

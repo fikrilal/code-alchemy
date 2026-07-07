@@ -7,7 +7,7 @@ function Panel({ className, ...props }: ComponentProps<"section">) {
     <section
       data-slot="panel"
       className={cn(
-        "screen-line-top screen-line-bottom min-w-0 overflow-x-clip border-x border-line",
+        "screen-line-top screen-line-bottom border-x border-line",
         className,
       )}
       {...props}

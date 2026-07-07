@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+
+@plugin "@tailwindcss/typography";
+
 @config "../../tailwind.config.mjs";
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -158,8 +161,7 @@ svg [data-base-ui-tooltip-trigger] {
   @apply relative;
   &:before {
     content: "";
-    left: calc(50% - 50vw);
-    @apply absolute top-0 -z-1 h-px w-screen bg-line;
+    @apply absolute top-0 left-[-100vw] -z-1 h-px w-[200vw] bg-line;
   }
 }
 
@@ -171,8 +173,7 @@ svg [data-base-ui-tooltip-trigger] {
   @apply relative;
   &:after {
     content: "";
-    left: calc(50% - 50vw);
-    @apply absolute bottom-0 -z-1 h-px w-screen bg-line;
+    @apply absolute bottom-0 left-[-100vw] -z-1 h-px w-[200vw] bg-line;
   }
 }
 
@@ -184,8 +185,7 @@ svg [data-base-ui-tooltip-trigger] {
   @apply relative h-8;
   &:before {
     content: "";
-    left: calc(50% - 50vw);
-    @apply absolute -z-1 h-full w-screen;
+    @apply absolute left-[-100vw] -z-1 h-full w-[200vw];
     background: repeating-linear-gradient(
       315deg,
       color-mix(in oklab, var(--line) 56%, transparent) 0,
@@ -263,4 +263,24 @@ svg [data-base-ui-tooltip-trigger] {
     @apply bg-background text-foreground antialiased;
     overflow-x: clip;
   }
+}
+
+@custom-variant retina {
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2x) {
+
+@slot ;
+  }
+}
+
+@utility link {
+    @apply decoration-1 underline-offset-3 hover:underline;
+}
+
+@utility prose-ncdai {
+    @apply prose-headings:font-medium prose-headings:tracking-tight prose-headings:text-pretty md:prose-headings:text-balance;
+    @apply prose-a:font-normal prose-a:wrap-break-word prose-a:text-foreground prose-a:link-underline;
+    @apply prose-code:rounded-md prose-code:border prose-code:bg-muted/50 prose-code:px-1 prose-code:py-px prose-code:text-sm prose-code:font-normal prose-code:before:content-none prose-code:after:content-none retina:prose-code:border-[0.5px];
+    @apply prose-strong:font-medium;
+    @apply prose-blockquote:border-l prose-blockquote:font-normal prose-blockquote:text-muted-foreground prose-blockquote:not-italic prose-blockquote:[&_p:first-of-type]:before:content-none prose-blockquote:[&_p:last-of-type]:after:content-none;
 }
