@@ -56,3 +56,17 @@ export function getSortedPostsData(): BlogSummary[] {
 
   return allPostsData.sort((a, b) => toMillis(b) - toMillis(a));
 }
+
+export function findNeighbourPosts(slug: string) {
+  const posts = getSortedPostsData();
+  const index = posts.findIndex((post) => post.slug === slug);
+
+  if (index === -1) {
+    return { previous: null, next: null };
+  }
+
+  return {
+    previous: index > 0 ? posts[index - 1] : null,
+    next: index < posts.length - 1 ? posts[index + 1] : null,
+  };
+}

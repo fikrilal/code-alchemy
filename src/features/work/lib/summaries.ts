@@ -51,6 +51,9 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
         shortDescription: fm.shortDescription ?? "",
         thumbnail: fm.thumbnail ?? "/images/og-image.png",
         category: deriveCategory(fm as WorkFrontmatter),
+        ...(typeof fm.company === "string" ? { company: fm.company } : {}),
+        ...(typeof fm.date === "string" ? { date: fm.date } : {}),
+        ...(Array.isArray(fm.techStack) ? { techStack: fm.techStack } : {}),
         hidden: fm.hidden === true,
         ...(typeof parsedDate === "number" ? { sortDate: parsedDate } : {}),
         sortOrder: index,
@@ -77,7 +80,23 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
       shortDescription: summary.shortDescription,
       thumbnail: summary.thumbnail,
       category: summary.category ?? "Case Study",
+      ...(summary.company ? { company: summary.company } : {}),
+      ...(summary.date ? { date: summary.date } : {}),
+      ...(summary.techStack ? { techStack: summary.techStack } : {}),
     }));
+}
+
+export function findNeighbourWork(summaries: WorkSummary[], slug: string) {
+  const index = summaries.findIndex((item) => item.slug === slug);
+
+  if (index === -1) {
+    return { previous: null, next: null };
+  }
+
+  return {
+    previous: index > 0 ? summaries[index - 1] : null,
+    next: index < summaries.length - 1 ? summaries[index + 1] : null,
+  };
 }
 
 function deriveCategory(fm: WorkFrontmatter): string {

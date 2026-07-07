@@ -1,8 +1,9 @@
-import Image from "next/image";
+import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 
-import Button from "@/components/ui/Button";
-import MotionElement from "@/components/ui/MotionElement";
+import { Button } from "@/components/ui/button";
+import { Panel, PanelHeader, PanelTitle } from "@/components/ui/panel";
+import { CollapsibleWorkList } from "@/features/work/components/collapsible-work-list";
 import type { WorkSummary } from "@/features/work/types";
 
 type SelectedWorkProps = {
@@ -11,137 +12,47 @@ type SelectedWorkProps = {
   description?: string;
   ctaHref?: string;
   ctaLabel?: string;
-  limit?: number;
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
-const childVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" as const },
-  },
-};
-
-const cardHover = {
-  scale: 1.01,
-  translateY: -2,
-  transition: { duration: 0.25, ease: "easeOut" as const },
+  maxVisible?: number;
 };
 
 export default function SelectedWorkSection({
   workItems,
   heading = "Selected Work",
-  description = "A look at the products I’ve helped ship — real users, real constraints, and the kind of mobile work I like to take end to end.",
+  description = "A look at the products I've helped ship — real users, real constraints, and the kind of mobile work I like to take end to end.",
   ctaHref = "/work",
   ctaLabel = "View all work",
-  limit,
+  maxVisible = 4,
 }: SelectedWorkProps) {
-  const list = Array.isArray(workItems) ? workItems : [];
-  const items = typeof limit === "number" ? list.slice(0, limit) : list;
   const showCta = Boolean(ctaHref && ctaLabel);
 
-  const formatTitle = (value: string) => {
-    const parts = value.split(/\s[–—-]\s/);
-    if (parts.length > 1) return parts[0];
-    return value;
-  };
+  if (workItems.length === 0) {
+    return null;
+  }
 
   return (
-    <MotionElement
-      as="section"
-      className="flex flex-col items-start px-4 pt-24 pb-28 sm:px-6 sm:pt-28 sm:pb-32 lg:px-8 lg:pt-32 lg:pb-40 xl:px-0 transition-colors duration-300"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-    >
-      <div className="max-w-6xl w-full mx-auto">
-        <div className="flex justify-between items-center">
-          <MotionElement
-            as="h2"
-            className="text-3xl md:text-5xl font-semibold text-slate-100 leading-[1.2] sm:leading-tight! max-w-4xl"
-            variants={childVariants}
-          >
-            {heading}
-          </MotionElement>
-          {showCta && (
-            <MotionElement
-              as="div"
-              variants={childVariants}
-              className="hidden md:block"
-            >
-              <Button as="a" href={ctaHref}>
-                {ctaLabel}
-              </Button>
-            </MotionElement>
-          )}
-        </div>
-        <MotionElement
-          as="p"
-          className="mt-3 sm:mt-4 lg:mt-5 text-base md:text-lg text-slate-200 max-w-2xl leading-[1.6] sm:leading-[1.8]!"
-          variants={childVariants}
-        >
-          {description}
-        </MotionElement>
-        {showCta && (
-          <MotionElement
-            as="div"
-            variants={childVariants}
-            className="mt-6 md:hidden"
-          >
-            <Button as="a" href={ctaHref} className="w-full justify-center">
-              {ctaLabel}
-            </Button>
-          </MotionElement>
-        )}
-      </div>
+    <Panel>
+        <PanelHeader>
+          <PanelTitle>{heading}</PanelTitle>
+        </PanelHeader>
 
-      <div className="max-w-6xl w-full mx-auto mt-10 sm:mt-14 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-        {items.map((project) => (
-          <MotionElement
-            key={project.slug}
-            as="div"
-            className="group relative flex flex-col gap-3"
-            variants={childVariants}
-            whileHover={cardHover}
-          >
-            <Link
-              href={`/work/${project.slug}`}
-              className="absolute inset-0 z-10"
-            >
-              <span className="sr-only">View {project.title} details</span>
-            </Link>
-            <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-slate-900 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
-              <Image
-                src={project.thumbnail}
-                alt={`${project.title} screenshot`}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 900px"
-                quality={100}
-                className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                priority={false}
-              />
-            </div>
-            <div className="flex items-center justify-between gap-3 pt-3">
-              <h3 className="text-base font-normal text-slate-100 truncate uppercase tracking-[0.15em] font-mono">
-                {formatTitle(project.title)}
-              </h3>
-              <span className="text-sm text-slate-300 whitespace-nowrap">
-                {project.category ?? "Case Study"}
-              </span>
-            </div>
-          </MotionElement>
-        ))}
-      </div>
-    </MotionElement>
+        <p className="px-4 pb-4 text-base text-balance text-muted-foreground">
+          {description}
+        </p>
+
+        <div className="screen-line-top">
+          <CollapsibleWorkList items={workItems} max={maxVisible} />
+        </div>
+
+        {showCta ? (
+          <div className="screen-line-top -mt-px flex justify-center py-2">
+            <Button asChild className="gap-2 pr-2.5 pl-3">
+              <Link href={ctaHref}>
+                {ctaLabel}
+                <ArrowRightIcon />
+              </Link>
+            </Button>
+          </div>
+        ) : null}
+    </Panel>
   );
 }

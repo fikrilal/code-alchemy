@@ -12,6 +12,7 @@ vi.mock("google-play-scraper", () => ({
 
 import {
   getPlayStoreAppPublicInfo,
+  getPlayStoreUrl,
   parsePlayStoreAppIdFromUrl,
   resolvePlayStoreAppId,
 } from "@/lib/playstore";
@@ -28,6 +29,12 @@ beforeEach(() => {
 });
 
 describe("play store utilities", () => {
+  it("builds a Play Store URL from an app id", () => {
+    expect(getPlayStoreUrl("com.orymu.app")).toBe(
+      "https://play.google.com/store/apps/details?id=com.orymu.app&hl=en&gl=us",
+    );
+  });
+
   it("parses app id from a standard Play Store URL", () => {
     expect(
       parsePlayStoreAppIdFromUrl(

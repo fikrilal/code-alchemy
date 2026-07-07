@@ -34,7 +34,7 @@ function MdxLink(props: AnchorHTMLAttributes<HTMLAnchorElement>) {
   const external = isExternal(href);
   const effectiveTarget = target ?? (external ? "_blank" : undefined);
   const effectiveRel = rel ?? (external ? "noreferrer" : undefined);
-  const linkClass = `${className} text-blue-500 underline`.trim();
+  const linkClass = `${className} link-underline text-foreground`.trim();
 
   return (
     <a href={href} target={effectiveTarget} rel={effectiveRel} className={linkClass} {...rest}>

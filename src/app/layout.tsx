@@ -1,12 +1,17 @@
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Fragment_Mono, Inter_Tight } from "next/font/google";
+import { Fragment_Mono, Inter_Tight, Geist } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
 import "./globals.css";
 
+import { ThemeScript } from "@/components/theme/theme-script";
+import { cn } from "@/lib/utils";
+
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const interTight = Inter_Tight({
   variable: "--font-inter-tight",
@@ -94,10 +99,15 @@ const isVercelDeployment = process.env.VERCEL === "1";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark scheme-dark">
-      <body
-        className={`${interTight.variable} ${fragmentMono.variable} bg-darkbg font-sans text-white antialiased`}
-      >
+    <html
+      lang="en"
+      className={cn("dark", geist.variable)}
+      suppressHydrationWarning
+    >
+      <head>
+        <ThemeScript />
+      </head>
+      <body className={`${interTight.variable} ${fragmentMono.variable}`}>
         {isVercelDeployment ? (
           <>
             <SpeedInsights />

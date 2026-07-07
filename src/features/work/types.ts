@@ -3,9 +3,16 @@ export type WorkImages = {
   gallery?: string[];
 };
 
-export type WorkPlayStoreApp = {
+export type WhiteLabelClientInput = {
+  appId: string;
+  name?: string;
+};
+
+export type WhiteLabelClient = {
+  appId: string;
+  name: string;
   playStoreUrl: string;
-  playStoreAppId?: string;
+  icon?: string;
 };
 
 export type WorkFrontmatter = {
@@ -13,11 +20,14 @@ export type WorkFrontmatter = {
   shortDescription?: string;
   thumbnail?: string;
   playStoreUrl?: string;
-  playStoreAppId?: string;
-  playStoreApps?: WorkPlayStoreApp[];
+  playStoreUrls?: string[];
+  whiteLabelClients?: WhiteLabelClientInput[];
+  whiteLabelClientsHeading?: string;
+  whiteLabelClientsDescription?: string;
   techStack?: string[];
   images?: WorkImages;
   category?: string;
+  company?: string;
   date?: string;
   hidden?: boolean;
 };
@@ -28,4 +38,7 @@ export type WorkSummary = {
   shortDescription: string;
   thumbnail: string;
   category?: string;
+  company?: string;
+  date?: string;
+  techStack?: string[];
 };

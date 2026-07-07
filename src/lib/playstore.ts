@@ -205,6 +205,14 @@ function normalizePlayStoreAppPublicInfo(
   return result;
 }
 
+export function getPlayStoreUrl(
+  appId: string,
+  lang = DEFAULT_PLAY_STORE_LANG,
+  country = DEFAULT_PLAY_STORE_COUNTRY,
+): string {
+  return buildPlayStoreUrl(appId, lang, country);
+}
+
 function buildPlayStoreUrl(appId: string, lang: string, country: string): string {
   const query = new URLSearchParams({
     id: appId,
