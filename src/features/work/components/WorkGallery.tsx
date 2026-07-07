@@ -24,7 +24,7 @@ function GalleryImage({
 }) {
   return (
     <div
-      className="relative overflow-hidden rounded-xl"
+      className="relative overflow-hidden"
       style={{ aspectRatio }}
     >
       <Image
@@ -35,7 +35,7 @@ function GalleryImage({
         sizes={sizes}
         className="object-cover"
       />
-      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-foreground/10 ring-inset" />
+      <div className="pointer-events-none absolute inset-0 ring-1 ring-foreground/10 ring-inset" />
     </div>
   );
 }

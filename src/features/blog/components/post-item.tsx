@@ -36,7 +36,7 @@ export function PostItem({
         className,
       )}
     >
-      <div className="relative aspect-video overflow-hidden rounded-xl select-none">
+      <div className="relative aspect-video overflow-hidden select-none">
         <Image
           alt={post.title}
           className="size-full object-cover grayscale transition-[filter] duration-300 ease-out group-hover/post:grayscale-0"
@@ -45,7 +45,7 @@ export function PostItem({
           src={coverImage}
           width={1200}
         />
-        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-foreground/10 ring-inset" />
+        <div className="pointer-events-none absolute inset-0 ring-1 ring-foreground/10 ring-inset" />
       </div>
 
       <div className="flex flex-col gap-1 p-2">

@@ -3,18 +3,12 @@ export type WorkImages = {
   gallery?: string[];
 };
 
-export type WorkPlayStoreApp = {
-  playStoreUrl: string;
-  playStoreAppId?: string;
-};
-
 export type WorkFrontmatter = {
   title: string;
   shortDescription?: string;
   thumbnail?: string;
   playStoreUrl?: string;
-  playStoreAppId?: string;
-  playStoreApps?: WorkPlayStoreApp[];
+  playStoreUrls?: string[];
   techStack?: string[];
   images?: WorkImages;
   category?: string;

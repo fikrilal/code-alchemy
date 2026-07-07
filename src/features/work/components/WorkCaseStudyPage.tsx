@@ -1,15 +1,14 @@
 import { format } from "date-fns";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { PageShell } from "@/components/layout/page-shell";
 import { Button } from "@/components/ui/button";
 import { Panel, PanelContent } from "@/components/ui/panel";
-import PlayStoreCard from "@/features/work/components/PlayStoreCard";
 import WorkGallery from "@/features/work/components/WorkGallery";
 import { findNeighbourWork } from "@/features/work/lib/summaries";
 import type { WorkFrontmatter, WorkSummary } from "@/features/work/types";
-import type { PlayStoreAppPublicInfo } from "@/lib/playstore";
 
 import type { ReactElement } from "react";
 
@@ -18,7 +17,6 @@ type WorkCaseStudyPageProps = {
   frontmatter: WorkFrontmatter;
   content: ReactElement;
   workSummaries: WorkSummary[];
-  playStoreAppInfos: PlayStoreAppPublicInfo[];
 };
 
 function CaseStudyNavButton({
@@ -51,13 +49,13 @@ export default function WorkCaseStudyPage({
   frontmatter,
   content,
   workSummaries,
-  playStoreAppInfos,
 }: WorkCaseStudyPageProps) {
   const { previous, next } = findNeighbourWork(workSummaries, slug);
   const publishedAt =
     typeof frontmatter.date === "string"
       ? format(new Date(frontmatter.date), "dd.MM.yyyy")
       : null;
+  const playStoreLinks = getPlayStoreLinks(frontmatter);
 
   return (
     <PageShell>
@@ -110,32 +108,55 @@ export default function WorkCaseStudyPage({
             </p>
           ) : null}
 
-          {publishedAt ? (
-            <dl className="text-sm text-muted-foreground">
-              <dt className="sr-only">Published on</dt>
-              <dd>
-                <time
-                  dateTime={new Date(frontmatter.date as string).toISOString()}
-                >
-                  {publishedAt}
-                </time>
-              </dd>
-            </dl>
-          ) : null}
+          {publishedAt || playStoreLinks.length > 0 ? (
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+              {publishedAt ? (
+                <dl className="text-sm text-muted-foreground">
+                  <dt className="sr-only">Published on</dt>
+                  <dd>
+                    <time
+                      dateTime={new Date(
+                        frontmatter.date as string,
+                      ).toISOString()}
+                    >
+                      {publishedAt}
+                    </time>
+                  </dd>
+                </dl>
+              ) : (
+                <span />
+              )}
 
-          {playStoreAppInfos.length > 0 ? (
-            <section className="space-y-4">
-              {playStoreAppInfos.length > 1 ? (
-                <h2 className="text-lg font-medium tracking-tight text-foreground">
-                  Live Apps
-                </h2>
+              {playStoreLinks.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  {playStoreLinks.map((url) => (
+                    <Button
+                      key={url}
+                      asChild
+                      className="gap-2 pr-2.5 pl-3"
+                      size="sm"
+                    >
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Image
+                          src="/icons/google-play-2022.svg"
+                          alt=""
+                          width={20}
+                          height={20}
+                          className="size-4"
+                          aria-hidden
+                        />
+                        Google Play
+                        <ArrowRightIcon />
+                      </a>
+                    </Button>
+                  ))}
+                </div>
               ) : null}
-              <div className="space-y-4">
-                {playStoreAppInfos.map((app) => (
-                  <PlayStoreCard key={app.appId} app={app} />
-                ))}
-              </div>
-            </section>
+            </div>
           ) : null}
 
           <WorkGallery
@@ -170,4 +191,18 @@ export default function WorkCaseStudyPage({
       </Panel>
     </PageShell>
   );
+}
+
+function getPlayStoreLinks(frontmatter: WorkFrontmatter): string[] {
+  if (Array.isArray(frontmatter.playStoreUrls)) {
+    return frontmatter.playStoreUrls.filter(
+      (url): url is string => typeof url === "string" && url.length > 0,
+    );
+  }
+
+  if (frontmatter.playStoreUrl) {
+    return [frontmatter.playStoreUrl];
+  }
+
+  return [];
 }

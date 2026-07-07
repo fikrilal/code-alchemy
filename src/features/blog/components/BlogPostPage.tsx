@@ -128,7 +128,7 @@ export default function BlogPostPage({
             ) : null}
           </dl>
 
-          <div className="relative aspect-video overflow-hidden rounded-xl">
+          <div className="relative aspect-video overflow-hidden">
             <Image
               src={coverImage}
               alt={frontmatter.title}
@@ -137,7 +137,7 @@ export default function BlogPostPage({
               sizes="(max-width: 768px) 100vw, 768px"
               className="object-cover"
             />
-            <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-foreground/10 ring-inset" />
+            <div className="pointer-events-none absolute inset-0 ring-1 ring-foreground/10 ring-inset" />
           </div>
 
           <div className="prose prose-site prose-neutral dark:prose-invert max-w-none [&>h1:first-of-type]:hidden">

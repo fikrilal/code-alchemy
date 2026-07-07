@@ -3,9 +3,6 @@ import { notFound } from "next/navigation";
 import WorkCaseStudyPage from "@/features/work/components/WorkCaseStudyPage";
 import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
 import { getWorkSummaries } from "@/features/work/lib/summaries";
-import type { WorkPlayStoreApp } from "@/features/work/types";
-import { getPlayStoreAppPublicInfo } from "@/lib/playstore";
-import type { PlayStoreAppPublicInfo } from "@/lib/playstore";
 
 import type { Metadata } from "next";
 
@@ -36,7 +33,7 @@ export async function generateMetadata({
     return {
       title: "Case Study",
       description: undefined,
-    } satisfies Metadata;
+    };
   }
 }
 
@@ -59,58 +56,12 @@ export default async function WorkCaseStudyRoute({
     getWorkSummaries(),
   ]);
 
-  const playStoreApps = resolvePlayStoreApps(frontmatter);
-  const playStoreAppInfos = (
-    await Promise.all(
-      playStoreApps.map((app) =>
-        getPlayStoreAppPublicInfo({
-          playStoreUrl: app.playStoreUrl,
-          ...(app.playStoreAppId ? { playStoreAppId: app.playStoreAppId } : {}),
-        }),
-      ),
-    )
-  ).filter((app): app is PlayStoreAppPublicInfo => app !== null);
-
   return (
     <WorkCaseStudyPage
       slug={slug}
       frontmatter={frontmatter}
       content={content}
       workSummaries={workSummaries}
-      playStoreAppInfos={playStoreAppInfos}
     />
   );
-}
-
-function resolvePlayStoreApps(frontmatter: {
-  playStoreApps?: WorkPlayStoreApp[];
-  playStoreUrl?: string;
-  playStoreAppId?: string;
-}): WorkPlayStoreApp[] {
-  const apps = frontmatter.playStoreApps ?? [];
-
-  if (!frontmatter.playStoreUrl) {
-    return apps;
-  }
-
-  const hasLegacyAppAlreadyListed = apps.some(
-    (app) =>
-      app.playStoreUrl === frontmatter.playStoreUrl ||
-      (frontmatter.playStoreAppId !== undefined &&
-        app.playStoreAppId === frontmatter.playStoreAppId),
-  );
-
-  if (hasLegacyAppAlreadyListed) {
-    return apps;
-  }
-
-  return [
-    {
-      playStoreUrl: frontmatter.playStoreUrl,
-      ...(frontmatter.playStoreAppId
-        ? { playStoreAppId: frontmatter.playStoreAppId }
-        : {}),
-    },
-    ...apps,
-  ];
 }
