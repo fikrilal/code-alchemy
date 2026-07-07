@@ -28,4 +28,6 @@ export type WorkSummary = {
   shortDescription: string;
   thumbnail: string;
   category?: string;
+  date?: string;
+  techStack?: string[];
 };

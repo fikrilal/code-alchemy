@@ -12,12 +12,13 @@ export default async function HomePage() {
     getWorkSummaries(),
     getFeaturedOpenSourceRepos(),
   ]);
-  const featuredWork = workItems.slice(0, 4);
-
   return (
     <main className="overflow-hidden">
       <ProfileHero />
-      <SelectedWorkSection workItems={featuredWork} />
+      <SelectedWorkSection
+        workItems={workItems.slice(0, 4)}
+        maxVisible={4}
+      />
       <OpenSourceSection repos={openSourceRepos} />
       <BlogSection blogPosts={blogPosts} />
     </main>

@@ -2,7 +2,7 @@ import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { WorkItem } from "@/features/work/components/work-item";
+import { CollapsibleWorkList } from "@/features/work/components/collapsible-work-list";
 import type { WorkSummary } from "@/features/work/types";
 
 type SelectedWorkProps = {
@@ -11,7 +11,7 @@ type SelectedWorkProps = {
   description?: string;
   ctaHref?: string;
   ctaLabel?: string;
-  limit?: number;
+  maxVisible?: number;
 };
 
 export default function SelectedWorkSection({
@@ -20,12 +20,11 @@ export default function SelectedWorkSection({
   description = "A look at the products I've helped ship — real users, real constraints, and the kind of mobile work I like to take end to end.",
   ctaHref = "/work",
   ctaLabel = "View all work",
-  limit = 4,
+  maxVisible = 4,
 }: SelectedWorkProps) {
-  const items = workItems.slice(0, limit);
   const showCta = Boolean(ctaHref && ctaLabel);
 
-  if (items.length === 0) {
+  if (workItems.length === 0) {
     return null;
   }
 
@@ -40,20 +39,8 @@ export default function SelectedWorkSection({
           {description}
         </p>
 
-        <div className="screen-line-top relative py-4">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-1 grid max-sm:hidden sm:grid-cols-2"
-          >
-            <div className="border-r border-line" />
-            <div className="border-l border-line" />
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {items.map((work) => (
-              <WorkItem key={work.slug} work={work} />
-            ))}
-          </div>
+        <div className="screen-line-top">
+          <CollapsibleWorkList items={workItems} max={maxVisible} />
         </div>
 
         {showCta ? (
