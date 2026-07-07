@@ -27,13 +27,13 @@ export default function OpenSourceSection({ repos }: OpenSourceSectionProps) {
 
         <ul className="screen-line-top">
           {repos.map((repo) => (
-            <li key={repo.name} className="border-b border-line">
+            <li key={repo.name} className="border-b border-line last:border-b-0">
               <OpenSourceRepoItem repo={repo} />
             </li>
           ))}
         </ul>
 
-        <div className="screen-line-top flex justify-center py-2">
+        <div className="screen-line-top -mt-px flex justify-center py-2">
           <Button asChild className="gap-2 pr-2.5 pl-3">
             <a
               href="https://github.com/fikrilal"

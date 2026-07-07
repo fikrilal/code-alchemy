@@ -44,7 +44,7 @@ export default function SelectedWorkSection({
         </div>
 
         {showCta ? (
-          <div className="screen-line-top flex justify-center py-2">
+          <div className="screen-line-top -mt-px flex justify-center py-2">
             <Button asChild className="gap-2 pr-2.5 pl-3">
               <Link href={ctaHref}>
                 {ctaLabel}

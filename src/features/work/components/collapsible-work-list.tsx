@@ -24,7 +24,7 @@ export function CollapsibleWorkList({
     return (
       <ul>
         {items.map((work) => (
-          <li key={work.slug} className="border-b border-line">
+          <li key={work.slug} className="border-b border-line last:border-b-0">
             <WorkItem work={work} />
           </li>
         ))}
@@ -36,7 +36,7 @@ export function CollapsibleWorkList({
     <Collapsible className="group/collapsible">
       <ul>
         {items.slice(0, max).map((work) => (
-          <li key={work.slug} className="border-b border-line">
+          <li key={work.slug} className="border-b border-line last:border-b-0">
             <WorkItem work={work} />
           </li>
         ))}
@@ -45,7 +45,7 @@ export function CollapsibleWorkList({
       <CollapsibleContent>
         <ul>
           {items.slice(max).map((work) => (
-            <li key={work.slug} className="border-b border-line">
+            <li key={work.slug} className="border-b border-line last:border-b-0">
               <WorkItem work={work} />
             </li>
           ))}

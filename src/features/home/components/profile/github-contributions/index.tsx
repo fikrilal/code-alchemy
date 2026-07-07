@@ -15,8 +15,6 @@ export function GitHubContributions() {
       <Suspense fallback={<GitHubContributionFallback />}>
         <GitHubContributionGraph contributions={contributions} />
       </Suspense>
-
-      <div className="h-px bg-line" />
     </Panel>
   );
 }
