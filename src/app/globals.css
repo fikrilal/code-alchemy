@@ -158,7 +158,8 @@ svg [data-base-ui-tooltip-trigger] {
   @apply relative;
   &:before {
     content: "";
-    @apply absolute top-0 left-[-100vw] -z-1 h-px w-[200vw] bg-line;
+    left: calc(50% - 50vw);
+    @apply absolute top-0 -z-1 h-px w-screen bg-line;
   }
 }
 
@@ -170,7 +171,8 @@ svg [data-base-ui-tooltip-trigger] {
   @apply relative;
   &:after {
     content: "";
-    @apply absolute bottom-0 left-[-100vw] -z-1 h-px w-[200vw] bg-line;
+    left: calc(50% - 50vw);
+    @apply absolute bottom-0 -z-1 h-px w-screen bg-line;
   }
 }
 
@@ -182,7 +184,8 @@ svg [data-base-ui-tooltip-trigger] {
   @apply relative h-8;
   &:before {
     content: "";
-    @apply absolute left-[-100vw] -z-1 h-full w-[200vw];
+    left: calc(50% - 50vw);
+    @apply absolute -z-1 h-full w-screen;
     background: repeating-linear-gradient(
       315deg,
       color-mix(in oklab, var(--line) 56%, transparent) 0,
@@ -247,6 +250,7 @@ svg [data-base-ui-tooltip-trigger] {
   html {
     @apply font-sans;
     color-scheme: light;
+    overflow-x: clip;
     overflow-y: scroll;
     scrollbar-gutter: stable;
   }
@@ -257,5 +261,6 @@ svg [data-base-ui-tooltip-trigger] {
 
   body {
     @apply bg-background text-foreground antialiased;
+    overflow-x: clip;
   }
 }

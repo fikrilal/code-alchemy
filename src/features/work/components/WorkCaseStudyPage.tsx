@@ -6,9 +6,14 @@ import Link from "next/link";
 import { PageShell } from "@/components/layout/page-shell";
 import { Button } from "@/components/ui/button";
 import { Panel, PanelContent } from "@/components/ui/panel";
+import { WhiteLabelClients } from "@/features/work/components/white-label-clients";
 import WorkGallery from "@/features/work/components/WorkGallery";
 import { findNeighbourWork } from "@/features/work/lib/summaries";
-import type { WorkFrontmatter, WorkSummary } from "@/features/work/types";
+import type {
+  WhiteLabelClient,
+  WorkFrontmatter,
+  WorkSummary,
+} from "@/features/work/types";
 
 import type { ReactElement } from "react";
 
@@ -17,6 +22,7 @@ type WorkCaseStudyPageProps = {
   frontmatter: WorkFrontmatter;
   content: ReactElement;
   workSummaries: WorkSummary[];
+  whiteLabelClients?: WhiteLabelClient[];
 };
 
 function CaseStudyNavButton({
@@ -49,6 +55,7 @@ export default function WorkCaseStudyPage({
   frontmatter,
   content,
   workSummaries,
+  whiteLabelClients = [],
 }: WorkCaseStudyPageProps) {
   const { previous, next } = findNeighbourWork(workSummaries, slug);
   const publishedAt =
@@ -165,7 +172,21 @@ export default function WorkCaseStudyPage({
             {...(frontmatter.thumbnail ? { thumbnail: frontmatter.thumbnail } : {})}
             {...(frontmatter.images ? { images: frontmatter.images } : {})}
           />
+        </PanelContent>
 
+        {whiteLabelClients.length > 0 ? (
+          <WhiteLabelClients
+            clients={whiteLabelClients}
+            {...(frontmatter.whiteLabelClientsHeading
+              ? { heading: frontmatter.whiteLabelClientsHeading }
+              : {})}
+            {...(frontmatter.whiteLabelClientsDescription
+              ? { description: frontmatter.whiteLabelClientsDescription }
+              : {})}
+          />
+        ) : null}
+
+        <PanelContent className="space-y-8">
           <div className="prose prose-site prose-neutral dark:prose-invert max-w-none [&>h1:first-of-type]:hidden">
             {content}
           </div>

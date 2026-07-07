@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import WorkCaseStudyPage from "@/features/work/components/WorkCaseStudyPage";
 import { getWorkSlugs, loadWorkBySlug } from "@/features/work/lib/mdx";
 import { getWorkSummaries } from "@/features/work/lib/summaries";
+import { resolveWhiteLabelClients } from "@/features/work/lib/white-label-clients";
 
 import type { Metadata } from "next";
 
@@ -55,6 +56,9 @@ export default async function WorkCaseStudyRoute({
     loadWorkCaseStudy(slug),
     getWorkSummaries(),
   ]);
+  const whiteLabelClients = frontmatter.whiteLabelClients
+    ? await resolveWhiteLabelClients(frontmatter.whiteLabelClients)
+    : [];
 
   return (
     <WorkCaseStudyPage
@@ -62,6 +66,7 @@ export default async function WorkCaseStudyRoute({
       frontmatter={frontmatter}
       content={content}
       workSummaries={workSummaries}
+      whiteLabelClients={whiteLabelClients}
     />
   );
 }

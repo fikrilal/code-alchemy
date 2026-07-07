@@ -1,5 +1,4 @@
-import Footer from "@/components/layout/Footer";
-import Navbar from "@/components/layout/Navbar";
+import { SiteLayout } from "@/components/layout/site-layout";
 
 import type { ReactNode } from "react";
 
@@ -8,11 +7,5 @@ export default function WorkLayout({
 }: {
   children: ReactNode;
 }) {
-  return (
-    <>
-      <Navbar />
-      {children}
-      <Footer />
-    </>
-  );
+  return <SiteLayout>{children}</SiteLayout>;
 }
