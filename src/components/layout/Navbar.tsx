@@ -6,6 +6,7 @@ import { useCallback, useSyncExternalStore } from "react";
 
 import { SiteMark } from "@/components/brand/site-mark";
 import { HomeColumn } from "@/components/layout/home-column";
+import { toggleTheme } from "@/lib/theme";
 
 const NAV_ITEMS = [
   { title: "Work", href: "/work" },
@@ -64,16 +65,14 @@ function ThemeToggle() {
     () => true,
   );
 
-  const toggleTheme = useCallback(() => {
-    const nextIsDark = !document.documentElement.classList.contains("dark");
-    document.documentElement.classList.toggle("dark", nextIsDark);
-    document.documentElement.style.colorScheme = nextIsDark ? "dark" : "light";
+  const handleToggleTheme = useCallback(() => {
+    toggleTheme();
   }, []);
 
   return (
     <button
       type="button"
-      onClick={toggleTheme}
+      onClick={handleToggleTheme}
       aria-label="Toggle theme"
       className="inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
     >

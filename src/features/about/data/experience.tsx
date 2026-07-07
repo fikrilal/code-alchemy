@@ -11,15 +11,25 @@ export const EXPERIENCES: ExperienceItemType[] = [
     positions: [
       {
         id: "siesta-jr-mobile",
-        title: "Jr. Mobile Developer",
+        title: "Mobile Engineer",
         employmentPeriod: {
           start: "02.2025",
         },
         employmentType: "On-site",
         icon: <CodeXmlIcon aria-hidden />,
-        description:
-          "Building and shipping Flutter products for school and cooperative clients, including white-label deployments and production release workflows.",
-        skills: ["Flutter", "Dart", "GetX", "White-label tooling"],
+        description: `Helped standardize SIESTA's Flutter stack after the React Native era — Clean Architecture with vertical slices, GetX in a Cubit-style setup, feature-first repos, and dev/staging/prod flavors across apps.
+
+Led PesantrenQu's rewrite into Flutter as a multi-tenant school product with tiered offerings — now used by 15+ schools and 3,000+ users. Built server-driven entitlements so each client can turn modules on or off from one codebase; new white-label setups went from roughly three days to about one.
+
+On KoperasiQu, delivered v1 and owned auth, KYC, wallet top-ups, internal payment flows, savings payments, and in-app tickets — all scoped per cooperative tenant.`,
+        skills: [
+          "Flutter",
+          "Dart",
+          "GetX",
+          "Clean Architecture",
+          "Multi-tenant",
+          "White-label",
+        ],
         isExpanded: true,
       },
     ],
@@ -38,9 +48,18 @@ export const EXPERIENCES: ExperienceItemType[] = [
         },
         employmentType: "Remote",
         icon: <CodeXmlIcon aria-hidden />,
-        description:
-          "Worked remotely with a London-based team on mobile product delivery, architecture, and production releases.",
-        skills: ["Flutter", "Mobile architecture", "Release engineering"],
+        description: `Worked remotely at Studyo, a London-headquartered startup with most of the team in Indonesia, helping lead a small cross-functional group (two mobile, one backend, one UI/UX) to ship a real-time tutoring platform.
+
+Built 1:1 video calling on Agora RTC — session flow, live connection handling, and per-minute pricing wired into the mobile experience.
+
+Structured the app with clean architecture, local caching (Isar), and FCM push signaling so sessions felt responsive without leaning on the backend for every state change.`,
+        skills: [
+          "Flutter",
+          "Agora RTC",
+          "Clean Architecture",
+          "Isar",
+          "FCM",
+        ],
       },
     ],
   },
@@ -56,22 +75,6 @@ export const EXPERIENCES: ExperienceItemType[] = [
           end: "12.2024",
         },
         employmentType: "On-site",
-        icon: <BriefcaseBusinessIcon aria-hidden />,
-      },
-    ],
-  },
-  {
-    id: "sintech",
-    companyName: "Sintech",
-    positions: [
-      {
-        id: "sintech-intern",
-        title: "Mobile Developer Intern",
-        employmentPeriod: {
-          start: "04.2024",
-          end: "07.2024",
-        },
-        employmentType: "Remote",
         icon: <BriefcaseBusinessIcon aria-hidden />,
       },
     ],

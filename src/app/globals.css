@@ -249,14 +249,14 @@ svg [data-base-ui-tooltip-trigger] {
 
   html {
     @apply font-sans;
-    color-scheme: light;
+    color-scheme: dark;
     overflow-x: clip;
     overflow-y: scroll;
     scrollbar-gutter: stable;
   }
 
-  html.dark {
-    color-scheme: dark;
+  html:not(.dark) {
+    color-scheme: light;
   }
 
   body {

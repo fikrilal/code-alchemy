@@ -5,6 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 
 import "./globals.css";
 
+import { ThemeScript } from "@/components/theme/theme-script";
 import { cn } from "@/lib/utils";
 
 import type { Metadata } from "next";
@@ -98,7 +99,14 @@ const isVercelDeployment = process.env.VERCEL === "1";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={cn("dark", geist.variable)}>
+    <html
+      lang="en"
+      className={cn("dark", geist.variable)}
+      suppressHydrationWarning
+    >
+      <head>
+        <ThemeScript />
+      </head>
       <body className={`${interTight.variable} ${fragmentMono.variable}`}>
         {isVercelDeployment ? (
           <>

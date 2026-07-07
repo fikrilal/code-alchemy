@@ -17,14 +17,14 @@ export const USER = {
       website: "/work/orymu",
     },
   ],
-  about: `I'm Fikril — a Mobile Engineer who takes end-to-end ownership across the 0 → 1 phase: defining Flutter app architecture, patterns, and tooling, and driving the initial release into production.
+  about: `I'm Fikril — a Mobile Engineer. I love product engineering when a product is going from 0 → 1, or pushing from 1 → 100 — owning the architecture, the release, and living with the choices.
 
-Based in Bandung, Indonesia. I care about polished UX, maintainable architecture, and shipping products people actually use.`,
+Day job is mobile products; nights are whatever won't leave me alone — dev tools, Linux desktop, things I wanted to exist.`,
   aboutExtended: `Hi, I'm Fikril — a mobile engineer based in Bandung, Indonesia.
 
-Most of my work sits in the mobile space, especially Flutter. I'm usually involved early: taking a rough idea like "we need an app" and turning it into something concrete — project structure, architecture, patterns, and eventually a build people can actually download and use.
+Most of my work sits in the mobile space. I'm usually involved early: taking a rough idea like "we need an app" and turning it into something concrete — project structure, architecture, patterns, and eventually a build people can actually download and use.
 
-I'm comfortable owning the end-to-end 0 → 1 phase: defining how a Flutter app is structured, how data flows, how state is managed, how we ship, and then driving the first release into production. Over time, I like turning those decisions into standards the rest of the team can follow.
+I'm comfortable owning the end-to-end 0 → 1 phase: defining how a mobile app is structured, how data flows, how state is managed, how we ship, and then driving the first release into production. Over time, I like turning those decisions into standards the rest of the team can follow.
 
 I care a lot about code that's easy to change later, not just code that works today. Clean boundaries, predictable behavior, and a sane developer experience matter to me as much as UI polish. I'm not trying to be a full-time designer, but I do think good engineering and good UX are tightly connected.
 

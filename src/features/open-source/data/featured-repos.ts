@@ -7,6 +7,18 @@ export type FeaturedOpenSourceRepo = {
 
 export const featuredOpenSourceRepos: FeaturedOpenSourceRepo[] = [
   {
+    name: "burnly",
+    href: "https://github.com/fikrilal/burnly",
+    language: "Rust",
+    focus: "AI coding-tool token tracker",
+  },
+  {
+    name: "gnome-lyricbar",
+    href: "https://github.com/fikrilal/gnome-lyricbar",
+    language: "JavaScript",
+    focus: "GNOME live lyrics extension",
+  },
+  {
     name: "mobile-core-kit",
     href: "https://github.com/fikrilal/mobile-core-kit",
     language: "Dart",
@@ -17,17 +29,5 @@ export const featuredOpenSourceRepos: FeaturedOpenSourceRepo[] = [
     href: "https://github.com/fikrilal/backend-core-kit",
     language: "TypeScript",
     focus: "Backend platform kit",
-  },
-  {
-    name: "gitlab-activity-mirror",
-    href: "https://github.com/fikrilal/gitlab-activity-mirror",
-    language: "Python",
-    focus: "Developer tooling",
-  },
-  {
-    name: "android-core-kit",
-    href: "https://github.com/fikrilal/android-core-kit",
-    language: "Kotlin",
-    focus: "Android architecture kit",
   },
 ];
