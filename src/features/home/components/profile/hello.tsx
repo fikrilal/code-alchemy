@@ -26,7 +26,7 @@ export function Hello() {
       </PanelHeader>
 
       <PanelContent className="pt-5 pb-6">
-        <div className="space-y-4 text-base leading-7 text-slate-300">
+        <div className="space-y-4 text-base leading-7 text-muted-foreground">
           {USER.about.split("\n\n").map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}

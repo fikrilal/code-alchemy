@@ -1,5 +1,5 @@
 export const USER = {
-  displayName: "Fikril",
+  displayName: "Ahmad Fikril",
   flipSentences: [
     "Mobile Engineer & Founding Engineer.",
     "Building Flutter apps from 0 → 1.",

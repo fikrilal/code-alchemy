@@ -31,7 +31,7 @@ export function SocialLinks() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${item.title} (${item.handle})`}
-                  className="inline-flex size-8 items-center justify-center rounded-lg border border-slate-600/50 bg-slate-900/80 text-slate-200 transition-colors hover:text-white"
+                  className="inline-flex size-8 items-center justify-center rounded-lg border border-border bg-muted text-foreground transition-colors hover:text-foreground"
                 >
                   <Icon />
                 </a>

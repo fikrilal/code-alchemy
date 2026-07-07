@@ -1,4 +1,4 @@
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 
 import type { ComponentProps } from "react";
 
@@ -30,7 +30,7 @@ function PanelTitle({ className, ...props }: ComponentProps<"h2">) {
     <h2
       data-slot="panel-title"
       className={cn(
-        "text-3xl font-medium tracking-tight text-balance text-white",
+        "text-3xl font-medium tracking-tight text-balance text-foreground",
         className,
       )}
       {...props}

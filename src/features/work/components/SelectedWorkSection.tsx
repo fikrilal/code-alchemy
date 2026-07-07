@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/cta-button";
 import MotionElement from "@/components/ui/MotionElement";
 import type { WorkSummary } from "@/features/work/types";
 

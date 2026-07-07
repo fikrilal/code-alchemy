@@ -33,7 +33,7 @@ export function FlipSentences({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.25 }}
-          className="font-mono text-sm text-balance text-slate-300"
+          className="font-mono text-sm text-balance text-muted-foreground"
         >
           {sentences[index]}
         </motion.p>

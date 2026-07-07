@@ -3,7 +3,7 @@ import { Hello } from "@/features/home/components/profile/hello";
 import { Overview } from "@/features/home/components/profile/overview";
 import { ProfileHeader } from "@/features/home/components/profile/profile-header";
 import { SocialLinks } from "@/features/home/components/profile/social-links";
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 
 function StripeSeparator({ className }: { className?: string }) {
   return (

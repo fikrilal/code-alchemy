@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/cta-button";
 import MotionElement from "@/components/ui/MotionElement";
 import type { FeaturedOpenSourceRepoCard } from "@/features/open-source/data/featured-repos";
 

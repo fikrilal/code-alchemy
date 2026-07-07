@@ -10,7 +10,7 @@ import Link from "next/link";
 import { Panel, PanelContent } from "@/components/ui/panel";
 import { CurrentLocalTime } from "@/features/home/components/profile/current-local-time";
 import { USER } from "@/features/home/data/user";
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 
 import type { ComponentProps, ReactNode } from "react";
 
@@ -33,7 +33,7 @@ function IntroItemIcon({
   return (
     <div
       className={cn(
-        "flex size-6 shrink-0 items-center justify-center rounded-md border border-slate-600/40 bg-slate-900 text-slate-400 ring-1 ring-line ring-offset-1 ring-offset-darkbg [&_svg]:size-4",
+        "flex size-6 shrink-0 items-center justify-center rounded-md border border-border bg-muted text-muted-foreground ring-1 ring-line ring-offset-1 ring-offset-background [&_svg]:size-4",
         className,
       )}
     >
@@ -63,10 +63,10 @@ export function Overview() {
         {USER.jobs.map((job) => (
           <IntroItem key={`${job.company}-${job.title}`}>
             <IntroItemIcon>{getJobIcon(job.title)}</IntroItemIcon>
-            <p className="text-balance text-slate-200">
+            <p className="text-balance text-foreground">
               {job.title} at{" "}
               {job.website.startsWith("/") ? (
-                <Link href={job.website} className="link-underline text-white">
+                <Link href={job.website} className="link-underline text-foreground">
                   {job.company}
                 </Link>
               ) : (
@@ -74,7 +74,7 @@ export function Overview() {
                   href={job.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline text-white"
+                  className="link-underline text-foreground"
                 >
                   {job.company}
                 </a>
@@ -87,7 +87,7 @@ export function Overview() {
           <IntroItemIcon>
             <MapPinIcon aria-hidden />
           </IntroItemIcon>
-          <p className="text-balance text-slate-200">
+          <p className="text-balance text-foreground">
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(USER.address)}`}
               target="_blank"
@@ -105,7 +105,7 @@ export function Overview() {
           <IntroItemIcon>
             <MailIcon aria-hidden />
           </IntroItemIcon>
-          <p className="text-balance text-slate-200">
+          <p className="text-balance text-foreground">
             <a href={`mailto:${USER.email}`} className="link-underline">
               {USER.email}
             </a>
