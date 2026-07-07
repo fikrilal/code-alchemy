@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useSyncExternalStore } from "react";
 
+import { HomeColumn } from "@/components/layout/home-column";
+
 const NAV_ITEMS = [
   { title: "Work", href: "/work" },
   { title: "Blog", href: "/blog" },
@@ -127,21 +129,23 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 max-w-screen overflow-x-clip bg-background px-2">
-      <div className="screen-line-top screen-line-bottom relative mx-auto flex h-14 items-center gap-2 border-r border-line pr-2 sm:gap-4 md:max-w-3xl">
-        <Link href="/" aria-label="Home" className="shrink-0 text-foreground">
-          <SiteMark className="h-8" />
-        </Link>
+    <header className="sticky top-0 z-50 w-full overflow-x-clip bg-background">
+      <HomeColumn>
+        <div className="screen-line-top screen-line-bottom relative flex h-14 items-center gap-2 border-x border-line sm:gap-4">
+          <Link href="/" aria-label="Home" className="shrink-0 text-foreground">
+            <SiteMark className="h-8" />
+          </Link>
 
-        <div className="flex-1" />
+          <div className="flex-1" />
 
-        <NavLinks activePath={pathname} />
+          <NavLinks activePath={pathname} />
 
-        <div className="flex items-center">
-          <NavSeparator />
-          <ThemeToggle />
+          <div className="flex items-center">
+            <NavSeparator />
+            <ThemeToggle />
+          </div>
         </div>
-      </div>
+      </HomeColumn>
     </header>
   );
 }

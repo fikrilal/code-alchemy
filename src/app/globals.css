@@ -206,6 +206,8 @@ svg [data-base-ui-tooltip-trigger] {
   html {
     @apply font-sans;
     color-scheme: light;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
   }
 
   html.dark {

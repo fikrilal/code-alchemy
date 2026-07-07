@@ -1,4 +1,4 @@
-import { HomeColumn } from "@/components/layout/home-column";
+import { PageShell } from "@/components/layout/page-shell";
 import { Panel, PanelHeader } from "@/components/ui/panel";
 import { PostList } from "@/features/blog/components/post-list";
 import type { BlogSummary } from "@/features/blog/types";
@@ -19,24 +19,22 @@ export default function BlogMainSection({
   );
 
   return (
-    <main className="max-w-screen overflow-x-clip">
-      <HomeColumn>
-        <Panel>
-          <PanelHeader>
-            <h1 className="text-3xl font-medium tracking-tight text-balance text-foreground">
-              {heading}
-            </h1>
-          </PanelHeader>
+    <PageShell>
+      <Panel>
+        <PanelHeader>
+          <h1 className="text-3xl font-medium tracking-tight text-balance text-foreground">
+            {heading}
+          </h1>
+        </PanelHeader>
 
-          <p className="px-4 pb-4 text-base text-balance text-muted-foreground">
-            {description}
-          </p>
+        <p className="px-4 pb-4 text-base text-balance text-muted-foreground">
+          {description}
+        </p>
 
-          <div className="screen-line-top relative py-4">
-            <PostList posts={posts} />
-          </div>
-        </Panel>
-      </HomeColumn>
-    </main>
+        <div className="screen-line-top relative py-4">
+          <PostList posts={posts} />
+        </div>
+      </Panel>
+    </PageShell>
   );
 }

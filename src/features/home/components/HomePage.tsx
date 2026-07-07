@@ -1,4 +1,4 @@
-import { HomeColumn } from "@/components/layout/home-column";
+import { PageShell } from "@/components/layout/page-shell";
 import { StripeSeparator } from "@/components/layout/stripe-separator";
 import { getSortedPostsData } from "@/features/blog/lib/posts";
 import BlogSection from "@/features/home/components/BlogSection";
@@ -16,18 +16,16 @@ export default async function HomePage() {
   ]);
 
   return (
-    <main className="max-w-screen overflow-x-clip">
-      <HomeColumn>
-        <ProfileHero />
-        <SelectedWorkSection
-          workItems={workItems.slice(0, 4)}
-          maxVisible={4}
-        />
-        <StripeSeparator />
-        <OpenSourceSection repos={openSourceRepos} />
-        <StripeSeparator />
-        <BlogSection blogPosts={blogPosts} />
-      </HomeColumn>
-    </main>
+    <PageShell>
+      <ProfileHero />
+      <SelectedWorkSection
+        workItems={workItems.slice(0, 4)}
+        maxVisible={4}
+      />
+      <StripeSeparator />
+      <OpenSourceSection repos={openSourceRepos} />
+      <StripeSeparator />
+      <BlogSection blogPosts={blogPosts} />
+    </PageShell>
   );
 }
