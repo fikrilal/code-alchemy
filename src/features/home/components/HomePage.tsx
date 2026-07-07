@@ -1,7 +1,6 @@
 import { getSortedPostsData } from "@/features/blog/lib/posts";
 import BlogSection from "@/features/home/components/BlogSection";
-import HeroSection from "@/features/home/components/HeroSection";
-import PortfolioSection from "@/features/home/components/PortfolioSection";
+import ProfileHero from "@/features/home/components/ProfileHero";
 import OpenSourceSection from "@/features/open-source/components/OpenSourceSection";
 import { getFeaturedOpenSourceRepoCards } from "@/features/open-source/lib/repos";
 import SelectedWorkSection from "@/features/work/components/SelectedWorkSection";
@@ -17,8 +16,7 @@ export default async function HomePage() {
 
   return (
     <main className="overflow-hidden">
-      <HeroSection />
-      <PortfolioSection />
+      <ProfileHero />
       <SelectedWorkSection workItems={featuredWork} />
       <OpenSourceSection repos={openSourceRepos} />
       <BlogSection blogPosts={blogPosts} />

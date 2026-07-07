@@ -34,4 +34,71 @@ body {
   animation: shimmer 2s linear infinite;
 }
 
+:root {
+  --line: color-mix(in oklab, #30363d 64%, #07090c);
+  --separator-height: 2rem;
+  --foreground: #f3f3f3;
+  --background: #161b22;
+  --muted-foreground: #6e7681;
+}
+
+@theme inline {
+  --color-line: var(--line);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-muted-foreground: var(--muted-foreground);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+svg [data-base-ui-tooltip-trigger] {
+  outline: none;
+}
+
+@utility screen-line-top {
+  @apply relative;
+  &:before {
+    content: "";
+    @apply absolute top-0 left-[-100vw] -z-1 h-px w-[200vw] bg-line;
+  }
+}
+
+@utility screen-line-top-none {
+  @apply before:content-none;
+}
+
+@utility screen-line-bottom {
+  @apply relative;
+  &:after {
+    content: "";
+    @apply absolute bottom-0 left-[-100vw] -z-1 h-px w-[200vw] bg-line;
+  }
+}
+
+@utility stripe-divider {
+  @apply relative h-8;
+  &:before {
+    content: "";
+    @apply absolute left-[-100vw] -z-1 h-full w-[200vw];
+    background: repeating-linear-gradient(
+      315deg,
+      color-mix(in oklab, var(--line) 56%, transparent) 0,
+      color-mix(in oklab, var(--line) 56%, transparent) 1px,
+      transparent 0,
+      transparent 50%
+    );
+    background-size: 10px 10px;
+  }
+}
+
+@utility link-underline {
+  @apply underline decoration-current/30 decoration-1 underline-offset-3 transition-colors hover:decoration-current;
+}
+
 /* Blog post styling moved to Tailwind Typography via prose classes */
