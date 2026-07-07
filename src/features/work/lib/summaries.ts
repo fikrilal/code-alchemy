@@ -84,6 +84,19 @@ export async function getWorkSummaries(): Promise<WorkSummary[]> {
     }));
 }
 
+export function findNeighbourWork(summaries: WorkSummary[], slug: string) {
+  const index = summaries.findIndex((item) => item.slug === slug);
+
+  if (index === -1) {
+    return { previous: null, next: null };
+  }
+
+  return {
+    previous: index > 0 ? summaries[index - 1] : null,
+    next: index < summaries.length - 1 ? summaries[index + 1] : null,
+  };
+}
+
 function deriveCategory(fm: WorkFrontmatter): string {
   if (fm.category && fm.category.trim().length > 0) return fm.category;
 

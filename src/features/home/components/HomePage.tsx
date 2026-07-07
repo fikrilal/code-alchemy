@@ -16,7 +16,7 @@ export default async function HomePage() {
   ]);
 
   return (
-    <PageShell>
+    <PageShell leadingSeparator={false}>
       <ProfileHero />
       <SelectedWorkSection
         workItems={workItems.slice(0, 4)}
