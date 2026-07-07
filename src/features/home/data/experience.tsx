@@ -6,6 +6,7 @@ export const EXPERIENCES: ExperienceItemType[] = [
   {
     id: "siesta",
     companyName: "SIESTA",
+    companyLogo: "/images/companies/siesta.png",
     isCurrentEmployer: true,
     positions: [
       {
@@ -32,6 +33,7 @@ export const EXPERIENCES: ExperienceItemType[] = [
   {
     id: "studyo",
     companyName: "Studyo.io",
+    companyLogo: "/images/companies/studyo-io.jpeg",
     positions: [
       {
         id: "studyo-mobile-engineer",
@@ -56,6 +58,7 @@ export const EXPERIENCES: ExperienceItemType[] = [
   {
     id: "nodewave",
     companyName: "Nodewave",
+    companyLogo: "/images/companies/nodewave.jpeg",
     positions: [
       {
         id: "nodewave-intern",
@@ -72,6 +75,7 @@ export const EXPERIENCES: ExperienceItemType[] = [
   {
     id: "dropify",
     companyName: "Dropify Technologies",
+    companyLogo: "/images/companies/dropify.png",
     positions: [
       {
         id: "dropify-intern",

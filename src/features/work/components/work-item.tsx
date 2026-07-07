@@ -2,6 +2,7 @@
 
 import { format } from "date-fns";
 import { BoxIcon, ChevronsUpDownIcon, LinkIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import {
@@ -52,14 +53,25 @@ export function WorkItem({ work, className }: WorkItemProps) {
   return (
     <Collapsible className={className}>
       <div className="group/project flex items-center transition-[background-color] ease-out hover:bg-accent/30">
-        <div
-          className={cn(
-            "mx-4 flex size-6 shrink-0 items-center justify-center rounded-lg select-none",
-            "border border-muted-foreground/15 bg-muted text-muted-foreground ring-1 ring-line ring-offset-1 ring-offset-background",
-          )}
-        >
-          <BoxIcon aria-hidden className="size-4" />
-        </div>
+        {work.logo ? (
+          <Image
+            src={work.logo}
+            alt=""
+            width={24}
+            height={24}
+            className="mx-4 size-6 shrink-0 rounded-md object-contain select-none"
+            aria-hidden
+          />
+        ) : (
+          <div
+            className={cn(
+              "mx-4 flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-md select-none",
+              "border border-muted-foreground/15 bg-muted text-muted-foreground ring-1 ring-line ring-offset-1 ring-offset-background",
+            )}
+          >
+            <BoxIcon aria-hidden className="size-4" />
+          </div>
+        )}
 
         <div className="flex-1 border-l border-dashed border-line">
           <CollapsibleTrigger className="flex w-full items-center gap-2 p-4 pr-2 text-left">
