@@ -26,15 +26,14 @@ const fragmentMono = Fragment_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ahmad Fikril Al Muzakki | Mobile Engineer & Founding Engineer",
+  title: "Ahmad Fikril Al Muzakki | Mobile Engineer",
   description:
-    "Hey there! I'm Fikril, a mobile engineering wizard turning wild ideas into sleek apps that people actually love to use. Coffee-powered code and pixel-perfect designs are my superpowers!",
+    "I'm Fikril — a Mobile Engineer. I love product engineering when a product is going from 0 → 1, or pushing from 1 → 100 — owning the architecture, the release, and living with the choices.",
   keywords: [
     "Ahmad Fikril Al Muzakki",
     "Fikril",
     "Fikrilal",
     "Mobile Engineer",
-    "Founding Engineer",
     "Flutter Developer",
     "UI/UX Design",
     "Mobile App Development",
@@ -55,9 +54,9 @@ export const metadata: Metadata = {
     apple: "/favicon.png",
   },
   openGraph: {
-    title: "Ahmad Fikril Al Muzakki | Mobile Engineer & Founding Engineer",
+    title: "Ahmad Fikril Al Muzakki | Mobile Engineer",
     description:
-      "Hey there! I'm Fikril, a mobile engineering wizard turning wild ideas into sleek apps that people actually love to use. Coffee-powered code and pixel-perfect designs are my superpowers!",
+      "I'm Fikril — a Mobile Engineer. I love product engineering when a product is going from 0 → 1, or pushing from 1 → 100 — owning the architecture, the release, and living with the choices.",
     url: "https://www.fikril.dev",
     siteName: "Ahmad Fikril Al Muzakki Portfolio",
     locale: "en_US",
@@ -75,7 +74,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ahmad Fikril Al Muzakki | Mobile Engineer",
     description:
-      "Mobile Engineer & Founding Engineer based in Bandung, Indonesia",
+      "Mobile Engineer. Shipping products from 0 → 1 and pushing 1 → 100.",
     creator: "@fikrilal",
   },
   alternates: {
