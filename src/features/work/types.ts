@@ -18,6 +18,8 @@ export type WhiteLabelClient = {
 export type WorkFrontmatter = {
   title: string;
   shortDescription?: string;
+  /** App/brand logo for list views */
+  logo?: string;
   thumbnail?: string;
   playStoreUrl?: string;
   playStoreUrls?: string[];
@@ -36,7 +38,7 @@ export type WorkSummary = {
   slug: string;
   title: string;
   shortDescription: string;
-  thumbnail: string;
+  logo?: string;
   category?: string;
   company?: string;
   date?: string;
