@@ -65,8 +65,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://www.fikril.dev/og-image.png",
-        width: 710,
-        height: 426,
+        width: 1200,
+        height: 630,
         alt: "Ahmad Fikril Al Muzakki Portfolio",
       },
     ],

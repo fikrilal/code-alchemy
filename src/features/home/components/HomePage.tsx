@@ -1,7 +1,6 @@
 import { PageShell } from "@/components/layout/page-shell";
 import { StripeSeparator } from "@/components/layout/stripe-separator";
 import { getSortedPostsData } from "@/features/blog/lib/posts";
-import { AchievementsSection } from "@/features/home/components/AchievementsSection";
 import BlogSection from "@/features/home/components/BlogSection";
 import { ExperienceSection } from "@/features/home/components/ExperienceSection";
 import ProfileHero from "@/features/home/components/ProfileHero";
@@ -28,8 +27,6 @@ export default async function HomePage() {
       />
       <StripeSeparator />
       <OpenSourceSection repos={openSourceRepos} />
-      <StripeSeparator />
-      <AchievementsSection />
       <StripeSeparator />
       <BlogSection blogPosts={blogPosts} limit={4} />
     </PageShell>
