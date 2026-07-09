@@ -1,6 +1,6 @@
 export const USER = {
   displayName: "Ahmad Fikril",
-  tagline: "Mobile Engineer & Founding Engineer.",
+  tagline: "Mobile Engineer.",
   address: "Bandung, Indonesia",
   email: "fikrildev@gmail.com",
   timeZone: "Asia/Jakarta",
