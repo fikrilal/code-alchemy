@@ -353,5 +353,19 @@
       "premium"
     ],
     "addedAt": "2026-07-13"
+  },
+  {
+    "id": "paper-shaders",
+    "title": "Paper Shaders",
+    "url": "https://shaders.paper.design/",
+    "description": "Ultra-fast zero-dependency shaders for projects — as React components or GLSL.",
+    "category": "motion",
+    "tags": [
+      "shaders",
+      "react",
+      "glsl",
+      "webgl"
+    ],
+    "addedAt": "2026-07-13"
   }
 ]

@@ -112,6 +112,13 @@
     "ok": true
   },
   {
+    "id": "paper-shaders",
+    "sourceUrl": "https://shaders.paper.design/",
+    "file": "paper-shaders.jpg",
+    "capturedAt": "2026-07-13T05:30:51.023Z",
+    "ok": true
+  },
+  {
     "id": "react-card-components",
     "sourceUrl": "https://v0-react-card-components.vercel.app/",
     "file": "react-card-components.jpg",
