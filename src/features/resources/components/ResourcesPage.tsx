@@ -23,7 +23,7 @@ export default function ResourcesPage() {
         </PanelHeader>
 
         <p className="px-4 pb-4 text-base text-balance text-muted-foreground">
-          A curated library of tools and references for mobile and design
+          A curated library of tools and references for developers and design
           engineers — things worth opening when you need a solid starting
           point, not a random tab dump.
         </p>
