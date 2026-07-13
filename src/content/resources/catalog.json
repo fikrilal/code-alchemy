@@ -367,5 +367,45 @@
       "webgl"
     ],
     "addedAt": "2026-07-13"
+  },
+  {
+    "id": "taste-skill",
+    "title": "Taste Skill",
+    "url": "https://www.tasteskill.dev/",
+    "description": "Open-source skill files that give AI coding agents better frontend taste — less generic, more intentional UI.",
+    "category": "ai",
+    "tags": [
+      "agents",
+      "frontend",
+      "skill",
+      "cursor"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "design-system-guide",
+    "title": "The Design System Guide",
+    "url": "https://thedesignsystem.guide/",
+    "description": "Practical guide to setting up a design system — resources, tools, and checklists.",
+    "category": "design-systems",
+    "tags": [
+      "design-system",
+      "guide",
+      "checklist"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "designsystems-surf",
+    "title": "Design Systems Surf",
+    "url": "https://designsystems.surf/",
+    "description": "Database and gallery of best-in-class design systems — components and foundations from top product teams.",
+    "category": "design-systems",
+    "tags": [
+      "design-system",
+      "gallery",
+      "reference"
+    ],
+    "addedAt": "2026-07-13"
   }
 ]
