@@ -2,11 +2,11 @@
 
 ## Status
 
-- Status: Draft — design lock before implementation
+- Status: **Implemented** (P1–P3 on `redesign`)
 - Scope: Resource card UI (preview grid) + owned screenshot pipeline via GitHub Actions
 - Parent: `_WIP/resources-library-engineering-proposal.md` (Phase 1 MVP already shipped)
-- Branch context: `redesign` (or follow-up branch)
-- Implementation: Not started
+- Branch context: `redesign`
+- Implementation: Done for v1 pipeline + grid UI; P4 polish still optional
 
 ### Phase 0 locked decisions (this proposal)
 
@@ -17,7 +17,11 @@
 | Third-party screenshot SaaS | **Out of scope for v1** (Microlink, ScreenshotOne, Thum.io, etc.) |
 | Capture timing | Build/CI / on-demand — **never** on visitor page request |
 | Cache model | Long-lived static files; rare refresh |
-| Storage | Local images under `public/images/resources/` |
+| Storage | Local images under `public/images/resources/{id}.jpg` |
+| Image format | **JPEG** (Playwright-native; WebP deferred) |
+| Manifest | `src/content/resources/previews-manifest.json` |
+| Persist strategy | Push → commit on branch; schedule/manual → PR (`chore/resource-previews`) |
+| Workflow branches | `main`, `redesign` |
 | Runtime fallback | Placeholder when image missing (no OG scrape in v1) |
 | UI | Category sections + **grid cards** with preview media |
 | Homepage | Still out of scope |
@@ -397,31 +401,31 @@ Target freshness: **days to weeks**, not minutes. Editorial links rarely redesig
 - [x] No third-party screenshot SaaS in v1  
 - [x] Static local images + placeholder fallback  
 - [x] Grid card UI direction  
-- [ ] Confirm persist strategy: PR vs direct commit  
-- [ ] Confirm branches for workflow (`main` / `redesign`)  
-- [ ] Confirm image format WebP vs JPEG  
+- [x] Persist strategy: push commits on branch; schedule/manual opens PR  
+- [x] Workflow branches: `main`, `redesign`  
+- [x] Image format: JPEG  
 
-### Phase P1 — Card UI without new captures (optional parallel)
+### Phase P1 — Card UI (complete)
 
-1. Replace list rows with grid cards.
-2. Use placeholder media (or existing files if any).
-3. Keep categories + nav.
-4. Ship visual improvement even before first green capture run.
+1. [x] Replace list rows with grid cards.
+2. [x] Placeholder media when preview missing.
+3. [x] Keep categories + nav.
+4. [x] Blog-like craft (grayscale hover, inset ring, 2-col grid).
 
-### Phase P2 — Capture script (local-first)
+### Phase P2 — Capture script (complete)
 
-1. Add Playwright as a **devDependency** (or isolated script package if cleaner).
-2. Implement `scripts/capture-resource-previews.ts`.
-3. Document: `npm run resources:previews` (and `-- --id=`, `-- --all`).
-4. Generate initial previews locally; commit images + manifest.
-5. Unit tests for path resolution / manifest parse (no browser in default `npm test`).
+1. [x] Playwright + tsx as devDependencies.
+2. [x] `scripts/capture-resource-previews.ts`.
+3. [x] `npm run resources:previews` (`--id=`, `--all`, `--strict`).
+4. [x] Initial previews generated + manifest.
+5. [x] Unit tests for path resolution / manifest parse (no browser in default `npm test`).
 
-### Phase P3 — GitHub Actions
+### Phase P3 — GitHub Actions (complete)
 
-1. Add `resource-previews.yml`.
-2. Wire schedule + dispatch + catalog path filter.
-3. Persist via locked strategy (PR recommended).
-4. Document maintainer flow in README (short) or script header comments.
+1. [x] `.github/workflows/resource-previews.yml`.
+2. [x] Schedule + dispatch + catalog path filter.
+3. [x] Persist via push auto-commit / PR for schedule & manual.
+4. [x] README maintainer notes.
 
 ### Phase P4 — Polish (only if needed)
 

@@ -76,7 +76,3 @@ export function getResourceCategoryMeta(
 export function getAllResourceCategoryMeta(): ResourceCategoryMeta[] {
   return RESOURCE_CATEGORY_ORDER.map(getResourceCategoryMeta);
 }
-
-export function getResourceCategorySectionId(id: ResourceCategoryId): string {
-  return id;
-}

@@ -1,15 +1,17 @@
 import { PageShell } from "@/components/layout/page-shell";
 import { Panel, PanelHeader } from "@/components/ui/panel";
-import { CategoryNav } from "@/features/resources/components/category-nav";
-import { CategorySection } from "@/features/resources/components/category-section";
+import { ResourcesCatalog } from "@/features/resources/components/resources-catalog";
 import {
+  getResourceCatalog,
   getResourceCategoriesInUse,
-  getResourcesByCategory,
 } from "@/features/resources/lib/catalog";
+import { resolveResourcePreviews } from "@/features/resources/lib/previews";
 
 export default function ResourcesPage() {
-  const groups = getResourcesByCategory();
-  const categories = getResourceCategoriesInUse();
+  const catalog = getResourceCatalog();
+  const categories = getResourceCategoriesInUse(catalog);
+  const previews = resolveResourcePreviews(catalog);
+  const previewsRecord = Object.fromEntries(previews.entries());
 
   return (
     <PageShell>
@@ -26,16 +28,16 @@ export default function ResourcesPage() {
           point, not a random tab dump.
         </p>
 
-        <CategoryNav categories={categories} />
-
-        {groups.length === 0 ? (
+        {catalog.length === 0 ? (
           <p className="screen-line-top px-4 py-8 text-sm text-muted-foreground">
             No resources published yet.
           </p>
         ) : (
-          groups.map((group) => (
-            <CategorySection key={group.id} group={group} />
-          ))
+          <ResourcesCatalog
+            resources={catalog}
+            categories={categories}
+            previews={previewsRecord}
+          />
         )}
       </Panel>
     </PageShell>
