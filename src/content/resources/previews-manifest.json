@@ -63,6 +63,20 @@
     "ok": true
   },
   {
+    "id": "design-system-guide",
+    "sourceUrl": "https://thedesignsystem.guide/",
+    "file": "design-system-guide.jpg",
+    "capturedAt": "2026-07-13T06:55:54.975Z",
+    "ok": true
+  },
+  {
+    "id": "designsystems-surf",
+    "sourceUrl": "https://designsystems.surf/",
+    "file": "designsystems-surf.jpg",
+    "capturedAt": "2026-07-13T06:56:04.254Z",
+    "ok": true
+  },
+  {
     "id": "dither-kit",
     "sourceUrl": "https://www.tripwire.sh/dither-kit",
     "file": "dither-kit.jpg",
@@ -158,6 +172,13 @@
     "sourceUrl": "https://textmotion.dev/",
     "file": "slot-text.jpg",
     "capturedAt": "2026-07-13T04:55:41.767Z",
+    "ok": true
+  },
+  {
+    "id": "taste-skill",
+    "sourceUrl": "https://www.tasteskill.dev/",
+    "file": "taste-skill.jpg",
+    "capturedAt": "2026-07-13T06:55:49.020Z",
     "ok": true
   },
   {
