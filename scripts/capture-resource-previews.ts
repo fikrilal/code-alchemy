@@ -28,7 +28,7 @@ import { ResourceCatalogSchema } from "../src/features/resources/lib/schema";
 
 import type { ResourcePreviewManifestEntry } from "../src/features/resources/lib/preview-schema";
 import type { ResourceEntry } from "../src/features/resources/types";
-import type { Browser } from "playwright";
+import type { Browser, Page } from "playwright";
 
 const ROOT = process.cwd();
 const CATALOG_PATH = path.join(ROOT, "src/content/resources/catalog.json");
@@ -36,8 +36,11 @@ const MANIFEST_PATH = path.join(ROOT, RESOURCE_PREVIEWS_MANIFEST_PATH);
 const IMAGES_DIR = path.join(ROOT, RESOURCE_PREVIEWS_PUBLIC_DIR);
 
 const VIEWPORT = { width: 1280, height: 800 } as const;
-const NAV_TIMEOUT_MS = 40_000;
-const SETTLE_MS = 1_500;
+const NAV_TIMEOUT_MS = 45_000;
+/** Extra pause after load so CSS, fonts, and client motion can paint. */
+const SETTLE_MS = 4_000;
+const NETWORK_IDLE_TIMEOUT_MS = 12_000;
+const CONTENT_WAIT_MS = 15_000;
 const JPEG_QUALITY = 78;
 
 type CliOptions = {
@@ -129,6 +132,63 @@ function shouldCapture(
   return false;
 }
 
+async function waitForPageReady(page: Page): Promise<void> {
+  // Prefer network quiet, but don't fail the capture if a site keeps polling.
+  try {
+    await page.waitForLoadState("networkidle", {
+      timeout: NETWORK_IDLE_TIMEOUT_MS,
+    });
+  } catch {
+    // continue — still settle with content + delay below
+  }
+
+  try {
+    await page.evaluate(async () => {
+      if ("fonts" in document) {
+        await document.fonts.ready;
+      }
+    });
+  } catch {
+    // ignore font readiness failures
+  }
+
+  // Wait until the document has real text (avoids pure blank shells / pre-hydrate frames).
+  try {
+    await page.waitForFunction(
+      () => {
+        const body = document.body;
+        if (!body) return false;
+        const text = (body.innerText || "").replace(/\s+/g, " ").trim();
+        if (text.length >= 40) return true;
+        // Some marketing pages paint via canvas/svg before text hydrates.
+        const visual = body.querySelector(
+          "main, h1, header, canvas, svg, img, video, [data-animate], [class*='hero']",
+        );
+        return Boolean(visual);
+      },
+      { timeout: CONTENT_WAIT_MS },
+    );
+  } catch {
+    // Soft-continue — better a partial shot than a hard fail.
+  }
+
+  // Two animation frames + fixed settle for client motion / staggered reveals.
+  try {
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) => {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => resolve());
+          });
+        }),
+    );
+  } catch {
+    // ignore
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, SETTLE_MS));
+}
+
 async function captureOne(
   browser: Browser,
   entry: ResourceEntry,
@@ -141,24 +201,26 @@ async function captureOne(
     viewport: VIEWPORT,
     deviceScaleFactor: 1,
     colorScheme: "dark",
+    // Real browser UA — some sites delay or thin content for bot UAs.
     userAgent:
-      "Mozilla/5.0 (compatible; CodeAlchemyResourcePreview/1.0; +https://www.fikril.dev)",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
   });
 
   const page = await context.newPage();
 
   try {
     await page.goto(entry.url, {
-      waitUntil: "domcontentloaded",
+      waitUntil: "load",
       timeout: NAV_TIMEOUT_MS,
     });
-    await new Promise((resolve) => setTimeout(resolve, SETTLE_MS));
+    await waitForPageReady(page);
     fs.mkdirSync(IMAGES_DIR, { recursive: true });
     await page.screenshot({
       path: outPath,
       type: "jpeg",
       quality: JPEG_QUALITY,
       fullPage: false,
+      animations: "disabled",
     });
 
     return {
