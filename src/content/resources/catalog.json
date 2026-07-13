@@ -1,0 +1,246 @@
+[
+  {
+    "id": "shadcn-ui",
+    "title": "shadcn/ui",
+    "url": "https://ui.shadcn.com/",
+    "description": "Accessible component primitives you own — the default base for modern React product UI.",
+    "category": "ui-components",
+    "tags": ["react", "tailwind", "a11y"],
+    "addedAt": "2026-07-01",
+    "featured": true
+  },
+  {
+    "id": "magic-ui",
+    "title": "Magic UI",
+    "url": "https://magicui.design/",
+    "description": "Animated React components for landing pages and marketing surfaces built with Motion and Tailwind.",
+    "category": "ui-components",
+    "tags": ["react", "motion", "landing"],
+    "addedAt": "2026-07-05",
+    "featured": true
+  },
+  {
+    "id": "shadcn-io",
+    "title": "shadcn.io",
+    "url": "https://www.shadcn.io/",
+    "description": "Large library of shadcn-style blocks and templates for shipping UI faster with AI-assisted workflows.",
+    "category": "ui-components",
+    "tags": ["react", "shadcn", "blocks"],
+    "addedAt": "2026-07-08"
+  },
+  {
+    "id": "shadcn-blocks",
+    "title": "Shadcn Blocks",
+    "url": "https://www.shadcnblocks.com/",
+    "description": "Ready-made page sections and marketing blocks built on the shadcn/ui stack.",
+    "category": "ui-components",
+    "tags": ["react", "shadcn", "blocks"],
+    "addedAt": "2026-07-06"
+  },
+  {
+    "id": "transitions-dev",
+    "title": "Transitions.dev",
+    "url": "https://transitions.dev/",
+    "description": "Practical, copy-ready UI transitions for web apps when motion docs stay too abstract.",
+    "category": "motion",
+    "tags": ["css", "web", "react"],
+    "addedAt": "2026-07-10",
+    "featured": true
+  },
+  {
+    "id": "motion-dev",
+    "title": "Motion",
+    "url": "https://motion.dev/",
+    "description": "Production animation library for React and the web — the foundation behind most polished UI motion.",
+    "category": "motion",
+    "tags": ["react", "animation"],
+    "addedAt": "2026-07-02",
+    "featured": true
+  },
+  {
+    "id": "view-transitions-mdn",
+    "title": "View Transition API (MDN)",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API",
+    "description": "Browser-native view transitions for SPA and multi-page navigations without a heavy animation stack.",
+    "category": "motion",
+    "tags": ["web", "css", "browser"],
+    "addedAt": "2026-06-20"
+  },
+  {
+    "id": "shadcn-ui-docs",
+    "title": "shadcn/ui Introduction",
+    "url": "https://ui.shadcn.com/docs",
+    "description": "How the shadcn distribution model works — components as code you copy, not a black-box package.",
+    "category": "design-systems",
+    "tags": ["react", "design-system"],
+    "addedAt": "2026-07-01"
+  },
+  {
+    "id": "material-motion-flutter",
+    "title": "Material Motion for Flutter",
+    "url": "https://codelabs.developers.google.com/codelabs/material-motion-flutter",
+    "description": "Hands-on codelab for Material motion patterns in Flutter navigation and shared-axis transitions.",
+    "category": "mobile",
+    "tags": ["flutter", "motion"],
+    "addedAt": "2026-06-15"
+  },
+  {
+    "id": "flutter-page-route-animation",
+    "title": "Animate a page route transition",
+    "url": "https://docs.flutter.dev/cookbook/animation/page-route-animation",
+    "description": "Official Flutter cookbook for custom route transitions — baseline craft for mobile navigation feel.",
+    "category": "mobile",
+    "tags": ["flutter", "animation"],
+    "addedAt": "2026-06-10",
+    "featured": true
+  },
+  {
+    "id": "lucide-icons",
+    "title": "Lucide",
+    "url": "https://lucide.dev/",
+    "description": "Clean, consistent icon set used across modern product UIs and many shadcn-based systems.",
+    "category": "icons-assets",
+    "tags": ["icons", "react"],
+    "addedAt": "2026-06-01",
+    "featured": true
+  },
+  {
+    "id": "heroicons",
+    "title": "Heroicons",
+    "url": "https://heroicons.com/",
+    "description": "Hand-crafted SVG icons from the Tailwind team — solid defaults for product interfaces.",
+    "category": "icons-assets",
+    "tags": ["icons", "svg"],
+    "addedAt": "2026-06-01"
+  },
+  {
+    "id": "react-doctor",
+    "title": "React Doctor",
+    "url": "https://react.doctor/",
+    "description": "Deterministic scanner for React anti-patterns, performance issues, and agent-generated code smell.",
+    "category": "tooling",
+    "tags": ["react", "lint", "dx"],
+    "addedAt": "2026-07-09",
+    "featured": true
+  },
+  {
+    "id": "kapso",
+    "title": "Kapso",
+    "url": "https://kapso.com/",
+    "description": "WhatsApp APIs for developers — sandbox, messaging, and agent-friendly integration paths.",
+    "category": "tooling",
+    "tags": ["whatsapp", "api"],
+    "addedAt": "2026-07-07"
+  },
+  {
+    "id": "oxc",
+    "title": "Oxc",
+    "url": "https://oxc.rs/",
+    "description": "High-performance JS/TS tooling suite — parser, linter, and related DX building blocks.",
+    "category": "tooling",
+    "tags": ["typescript", "lint", "dx"],
+    "addedAt": "2026-06-25"
+  },
+  {
+    "id": "biome",
+    "title": "Biome",
+    "url": "https://biomejs.dev/",
+    "description": "Fast formatter and linter for the web toolchain when you want one tool instead of many.",
+    "category": "tooling",
+    "tags": ["lint", "format", "dx"],
+    "addedAt": "2026-06-18"
+  },
+  {
+    "id": "vercel-ai-sdk",
+    "title": "Vercel AI SDK",
+    "url": "https://ai-sdk.dev/",
+    "description": "Type-safe toolkit for building AI product features — streaming, tools, and UI helpers.",
+    "category": "ai",
+    "tags": ["ai", "react", "typescript"],
+    "addedAt": "2026-07-03",
+    "featured": true
+  },
+  {
+    "id": "e2b",
+    "title": "E2B",
+    "url": "https://e2b.dev/",
+    "description": "Secure sandboxes for running untrusted agent code in isolated environments.",
+    "category": "ai",
+    "tags": ["agents", "sandbox"],
+    "addedAt": "2026-06-28"
+  },
+  {
+    "id": "cloudflare-dynamic-workers",
+    "title": "Dynamic Workers (Cloudflare)",
+    "url": "https://blog.cloudflare.com/dynamic-workers/",
+    "description": "Lightweight isolate-based sandboxes for AI-generated code — useful mental model for agent isolation.",
+    "category": "ai",
+    "tags": ["agents", "sandbox", "cloudflare"],
+    "addedAt": "2026-06-22"
+  },
+  {
+    "id": "leaseweb",
+    "title": "Leaseweb",
+    "url": "https://www.leaseweb.com/",
+    "description": "Bare-metal and VPS hosting when you need predictable infrastructure outside hyperscaler defaults.",
+    "category": "infra",
+    "tags": ["hosting", "vps"],
+    "addedAt": "2026-07-04"
+  },
+  {
+    "id": "fly-io",
+    "title": "Fly.io",
+    "url": "https://fly.io/",
+    "description": "Run full-stack apps close to users with a simple deploy model — good default for small products.",
+    "category": "infra",
+    "tags": ["hosting", "deploy"],
+    "addedAt": "2026-06-12",
+    "featured": true
+  },
+  {
+    "id": "railway",
+    "title": "Railway",
+    "url": "https://railway.app/",
+    "description": "Low-friction app and database hosting for shipping side projects and early products quickly.",
+    "category": "infra",
+    "tags": ["hosting", "deploy"],
+    "addedAt": "2026-06-08"
+  },
+  {
+    "id": "chanhdai",
+    "title": "Chánh Đại — Design Engineer",
+    "url": "https://chanhdai.com/",
+    "description": "Strong personal site and craft reference for design-engineering portfolio structure and polish.",
+    "category": "inspiration",
+    "tags": ["portfolio", "design-engineer"],
+    "addedAt": "2026-07-08",
+    "featured": true
+  },
+  {
+    "id": "rauno",
+    "title": "Rauno Freiberg",
+    "url": "https://rauno.me/",
+    "description": "Interaction and interface craft from a design engineer — sharp reference for product feel.",
+    "category": "inspiration",
+    "tags": ["portfolio", "interaction"],
+    "addedAt": "2026-06-05"
+  },
+  {
+    "id": "ibelick",
+    "title": "Julien Thibeaut (ibelick)",
+    "url": "https://www.julienthibeaut.xyz/",
+    "description": "Design-engineer portfolio and component craft often cited for motion and UI experimentation.",
+    "category": "inspiration",
+    "tags": ["portfolio", "motion"],
+    "addedAt": "2026-06-03"
+  },
+  {
+    "id": "ui-engineering-principles",
+    "title": "Refactoring UI",
+    "url": "https://www.refactoringui.com/",
+    "description": "Practical UI design principles for engineers who ship interfaces without a dedicated design team.",
+    "category": "inspiration",
+    "tags": ["design", "product"],
+    "addedAt": "2026-05-20"
+  }
+]
