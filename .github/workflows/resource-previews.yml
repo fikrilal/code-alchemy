@@ -1,0 +1,91 @@
+name: Resource previews
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_all:
+        description: "Recapture all resources"
+        type: boolean
+        default: false
+      only_id:
+        description: "Capture a single resource id (optional)"
+        type: string
+        required: false
+  schedule:
+    # Weekly Sunday 03:00 UTC — catalog is mostly static
+    - cron: "0 3 * * 0"
+  push:
+    branches: [main, redesign]
+    paths:
+      - "src/content/resources/catalog.json"
+      - "scripts/capture-resource-previews.ts"
+      - ".github/workflows/resource-previews.yml"
+      - "src/features/resources/lib/preview-paths.ts"
+      - "src/features/resources/lib/preview-schema.ts"
+      - "src/features/resources/lib/schema.ts"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  capture:
+    name: Capture resource previews
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (22 LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Capture previews
+        env:
+          FORCE_ALL: ${{ github.event_name == 'workflow_dispatch' && inputs.force_all || false }}
+          ONLY_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.only_id || '' }}
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ "${FORCE_ALL}" = "true" ]; then
+            ARGS+=(--all)
+          fi
+          if [ -n "${ONLY_ID}" ]; then
+            ARGS+=(--id="${ONLY_ID}")
+          fi
+          npm run resources:previews -- "${ARGS[@]+"${ARGS[@]}"}"
+
+      - name: Commit previews on push
+        if: github.event_name == 'push'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(resources): update preview screenshots"
+          file_pattern: |
+            public/images/resources/**
+            src/content/resources/previews-manifest.json
+
+      - name: Open pull request (schedule / manual)
+        if: github.event_name != 'push'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore(resources): refresh preview screenshots"
+          title: "chore(resources): refresh preview screenshots"
+          body: |
+            Automated resource preview capture (Playwright on GitHub Actions).
+
+            - Source: `src/content/resources/catalog.json`
+            - Images: `public/images/resources/*.jpg`
+            - Manifest: `src/content/resources/previews-manifest.json`
+
+            Soft-fails per URL when a site blocks headless capture; the page shows a placeholder for those entries.
+          branch: chore/resource-previews
+          delete-branch: true

@@ -38,6 +38,7 @@
   "include": [
     "./src",
     "./test",
+    "./scripts",
     "proxy.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts",

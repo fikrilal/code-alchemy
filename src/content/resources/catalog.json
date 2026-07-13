@@ -1,0 +1,357 @@
+[
+  {
+    "id": "skiper-ui",
+    "title": "Skiper UI",
+    "url": "https://skiper-ui.com/",
+    "description": "Uncommon components for shadcn/ui and Next.js — install via shadcn CLI, easy to edit and reuse.",
+    "category": "ui-components",
+    "tags": [
+      "shadcn",
+      "react",
+      "next",
+      "components"
+    ],
+    "addedAt": "2026-07-13",
+    "featured": true
+  },
+  {
+    "id": "cuelume",
+    "title": "Cuelume",
+    "url": "https://cuelume-site.pages.dev/",
+    "description": "Tiny, dependency-free interaction sounds for the web — synthesized live with Web Audio, no sound files required.",
+    "category": "motion",
+    "tags": [
+      "web-audio",
+      "sound",
+      "interaction",
+      "ux"
+    ],
+    "addedAt": "2026-07-13",
+    "featured": true
+  },
+  {
+    "id": "amicro",
+    "title": "Amicro",
+    "url": "https://amicro.vercel.app/",
+    "description": "Micro-transitions for product UI — small motion patterns that make interfaces feel tighter and more intentional.",
+    "category": "motion",
+    "tags": [
+      "motion",
+      "transitions",
+      "ui"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "arlan-vault",
+    "title": "Vault",
+    "url": "https://www.arlan.me/vault",
+    "description": "Visuals and interactions from around the web, taken apart and rebuilt into patterns anyone can use.",
+    "category": "inspiration",
+    "tags": [
+      "interactions",
+      "ui",
+      "collection"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "transitions-dev-refine",
+    "title": "Transitions.dev Refine",
+    "url": "https://transitions.dev/refine",
+    "description": "Live, agent-driven panel for tuning CSS and Motion transitions — click Refine and write timing back into your code.",
+    "category": "motion",
+    "tags": [
+      "css",
+      "motion",
+      "ai",
+      "agents"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "kapso",
+    "title": "Kapso",
+    "url": "https://kapso.com/",
+    "description": "WhatsApp for developers — connect quickly, integrate messaging, and ship to WhatsApp’s user base.",
+    "category": "tooling",
+    "tags": [
+      "whatsapp",
+      "api",
+      "messaging"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "userinterface-wiki",
+    "title": "userinterface.wiki",
+    "url": "https://www.userinterface.wiki/",
+    "description": "A living manual for better interfaces — design principles, motion, typography, and craft.",
+    "category": "design-systems",
+    "tags": [
+      "design",
+      "principles",
+      "typography",
+      "motion"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "slot-text",
+    "title": "slot-text",
+    "url": "https://textmotion.dev/",
+    "description": "Dependency-free text roll animation for tiny, tactile UI labels.",
+    "category": "motion",
+    "tags": [
+      "text",
+      "animation",
+      "ui"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "transitions-dev",
+    "title": "Transitions.dev",
+    "url": "https://transitions.dev/",
+    "description": "Essential, copy-paste UI transitions for web apps when motion docs stay too abstract.",
+    "category": "motion",
+    "tags": [
+      "css",
+      "transitions",
+      "web"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "recent-design",
+    "title": "Recent Design",
+    "url": "https://recent.design/",
+    "description": "Curated design inspiration from across the internet.",
+    "category": "inspiration",
+    "tags": [
+      "inspiration",
+      "design",
+      "gallery"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "fluid-functionalism",
+    "title": "Fluid Functionalism",
+    "url": "https://www.fluidfunctionalism.com/",
+    "description": "Open-source UI components with a strong systems-and-craft POV.",
+    "category": "ui-components",
+    "tags": [
+      "react",
+      "components",
+      "open-source"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "flutter-pro-design",
+    "title": "Flutter Pro Design",
+    "url": "https://flutterpro.design/",
+    "description": "Small details that build taste in Flutter — the things users feel but can’t explain.",
+    "category": "mobile",
+    "tags": [
+      "flutter",
+      "design",
+      "craft"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "ui-skills",
+    "title": "UI Skills",
+    "url": "https://www.ui-skills.com/",
+    "description": "Design-engineering skills for accessibility, motion, frontend craft, and interface quality.",
+    "category": "tooling",
+    "tags": [
+      "design-engineer",
+      "a11y",
+      "motion",
+      "skills"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "compact-landing",
+    "title": "compact-landing",
+    "url": "https://compact-skill.dev/",
+    "description": "A skill for agents to build small, tactile product pages with a fresh direction each run.",
+    "category": "ai",
+    "tags": [
+      "agents",
+      "landing",
+      "skill"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "beui",
+    "title": "beUI",
+    "url": "https://beui.dev/",
+    "description": "Motion toolkit for React and Next.js — free, open-source, shadcn-compatible components on Motion and Tailwind.",
+    "category": "ui-components",
+    "tags": [
+      "react",
+      "next",
+      "motion",
+      "shadcn"
+    ],
+    "addedAt": "2026-07-13",
+    "featured": true
+  },
+  {
+    "id": "react-doctor",
+    "title": "React Doctor",
+    "url": "https://www.react.doctor/",
+    "description": "Deterministic static analysis so coding agents can diagnose and fix React codebases.",
+    "category": "tooling",
+    "tags": [
+      "react",
+      "lint",
+      "agents",
+      "dx"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "glimm",
+    "title": "glimm",
+    "url": "https://glimm.dev/",
+    "description": "Shader-driven page transitions for React and Next.js — small, GPU-composited, drop-in.",
+    "category": "motion",
+    "tags": [
+      "react",
+      "next",
+      "webgl",
+      "transitions"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "aside",
+    "title": "Aside",
+    "url": "https://aside.com/",
+    "description": "An AI browser built to do real work across your websites, accounts, and history.",
+    "category": "ai",
+    "tags": [
+      "browser",
+      "ai",
+      "agents"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "create-ui",
+    "title": "Create UI",
+    "url": "https://createui.co/",
+    "description": "Unified Figma design system and React component library — components, variants, and tokens in sync.",
+    "category": "design-systems",
+    "tags": [
+      "figma",
+      "react",
+      "design-system",
+      "tokens"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "react-card-components",
+    "title": "React Card Components",
+    "url": "https://v0-react-card-components.vercel.app/",
+    "description": "Minimal card component library for React and Tailwind CSS.",
+    "category": "ui-components",
+    "tags": [
+      "react",
+      "tailwind",
+      "cards"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "agentos",
+    "title": "agentOS",
+    "url": "https://agentos-sdk.dev/",
+    "description": "Portable open-source OS for agents — stateful runtime, secure code execution, one SDK to deploy anywhere.",
+    "category": "ai",
+    "tags": [
+      "agents",
+      "sandbox",
+      "sdk",
+      "runtime"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "athas",
+    "title": "Athas",
+    "url": "https://athas.dev/",
+    "description": "Lightweight, open-source code editor with AI assistance, Git integration, and keyboard-first workflows.",
+    "category": "tooling",
+    "tags": [
+      "editor",
+      "ai",
+      "dx"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "namethatui",
+    "title": "NameThat",
+    "url": "https://namethatui.com/",
+    "description": "Visual dictionary of UI — name the element, get its API symbol, and a precise prompt for your coding agent.",
+    "category": "tooling",
+    "tags": [
+      "ui",
+      "dictionary",
+      "design",
+      "agents"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "effectsoup",
+    "title": "EffectSoup",
+    "url": "https://www.effectsoup.com/",
+    "description": "Browser-based image effects — dither, ASCII, halftone, glow, print, retro signal, and more.",
+    "category": "icons-assets",
+    "tags": [
+      "image",
+      "effects",
+      "browser",
+      "design"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "dither-kit",
+    "title": "Dither Kit",
+    "url": "https://www.tripwire.sh/dither-kit",
+    "description": "Browser dither kit from Tripwire — turn images into ordered, retro-style dithered looks.",
+    "category": "icons-assets",
+    "tags": [
+      "dither",
+      "image",
+      "effects",
+      "browser"
+    ],
+    "addedAt": "2026-07-13"
+  },
+  {
+    "id": "reverse-ui",
+    "title": "Reverse UI",
+    "url": "https://reverseui.com/",
+    "description": "Premium animated UI components for modern apps — customizable, ready-to-use, fully styled.",
+    "category": "ui-components",
+    "tags": [
+      "react",
+      "animation",
+      "components",
+      "premium"
+    ],
+    "addedAt": "2026-07-13"
+  }
+]

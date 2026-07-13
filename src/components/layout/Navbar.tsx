@@ -11,6 +11,7 @@ import { toggleTheme } from "@/lib/theme";
 const NAV_ITEMS = [
   { title: "Work", href: "/work" },
   { title: "Blog", href: "/blog" },
+  { title: "Resources", href: "/resources" },
 ] as const;
 
 function NavSeparator() {

@@ -78,6 +78,7 @@ Current route groups:
 - `(marketing)` for the home page and static marketing pages
 - `(blog)` for blog index and post routes
 - `(work)` for work index and case study routes
+- `(resources)` for the curated resources library
 
 ## Content Model
 
@@ -128,13 +129,31 @@ src/
   content/
     blog/
     work/
+    resources/
   features/
     blog/
     home/
     mdx/
+    resources/
     work/
   lib/
 ```
+
+## Resources previews
+
+The `/resources` page uses local viewport screenshots under `public/images/resources/`.
+
+Capture (Playwright; not part of the default test gate):
+
+```bash
+npm run resources:previews
+npm run resources:previews -- --id=magic-ui
+npm run resources:previews -- --all
+```
+
+Requires a one-time browser install: `npx playwright install chromium`.
+
+GitHub Actions workflow `.github/workflows/resource-previews.yml` runs weekly, on catalog changes, and via manual dispatch. It does not run on ordinary PR CI.
 
 ## Operational Notes
 
