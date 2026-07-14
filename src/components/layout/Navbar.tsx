@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
 
 import { SiteMark } from "@/components/brand/site-mark";
 import { HomeColumn } from "@/components/layout/home-column";
+import { Drawer } from "@/components/ui/drawer";
 import { toggleTheme } from "@/lib/theme";
 
 const NAV_ITEMS = [
@@ -108,14 +109,65 @@ function ThemeToggle() {
   );
 }
 
+function MobileMenuButton({
+  open,
+  onClick,
+}: {
+  open: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={open ? "Close menu" : "Open menu"}
+      aria-expanded={open}
+      className="inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground sm:hidden"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="size-5 transition-transform duration-200"
+        aria-hidden
+      >
+        {open ? (
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        ) : (
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+          />
+        )}
+      </svg>
+    </button>
+  );
+}
+
 export default function Navbar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleLinkClick = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full overflow-x-clip bg-background">
       <HomeColumn>
         <div className="screen-line-top screen-line-bottom relative flex h-14 items-center gap-2 border-x border-line sm:gap-4">
-          <Link href="/" aria-label="Home" className="shrink-0 text-foreground">
+          <Link
+            href="/"
+            aria-label="Home"
+            className="shrink-0 text-foreground"
+            onClick={handleLinkClick}
+          >
             <SiteMark className="h-8" />
           </Link>
 
@@ -123,12 +175,74 @@ export default function Navbar() {
 
           <NavLinks activePath={pathname} />
 
-          <div className="flex items-center">
+          <div className="flex items-center gap-1">
             <NavSeparator />
             <ThemeToggle />
+            <MobileMenuButton open={isOpen} onClick={() => setIsOpen(!isOpen)} />
           </div>
         </div>
       </HomeColumn>
+
+      <Drawer
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        side="right"
+        ariaLabel="Navigation menu"
+        className="p-6 bg-background"
+      >
+        <div className="flex flex-col h-full justify-between py-4">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between">
+              <Link
+                href="/"
+                aria-label="Home"
+                className="text-foreground"
+                onClick={handleLinkClick}
+              >
+                <SiteMark className="h-8" />
+              </Link>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                aria-label="Close menu"
+                className="inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  className="size-5"
+                  aria-hidden
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <nav className="flex flex-col gap-4 mt-6">
+              {NAV_ITEMS.map(({ title, href }) => {
+                const isActive =
+                  pathname === href || pathname.startsWith(`${href}/`);
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    aria-current={isActive ? "page" : undefined}
+                    onClick={handleLinkClick}
+                    className="text-base font-medium tracking-wide text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground"
+                  >
+                    {title}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        </div>
+      </Drawer>
     </header>
   );
 }

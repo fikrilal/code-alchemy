@@ -247,7 +247,7 @@ function FilterChip({
       onClick={onSelect}
       aria-pressed={selected}
       className={cn(
-        "shrink-0 rounded-md border px-2.5 py-1 text-sm transition-colors",
+        "shrink-0 rounded-md border px-2.5 py-1 text-xs transition-colors",
         selected
           ? "border-foreground/25 bg-muted text-foreground"
           : "border-line text-muted-foreground hover:border-foreground/20 hover:text-foreground",
