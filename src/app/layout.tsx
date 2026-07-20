@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     "Software Engineer",
     "Portfolio Website",
     "Tech Professional Indonesia",
-    "Bandung Developer",
+    "Jakarta Developer",
     "Mobile Application Design",
     "User Experience Expert",
   ],
