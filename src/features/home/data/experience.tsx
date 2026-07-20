@@ -4,16 +4,34 @@ import type { ExperienceItemType } from "@/components/work-experience";
 
 export const EXPERIENCES: ExperienceItemType[] = [
   {
+    id: "kalbe-nutritionals",
+    companyName: "Kalbe Nutritionals",
+    companyLogo: "/images/companies/kalbe-nutritionals.png",
+    isCurrentEmployer: true,
+    positions: [
+      {
+        id: "kalbe-mobile",
+        title: "IT Mobile Engineer",
+        employmentPeriod: {
+          start: "07.2026",
+        },
+        employmentType: "On-site",
+        icon: <CodeXmlIcon aria-hidden />,
+        isExpanded: true,
+      },
+    ],
+  },
+  {
     id: "siesta",
     companyName: "SIESTA",
     companyLogo: "/images/companies/siesta.png",
-    isCurrentEmployer: true,
     positions: [
       {
         id: "siesta-jr-mobile",
         title: "Mobile Engineer",
         employmentPeriod: {
           start: "02.2025",
+          end: "07.2026",
         },
         employmentType: "On-site",
         icon: <CodeXmlIcon aria-hidden />,
@@ -26,7 +44,6 @@ export const EXPERIENCES: ExperienceItemType[] = [
           "Multi-tenant",
           "White-label",
         ],
-        isExpanded: true,
       },
     ],
   },
