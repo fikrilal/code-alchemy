@@ -8,7 +8,7 @@ export const USER = {
   jobs: [
     {
       title: "Mobile Engineer",
-      company: "SIESTA",
+      company: "Kalbe",
     },
     {
       title: "Founding Engineer",
