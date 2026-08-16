@@ -28,7 +28,7 @@ const fragmentMono = Fragment_Mono({
 export const metadata: Metadata = {
   title: "Ahmad Fikril Al Muzakki | Mobile Engineer",
   description:
-    "I'm Fikril — a Mobile Engineer. I love product engineering when a product is going from 0 → 1, or pushing from 1 → 100 — owning the architecture, the release, and living with the choices.",
+    "I'm Fikril, a Mobile Engineer. I love building products from 0 → 1, or pushing them from 1 → 100. I enjoy the stage where there are still hard problems to solve, decisions to live with, and plenty left to improve.",
   keywords: [
     "Ahmad Fikril Al Muzakki",
     "Fikril",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ahmad Fikril Al Muzakki | Mobile Engineer",
     description:
-      "I'm Fikril — a Mobile Engineer. I love product engineering when a product is going from 0 → 1, or pushing from 1 → 100 — owning the architecture, the release, and living with the choices.",
+      "I'm Fikril, a Mobile Engineer. I love building products from 0 → 1, or pushing them from 1 → 100. I enjoy the stage where there are still hard problems to solve, decisions to live with, and plenty left to improve.",
     url: "https://www.fikril.dev",
     siteName: "Ahmad Fikril Al Muzakki Portfolio",
     locale: "en_US",

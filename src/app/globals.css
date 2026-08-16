@@ -50,7 +50,8 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --line: color-mix(in oklab, var(--border) 64%, var(--background));
+  /* Hairlines — very soft. */
+  --line: oklch(0.96 0 0);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -130,6 +131,8 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
+  /* Dark hairlines — very soft. */
+  --line: oklch(1 0 0 / 8%);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -188,8 +191,8 @@ svg [data-base-ui-tooltip-trigger] {
     @apply absolute left-[-100vw] -z-1 h-full w-[200vw];
     background: repeating-linear-gradient(
       315deg,
-      color-mix(in oklab, var(--line) 56%, transparent) 0,
-      color-mix(in oklab, var(--line) 56%, transparent) 1px,
+      color-mix(in oklab, var(--line) 42%, transparent) 0,
+      color-mix(in oklab, var(--line) 42%, transparent) 1px,
       transparent 0,
       transparent 50%
     );
