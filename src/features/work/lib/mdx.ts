@@ -11,7 +11,7 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 
 import mdxComponents from "@/features/mdx/components";
-import { rehypeMermaid, remarkMermaid } from "@/features/mdx/remark-mermaid";
+import { rehypeMermaid, remarkMermaid, remarkSubBreak } from "@/features/mdx/remark-mermaid";
 import { mdxSanitizeSchema } from "@/features/mdx/sanitize-schema";
 import type { WorkFrontmatter } from "@/features/work/types";
 
@@ -34,7 +34,7 @@ export async function compileWork(source: string): Promise<{ content: ReactEleme
     options: {
       parseFrontmatter: true,
       mdxOptions: {
-        remarkPlugins: [remarkGfm, remarkMermaid],
+        remarkPlugins: [remarkGfm, remarkMermaid, remarkSubBreak],
         rehypePlugins: [
           rehypeSlug,
           [rehypeAutolinkHeadings, { properties: { className: ["anchor"] } }],

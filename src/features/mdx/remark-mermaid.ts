@@ -31,6 +31,36 @@ type ParentNode = {
   children: unknown[];
 };
 
+export function remarkSubBreak() {
+  return (tree: unknown) => {
+    visit(
+      tree as { type: string },
+      "paragraph",
+      (node: unknown) => {
+        const paragraphNode = node as {
+          children?: Array<{ type: string; value?: string }>;
+          data?: Record<string, unknown>;
+        };
+        const firstChild = paragraphNode.children?.[0];
+        if (
+          paragraphNode.children?.length === 1 &&
+          firstChild &&
+          (firstChild.value === "···" ||
+            firstChild.value === "· · ·" ||
+            firstChild.value === "* * *")
+        ) {
+          paragraphNode.data = {
+            hProperties: {
+              className:
+                "subbreak text-center text-muted-foreground/60 tracking-[0.8em] my-8 select-none font-mono text-base",
+            },
+          };
+        }
+      }
+    );
+  };
+}
+
 export function remarkMermaid() {
   return (tree: unknown) => {
     visit(
