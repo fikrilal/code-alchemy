@@ -25,6 +25,8 @@ export const mdxSanitizeSchema: Schema = {
     "details",
     "summary",
     "mark",
+    "Mermaid",
+    "mermaid",
   ],
   attributes: {
     ...defaultSchema.attributes,
@@ -32,8 +34,11 @@ export const mdxSanitizeSchema: Schema = {
       ...baseGlobalAttributes,
       "id",
       "className",
+      "code",
       ...lineAndTokenAttributes,
     ],
+    Mermaid: ["code", "className"],
+    mermaid: ["code", "className"],
     a: [
       ...(defaultSchema.attributes?.a ?? []),
       "target",
@@ -61,6 +66,8 @@ export const mdxSanitizeSchema: Schema = {
     div: [
       ...(defaultSchema.attributes?.div ?? []),
       "className",
+      "dataMermaid",
+      "data-mermaid",
       ...lineAndTokenAttributes,
     ],
     figure: [

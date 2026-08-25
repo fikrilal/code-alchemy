@@ -29,6 +29,16 @@ describe("mdx compile pipeline", () => {
     expect(snapshot.hasScriptTag).toBe(false);
   });
 
+  it("produces stable sanitized output for harness blog post", async () => {
+    const source = readContentFile("src/content/blog/harness-engineering-for-agent-era.mdx");
+    const { content } = await compileSource(source);
+    const html = renderToStaticMarkup(content);
+
+    const mermaidBlocks = [...html.matchAll(/class="[^"]*\bmermaid\b[^"]*"/g)];
+    expect(mermaidBlocks.length).toBe(6);
+    expect(html).not.toContain("<script");
+  });
+
   it("produces stable sanitized output for a representative work post", async () => {
     const source = readContentFile("src/content/work/orymu.mdx");
     const { content, frontmatter } = await compileWork(source);

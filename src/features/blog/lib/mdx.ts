@@ -13,7 +13,7 @@ import remarkGfm from "remark-gfm";
 
 import type { BlogFrontmatter } from "@/features/blog/types";
 import mdxComponents from "@/features/mdx/components";
-import { remarkMermaid } from "@/features/mdx/remark-mermaid";
+import { rehypeMermaid, remarkMermaid } from "@/features/mdx/remark-mermaid";
 import { mdxSanitizeSchema } from "@/features/mdx/sanitize-schema";
 
 import type { ReactElement } from "react";
@@ -43,6 +43,7 @@ export async function compileSource(source: string): Promise<{ content: ReactEle
             },
           ],
           [rehypeSanitize, mdxSanitizeSchema],
+          rehypeMermaid,
         ],
       },
     },
