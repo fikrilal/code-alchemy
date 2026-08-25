@@ -22,9 +22,9 @@ Sebenarnya issue ini cukup ramai jadi bahan diskusi di X, di late 2025 - early 2
 
 Dari artikel itu semuanya terasa make sense. Kesalahan terbesarku, dan mungkin banyak orang lain, adalah memperlakukan prompt atau file `AGENTS.md` sebagai solusi dari segalanya. Padahal, mau sepanjang apapun dokumen yang kita tulis, teks cuma dianggap sebagai "saran halus" oleh AI model.
 
-Inti dari konsep Harness Engineering yang dibahas OpenAI sebenarnya sederhana: manusia bertugas menentukan arah dan architecture (*steer*), sementara AI agents yang mengeksekusi (*execute*). Tapi agar eksekusi AI itu tidak merusak sistem, repository kita tidak boleh cuma jadi tempat pasif penyimpanan file code. Repository harus kita rancang sebagai **harness**—sebuah environment yang punya "pagar pembatas" mekanis, sensor otomatis (*custom lints, AST analyzers*), dan alat verifikasi independen yang bisa langsung menolak dan mengoreksi kode AI begitu dia keluar dari jalur architecture.
+Inti dari konsep Harness Engineering yang dibahas OpenAI sebenarnya sederhana: manusia bertugas menentukan arah dan architecture (*steer*), sementara AI agents yang mengeksekusi (*execute*). Tapi agar eksekusi AI itu tidak merusak sistem, repository kita tidak boleh cuma jadi tempat pasif penyimpanan file code. Repository harus kita rancang sebagai **harness**—sebuah environment yang punya *mechanical guardrails*, sensor otomatis (*custom lints, AST analyzers*), dan alat verifikasi independen yang bisa langsung menolak dan mengoreksi kode AI begitu dia keluar dari jalur architecture.
 
-Pendekatan ini bukan cuma buat satu stack tertentu, mau itu di backend, frontend, ataupun mobile, kuncinya tetap sama: kita tanem pagar mekanik agar AI agents ngga ngalor-ngidul saat implementasi kode. Secara garis besar, sistem harness biasanya terbagi menjadi 4 pilar:
+Pendekatan ini bukan cuma buat satu stack tertentu, mau itu di backend, frontend, ataupun mobile, kuncinya tetap sama: kita pasang *guardrails* agar AI agents ngga ngalor-ngidul saat implementasi kode. Secara garis besar, sistem harness biasanya terbagi menjadi 4 pilar:
 
 ```mermaid
 graph TD
@@ -57,6 +57,8 @@ graph TD
     RepoHarness --> Prod["Production Codebase"]
 ```
 
+---
+
 ### 1. Scope & Authority Controls (Membatasi Ruang Gerak AI)
 
 Penyakit paling umum saat kita lepas AI agent di codebase adalah *scope creep*. Contoh kecilnya saat kita kasih task ke AI untuk implement fitur login, tapi tiba-tiba dia malah ngubah global config, ngutak-ngatik shared helper di core, atau bahkan ngedit schema db yang ngga relevan dengan task yang dikasih.
@@ -77,6 +79,14 @@ Pada implementasiku, Execution Plan ini berwujud file markdown yang punya 2 bagi
 2. **Bagian dokumen yang berada di bawah metadata**: Berfungsi untuk AI planning dan human reviewer. Isinya objective, out of scope, skenario pengujian, dan rencana rollback jika ada masalah di production.
 
 Dengan pendekatan ini, AI punya ruang gerak yang jelas. Agent akan bermanuver di dalam sandbox tanpa risiko merusak area lain atau menimpa uncommitted changes milik kita. Untuk contoh exec plan, lihat [docs/exec-plans/_template.md](https://github.com/fikrilal/mobile-core-kit/blob/main/docs/exec-plans/_template.md?plain=1).
+
+File *execution plan* ini juga memiliki siklus hidup (*lifecycle*) folder yang jelas:
+
+- **`docs/exec-plans/active/`**: Tempat plan yang sedang aktif dikerjakan. CLI (`mobilekit task begin`) mengunci scope git berdasarkan file di sini.
+- **`docs/exec-plans/completed/`**: Arsip plan yang sudah lolos verifikasi dan review sebagai *immutable audit trail*.
+- **`docs/exec-plans/queue/`**: Antrean task yang siap dieksekusi secara otonom.
+
+Pemisahan folder ini krusial agar agent tidak bingung membedakan task yang sedang aktif vs task masa lalu.
 
 ---
 
@@ -102,7 +112,57 @@ Untuk mengatasi ini, architecture ngga boleh lagi dijaga lewat dokumen guide ata
 
 Menariknya, ngga seperti kita manusia atau entitas dengan username github [@kahfismith](https://github.com/kahfismith) yang malah mendisable lints ketika ada warning, agent akan secara happy mengikuti aturan lints tersebut dan malah menjadi multiplier. Sekali aturan di-encode, agent akan menerapkannya di mana saja secara bersamaan.
 
-Intinya, di bagian ini kita perlu memetakan kesalahan-kesalahan berulang ke sebuah aturan mekanis yang mengembalikan pesan kesalahan jika aturannya dilanggar, sehingga AI akan melakukan *self-correction* terhadap changes-nya.
+···
+
+#### Anti-Duplication Sensors: Memerangi Entropi & Duplikasi Kode
+
+Selain masalah batas layer dan tipe data, ada satu kebiasaan AI yang diam-diam mendegradasi kualitas codebase dan paling sering kita temui saat *day-to-day agentic coding*: **AI tuh sangat-sangat malas mencari utility yang sudah ada, tapi sangat "berhasrat" menulis fungsi helper baru.**
+
+Misalkan kita minta AI untuk membuat fitur halaman profile yang menampilkan tanggal lahir dan format mata uang saldo. Alih-alih mencari ke folder `lib/core/utils/` atau `lib/core/foundation/` untuk melihat apakah helper `formatDate()` atau `formatCurrency()` sudah tersedia, AI akan mengambil jalan pintas tercepat dengan menulis fungsi helper privat baru di bagian bawah file fiturnya.
+
+Sekilas kode terlihat rapi dan test-nya hijau. Tapi jika kita *scale* hal ini ke 50 task berbeda, dalam beberapa minggu codebase kita akan dipenuhi belasan variasi fungsi `formatDate()`, `parseErrorMessage()`, dan `isValidEmail()` yang berceceran di berbagai file fitur slice. Ini adalah bentuk *micro-entropy* yang merusak prinsip DRY (*Don't Repeat Yourself*) dan membuat *maintenance* jangka panjang jadi masalah besar.
+
+Custom linter berbasis AST biasa tidak bisa menangkap masalah ini, karena fungsi-fungsi helper tersebut secara sintaksis valid dan tidak melanggar batasan arsitektur modul.
+
+Mencari duplikasi kode adalah masalah tooling. Untuk mengatasi ini, kita memanfaatkan algoritma deteksi duplikasi berbasis AST menggunakan [jscpd](https://github.com/kucherenko/jscpd) yang diintegrasikan langsung ke dalam CLI repositori (`mobilekit duplication check`).
+
+```mermaid
+flowchart LR
+    Cmd["mobilekit duplication check<br/>(default: core + small-helpers)"] --> Jscpd["jscpd token scan per profile<br/>core: minTokens 60 · helpers: minTokens 20<br/>(generated/l10n/presentation excluded)"]
+
+    Jscpd --> Report[".tmp/jscpd-*/jscpd-report.json"]
+    Report --> Filter{"DuplicationReportFilter<br/>drop same-file clones ·<br/>match canonical file pair against<br/>PROFILE-SPECIFIC duplication/*_allowlist.json"}
+
+    Filter -->|"allowlisted"| Reviewed["Reviewed acceptable group<br/>(reported, not actionable)"]
+    Filter -->|"unregistered"| Actionable["Actionable groups reported:<br/>file pair + occurrences/maxLines/maxTokens"]
+
+    Reviewed --> Zero["EXIT 0"]
+    Actionable --> Zero
+
+    Zero --- Note["Review signal in CLI —<br/>Runs inside verify --profile full / ci<br/>forcing agent to refactor or record allowlist"]
+```
+
+Secara teknis, sensor duplikasi ini dibagi ke dalam 3 profil dengan threshold dan cakupan berbeda:
+
+1. **Profile `core`**: Memindai duplikasi logika bisnis, model translator, dan workflow tails di folder `lib/features/`, `lib/core/foundation/`, `lib/core/infra/`, dan `lib/navigation/` (ambang batas: 60 token, 7 baris).
+2. **Profile `small-helpers`**: Memindai fungsi-fungsi helper berukuran kecil seperti formatting tanggal, validasi teks, atau manipulasi string dengan sensitivitas lebih tinggi (ambang batas: 20 token, 4 baris).
+3. **Profile `presentation`**: Profil terarah (*self-review*) untuk mereview duplikasi boilerplate UI di layer presentasi.
+
+Sensor ini secara cerdas mengabaikan duplikasi di dalam file yang sama (*self-file clones*) dan file hasil *codegen* (`*.g.dart`, `*.freezed.dart`, localization). Jika agent membuat fungsi kembar yang belum terdaftar di allowlist, verifikasi (`verify.duplication.core` / `verify.duplication.small-helpers`) akan menampilkan laporan pasangan file yang bertabrakan:
+
+```text
+Actionable groups:
+- lib/core/foundation/date_formatter.dart <> lib/features/account/presentation/account_helper.dart
+  occurrences=1, maxLines=18, maxTokens=74
+
+Found 1 actionable duplication group(s). Add to the allowlist (with a review reason) or refactor.
+```
+
+Pesan laporan mekanis tersebut berfungsi sebagai *feedback loop* untuk agent. Begitu ada duplikasi terdeteksi, AI diarahkan untuk membaca utilitas aslinya di `core`, menghapus fungsi helper privat yang baru ia buat, dan mengimpor fungsi yang sudah ada.
+
+Jika ada duplikasi yang memang wajar atau sengaja diizinkan (misalnya boilerplate pola arsitektur), kita mencatat pasangan file tersebut ke file allowlist khusus per profil (`duplication/duplication_allowlist.json` atau `duplication/small_helper_duplication_allowlist.json`) lengkap dengan catatan review manusia.
+
+Intinya, di pilar kedua ini kita perlu memetakan kesalahan-kesalahan arsitektur berulang ke sebuah aturan mekanis yang mengembalikan pesan kesalahan jika aturannya dilanggar, sehingga AI akan melakukan *self-correction* terhadap changes-nya.
 
 ---
 
@@ -175,63 +235,11 @@ Jalur kritis ini dikunci sebagai test acuan independen. AI yang mengerjakan task
 
 Intinya, di layer ini: **jangan pernah membiarkan murid membuat soal ujiannya sendiri lalu menilainya sendiri**. Dengan mengunci kontrak API dan mendaftarkan *critical behavioral oracles* sebelum task dimulai, status *"all tests green"* kembali menjadi bukti yang valid, bukan sekadar halusinasi yang lolos ke production.
 
-Selanjutnya, selain masalah logika dan kontrak, ada satu lagi kebiasaan AI yang diam-diam mendegradasi kualitas codebase: kecenderungannya membuat fungsi-fungsi duplikat yang redundan.
-
 ---
 
-### 4. Anti-Duplication Sensors: Memerangi Entropi & Klon Kode
+### 4. Unified Verification Surface: Standarisasi Verifikasi Lewat Single CLI
 
-Mungkin issue ini yang paling banyak kita alami saat *day-to-day agentic coding*: **AI tuh sangat-sangat malas mencari utility yang sudah ada, tapi sangat "berhasrat" menulis fungsi helper baru.**
-
-Misalkan kita minta AI untuk membuat fitur halaman profile yang menampilkan tanggal lahir dan format mata uang saldo. Alih-alih mencari ke folder `lib/core/foundation/` atau `lib/core/presentation/` untuk melihat apakah helper `formatDate()` atau `formatCurrency()` sudah tersedia, AI akan mengambil jalan pintas tercepat: menulis fungsi helper privat baru di bagian bawah file fiturnya.
-
-Sekilas kode terlihat rapi dan test-nya hijau. Tapi jika kita *scale* hal ini ke 50 task berbeda, dalam beberapa minggu codebase kita akan dipenuhi belasan variasi fungsi `formatDate()`, `parseErrorMessage()`, dan `isValidEmail()` yang berceceran di berbagai file fitur slice. Ini adalah bentuk *micro-entropy* yang merusak prinsip DRY (*Don't Repeat Yourself*) dan membuat *maintenance* jangka panjang jadi masalah besar.
-
-Custom linter berbasis AST biasa tidak bisa menangkap masalah ini, karena fungsi-fungsi helper tersebut secara sintaksis valid dan tidak melanggar batasan arsitektur modul.
-
-Mencari duplikasi kode adalah masalah tooling. Untuk mengatasi ini, kita memanfaatkan algoritma deteksi klon token berbasis AST menggunakan [jscpd](https://github.com/kucherenko/jscpd) yang diintegrasikan langsung ke dalam CLI repositori (`mobilekit duplication check`).
-
-```mermaid
-flowchart LR
-    Cmd["mobilekit duplication check<br/>(default: core + small-helpers)"] --> Jscpd["jscpd token scan per profile<br/>core: minTokens 60 · helpers: minTokens 20<br/>(generated/l10n/presentation excluded)"]
-
-    Jscpd --> Report[".tmp/jscpd-*/jscpd-report.json"]
-    Report --> Filter{"DuplicationReportFilter<br/>drop same-file clones ·<br/>match canonical file pair against<br/>PROFILE-SPECIFIC duplication/*_allowlist.json"}
-
-    Filter -->|"allowlisted"| Reviewed["Reviewed acceptable group<br/>(reported, not actionable)"]
-    Filter -->|"unregistered"| Actionable["Actionable groups reported:<br/>file pair + occurrences/maxLines/maxTokens"]
-
-    Reviewed --> Zero["EXIT 0"]
-    Actionable --> Zero
-
-    Zero --- Note["Review signal in CLI —<br/>Runs inside verify --profile full / ci<br/>forcing agent to refactor or record allowlist"]
-```
-
-Di level implementasi, sensor duplikasi dibagi ke dalam 3 profil dengan sensitivitas token yang terukur:
-
-1. **Profile `core`**: Memindai duplikasi logika bisnis, model translator, dan workflow tails di folder `lib/features/`, `lib/core/foundation/`, `lib/core/infra/`, dan `lib/navigation/` (ambang batas: 60 token, 7 baris).
-2. **Profile `small-helpers`**: Memindai fungsi-fungsi helper berukuran kecil seperti formatting tanggal, validasi teks, atau manipulasi string dengan sensitivitas lebih tinggi (ambang batas: 20 token, 4 baris).
-3. **Profile `presentation`**: Profil terarah (*self-review*) untuk mereview duplikasi boilerplate UI di layer presentasi.
-
-Sensor ini secara cerdas mengabaikan duplikasi di dalam file yang sama (*self-file clones*) dan file hasil *codegen* (`*.g.dart`, `*.freezed.dart`, localization). Jika agent membuat fungsi kembar yang belum terdaftar di allowlist, verifikasi (`verify.duplication.core` / `verify.duplication.small-helpers`) akan menampilkan laporan pasangan file yang bertabrakan:
-
-```text
-Actionable groups:
-- lib/core/foundation/date_formatter.dart <> lib/features/account/presentation/account_helper.dart
-  occurrences=1, maxLines=18, maxTokens=74
-
-Found 1 actionable duplication group(s). Add to the allowlist (with a review reason) or refactor.
-```
-
-Pesan laporan mekanis tersebut berfungsi sebagai *feedback loop* untuk agent. Begitu ada duplikasi terdeteksi, AI diarahkan untuk membaca utilitas aslinya di `core`, menghapus fungsi helper privat yang baru ia buat, dan mengimpor fungsi yang sudah ada.
-
-Jika ada duplikasi yang memang sengaja dipertahankan (misalnya boilerplate pola arsitektur yang terjustifikasi), kita mencatat pasangan file tersebut ke file allowlist khusus per profil (`duplication/duplication_allowlist.json` atau `duplication/small_helper_duplication_allowlist.json`) lengkap dengan alasan review manusia.
-
----
-
-### 5. Unified Verification Surface: Satu Pintu Verifikasi yang Jujur
-
-Oke, setelah membangun semua pagar pembatas di atas—linter arsitektur, sensor duplikasi, kontrak OpenAPI, dan oracle registry—muncul satu masalah operasional baru: **"Gimana cara AI (dan manusia) menjalankan semua pengecekan ini secara konsisten?"**
+Oke, setelah semua *guardrails* di atas kita siapkan (linter arsitektur, sensor duplikasi, kontrak OpenAPI, dan oracle registry), muncul satu masalah operasional baru: **"Gimana cara AI (dan kita) menjalankan semua pengecekan ini secara konsisten?"**
 
 Kalau kita mengandalkan prompt dan menyuruh agent merangkai sendiri perintahnya:
 
@@ -291,7 +299,23 @@ Intinya, di layer ini kita perlu **membuat satu *Gauntlet* untuk mengendalikan s
 
 ---
 
-### 6. Penutup: Feedforward, Feedback, & Repositori sebagai Sistem Kontrol
+### AGENTS.md: Operating Contract di Level Repository
+
+Setelah 4 pilar di atas berdiri, tersisa satu pertanyaan: **"Gimana cara AI coding agent tahu seluruh guardrails, oracles, dan alur verifikasi ini?"**
+
+Jawabannya ada di **`AGENTS.md`**. Di dalam arsitektur harness yang kita buat, perannya sedikit berubah. `AGENTS.md` sudah tidak lagi menjadi tempat untuk menumpuk ribuan baris instruksi yang membuat *context window* bengkak, melainkan bertindak sebagai **Operating Contract (system prompt di level repository)** yang menyajikan peta navigasi ke seluruh ekosistem harness.
+
+`AGENTS.md` yang ramping (*lean*) cukup berfokus pada hal-hal esensial: menetapkan prinsip dasar penulisan kode, mengatur alur task (*execution plan*), menyajikan mini *project map*, dan mengarahkan agent ke *canonical verification command* milik repo. Untuk aturan yang lebih mendalam, `AGENTS.md` cukup menyediakan indeks tautan ke dokumentasi modular (`docs/engineering/*` atau ADR) yang bisa dibaca agent secara *on-demand*.
+
+Dengan pendekatan ini, `AGENTS.md` menjadi jembatan utama yang menghubungkan AI agent dengan ke-4 pilar guardrails repositori tanpa membebani *context window*.
+
+Contoh implementasi:
+- [Mobile Core Kit AGENTS.md](https://github.com/fikrilal/mobile-core-kit/blob/main/AGENTS.md)
+- [Backend Core Kit AGENTS.md](https://github.com/fikrilal/backend-core-kit/blob/main/AGENTS.md)
+
+---
+
+### Penutup: Feedforward, Feedback, & Repositori sebagai Sistem Kontrol
 
 Jika kita tarik benang merah dari seluruh arsitektur yang sudah kita bangun, inti dari **Harness Engineering** sebenarnya adalah membangun sebuah sistem kontrol dengan dua aliran informasi utama: **Feedforward** dan **Feedback**.
 
@@ -345,10 +369,10 @@ Namun kita juga tidak bisa hidup tanpa dokumen panduan tersebut. Dokumen panduan
 Agar eksekusi AI tidak merusak codebase, *feedforward* wajib dikawinkan dengan *feedback loop* yang bersifat *komputasional* (deterministik).
 
 Di sinilah peran sensor mekanis mendapat panggungnya:
-- **Jika AI salah modul** $\rightarrow$ linter AST langsung menolak.
-- **Jika AI menduplikasi helper** $\rightarrow$ sensor `jscpd` memuntahkan laporan file pair.
-- **Jika AI mengarang endpoint** $\rightarrow$ kontrak OpenAPI *fail-closed*.
-- **Jika AI membuat test palsu** $\rightarrow$ *behavioral oracle registry* menghadang.
+- **Jika AI salah modul** → linter AST langsung menolak.
+- **Jika AI menduplikasi helper** → sensor `jscpd` memuntahkan laporan file pair.
+- **Jika AI mengarang endpoint** → kontrak OpenAPI *fail-closed*.
+- **Jika AI membuat test palsu** → *behavioral oracle registry* menghadang.
 
 Feedback berupa pesan error terstruktur (*diagnostic prompts*) inilah yang mendidik AI untuk melakukan *self-correction* secara otonom tanpa perlu intervensi manual dari manusia setiap kali ia membuat kesalahan.
 
@@ -356,7 +380,7 @@ Feedback berupa pesan error terstruktur (*diagnostic prompts*) inilah yang mendi
 
 ### Selanjutnya Apa? (From Harness to Loop Engineering)
 
-Membangun *harness* adalah langkah pertama untuk mengubah repositori kita agar menjadi lingkungan yang ramah agen. Dengan adanya pagar mekanik yang kokoh, kita tidak perlu lagi merasa cemas melepaskan AI di codebase skala produksi.
+Membangun *harness* adalah langkah awal agar repositori kita menjadi lingkungan yang *agent-friendly*. Dengan *guardrails* yang kokoh, kita tidak perlu lagi merasa cemas melepaskan AI di codebase skala produksi.
 
 Tapi setelah *harness* berdiri tegak, pertanyaan berikutnya adalah: **"Bagaimana kita mengorkestrasi proses ini secara otomatis dari hulu ke hilir?"**
 
