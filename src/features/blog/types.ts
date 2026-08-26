@@ -7,8 +7,11 @@ export type BlogFrontmatter = {
   author?: string;
   authorImage?: string;
   tags?: string[];
+  featured?: boolean;
+  draft?: boolean;
+  unlisted?: boolean;
 };
 
 export type BlogSummary = {
   slug: string;
-} & Pick<BlogFrontmatter, "title" | "date" | "description" | "coverImage" | "readTime">;
+} & Pick<BlogFrontmatter, "title" | "date" | "description" | "coverImage" | "readTime" | "featured" | "draft" | "unlisted">;

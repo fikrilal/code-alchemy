@@ -7,7 +7,8 @@ tags: []
 readTime: "5 min read"
 author: "Ahmad Fikril"
 authorImage: "/images/avatar.png"
-featured: true
+featured: false
+unlisted: true
 ---
 
 Lately, I’ve been thinking a lot about AI.  

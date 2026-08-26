@@ -16,6 +16,9 @@ const BlogSummarySchema = z.object({
   description: z.string(),
   coverImage: z.string().optional(),
   readTime: z.string().optional(),
+  featured: z.boolean().optional(),
+  draft: z.boolean().optional(),
+  unlisted: z.boolean().optional(),
 });
 
 export function getSortedPostsData(): BlogSummary[] {
@@ -25,29 +28,36 @@ export function getSortedPostsData(): BlogSummary[] {
     .readdirSync(postsDirectory)
     .filter((fileName) => fileName.endsWith(".md") || fileName.endsWith(".mdx"));
 
-  const allPostsData: BlogSummary[] = fileNames.map((fileName) => {
-    const slug = fileName.replace(/\.(md|mdx)$/i, "");
-    const fullPath = path.join(postsDirectory, fileName);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
+  const allPostsData: BlogSummary[] = fileNames
+    .map((fileName) => {
+      const slug = fileName.replace(/\.(md|mdx)$/i, "");
+      const fullPath = path.join(postsDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, "utf8");
 
-    const gm = matter(fileContents);
-    const parsed = BlogSummarySchema.safeParse(gm.data);
+      const gm = matter(fileContents);
+      const parsed = BlogSummarySchema.safeParse(gm.data);
 
-    if (!parsed.success) {
-      throw new Error(`Invalid frontmatter for blog post: ${slug}`);
-    }
+      if (!parsed.success) {
+        throw new Error(`Invalid frontmatter for blog post: ${slug}`);
+      }
 
-    const data = parsed.data;
+      const data = parsed.data;
 
-    return {
-      slug,
-      title: data.title,
-      date: data.date,
-      description: data.description,
-      ...(data.coverImage ? { coverImage: data.coverImage } : {}),
-      ...(data.readTime ? { readTime: data.readTime } : {}),
-    } satisfies BlogSummary;
-  });
+      if (data.draft || data.unlisted) {
+        return null;
+      }
+
+      return {
+        slug,
+        title: data.title,
+        date: data.date,
+        description: data.description,
+        ...(data.coverImage ? { coverImage: data.coverImage } : {}),
+        ...(data.readTime ? { readTime: data.readTime } : {}),
+        ...(data.featured !== undefined ? { featured: data.featured } : {}),
+      } satisfies BlogSummary;
+    })
+    .filter((post): post is BlogSummary => post !== null);
 
   const toMillis = (value: BlogSummary) => {
     const time = new Date(value.date).getTime();

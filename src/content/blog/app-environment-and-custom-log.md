@@ -7,7 +7,8 @@ readTime: "5 min read"
 coverImage: "/images/blog/env‑config‑cover.png"
 authorImage: "/images/avatar.png"
 tags: [""]
-featured: true
+featured: false
+unlisted: true
 ---
 
 I used to manage API keys with a `.env` file and load them at runtime with the `dotenv` package.  

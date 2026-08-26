@@ -6,6 +6,7 @@ coverImage: "/images/blog/you-are-absolutely-right.png"
 tags: ["AI", "Factuality", "Sycophancy", "Hallucination"]
 readTime: "4 min read"
 featured: false
+unlisted: true
 ---
 
 I've been using AI models for various applications since the start of 2024. At first glance, I
